@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/tipousuario_form.css">{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>{% if object %}Editar tipo de usuario{% else %}Nuevo tipo de usuario{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+    <a href="/accounts/tipos/">Cancelar</a>
+  </form>
+</section>
+{% endblock %}
+{% block extra_js %}<script src="/static/js/tipousuario_form.js"></script>{% endblock %}

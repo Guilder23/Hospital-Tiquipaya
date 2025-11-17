@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/tipousuario_list.css">{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Tipos de usuario</h2>
+  <p><a class="btn" href="/accounts/tipos/nuevo/">Nuevo tipo</a></p>
+  <table class="table">
+    <thead><tr><th>Nombre</th><th>Descripción</th><th></th></tr></thead>
+    <tbody>
+      {% for t in object_list %}
+      <tr>
+        <td>{{ t.nombre }}</td>
+        <td>{{ t.descripcion }}</td>
+        <td>
+          <a href="/accounts/tipos/{{ t.id }}/editar/">Editar</a>
+          |
+          <a href="/accounts/tipos/{{ t.id }}/eliminar/">Eliminar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3">Sin registros</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p><a href="/">Volver</a></p>
+ </section>
+{% endblock %}
+{% block extra_js %}<script src="/static/js/tipousuario_list.js"></script>{% endblock %}
