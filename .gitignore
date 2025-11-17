@@ -1,0 +1,48 @@
+# Entorno virtual
+venv/
+env/
+ENV/
+.venv/
+
+# Archivos de Python
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+media/
+staticfiles/
+
+# Archivos de entorno / claves
+.env
+.env.local
+.env.*.local
+
+# Archivos de compilación
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+
+# Herramientas y editores
+.vscode/
+.idea/
+*.swp
+
+# Archivos del sistema (Windows / macOS)
+Thumbs.db
+.DS_Store
