@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/accounts/usuarios/users.css">
+{% endblock %}
+{% block content %}
+<section class="card usuarios-lista">
+  <h2>Lista Usuario</h2>
+  {% if puede_admin %}
+  <p><button class="btn" id="btn-open-create">Nuevo usuario</button></p>
+  {% endif %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr data-id="{{ u.id }}" data-username="{{ u.username }}" data-first_name="{{ u.first_name }}" data-last_name="{{ u.last_name }}" data-email="{{ u.email }}" data-active="{{ u.is_active }}" data-tipo_id="{% if u.perfil and u.perfil.tipo %}{{ u.perfil.tipo.id }}{% endif %}" data-tipo_nombre="{% if u.perfil and u.perfil.tipo %}{{ u.perfil.tipo.nombre }}{% endif %}">
+        <td>{{ u.username }}</td>
+        <td>{{ u.first_name }} {{ u.last_name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{% if u.perfil and u.perfil.tipo %}{{ u.perfil.tipo.nombre }}{% else %}Sin rol{% endif %}</td>
+        <td class="actions">
+          <button class="link-view btn-view" data-id="{{ u.id }}">Ver</button>
+          {% if puede_admin %}
+          <button class="link-edit btn-edit" data-id="{{ u.id }}">Editar</button>
+          <button class="link-delete btn-delete" data-id="{{ u.id }}" data-username="{{ u.username }}">Eliminar</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">Sin usuarios</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<div class="modal usuarios-crear" id="modal-crear-usuario" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Crear usuario</h3>
+    <form method="post" action="/accounts/usuarios/nuevo/" id="form-create">
+      {% csrf_token %}
+      <div class="form-row"><label>Usuario</label><input name="username" required></div>
+      <div class="form-row"><label>Nombres</label><input name="first_name"></div>
+      <div class="form-row"><label>Apellidos</label><input name="last_name"></div>
+      <div class="form-row"><label>Email</label><input name="email" type="email"></div>
+      <div class="form-row"><label>Contraseña</label><input name="password1" type="password" required></div>
+      <div class="form-row"><label>Confirmar contraseña</label><input name="password2" type="password" required></div>
+      <div class="form-row"><label>Rol</label>
+        <select name="tipo">
+          <option value="">Sin rol</option>
+          {% for t in tipos %}
+            <option value="{{ t.id }}">{{ t.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" type="submit">Guardar</button>
+        <button class="btn-secondary" type="button" data-close>Cerrar</button>
+      </div>
+    </form>
+  </div>
+  </div>
+
+<div class="modal usuarios-editar" id="modal-editar-usuario" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Editar usuario</h3>
+    <form method="post" id="form-edit">
+      {% csrf_token %}
+      <div class="form-row"><label>Usuario</label><input name="username" required></div>
+      <div class="form-row"><label>Nombres</label><input name="first_name"></div>
+      <div class="form-row"><label>Apellidos</label><input name="last_name"></div>
+      <div class="form-row"><label>Email</label><input name="email" type="email"></div>
+      <div class="form-row"><label>Activo</label><select name="is_active"><option value="True">Sí</option><option value="False">No</option></select></div>
+      <div class="form-row"><label>Rol</label>
+        <select name="tipo">
+          <option value="">Sin rol</option>
+          {% for t in tipos %}
+            <option value="{{ t.id }}">{{ t.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" type="submit">Guardar</button>
+        <button class="btn-secondary" type="button" data-close>Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal usuarios-ver" id="modal-ver-usuario" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Ver usuario</h3>
+    <div class="form-row"><label>Usuario</label><div id="view-username"></div></div>
+    <div class="form-row"><label>Nombre</label><div id="view-name"></div></div>
+    <div class="form-row"><label>Email</label><div id="view-email"></div></div>
+    <div class="form-row"><label>Activo</label><div id="view-active"></div></div>
+    <div class="form-row"><label>Rol</label><div id="view-rol"></div></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" type="button" data-close>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal usuarios-eliminar" id="modal-eliminar-usuario" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Eliminar usuario</h3>
+    <form method="post" id="form-delete">
+      {% csrf_token %}
+      <p id="delete-text"></p>
+      <div class="modal-actions">
+        <button class="btn-danger" type="submit">Eliminar</button>
+        <button class="btn-secondary" type="button" data-close>Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/accounts/usuarios/users.js"></script>
+{% endblock %}

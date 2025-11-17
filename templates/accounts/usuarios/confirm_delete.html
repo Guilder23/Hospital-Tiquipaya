@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/accounts/usuarios/users.css">{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Eliminar usuario</h2>
+  <form method="post">
+    {% csrf_token %}
+    <p>¿Confirmas eliminar "{{ object.username }}"?</p>
+    <button class="btn-danger" type="submit">Eliminar</button>
+    <a class="btn-secondary" href="/accounts/usuarios/">Cancelar</a>
+  </form>
+</section>
+{% endblock %}

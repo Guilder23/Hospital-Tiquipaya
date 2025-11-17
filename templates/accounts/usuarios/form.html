@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/accounts/usuarios/users.css">{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>{% if object %}Editar usuario{% else %}Nuevo usuario{% endif %}</h2>
+  <form method="post" class="tipo-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Guardar</button>
+    <a class="btn-secondary" href="/accounts/usuarios/">Cancelar</a>
+  </form>
+</section>
+{% endblock %}

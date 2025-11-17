@@ -24,3 +24,9 @@ class TipoUsuario(models.Model):
         ordering = ['nombre']
     def __str__(self):
         return self.nombre
+
+class PerfilUsuario(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='perfil')
+    tipo = models.ForeignKey(TipoUsuario, on_delete=models.SET_NULL, null=True, blank=True)
+    def __str__(self):
+        return f'{self.user.username} - {self.tipo.nombre if self.tipo else "Sin tipo"}'
