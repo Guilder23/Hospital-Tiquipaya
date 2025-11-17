@@ -6,7 +6,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
     'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
-    'apps.pacientes','apps.medicos','apps.especialidades','apps.horarios','apps.citas'
+    'apps.pacientes','apps.medicos','apps.especialidades','apps.horarios','apps.citas','apps.accounts'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware',
@@ -33,3 +33,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR/'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'

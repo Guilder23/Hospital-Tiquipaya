@@ -5,3 +5,4 @@ main{padding:20px}
 .card{background:#fff;border:1px solid #dde1e6;border-radius:8px;padding:16px;max-width:640px}
 input,select,button{padding:8px;border:1px solid #c9ced6;border-radius:6px}
 button{background:#0b6efd;color:#fff;border:none;cursor:pointer}
+.logout-form{display:inline}

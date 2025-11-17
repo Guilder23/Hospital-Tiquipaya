@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/register.css">{% endblock %}
+{% block content %}
+<section class="card auth-card">
+  <h2>Crear cuenta</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Registrarse</button>
+  </form>
+  <p class="auth-links">¿Ya tienes cuenta? <a href="/accounts/login/">Ingresar</a></p>
+</section>
+{% endblock %}
+{% block extra_js %}<script src="/static/js/register.js"></script>{% endblock %}

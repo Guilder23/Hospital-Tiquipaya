@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/login.css">{% endblock %}
+{% block content %}
+<section class="card auth-card">
+  <h2>Ingresar</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <label>Usuario</label>
+      {{ form.username }}
+    </div>
+    <div class="form-row">
+      <label>Contraseña</label>
+      {{ form.password }}
+    </div>
+    <button type="submit">Entrar</button>
+    <p class="auth-links"><a href="/accounts/register/">Crear cuenta</a></p>
+  </form>
+</section>
+{% endblock %}
+{% block extra_js %}<script src="/static/js/login.js"></script>{% endblock %}

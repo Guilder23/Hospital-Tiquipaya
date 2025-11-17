@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/home.css">{% endblock %}
 {% block content %}
-<section class="card">
+<section class="card home-wrap">
   <h2>Proyecto listo</h2>
   <p>Estructura base creada. Usa el admin para gestionar datos.</p>
   <p>Ruta: <code>/admin/</code></p>
 </section>
 {% endblock %}
+{% block extra_js %}<script src="/static/js/home.js"></script>{% endblock %}
