@@ -1,0 +1,42 @@
+.tipo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tipo-form input,
+.tipo-form textarea,
+.tipo-form select {
+  width: 100%;
+  padding: .7rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn {
+  background: #005baa;
+  padding: .7rem 1.2rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #004580;
+}
+
+.btn-secondary {
+  margin-left: .5rem;
+  text-decoration: none;
+  padding: .7rem 1rem;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  color: #444;
+  transition: .2s;
+}
+
+.btn-secondary:hover {
+  background: #f0f0f0;
+}

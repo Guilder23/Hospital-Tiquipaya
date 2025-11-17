@@ -1,2 +1,21 @@
-.home-wrap{display:grid;place-items:start;gap:16px}
-.home-wrap h2{margin:0 0 8px}
+.home-wrap {
+  text-align: center;
+}
+
+.home-wrap h2 {
+  font-size: 1.8rem;
+  color: #005baa;
+}
+
+.home-wrap p {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.home-wrap code {
+  background: #edf2f7;
+  padding: .3rem .6rem;
+  border-radius: 6px;
+  color: #333;
+}

@@ -1,0 +1,32 @@
+.confirm-form {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.btn-danger {
+  background: #d62828;
+  padding: .7rem 1.2rem;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn-danger:hover {
+  background: #a01515;
+}
+
+.btn-secondary {
+  padding: .7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  text-decoration: none;
+  color: #444;
+  transition: .2s;
+}
+
+.btn-secondary:hover {
+  background: #f0f0f0;
+}

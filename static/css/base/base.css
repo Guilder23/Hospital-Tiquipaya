@@ -1,17 +1,103 @@
-:root{--bg:#f6f7f9;--primary:#0b6efd;--text:#1b1f24;--border:#dde1e6}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{font-family:system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:var(--text)}
-.site-header{background:var(--primary);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
-.site-header nav{display:flex;gap:12px;align-items:center}
-.site-header a{color:#fff;text-decoration:none}
-main{padding:20px}
-.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;max-width:720px;box-shadow:0 6px 20px rgba(27,31,36,.08)}
-.form-row{display:flex;flex-direction:column;margin-bottom:12px}
-input,select,button{padding:10px;border:1px solid #c9ced6;border-radius:10px;font-size:14px}
-button{background:var(--primary);color:#fff;border:none;cursor:pointer;transition:transform .05s ease,opacity .2s}
-button:hover{opacity:.95}
-button:active{transform:scale(.99)}
-.ok{color:var(--primary)}
-.err{color:#b00020}
-.logout-form{display:inline}
+/* ======= RESET ======= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: #f4f6f9;
+  color: #2d2d2d;
+}
+
+/* ======= HEADER ======= */
+.site-header {
+  background: #005baa;
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-header h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.site-header nav a {
+  color: #fff;
+  margin-left: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.site-header nav a:hover {
+  color: #d1e8ff;
+}
+
+.logout-form button {
+  margin-left: 1rem;
+  padding: 0.4rem .8rem;
+  background: #e63946;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.logout-form button:hover {
+  background: #b91c1c;
+}
+
+/* ======= LAYOUT ======= */
+.layout {
+  display: flex;
+}
+
+/* ======= SIDEBAR ======= */
+.sidebar {
+  width: 230px;
+  background: #ffffff;
+  height: calc(100vh - 70px);
+  padding: 1rem;
+  box-shadow: 3px 0 8px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.sidebar-link {
+  display: block;
+  padding: .7rem;
+  border-radius: 8px;
+  margin-bottom: .5rem;
+  text-decoration: none;
+  color: #333;
+  background: #e8eef5;
+  transition: .2s;
+}
+
+.sidebar-link:hover {
+  background: #d0e2ff;
+}
+
+/* ======= CONTENT ======= */
+.content {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* ======= CARD ======= */
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}

@@ -1,6 +1,82 @@
-.auth-card{max-width:480px;margin:20px auto}
-.auth-card h2{margin:0 0 10px}
-.auth-card form p{margin:0 0 8px}
-.auth-card button{margin-top:8px}
-.auth-links{margin-top:10px}
-.auth-links a{color:#0b6efd;text-decoration:none}
+/* ======= CARD GENERAL ======= */
+.auth-card {
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  animation: fadeIn .3s ease;
+}
+
+/* ======= TITULO ======= */
+.auth-card h2 {
+  font-size: 1.8rem;
+  color: #005baa;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ======= CAMPOS ======= */
+.auth-card form p {
+  margin-bottom: 1rem;
+}
+
+.auth-card input,
+.auth-card select,
+.auth-card textarea {
+  width: 100%;
+  padding: .75rem;
+  border-radius: 8px;
+  border: 1px solid #cfd8e3;
+  font-size: 1rem;
+  transition: .2s;
+}
+
+.auth-card input:focus,
+.auth-card select:focus,
+.auth-card textarea:focus {
+  border-color: #005baa;
+  box-shadow: 0 0 4px rgba(0,91,170,.3);
+  outline: none;
+}
+
+/* ======= BOTÓN ======= */
+.auth-card button {
+  width: 100%;
+  padding: .75rem;
+  background: #005baa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: .5rem;
+  transition: .2s;
+}
+
+.auth-card button:hover {
+  background: #004580;
+}
+
+/* ===== LINKS ===== */
+.auth-links {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth-links a {
+  color: #005baa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* ===== ANIMACIÓN ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

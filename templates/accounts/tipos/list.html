@@ -1,9 +1,11 @@
 {% extends "base.html" %}
-{% block extra_css %}<link rel="stylesheet" href="/static/css/tipousuario_list.css">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/accounts/tipos/list.css">{% endblock %}
 {% block content %}
 <section class="card">
   <h2>Tipos de usuario</h2>
+  {% if request.user.is_staff %}
   <p><a class="btn" href="/accounts/tipos/nuevo/">Nuevo tipo</a></p>
+  {% endif %}
   <table class="table">
     <thead><tr><th>Nombre</th><th>Descripción</th><th></th></tr></thead>
     <tbody>
@@ -11,10 +13,11 @@
       <tr>
         <td>{{ t.nombre }}</td>
         <td>{{ t.descripcion }}</td>
-        <td>
-          <a href="/accounts/tipos/{{ t.id }}/editar/">Editar</a>
-          |
-          <a href="/accounts/tipos/{{ t.id }}/eliminar/">Eliminar</a>
+        <td class="actions">
+          {% if request.user.is_staff %}
+            <a class="link-edit" href="/accounts/tipos/{{ t.id }}/editar/">Editar</a>
+            <a class="link-delete" href="/accounts/tipos/{{ t.id }}/eliminar/">Eliminar</a>
+          {% endif %}
         </td>
       </tr>
       {% empty %}
@@ -25,4 +28,4 @@
   <p><a href="/">Volver</a></p>
  </section>
 {% endblock %}
-{% block extra_js %}<script src="/static/js/tipousuario_list.js"></script>{% endblock %}
+{% block extra_js %}{% endblock %}

@@ -16,11 +16,9 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
-class TipoUsuarioListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class TipoUsuarioListView(LoginRequiredMixin, ListView):
     model = TipoUsuario
     template_name = 'accounts/tipos/list.html'
-    def test_func(self):
-        return self.request.user.is_staff
 
 class TipoUsuarioCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = TipoUsuario

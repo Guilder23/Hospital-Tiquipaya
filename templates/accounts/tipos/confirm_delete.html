@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block extra_css %}<link rel="stylesheet" href="/static/css/tipousuario_confirm_delete.css">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/accounts/tipos/confirm_delete.css">{% endblock %}
 {% block content %}
 <section class="card">
   <h2>Eliminar tipo de usuario</h2>
   <p>¿Confirmas eliminar "{{ object.nombre }}"?</p>
-  <form method="post">
+  <form method="post" class="confirm-form">
     {% csrf_token %}
-    <button type="submit">Eliminar</button>
-    <a href="/accounts/tipos/">Cancelar</a>
+    <button class="btn-danger" type="submit">Eliminar</button>
+    <a class="btn-secondary" href="/accounts/tipos/">Cancelar</a>
   </form>
 </section>
 {% endblock %}
-{% block extra_js %}<script src="/static/js/tipousuario_confirm_delete.js"></script>{% endblock %}
+{% block extra_js %}{% endblock %}
