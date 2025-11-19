@@ -16,6 +16,7 @@
     {% if request.user.is_authenticated %}
       <a href="/accounts/tipos/">Tipos de usuario</a>
       <a href="/accounts/usuarios/">Usuarios</a>
+      <a href="/pacientes/">Pacientes</a>
     {% endif %}
     {% if request.user.is_authenticated %}
       <span>Hola {{ request.user.username }}</span>
@@ -35,6 +36,7 @@
     {% if request.user.is_authenticated %}
       <a class="sidebar-link" href="/accounts/tipos/">Gestionar tipos de usuario</a>
       <a class="sidebar-link" href="/accounts/usuarios/">Gestionar usuarios</a>
+      <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
     {% endif %}
   </aside>
   <main class="content">

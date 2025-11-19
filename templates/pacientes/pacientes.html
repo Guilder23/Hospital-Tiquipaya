@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/pacientes/pacientes.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/create.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/edit.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/view.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/delete.css">
+{% endblock %}
+{% block content %}
+<section class="card pacientes-lista">
+  <h2>Lista Paciente</h2>
+  {% if puede_admin %}
+  <p><button class="btn" id="btn-open-create">Nuevo paciente</button></p>
+  {% endif %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>CI</th><th>Expedido</th><th>Nombre</th><th>Apellido(s)</th>
+        <th>Fecha Nac.</th><th>Género</th><th>Nacionalidad</th>
+        <th>Teléfono</th><th>Email</th><th>Dirección</th>
+        <th>Seguro</th><th>Nro. Seguro</th>
+        <th>Emerg. Nombre</th><th>Emerg. Teléfono</th><th>Emerg. Relación</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pacientes %}
+      <tr data-id="{{ p.id }}" data-ci="{{ p.ci }}" data-expedido="{{ p.expedido }}" data-nombres="{{ p.nombres }}" data-apellidos="{{ p.apellidos }}" data-fecha_nacimiento="{{ p.fecha_nacimiento }}" data-genero="{{ p.genero }}" data-nacionalidad="{{ p.nacionalidad }}" data-telefono="{{ p.telefono }}" data-email="{{ p.email }}" data-direccion="{{ p.direccion }}" data-tiene_seguro="{{ p.tiene_seguro }}" data-numero_seguro="{{ p.numero_seguro }}" data-emergencia_nombre="{{ p.emergencia_nombre }}" data-emergencia_telefono="{{ p.emergencia_telefono }}" data-emergencia_relacion="{{ p.emergencia_relacion }}">
+        <td>{{ p.ci }}</td>
+        <td>{{ p.get_expedido_display }}</td>
+        <td>{{ p.nombres }}</td>
+        <td>{{ p.apellidos }}</td>
+        <td>{{ p.fecha_nacimiento }}</td>
+        <td>{% if p.genero == 'M' %}Masculino{% elif p.genero == 'F' %}Femenino{% endif %}</td>
+        <td>{{ p.nacionalidad }}</td>
+        <td>{{ p.telefono }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.direccion }}</td>
+        <td>{{ p.tiene_seguro|yesno:"Sí,No" }}</td>
+        <td>{{ p.numero_seguro }}</td>
+        <td>{{ p.emergencia_nombre }}</td>
+        <td>{{ p.emergencia_telefono }}</td>
+        <td>{{ p.emergencia_relacion }}</td>
+        <td class="actions">
+          <button class="link-view btn-view" data-id="{{ p.id }}">Ver</button>
+          {% if puede_admin %}
+          <button class="link-edit btn-edit" data-id="{{ p.id }}">Editar</button>
+          <button class="link-delete btn-delete" data-id="{{ p.id }}" data-ci="{{ p.ci }}">Eliminar</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="16">Sin pacientes</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% include 'pacientes/modals/create.html' %}
+
+{% include 'pacientes/modals/edit.html' %}
+
+{% include 'pacientes/modals/view.html' %}
+
+{% include 'pacientes/modals/delete.html' %}
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/pacientes/modals/create.js"></script>
+<script src="/static/js/pacientes/modals/edit.js"></script>
+<script src="/static/js/pacientes/modals/view.js"></script>
+<script src="/static/js/pacientes/modals/delete.js"></script>
+{% endblock %}
