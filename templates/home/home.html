@@ -1,10 +1,181 @@
 {% extends "base.html" %}
 {% block extra_css %}<link rel="stylesheet" href="/static/css/home/home.css">{% endblock %}
 {% block content %}
-<section class="card home-wrap">
-  <h2>Proyecto listo</h2>
-  <p>Estructura base creada. Usa el admin para gestionar datos.</p>
-  <p>Ruta: <code>/admin/</code></p>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title animate-title">Hospital Tiquipaya</h1>
+    <p class="hero-subtitle animate-subtitle">Tu salud es nuestra prioridad</p>
+    <div class="hero-buttons">
+      {% if request.user.is_authenticated %}
+        <a href="/pacientes/" class="btn btn-primary">Mis Citas</a>
+        <a href="/pacientes/" class="btn btn-secondary">Agendar Cita</a>
+      {% else %}
+        <a href="/accounts/login/" class="btn btn-primary">Iniciar Sesión</a>
+        <a href="/accounts/register/" class="btn btn-secondary">Registrarse</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-background">
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+  </div>
 </section>
+
+<!-- ESTADÍSTICAS -->
+<section class="stats-section">
+  <div class="stats-container">
+    <div class="stat-card animate-stat" data-target="150">
+      <div class="stat-icon">👨‍⚕️</div>
+      <div class="stat-number">150+</div>
+      <div class="stat-label">Médicos Especializados</div>
+    </div>
+    <div class="stat-card animate-stat" data-target="25">
+      <div class="stat-icon">🏥</div>
+      <div class="stat-number">25+</div>
+      <div class="stat-label">Especialidades</div>
+    </div>
+    <div class="stat-card animate-stat" data-target="50000">
+      <div class="stat-icon">❤️</div>
+      <div class="stat-number">50K+</div>
+      <div class="stat-label">Pacientes Atendidos</div>
+    </div>
+    <div class="stat-card animate-stat" data-target="24">
+      <div class="stat-icon">⏰</div>
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Atención Disponible</div>
+    </div>
+  </div>
+</section>
+
+<!-- CARACTERÍSTICAS PRINCIPALES -->
+<section class="features-section">
+  <h2 class="section-title">Nuestros Servicios</h2>
+  <div class="features-grid">
+    <div class="feature-card hover-lift">
+      <div class="feature-icon">📅</div>
+      <h3>Agendar Citas</h3>
+      <p>Reserva tu cita de forma fácil y rápida con nuestros especialistas disponibles.</p>
+    </div>
+    <div class="feature-card hover-lift">
+      <div class="feature-icon">🏨</div>
+      <h3>Hospitalización</h3>
+      <p>Comodidad y seguridad en nuestras salas equipadas con tecnología de punta.</p>
+    </div>
+    <div class="feature-card hover-lift">
+      <div class="feature-icon">🔬</div>
+      <h3>Laboratorio</h3>
+      <p>Análisis clínicos con equipamiento moderno y resultados precisos.</p>
+    </div>
+    <div class="feature-card hover-lift">
+      <div class="feature-icon">🚑</div>
+      <h3>Emergencias</h3>
+      <p>Servicio de urgencias 24/7 con equipo médico siempre listo.</p>
+    </div>
+    <div class="feature-card hover-lift">
+      <div class="feature-icon">💊</div>
+      <h3>Farmacia</h3>
+      <p>Medicamentos y tratamientos prescritos por nuestros especialistas.</p>
+    </div>
+    <div class="feature-card hover-lift">
+      <div class="feature-icon">🩺</div>
+      <h3>Consulta Médica</h3>
+      <p>Atención personalizada de médicos expertos en diversas especialidades.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALIDADES DESTACADAS -->
+<section class="specialties-section">
+  <h2 class="section-title">Especialidades Destacadas</h2>
+  <div class="specialties-grid">
+    <div class="specialty-card">
+      <div class="specialty-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+      <h3>Cardiología</h3>
+      <p>Cuidado integral del corazón y sistema cardiovascular</p>
+    </div>
+    <div class="specialty-card">
+      <div class="specialty-color" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+      <h3>Pediatría</h3>
+      <p>Medicina especializada para niños y adolescentes</p>
+    </div>
+    <div class="specialty-card">
+      <div class="specialty-color" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+      <h3>Neurología</h3>
+      <p>Tratamiento de enfermedades del sistema nervioso</p>
+    </div>
+    <div class="specialty-card">
+      <div class="specialty-color" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);"></div>
+      <h3>Oftalmología</h3>
+      <p>Cuidado y cirugía de la visión</p>
+    </div>
+    <div class="specialty-card">
+      <div class="specialty-color" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+      <h3>Oncología</h3>
+      <p>Diagnóstico y tratamiento del cáncer</p>
+    </div>
+    <div class="specialty-card">
+      <div class="specialty-color" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);"></div>
+      <h3>Cirugía General</h3>
+      <p>Procedimientos quirúrgicos generales y especializados</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonials-section">
+  <h2 class="section-title">Lo que Dicen Nuestros Pacientes</h2>
+  <div class="testimonials-container">
+    <div class="testimonial-card">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"Excelente atención médica. El personal es muy profesional y amable. Me siento seguro en manos del Hospital Tiquipaya."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">JM</div>
+        <div>
+          <div class="author-name">Juan Martínez</div>
+          <div class="author-role">Paciente</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"La tecnología utilizada en los tratamientos es de última generación. Recomiendo ampliamente este hospital."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MC</div>
+        <div>
+          <div class="author-name">María Condori</div>
+          <div class="author-role">Paciente</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="testimonial-text">"El proceso de agendar citas es muy simple y rápido. Excelente experiencia en general."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">CP</div>
+        <div>
+          <div class="author-name">Carlos Pérez</div>
+          <div class="author-role">Paciente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="cta-content">
+    <h2>¿Listo para agendar tu cita?</h2>
+    <p>Obtén la atención médica que mereces de nuestros especialistas</p>
+    {% if not request.user.is_authenticated %}
+      <a href="/accounts/register/" class="btn btn-primary btn-large">Registrarse Ahora</a>
+    {% else %}
+      <a href="/pacientes/" class="btn btn-primary btn-large">Agendar Cita</a>
+    {% endif %}
+  </div>
+</section>
+
 {% endblock %}
 {% block extra_js %}<script src="/static/js/home/home.js"></script>{% endblock %}
