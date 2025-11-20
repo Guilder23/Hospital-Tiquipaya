@@ -4,10 +4,10 @@
 }
 
 .pacientes-lista h2 {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: #0f172a;
-  margin: 0 0 14px;
-  font-weight: 700;
+  margin: 0 0 18px;
+  font-weight: 800;
 }
 
 /* === TABLA === */
@@ -15,70 +15,72 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin-top: 18px;
+  margin-top: 14px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
 }
 
 .table thead th {
-  background: #f1f5f9;
-  color: #1e293b;
+  background: #f8fafc;
+  color: #0f172a;
   font-weight: 700;
   text-transform: uppercase;
   font-size: .75rem;
-  letter-spacing: .05em;
-  padding: 14px;
-  border-bottom: 1px solid #e2e8f0;
+  letter-spacing: .06em;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .table tbody td {
-  padding: 14px;
+  padding: 12px;
   border-top: 1px solid #f1f5f9;
   color: #0f172a;
-  font-size: .92rem;
+  font-size: .95rem;
 }
 
 .table tbody tr:nth-child(odd) {
-  background: #f9fafb;
+  background: #fcfdff;
 }
 
 .table tbody tr:hover {
-  background: #eef2ff;
-  transition: background .2s ease;
+  background: #f1f5ff;
+  transition: background .18s ease;
 }
 
 /* === BOTONES MODERNOS === */
 .btn {
-  display: inline-block;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
-  padding: 10px 18px;
-  border-radius: 12px;
+  padding: 8px 14px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   font-weight: 600;
-  font-size: .95rem;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+  font-size: .92rem;
+  box-shadow: 0 6px 16px rgba(29,78,216,.22);
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, .35);
+  box-shadow: 0 8px 20px rgba(29,78,216,.3);
 }
 
 /* Secundario */
 .btn-secondary {
   background: #ffffff;
   color: #0f172a;
-  padding: 10px 18px;
-  border-radius: 12px;
+  padding: 8px 14px;
+  border-radius: 10px;
   border: 1px solid #cbd5e1;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
 }
 
 .btn-secondary:hover {
@@ -89,22 +91,22 @@
 .btn-danger {
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: #fff;
-  padding: 10px 18px;
-  border-radius: 12px;
+  padding: 8px 14px;
+  border-radius: 10px;
   font-weight: 600;
   border: none;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, .25);
+  box-shadow: 0 6px 16px rgba(220,38,38,.25);
   transition: transform .15s ease;
 }
 
 .btn-danger:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220,38,38,.35);
+  box-shadow: 0 8px 20px rgba(220,38,38,.35);
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: flex-end;
   align-items: center;
 }
@@ -133,7 +135,7 @@
   margin: 4% auto;
   background: #ffffff;
   border-radius: 16px;
-  padding: 24px;
+  padding: 22px;
   max-width: 900px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 10px 40px rgba(0,0,0,.15);
@@ -167,7 +169,7 @@
 .form-row input, 
 .form-row select {
   width: 100%;
-  padding: .75rem;
+  padding: .65rem;
   border: 1px solid #cbd5e1;
   border-radius: 12px;
   background: #f8fafc;
@@ -185,7 +187,21 @@
 /* === ACCIONES DEL MODAL === */
 .modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: flex-end;
   margin-top: 18px;
 }
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+}
+.badge-success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.badge-muted { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+
+.btn-view { background: linear-gradient(135deg,#22c55e,#16a34a); box-shadow: 0 6px 16px rgba(22,163,74,.25); }
+.btn-edit { background: linear-gradient(135deg,#f59e0b,#d97706); box-shadow: 0 6px 16px rgba(217,119,6,.25); }
+.btn-delete { background: linear-gradient(135deg,#ef4444,#dc2626); }
