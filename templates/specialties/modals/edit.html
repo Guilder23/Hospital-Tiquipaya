@@ -1,27 +1,26 @@
-<div class="modal specialties-editar" id="modal-editar" aria-hidden="true">
-  <div class="modal-backdrop" data-close></div>
+<div class="modal modal-edit" id="modal-edit" aria-hidden="true">
+  <div class="modal-overlay" data-close></div>
 
-  <div class="modal-panel">
+  <div class="modal-box modal-edit-box">
     <h3>Editar Especialidad</h3>
 
     <form method="POST" id="form-edit">
       {% csrf_token %}
 
-      <div class="form-row">
+      <div class="modal-field">
         <label>Nombre</label>
         <input type="text" name="nombre" required />
       </div>
 
-      <div class="form-row">
+      <div class="modal-field">
         <label>Descripción</label>
         <textarea name="descripcion"></textarea>
       </div>
 
       <div class="modal-actions">
-        <button type="submit" class="btn-primary-modal">Guardar</button>
-        <button type="button" class="btn-cancel-modal btn-close-modal">Cancelar</button>
+        <button type="submit" class="btn-modal-primary">Guardar</button>
+        <button type="button" class="btn-modal-cancel btn-close-modal">Cancelar</button>
       </div>
     </form>
-
   </div>
 </div>

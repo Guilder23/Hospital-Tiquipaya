@@ -1,20 +1,21 @@
-<div id="modal-view" class="modal">
-    <div class="modal-panel">
+<div class="modal modal-view" id="modal-view">
+  <div class="modal-overlay" data-close></div>
 
-        <h3 style="margin-bottom: 10px; font-weight: 700;">Ver Especialidad</h3>
+  <div class="modal-box modal-view-box">
+    <h3>Ver Especialidad</h3>
 
-        <div class="form-row">
-            <label>Nombre:</label>
-            <p id="view-nombre"></p>
-        </div>
-
-        <div class="form-row">
-            <label>Descripción:</label>
-            <p id="view-descripcion"></p>
-        </div>
-
-        <div class="modal-actions">
-            <button class="btn-cancel-modal btn-close-view">Cerrar</button>
-        </div>
+    <div class="modal-field">
+        <label>Nombre:</label>
+        <p id="view-nombre"></p>
     </div>
+
+    <div class="modal-field">
+        <label>Descripción:</label>
+        <p id="view-descripcion"></p>
+    </div>
+
+    <div class="modal-actions">
+        <button class="btn-modal-cancel btn-close-view">Cerrar</button>
+    </div>
+  </div>
 </div>

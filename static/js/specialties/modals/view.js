@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const modalView = document.getElementById("modal-view");
-    const closeBtn = modalView.querySelector(".btn-close");
+    const closeBtn = modalView.querySelector(".btn-close-view");
 
     document.querySelectorAll(".btn-view").forEach(btn => {
         btn.addEventListener("click", () => {
