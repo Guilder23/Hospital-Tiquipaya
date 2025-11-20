@@ -4,7 +4,7 @@ from django.contrib import messages
 
 def lista_especialidades(request):
     especialidades = Especialidad.objects.all()
-    return render(request, 'specialties/list.html', {'especialidades': especialidades})
+    return render(request, 'specialties/specialties.html', {'especialidades': especialidades})
 
 def crear_especialidad(request):
     if request.method == 'POST':

@@ -43,7 +43,13 @@
                         data-nombre="{{ esp.nombre }}"
                         data-descripcion="{{ esp.descripcion }}">
                         <td>{{ esp.nombre }}</td>
-                        <td>{{ esp.descripcion|default:"-" }}</td>
+                        <td>
+                            {% if esp.descripcion %}
+                                {{ esp.descripcion|slice:":60" }}{% if esp.descripcion|length > 60 %}...{% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                         <td>{{ esp.created_at|default:"-" }}</td>
                         <td>
                             {% if esp.estado %}
@@ -53,12 +59,13 @@
                             {% endif %}
                         </td>
                         <td>
+                            <button class="btn btn-warning btn-sm btn-view">Ver</button>
                             <button class="btn btn-warning btn-sm btn-edit">Editar</button>
 
                             {% if esp.estado %}
-                                <a href="{% url 'desactivar_especialidad' esp.id %}" class="btn btn-danger btn-sm">
+                                <button class="btn btn-danger btn-sm btn-block" data-url="{% url 'desactivar_especialidad' esp.id %}">
                                     Desactivar
-                                </a>
+                                </button>
                             {% else %}
                                 <a href="{% url 'activar_especialidad' esp.id %}" class="btn btn-success btn-sm">
                                     Activar
@@ -79,11 +86,17 @@
 </div>
 
 <!-- Incluye modales PERO SIN BOOTSTRAP -->
-{% include "./create.html" %}
-{% include "./edit.html" %}
+{% include "./modals/create.html" %}
+{% include "./modals/edit.html" %}
+{% include "./modals/view.html" %}
+{% include "./modals/confirm_block.html" %}
 
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/specialties/specialties.js' %}"></script>
+<script src="{% static 'js/specialties/modals/confirm_block.js' %}"></script>
+<script src="{% static 'js/specialties/modals/create.js' %}"></script>
+<script src="{% static 'js/specialties/modals/edit.js' %}"></script>
+<script src="{% static 'js/specialties/modals/view.js' %}"></script>
 {% endblock %}

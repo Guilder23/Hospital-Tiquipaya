@@ -1,42 +1,55 @@
-// abrir modal crear
-document.getElementById("btn-open-create").addEventListener("click", () => {
-    document.getElementById("modal-crear").classList.add("is-open");
-});
+document.addEventListener("DOMContentLoaded", () => {
 
-// cerrar modal
-document.querySelectorAll("[data-close]").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".modal").forEach(m => m.classList.remove("is-open"));
+    // ============================
+    //   CERRAR TODOS LOS MODALS
+    // ============================
+    const closeAllModals = () => {
+        document.querySelectorAll(".modal").forEach(modal =>
+            modal.classList.remove("is-open")
+        );
+    };
+
+    // Botones con clase .btn-cancel-modal (para cerrar)
+    document.querySelectorAll(".btn-cancel-modal").forEach(btn => {
+        btn.addEventListener("click", closeAllModals);
     });
-});
 
-// abrir modal editar
-document.querySelectorAll(".btn-edit").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const row = btn.closest("tr");
-
-        document.querySelector("#modal-editar input[name='nombre']").value = row.dataset.nombre;
-        document.querySelector("#modal-editar textarea[name='descripcion']").value = row.dataset.descripcion;
-
-        document.getElementById("modal-editar").classList.add("is-open");
-
-        document.getElementById("form-edit").action = `/especialidades/editar/${row.dataset.id}/`;
+    // Cerrar al hacer click fuera del contenido
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("click", e => {
+            if (e.target === modal) modal.classList.remove("is-open");
+        });
     });
-});
 
-document.querySelectorAll(".modal").forEach(modal => {
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.remove("is-open");
-        }
+
+    // =======================
+    //  MODAL EDITAR
+    // =======================
+    document.querySelectorAll(".btn-edit").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const row = btn.closest("tr");
+
+            document.querySelector("#modal-editar input[name='nombre']").value = row.dataset.nombre;
+            document.querySelector("#modal-editar textarea[name='descripcion']").value = row.dataset.descripcion;
+
+            document.getElementById("modal-editar").classList.add("is-open");
+
+            document.getElementById("form-edit").action =
+                `/especialidades/editar/${row.dataset.id}/`;
+        });
     });
-});
 
-// evitar que clic dentro del modal cierre el modal
-document.querySelectorAll(".modal").forEach(modal => {
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.classList.remove("is-open");
-        }
+
+    // =======================
+    //  MODAL BLOQUEO
+    // =======================
+    const modalBlock = document.getElementById("modal-confirm-block");
+    const btnConfirmBlock = document.getElementById("btn-block-confirm");
+
+    document.querySelectorAll(".btn-block").forEach(btn => {
+        btn.addEventListener("click", () => {
+            btnConfirmBlock.href = btn.dataset.url;
+            modalBlock.classList.add("is-open");
+        });
     });
 });
