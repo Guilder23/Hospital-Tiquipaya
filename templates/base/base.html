@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+{% load static %}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hospital Tiquipaya</title>
-<link rel="stylesheet" href="/static/css/base/base.css">
+<link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/registration/login.css' %}">
+<link rel="stylesheet" href="{% static 'css/registration/register.css' %}">
 {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -19,8 +22,8 @@
         <button type="submit">Salir</button>
       </form>
     {% else %}
-      <a href="/accounts/register/">Registrarse</a>
-      <a href="/accounts/login/">Ingresar</a>
+      <a href="#" onclick="toggleRegisterModal(); return false;">Registrarse</a>
+      <a href="#" onclick="toggleLoginModal(); return false;">Ingresar</a>
     {% endif %}
   </nav>
 </header>
@@ -37,7 +40,11 @@
     {% block content %}{% endblock %}
   </main>
  </div>
-<script src="/static/js/base/base.js"></script>
+  {% include 'registration/login.html' %}
+  {% include 'registration/register.html' %}
+<script src="{% static 'js/base/base.js' %}"></script>
+<script src="{% static 'js/registration/login.js' %}"></script>
+<script src="{% static 'js/registration/register.js' %}"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

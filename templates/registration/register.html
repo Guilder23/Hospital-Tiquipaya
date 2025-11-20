@@ -1,14 +1,39 @@
-{% extends "base.html" %}
-{% block extra_css %}<link rel="stylesheet" href="/static/css/registration/register.css">{% endblock %}
-{% block content %}
-<section class="card auth-card">
-  <h2>Crear cuenta</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Registrarse</button>
-  </form>
-  <p class="auth-links">¿Ya tienes cuenta? <a href="/accounts/login/">Ingresar</a></p>
-</section>
-{% endblock %}
-{% block extra_js %}<script src="/static/js/register.js"></script>{% endblock %}
+<div id="registerModalOverlay" style="display:none">
+  <div class="auth-container">
+    <div class="auth-modal">
+      <button class="modal-close-btn" type="button" aria-label="Cerrar" onclick="toggleRegisterModal()">×</button>
+      <div class="auth-header">
+        <h1 class="auth-title">Crear Cuenta</h1>
+        <p class="auth-subtitle">Únete a nuestro hospital</p>
+      </div>
+      <div class="form-alert alert-error" id="register-error" style="display:none"></div>
+      <form method="post" action="/accounts/register/" class="auth-form">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Usuario</span></label>
+          <input type="text" name="username" placeholder="Usuario" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Email</span></label>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Contraseña</span></label>
+          <input type="password" name="password1" placeholder="Contraseña" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Confirmar contraseña</span></label>
+          <input type="password" name="password2" placeholder="Confirmar contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-submit">Registrarse</button>
+      </form>
+      <div class="auth-divider"><span>¿Ya tienes cuenta?</span></div>
+      <a href="#" class="btn btn-secondary" onclick="switchToLoginModal(); return false;">Inicia sesión aquí</a>
+    </div>
+    <!-- <div class="auth-decoration">
+      <div class="decoration-shape shape-1"></div>
+      <div class="decoration-shape shape-2"></div>
+      <div class="decoration-shape shape-3"></div>
+    </div> -->
+  </div>
+</div>
