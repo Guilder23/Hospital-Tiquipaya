@@ -1,0 +1,67 @@
+/* === Modal Crear Paciente === */
+.modal.pacientes-crear {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+  z-index: 2000;
+}
+
+.modal.pacientes-crear[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal.pacientes-crear .modal-panel {
+  width: 100%;
+  max-width: 750px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding-right: 15px;
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  border-top: 4px solid #16a34a;
+  transform: translateY(-20px);
+  animation: showModal 0.35s ease forwards;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+@keyframes showModal {
+  to { transform: translateY(0); }
+}
+
+/* Scroll invisible */
+.modal.pacientes-crear .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
+.modal.pacientes-crear .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
+
+.modal.pacientes-crear h3 {
+  text-align: center;
+  color: #16a34a;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.section { margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
+.section:last-child { border-bottom: none; padding-bottom: 0; }
+.section h4 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1e293b; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+.form-row { display: flex; flex-direction: column; }
+.form-row-full { grid-column: span 2; }
+label { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #1e293b; }
+input, select { padding: 10px 12px; border-radius: 8px; border: 1px solid #cfd4da; outline: none; font-size: 14px; transition: 0.25s; }
+input:focus, select:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.25); }
+
+.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; }
+.modal-actions .btn { background: #16a34a; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: 0.25s; }
+.modal-actions .btn:hover { background: #15803d; }
+.modal-actions .btn-secondary { background: #e5e7eb; color: #1e293b; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: 0.25s; }
+.modal-actions .btn-secondary:hover { background: #d1d5db; }

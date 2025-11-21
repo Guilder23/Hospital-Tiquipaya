@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/pacientes/pacientes.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/create.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/edit.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/view.css">
+<link rel="stylesheet" href="/static/css/pacientes/modals/delete.css">
+{% endblock %}
+{% block content %}
+<section class="card pacientes-lista">
+  <h2>Lista Paciente</h2>
+  {% if puede_admin %}
+  <p><button class="btn" id="btn-open-create">Nuevo paciente</button></p>
+  {% endif %}
+  <table class="table pacientes">
+    <thead>
+      <tr>
+        <th>CI</th>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Seguro</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pacientes %}
+      <tr data-id="{{ p.id }}" data-ci="{{ p.ci }}" data-expedido="{{ p.expedido }}" data-nombres="{{ p.nombres }}" data-apellidos="{{ p.apellidos }}" data-fecha_nacimiento="{{ p.fecha_nacimiento }}" data-genero="{{ p.genero }}" data-nacionalidad="{{ p.nacionalidad }}" data-telefono="{{ p.telefono }}" data-email="{{ p.email }}" data-direccion="{{ p.direccion }}" data-tiene_seguro="{{ p.tiene_seguro }}" data-numero_seguro="{{ p.numero_seguro }}" data-emergencia_nombre="{{ p.emergencia_nombre }}" data-emergencia_telefono="{{ p.emergencia_telefono }}" data-emergencia_relacion="{{ p.emergencia_relacion }}">
+        <td>{{ p.ci }}</td>
+        <td>{{ p.apellidos }} {{ p.nombres }}</td>
+        <td>{{ p.telefono }}</td>
+        <td>{{ p.email }}</td>
+        <td>
+          {% if p.tiene_seguro %}
+            <span class="badge badge-success">Sí</span>
+          {% else %}
+            <span class="badge badge-muted">No</span>
+          {% endif %}
+        </td>
+        <td class="actions">
+          <button class="btn btn-view" data-id="{{ p.id }}">Ver</button>
+          {% if puede_admin %}
+          <button class="btn btn-edit" data-id="{{ p.id }}">Editar</button>
+          <button class="btn btn-delete" data-id="{{ p.id }}" data-ci="{{ p.ci }}">Eliminar</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">Sin pacientes</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% include 'pacientes/modals/create.html' %}
+
+{% include 'pacientes/modals/edit.html' %}
+
+{% include 'pacientes/modals/view.html' %}
+
+{% include 'pacientes/modals/delete.html' %}
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/pacientes/modals/create.js"></script>
+<script src="/static/js/pacientes/modals/edit.js"></script>
+<script src="/static/js/pacientes/modals/view.js"></script>
+<script src="/static/js/pacientes/modals/delete.js"></script>
+{% endblock %}

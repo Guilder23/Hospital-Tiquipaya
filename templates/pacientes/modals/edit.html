@@ -1,0 +1,84 @@
+<div class="modal pacientes-editar" id="modal-editar-paciente" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Editar paciente</h3>
+
+    <form method="post" id="form-edit">
+      {% csrf_token %}
+
+      <!-- 🟦 SECCIÓN: Datos personales -->
+      <div class="form-section">
+        <h4>Datos personales</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>CI</label><input name="ci" required></div>
+          <div class="form-row"><label>Expedido</label>
+            <select name="expedido">
+              <option value="">-</option>
+              <option value="LP">La Paz</option>
+              <option value="SC">Santa Cruz</option>
+              <option value="CB">Cochabamba</option>
+              <option value="OR">Oruro</option>
+              <option value="PT">Potosí</option>
+              <option value="TJ">Tarija</option>
+              <option value="CH">Chuquisaca</option>
+              <option value="BE">Beni</option>
+              <option value="PA">Pando</option>
+            </select>
+          </div>
+          <div class="form-row"><label>Nombre</label><input name="nombres" required></div>
+          <div class="form-row"><label>Apellido(s)</label><input name="apellidos" required></div>
+          <div class="form-row"><label>Fecha de nacimiento</label><input name="fecha_nacimiento" type="date"></div>
+          <div class="form-row"><label>Género</label>
+            <select name="genero">
+              <option value="">-</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+            </select>
+          </div>
+          <div class="form-row form-row-full"><label>Nacionalidad</label><input name="nacionalidad"></div>
+        </div>
+      </div>
+
+      <!-- 🟩 SECCIÓN: Datos de contacto -->
+      <div class="form-section">
+        <h4>Datos de contacto</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Teléfono</label><input name="telefono"></div>
+          <div class="form-row"><label>Email</label><input name="email" type="email"></div>
+          <div class="form-row form-row-full"><label>Dirección</label><input name="direccion"></div>
+        </div>
+      </div>
+
+      <!-- 🟧 SECCIÓN: Seguro médico -->
+      <div class="form-section">
+        <h4>Seguro médico</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>¿Tiene seguro?</label>
+            <select name="tiene_seguro">
+              <option value="False">No</option>
+              <option value="True">Sí</option>
+            </select>
+          </div>
+          <div class="form-row"><label>Número de seguro</label><input name="numero_seguro"></div>
+        </div>
+      </div>
+
+      <!-- 🟥 SECCIÓN: Contacto de emergencia -->
+      <div class="form-section">
+        <h4>Contacto de emergencia</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Nombre</label><input name="emergencia_nombre"></div>
+          <div class="form-row"><label>Teléfono</label><input name="emergencia_telefono"></div>
+          <div class="form-row form-row-full"><label>Relación</label><input name="emergencia_relacion"></div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="modal-actions">
+        <button class="btn" type="submit">Guardar</button>
+        <button class="btn-secondary" type="button" data-close>Cerrar</button>
+      </div>
+
+    </form>
+  </div>
+</div>
