@@ -46,3 +46,8 @@ pip-wheel-metadata/
 # Archivos del sistema (Windows / macOS)
 Thumbs.db
 .DS_Store
+
+
+db.sqlite3
+*.pyc
+__pycache__/
