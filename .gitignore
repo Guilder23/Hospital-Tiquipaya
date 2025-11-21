@@ -46,3 +46,4 @@ pip-wheel-metadata/
 # Archivos del sistema (Windows / macOS)
 Thumbs.db
 .DS_Store
+sqllite.db
