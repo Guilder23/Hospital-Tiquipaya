@@ -20,21 +20,29 @@
         <th>Teléfono</th>
         <th>Email</th>
         <th>Seguro</th>
-        <th></th>
+        <th>Estado</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for p in pacientes %}
-      <tr data-id="{{ p.id }}" data-ci="{{ p.ci }}" data-expedido="{{ p.expedido }}" data-nombres="{{ p.nombres }}" data-apellidos="{{ p.apellidos }}" data-fecha_nacimiento="{{ p.fecha_nacimiento }}" data-genero="{{ p.genero }}" data-nacionalidad="{{ p.nacionalidad }}" data-telefono="{{ p.telefono }}" data-email="{{ p.email }}" data-direccion="{{ p.direccion }}" data-tiene_seguro="{{ p.tiene_seguro }}" data-numero_seguro="{{ p.numero_seguro }}" data-emergencia_nombre="{{ p.emergencia_nombre }}" data-emergencia_telefono="{{ p.emergencia_telefono }}" data-emergencia_relacion="{{ p.emergencia_relacion }}">
+      <tr data-id="{{ p.id }}" data-ci="{{ p.ci }}" data-ci_complemento="{{ p.ci_complemento }}" data-expedido="{{ p.expedido }}" data-nombres="{{ p.nombres }}" data-apellido_paterno="{{ p.apellido_paterno }}" data-apellido_materno="{{ p.apellido_materno }}" data-fecha_nacimiento="{{ p.fecha_nacimiento }}" data-genero="{{ p.genero }}" data-nacionalidad="{{ p.nacionalidad }}" data-telefono_fijo="{{ p.telefono_fijo }}" data-celular="{{ p.celular }}" data-email="{{ p.email }}" data-zona="{{ p.zona }}" data-calle="{{ p.calle }}" data-numero_domicilio="{{ p.numero_domicilio }}" data-direccion="{{ p.direccion }}" data-tiene_seguro="{{ p.tiene_seguro }}" data-numero_seguro="{{ p.numero_seguro }}" data-emergencia_nombre="{{ p.emergencia_nombre }}" data-emergencia_telefono="{{ p.emergencia_telefono }}" data-emergencia_relacion="{{ p.emergencia_relacion }}" data-activo="{{ p.activo }}" data-registrado_en="{{ p.registrado_en }}">
         <td>{{ p.ci }}</td>
-        <td>{{ p.apellidos }} {{ p.nombres }}</td>
-        <td>{{ p.telefono }}</td>
+        <td>{{ p.apellido_paterno }} {{ p.apellido_materno }} {{ p.nombres }}</td>
+        <td>{{ p.celular }}</td>
         <td>{{ p.email }}</td>
         <td>
           {% if p.tiene_seguro %}
             <span class="badge badge-success">Sí</span>
           {% else %}
             <span class="badge badge-muted">No</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if p.activo %}
+            <span class="badge badge-success">Activo</span>
+          {% else %}
+            <span class="badge badge-muted">Inactivo</span>
           {% endif %}
         </td>
         <td class="actions">
@@ -46,7 +54,7 @@
         </td>
       </tr>
       {% empty %}
-      <tr><td colspan="6">Sin pacientes</td></tr>
+      <tr><td colspan="7">Sin pacientes</td></tr>
       {% endfor %}
     </tbody>
   </table>

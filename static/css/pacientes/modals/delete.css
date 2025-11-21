@@ -1,4 +1,97 @@
-.pacientes-eliminar .modal-panel{border-top:4px solid #ef4444}
-.pacientes-eliminar .modal-panel h3{color:#b91c1c;font-size:1.1rem;margin:0 0 10px}
-.pacientes-eliminar .btn-danger{background:#ef4444;border-color:#dc2626}
-.pacientes-eliminar .btn-danger:hover{background:#dc2626}
+/* ===== OVERLAY ===== */
+.pacientes-eliminar[aria-hidden="false"] {
+  display: flex !important;
+}
+
+.pacientes-eliminar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 15px;
+}
+
+/* ===== PANEL ===== */
+.pacientes-eliminar .modal-panel {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 14px;
+  border-top: 4px solid #ef4444;
+  padding: 20px 24px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: modalFade 0.25s ease-out;
+}
+
+/* Animación suave */
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== TITULO ===== */
+.pacientes-eliminar .modal-panel h3 {
+  color: #b91c1c;
+  font-size: 1.2rem;
+  margin: 0 0 15px;
+  font-weight: 600;
+}
+
+/* ===== TEXTO ===== */
+.pacientes-eliminar p {
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* ===== ACCIONES ===== */
+.pacientes-eliminar .modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ===== BOTÓN ELIMINAR ===== */
+.pacientes-eliminar .btn-danger {
+  background: #ef4444;
+  border: none;
+  padding: 8px 16px;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.pacientes-eliminar .btn-danger:hover {
+  background: #dc2626;
+  transform: scale(1.03);
+}
+
+/* ===== BOTÓN CERRAR ===== */
+.pacientes-eliminar .btn-secondary {
+  background: #e5e7eb;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.pacientes-eliminar .btn-secondary:hover {
+  background: #d1d5db;
+  transform: scale(1.03);
+}

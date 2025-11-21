@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded',function(){
   var btnOpenCreate=document.getElementById('btn-open-create');
   var form=document.getElementById('form-create');
   var errorBox=document.getElementById('create-error');
-  function open(m){m.setAttribute('aria-hidden','false')}
-  function close(m){m.setAttribute('aria-hidden','true')}
+  function open(m){ if(!m) return; m.style.display='flex'; m.setAttribute('aria-hidden','false'); }
+  function close(m){ if(!m) return; m.style.display='none'; m.setAttribute('aria-hidden','true'); }
   document.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',function(){if(mCreate)close(mCreate)})})
   if(btnOpenCreate){btnOpenCreate.addEventListener('click',function(){open(mCreate)})}
   if(form){
@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded',function(){
       if(errorBox){ errorBox.style.display='none'; errorBox.textContent=''; }
       var ci=form.querySelector('[name="ci"]');
       var nombres=form.querySelector('[name="nombres"]');
-      var apellidos=form.querySelector('[name="apellidos"]');
+      var apellido_paterno=form.querySelector('[name="apellido_paterno"]');
       var email=form.querySelector('[name="email"]');
       var valid=true;
       if(!ci || !ci.value.trim()){ valid=false; }
       if(!nombres || !nombres.value.trim()){ valid=false; }
-      if(!apellidos || !apellidos.value.trim()){ valid=false; }
+      if(!apellido_paterno || !apellido_paterno.value.trim()){ valid=false; }
       if(email && email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){ valid=false; }
       if(!valid){ if(errorBox){ errorBox.textContent='Revisa los campos requeridos'; errorBox.style.display='block'; } return; }
       var fd=new FormData(form);
