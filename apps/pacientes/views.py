@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django import forms
 from apps.accounts.models import PerfilUsuario, TipoUsuario
 from .models import Paciente
@@ -17,7 +17,15 @@ def _es_admin(user):
         return False
     return perfil.tipo.nombre.lower() == 'administrador'
 
-class PacienteCreateForm(forms.ModelForm):
+class PacienteBaseForm(forms.ModelForm):
+    def clean_tiene_seguro(self):
+        val = self.data.get('tiene_seguro', self.cleaned_data.get('tiene_seguro'))
+        if isinstance(val, str):
+            v = val.strip().lower()
+            return v in ('true','1','on','yes','si')
+        return bool(val)
+
+class PacienteCreateForm(PacienteBaseForm):
     class Meta:
         model = Paciente
         fields = [
@@ -31,7 +39,7 @@ class PacienteCreateForm(forms.ModelForm):
             'emergencia_nombre','emergencia_telefono','emergencia_relacion',
         ]
 
-class PacienteUpdateForm(forms.ModelForm):
+class PacienteUpdateForm(PacienteBaseForm):
     class Meta:
         model = Paciente
         fields = [
@@ -65,9 +73,10 @@ class PacienteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         obj = form.save(commit=False)
         obj.activo = True
         obj.save()
+        self.object = obj
         return HttpResponseRedirect(self.get_success_url())
     def form_invalid(self, form):
-        return HttpResponse('Error de validación', status=400)
+        return JsonResponse(form.errors, status=400)
 
 class PacienteUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Paciente
@@ -77,7 +86,7 @@ class PacienteUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         return _es_admin(self.request.user)
     def form_invalid(self, form):
-        return HttpResponse('Error de validación', status=400)
+        return JsonResponse(form.errors, status=400)
 
 class PacienteDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Paciente
