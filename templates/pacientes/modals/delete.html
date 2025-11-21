@@ -1,12 +1,12 @@
-<div class="modal pacientes-eliminar" id="modal-eliminar-paciente" aria-hidden="true">
+<div class="modal pacientes-eliminar" id="modal-eliminar-paciente" aria-hidden="true" style="display:none">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
-    <h3>Eliminar paciente</h3>
+    <h3>Desactivar paciente</h3>
     <form method="post" id="form-delete">
       {% csrf_token %}
       <p id="delete-text"></p>
       <div class="modal-actions">
-        <button class="btn-danger" type="submit">Eliminar</button>
+        <button class="btn-danger" type="submit">Desactivar</button>
         <button class="btn-secondary" type="button" data-close>Cerrar</button>
       </div>
     </form>

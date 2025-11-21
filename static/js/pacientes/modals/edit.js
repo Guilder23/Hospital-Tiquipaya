@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded',function(){
   var mEdit=document.getElementById('modal-editar-paciente');
-  function open(m){m.setAttribute('aria-hidden','false')}
-  function close(m){m.setAttribute('aria-hidden','true')}
+  function open(m){ if(!m) return; m.style.display='flex'; m.setAttribute('aria-hidden','false'); }
+  function close(m){ if(!m) return; m.style.display='none'; m.setAttribute('aria-hidden','true'); }
   document.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',function(){if(mEdit)close(mEdit)})})
   document.querySelectorAll('.btn-edit').forEach(function(btn){
     btn.addEventListener('click',function(){
@@ -9,22 +9,30 @@ document.addEventListener('DOMContentLoaded',function(){
       var row=document.querySelector('tr[data-id="'+id+'"]');
       var f=document.getElementById('form-edit');
       f.setAttribute('action','/pacientes/'+id+'/editar/');
-      f.querySelector('[name="ci"]').value=row.getAttribute('data-ci')||'';
-      f.querySelector('[name="expedido"]').value=row.getAttribute('data-expedido')||'';
-      f.querySelector('[name="nombres"]').value=row.getAttribute('data-nombres')||'';
-      f.querySelector('[name="apellidos"]').value=row.getAttribute('data-apellidos')||'';
-      f.querySelector('[name="fecha_nacimiento"]').value=row.getAttribute('data-fecha_nacimiento')||'';
-      f.querySelector('[name="genero"]').value=row.getAttribute('data-genero')||'';
-      f.querySelector('[name="nacionalidad"]').value=row.getAttribute('data-nacionalidad')||'';
-      f.querySelector('[name="telefono"]').value=row.getAttribute('data-telefono')||'';
-      f.querySelector('[name="email"]').value=row.getAttribute('data-email')||'';
-      f.querySelector('[name="direccion"]').value=row.getAttribute('data-direccion')||'';
+      function setVal(name, val){ var el=f.querySelector('[name="'+name+'"]'); if(el){ el.value=val||''; } }
+      setVal('nombres', row.getAttribute('data-nombres'));
+      setVal('apellido_paterno', row.getAttribute('data-apellido_paterno'));
+      setVal('apellido_materno', row.getAttribute('data-apellido_materno'));
+      setVal('ci', row.getAttribute('data-ci'));
+      setVal('ci_complemento', row.getAttribute('data-ci_complemento'));
+      setVal('expedido', row.getAttribute('data-expedido'));
+      setVal('fecha_nacimiento', row.getAttribute('data-fecha_nacimiento'));
+      setVal('genero', row.getAttribute('data-genero'));
+      setVal('nacionalidad', row.getAttribute('data-nacionalidad'));
+      setVal('telefono_fijo', row.getAttribute('data-telefono_fijo'));
+      setVal('celular', row.getAttribute('data-celular'));
+      setVal('email', row.getAttribute('data-email'));
+      setVal('zona', row.getAttribute('data-zona'));
+      setVal('calle', row.getAttribute('data-calle'));
+      setVal('numero_domicilio', row.getAttribute('data-numero_domicilio'));
+      setVal('direccion', row.getAttribute('data-direccion'));
       var ts=row.getAttribute('data-tiene_seguro')==='True'?'True':'False';
-      f.querySelector('[name="tiene_seguro"]').value=ts;
-      f.querySelector('[name="numero_seguro"]').value=row.getAttribute('data-numero_seguro')||'';
-      f.querySelector('[name="emergencia_nombre"]').value=row.getAttribute('data-emergencia_nombre')||'';
-      f.querySelector('[name="emergencia_telefono"]').value=row.getAttribute('data-emergencia_telefono')||'';
-      f.querySelector('[name="emergencia_relacion"]').value=row.getAttribute('data-emergencia_relacion')||'';
+      setVal('tiene_seguro', ts);
+      setVal('numero_seguro', row.getAttribute('data-numero_seguro'));
+      setVal('emergencia_nombre', row.getAttribute('data-emergencia_nombre'));
+      setVal('emergencia_telefono', row.getAttribute('data-emergencia_telefono'));
+      setVal('emergencia_relacion', row.getAttribute('data-emergencia_relacion'));
+      setVal('activo', row.getAttribute('data-activo')==='True'?'True':'False');
       open(mEdit);
     })
   })

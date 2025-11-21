@@ -1,4 +1,4 @@
-<div class="modal pacientes-crear" id="modal-crear-paciente" aria-hidden="true">
+<div class="modal pacientes-crear" id="modal-crear-paciente" aria-hidden="true" style="display:none">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
     <h3>Crear paciente</h3>
@@ -9,7 +9,11 @@
       <div class="section">
         <h4>Datos Personales</h4>
         <div class="form-grid">
+          <div class="form-row"><label>Nombres</label><input name="nombres" required></div>
+          <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required></div>
+          <div class="form-row"><label>Apellido materno</label><input name="apellido_materno"></div>
           <div class="form-row"><label>CI</label><input name="ci" required></div>
+          <div class="form-row"><label>Complemento CI (opcional)</label><input name="ci_complemento"></div>
           <div class="form-row"><label>Expedido</label>
             <select name="expedido">
               <option value="">-</option>
@@ -20,11 +24,9 @@
               <option value="PA">Pando</option>
             </select>
           </div>
-          <div class="form-row"><label>Nombre</label><input name="nombres" required></div>
-          <div class="form-row"><label>Apellido(s)</label><input name="apellidos" required></div>
           <div class="form-row"><label>Fecha de nacimiento</label><input name="fecha_nacimiento" type="date"></div>
-          <div class="form-row"><label>Género</label>
-            <select name="genero"><option value="">-</option><option value="M">Masculino</option><option value="F">Femenino</option></select>
+          <div class="form-row"><label>Sexo</label>
+            <select name="genero"><option value="">-</option><option value="M">Masculino</option><option value="F">Femenino</option><option value="O">Otro</option></select>
           </div>
           <div class="form-row"><label>Nacionalidad</label><input name="nacionalidad"></div>
         </div>
@@ -33,8 +35,12 @@
       <div class="section">
         <h4>Contacto</h4>
         <div class="form-grid">
-          <div class="form-row"><label>Teléfono</label><input name="telefono"></div>
+          <div class="form-row"><label>Teléfono fijo (opcional)</label><input name="telefono_fijo"></div>
+          <div class="form-row"><label>Celular</label><input name="celular"></div>
           <div class="form-row"><label>Email</label><input name="email" type="email"></div>
+          <div class="form-row"><label>Zona</label><input name="zona"></div>
+          <div class="form-row"><label>Calle</label><input name="calle"></div>
+          <div class="form-row"><label>Número</label><input name="numero_domicilio"></div>
           <div class="form-row form-row-full"><label>Dirección</label><input name="direccion"></div>
         </div>
       </div>

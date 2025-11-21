@@ -1,4 +1,4 @@
-<div class="modal pacientes-ver" id="modal-ver-paciente" aria-hidden="true">
+<div class="modal pacientes-ver" id="modal-ver-paciente" aria-hidden="true" style="display:none">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
 
@@ -9,11 +9,13 @@
       <h4>Datos Personales</h4>
       <div class="form-grid">
         <div class="form-row"><label>CI</label><div id="view-ci"></div></div>
+        <div class="form-row"><label>Complemento CI</label><div id="view-ci_complemento"></div></div>
         <div class="form-row"><label>Expedido</label><div id="view-expedido"></div></div>
-        <div class="form-row"><label>Nombre</label><div id="view-nombres"></div></div>
-        <div class="form-row"><label>Apellido(s)</label><div id="view-apellidos"></div></div>
+        <div class="form-row"><label>Nombres</label><div id="view-nombres"></div></div>
+        <div class="form-row"><label>Apellido paterno</label><div id="view-apellido_paterno"></div></div>
+        <div class="form-row"><label>Apellido materno</label><div id="view-apellido_materno"></div></div>
         <div class="form-row"><label>Fecha Nac.</label><div id="view-fecha_nacimiento"></div></div>
-        <div class="form-row"><label>Género</label><div id="view-genero"></div></div>
+        <div class="form-row"><label>Sexo</label><div id="view-genero"></div></div>
         <div class="form-row"><label>Nacionalidad</label><div id="view-nacionalidad"></div></div>
       </div>
     </div>
@@ -22,8 +24,12 @@
     <div class="section">
       <h4>Contacto</h4>
       <div class="form-grid">
-        <div class="form-row"><label>Teléfono</label><div id="view-telefono"></div></div>
+        <div class="form-row"><label>Teléfono fijo</label><div id="view-telefono_fijo"></div></div>
+        <div class="form-row"><label>Celular</label><div id="view-celular"></div></div>
         <div class="form-row"><label>Email</label><div id="view-email"></div></div>
+        <div class="form-row"><label>Zona</label><div id="view-zona"></div></div>
+        <div class="form-row"><label>Calle</label><div id="view-calle"></div></div>
+        <div class="form-row"><label>Número</label><div id="view-numero_domicilio"></div></div>
         <div class="form-row form-row-full"><label>Dirección</label><div id="view-direccion"></div></div>
       </div>
     </div>
@@ -46,9 +52,18 @@
         <div class="form-row"><label>Relación</label><div id="view-emergencia_relacion"></div></div>
       </div>
     </div>
-
+    <div class="section">
+      <h4>Estado</h4>
+      <div class="form-grid">
+        <div class="form-row"><label>Estado</label><div id="view-activo"></div></div>
+        <div class="form-row"><label>Fecha de registro</label><div id="view-registrado_en"></div></div>
+      </div>
+    </div>
+    
     <div class="modal-actions">
       <button class="btn-secondary" type="button" data-close>Cerrar</button>
     </div>
-  </div>
+  </div>4
+
 </div>
+
