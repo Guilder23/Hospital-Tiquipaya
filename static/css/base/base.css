@@ -125,6 +125,7 @@ body {
 /* ======= CONTENT ======= */
 .content {
   flex: 1;
+  position: relative;
   padding: 2rem;
   width: 100%;
 }

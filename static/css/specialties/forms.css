@@ -1,0 +1,122 @@
+.modal.is-open {
+  display: flex;
+}
+
+.modal-panel {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 420px;
+  max-width: 90%;
+  animation: fadeIn 0.25s ease;
+}
+
+/* ================================
+   ESTILOS DEL MODAL
+=================================== */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55) !important; /* fondo correcto */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.modal.is-open {
+    display: flex !important;
+}
+
+.modal-panel {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 14px;
+    width: 450px;
+    max-width: 90%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    animation: modalFadeIn 0.25s ease;
+}
+
+@keyframes modalFadeIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ================================
+   FORMULARIO
+=================================== */
+
+.form-row {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.form-row input,
+.form-row textarea,
+.form-row select {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-row input:focus,
+.form-row textarea:focus,
+.form-row select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+    background: #fff;
+    outline: none;
+}
+
+/* ================================
+   BOTONES
+=================================== */
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn-primary-modal {
+    background: #3b82f6;
+    color: #fff;
+    padding: 10px 16px;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-primary-modal:hover {
+    background: #2563eb;
+}
+
+.btn-cancel-modal {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 10px 16px;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-cancel-modal:hover {
+    background: #d1d5db;
+}
+

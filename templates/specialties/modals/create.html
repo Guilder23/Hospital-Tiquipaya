@@ -1,0 +1,26 @@
+<div class="modal modal-create" id="modal-create" aria-hidden="true">
+  <div class="modal-overlay" data-close></div>
+
+  <div class="modal-box modal-create-box">
+    <h3>Nueva Especialidad</h3>
+
+    <form method="POST" action="{% url 'crear_especialidad' %}">
+      {% csrf_token %}
+
+      <div class="modal-field">
+        <label>Nombre</label>
+        <input type="text" name="nombre" required />
+      </div>
+
+      <div class="modal-field">
+        <label>Descripción</label>
+        <textarea name="descripcion"></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-modal-primary">Guardar</button>
+        <button type="button" class="btn-modal-cancel btn-close-modal">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
