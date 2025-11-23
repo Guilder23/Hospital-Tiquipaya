@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(0,0,0,0.55);
+  background: var(--color-overlay-modal);
   opacity: 0;
   visibility: hidden;
   transition: 0.25s;
@@ -24,10 +24,10 @@
   max-height: 90vh;       /* Limita altura */
   overflow-y: auto;       /* Scroll interno */
   padding-right: 15px;
-  background: #fff;
+  background: var(--color-fondo-modal);
   padding: 25px 30px;
   border-radius: 12px;
-  border-top: 4px solid #0ea5e9;
+  border-top: 4px solid var(--color-informacion);
   transform: translateY(-20px);
   animation: showModalView 0.35s ease forwards;
   box-shadow: 0px 8px 25px rgba(0,0,0,0.25);
@@ -55,7 +55,7 @@
   margin-top: 0;
   font-size: 22px;
   font-weight: bold;
-  color: #075985;
+  color: var(--color-informacion);
   text-align: center;
   margin-bottom: 20px;
 }
@@ -63,7 +63,7 @@
 /* === SECCIONES === */
 .modal.pacientes-ver .section {
   margin-bottom: 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--color-borde-input);
   padding-bottom: 15px;
 }
 
@@ -75,7 +75,7 @@
 .modal.pacientes-ver .section h4 {
   font-size: 16px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--color-texto);
   margin-bottom: 12px;
 }
 
@@ -102,16 +102,16 @@
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 4px;
-  color: #1e293b;
+  color: var(--color-texto);
 }
 
 /* Valores */
 .modal.pacientes-ver .form-row div {
   padding: 10px 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-borde-input);
   border-radius: 8px;
-  background: #f9fafb;
-  color: #1e293b;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
   font-size: 14px;
   min-height: 36px;
   display: flex;
@@ -127,14 +127,21 @@
 
 .modal.pacientes-ver .btn-secondary {
   padding: 10px 18px;
-  background: #e5e7eb;
+  background: var(--color-fondo-informacion);
   border: none;
   border-radius: 8px;
-  color: #1e293b;
+  color: var(--color-texto);
   cursor: pointer;
-  transition: 0.25s;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
 }
 
 .modal.pacientes-ver .btn-secondary:hover {
-  background: #d1d5db;
+  filter: brightness(0.95);
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.modal.pacientes-ver .btn-secondary:active {
+  filter: brightness(0.9);
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
 }

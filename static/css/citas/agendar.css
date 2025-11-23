@@ -1,14 +1,345 @@
-.doctor-card{display:flex;align-items:center;gap:12px;padding:12px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:10px}
-.doctor-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
-.doctor-photo{width:48px;height:48px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:600;color:#374151}
-.doctor-info{flex:1}
-.doctor-actions{display:flex;gap:8px}
-.section-title{font-weight:700;margin:16px 0 8px}
-.slots{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.slot{padding:8px 10px;border-radius:8px;font-weight:600}
-.slot.free{background:#10b981;color:#fff;cursor:pointer}
-.slot.free:hover{filter:brightness(0.95)}
-.slot.busy{background:#ef4444;color:#fff;opacity:.75}
-.modal .btn-modal-ok{background:#2563eb;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
-.modal .btn-modal-cancel{background:#e5e7eb;color:#111827;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
+/* === CONTENEDOR PRINCIPAL === */
+.card {
+  padding: 16px;
+}
 
+.card h2 {
+  font-size: 1.8rem;
+  color: #0f172a;
+  margin: 0 0 24px;
+  font-weight: 800;
+}
+
+/* === TÍTULO DE SECCIÓN === */
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 24px 0 16px;
+  color: var(--color-texto);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-principal);
+}
+
+/* === TARJETA DE MÉDICO === */
+.doctor-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--color-fondo-card);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--color-sombra);
+  margin-bottom: 12px;
+  transition: all .2s ease;
+  border: 1px solid var(--color-borde-card);
+}
+
+.doctor-card:hover {
+  box-shadow: 0 8px 20px var(--sombra-neutral-20);
+  transform: translateY(-2px);
+}
+
+/* === FOTO DEL MÉDICO === */
+.doctor-photo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* === INFORMACIÓN DEL MÉDICO === */
+.doctor-info {
+  flex: 1;
+}
+
+.doctor-info div:first-child {
+  font-weight: 700;
+  color: var(--color-texto);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.doctor-info div:last-child {
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+}
+
+/* === ACCIONES DEL MÉDICO === */
+.doctor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* === SLOTS (HORARIOS) === */
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  margin-left: 56px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: rgba(27, 143, 130, .05);
+  border-radius: 8px;
+}
+
+.slot {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: .9rem;
+  transition: all .15s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.slot.free {
+  background: var(--color-exito);
+  color: #fff;
+}
+
+.slot.free:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--sombra-exito);
+}
+
+.slot.free:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--sombra-exito-active);
+}
+
+.slot.busy {
+  background: var(--color-error);
+  color: #fff;
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* === BOTONES === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-boton-principal);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: .92rem;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-boton-principal);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
+}
+
+.btn-primary {
+  background: var(--color-boton-principal);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-boton-principal);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
+}
+
+/* === MODALES === */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  animation: fadeIn .25s ease;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal[aria-hidden="false"],
+.modal.is-open {
+  display: flex;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay-modal);
+  backdrop-filter: blur(3px);
+}
+
+.modal-box {
+  position: relative;
+  background: var(--color-fondo-modal);
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid var(--color-borde-modal);
+  box-shadow: 0 10px 40px var(--sombra-neutral-25);
+  animation: popUp .25s ease;
+}
+
+.modal-box h3 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: var(--color-texto);
+}
+
+/* === CAMPOS DEL MODAL === */
+.modal-field {
+  margin-bottom: 14px;
+}
+
+.modal-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+  font-size: .9rem;
+}
+
+.modal-field input,
+.modal-field select {
+  width: 100%;
+  padding: .65rem;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 12px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  transition: border .2s ease, box-shadow .2s ease;
+}
+
+.modal-field input:focus,
+.modal-field select:focus {
+  outline: none;
+  border-color: var(--color-borde-input-focus);
+  box-shadow: 0 0 0 3px rgba(27, 143, 130, .25);
+}
+
+.modal-field div {
+  padding: .65rem;
+  background: var(--color-fondo-input);
+  border-radius: 12px;
+  color: var(--color-texto);
+}
+
+/* === ACCIONES DEL MODAL === */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.btn-modal-ok,
+.btn-modal-cancel {
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: .92rem;
+  transition: transform .15s ease, box-shadow .15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.btn-modal-ok {
+  background: var(--color-boton-principal);
+  color: #fff;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-modal-ok:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-boton-principal);
+}
+
+.btn-modal-ok:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
+}
+
+.btn-modal-cancel {
+  background: var(--color-fondo-card);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde-card);
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
+  transition: background .15s ease, box-shadow .15s ease;
+}
+
+.btn-modal-cancel:hover {
+  background: #f1f5f9;
+  box-shadow: 0 6px 16px var(--sombra-neutral-10);
+}
+
+.btn-modal-cancel:active {
+  background: #e2e8f0;
+  box-shadow: 0 2px 8px var(--sombra-neutral-10);
+}
+
+/* === ESTADOS DE ERROR === */
+#val-error,
+#conf-error {
+  color: var(--color-error);
+  margin-top: 12px;
+  font-size: .85rem;
+  font-weight: 500;
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popUp {
+  from { transform: scale(.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .card h2 {
+    font-size: 1.4rem;
+  }
+
+  .doctor-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .doctor-info div:last-child {
+    font-size: 0.85rem;
+  }
+
+  .slots {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .modal-box {
+    width: 95%;
+    max-width: 420px;
+  }
+}

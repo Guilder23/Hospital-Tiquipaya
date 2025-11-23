@@ -3,11 +3,11 @@
 .modal-confirm-block-box h3 {
     font-weight: 700;
     margin-bottom: 15px;
-    color: #1f2937;
+    color: var(--color-texto);
 }
 
 .modal-confirm-block-box p {
     font-size: 0.95rem;
-    color: #374151;
+    color: var(--color-texto);
     margin-bottom: 18px;
 }

@@ -12,7 +12,17 @@
         <td>{{ c.hora|date:'H:i' }}</td>
         <td>{{ c.medico.user.perfil.nombres }} {{ c.medico.user.perfil.apellido_paterno }}</td>
         <td>{{ c.especialidad.nombre }}</td>
-        <td>{{ c.estado }}</td>
+        <td>
+          {% if c.estado == 'CONFIRMADA' %}
+            <span class="badge badge-confirmado">Confirmada</span>
+          {% elif c.estado == 'PENDIENTE' %}
+            <span class="badge badge-pendiente">Pendiente</span>
+          {% elif c.estado == 'CANCELADA' %}
+            <span class="badge badge-cancelado">Cancelada</span>
+          {% else %}
+            <span class="badge badge-muted">{{ c.estado }}</span>
+          {% endif %}
+        </td>
         <td>
           <form method="post" action="/citas/{{ c.id }}/cancelar/" style="display:inline" onsubmit="return confirm('Cancelar cita?')">{% csrf_token %}<button class="btn btn-danger" {% if c.estado == 'CANCELADA' %}disabled{% endif %}>Cancelar</button></form>
           <button class="btn btn-primary btn-reprogramar" data-id="{{ c.id }}" {% if c.fecha != c.fecha %}{% endif %}>Editar horario</button>
