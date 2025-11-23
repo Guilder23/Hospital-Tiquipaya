@@ -40,34 +40,6 @@
   </table>
 </section>
 
-<div class="modal usuarios-crear" id="modal-crear-usuario" aria-hidden="true">
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-panel">
-    <h3>Crear usuario</h3>
-    <form method="post" action="/accounts/usuarios/nuevo/" id="form-create">
-      {% csrf_token %}
-      <div class="form-row"><label>Usuario</label><input name="username" required></div>
-      <div class="form-row"><label>Nombres</label><input name="first_name"></div>
-      <div class="form-row"><label>Apellidos</label><input name="last_name"></div>
-      <div class="form-row"><label>Email</label><input name="email" type="email"></div>
-      <div class="form-row"><label>Contraseña</label><input name="password1" type="password" required></div>
-      <div class="form-row"><label>Confirmar contraseña</label><input name="password2" type="password" required></div>
-      <div class="form-row"><label>Rol</label>
-        <select name="tipo">
-          <option value="">Sin rol</option>
-          {% for t in tipos %}
-            <option value="{{ t.id }}">{{ t.nombre }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button class="btn" type="submit">Guardar</button>
-        <button class="btn-secondary" type="button" data-close>Cerrar</button>
-      </div>
-    </form>
-  </div>
-  </div>
-
 <div class="modal usuarios-editar" id="modal-editar-usuario" aria-hidden="true">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
@@ -123,6 +95,9 @@
     </form>
   </div>
 </div>
+
+{% include "./modals/crear.html" %}
+
 {% endblock %}
 {% block extra_js %}
 <script src="/static/js/accounts/usuarios/users.js"></script>

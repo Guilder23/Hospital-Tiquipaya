@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django import forms
-from apps.accounts.models import PerfilUsuario, TipoUsuario
+from apps.accounts.models import Perfil, TipoUsuario
 from .models import Paciente
 
 def _es_admin(user):
@@ -11,7 +11,7 @@ def _es_admin(user):
         return True
     try:
         perfil = user.perfil
-    except PerfilUsuario.DoesNotExist:
+    except Perfil.DoesNotExist:
         return False
     if perfil.tipo is None:
         return False

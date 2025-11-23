@@ -6,7 +6,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
     'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
-    'apps.pacientes','apps.medicos','apps.especialidades','apps.horarios','apps.citas','apps.accounts'
+    'apps.pacientes','apps.especialidades','apps.horarios','apps.citas','apps.accounts'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware',

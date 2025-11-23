@@ -9,14 +9,98 @@
       <div class="form-alert alert-error" id="register-error" style="display:none"></div>
       <form method="post" action="/accounts/register/" class="auth-form">
         {% csrf_token %}
+
+        <!-- Usuario -->
         <div class="form-group">
           <label class="form-label"><span class="label-text">Usuario</span></label>
           <input type="text" name="username" placeholder="Usuario" required>
         </div>
+
+        <!-- Email -->
         <div class="form-group">
           <label class="form-label"><span class="label-text">Email</span></label>
           <input type="email" name="email" placeholder="Email" required>
         </div>
+
+        <!-- Nombres -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Nombres</span></label>
+          <input type="text" name="nombres" placeholder="Nombres" required>
+        </div>
+
+        <!-- Apellidos -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Apellido Paterno</span></label>
+          <input type="text" name="apellido_paterno" placeholder="Apellido Paterno" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Apellido Materno</span></label>
+          <input type="text" name="apellido_materno" placeholder="Apellido Materno">
+        </div>
+
+        <!-- CI -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">CI</span></label>
+          <input type="text" name="ci" placeholder="Carnet de Identidad" required>
+        </div>
+
+        <!-- Complemento CI -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Complemento CI</span></label>
+          <input type="text" name="complemento_ci" placeholder="Complemento">
+        </div>
+
+        <!-- Expedido -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Expedido en</span></label>
+          <select name="expedido">
+            <option value="">Seleccionar</option>
+            <option value="LP">La Paz</option>
+            <option value="SC">Santa Cruz</option>
+            <option value="CB">Cochabamba</option>
+            <option value="OR">Oruro</option>
+            <option value="PT">Potosí</option>
+            <option value="TJ">Tarija</option>
+            <option value="BN">Beni</option>
+            <option value="PD">Pando</option>
+            <option value="CH">Chuquisaca</option>
+          </select>
+        </div>
+
+        <!-- Fecha de nacimiento -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Fecha de Nacimiento</span></label>
+          <input type="date" name="fecha_nacimiento">
+        </div>
+
+        <!-- Sexo -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Sexo</span></label>
+          <select name="sexo">
+            <option value="">Seleccionar</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="O">Otro</option>
+          </select>
+        </div>
+
+        <!-- Teléfonos -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Teléfono fijo</span></label>
+          <input type="text" name="telefono_fijo" placeholder="Teléfono fijo">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Celular</span></label>
+          <input type="text" name="celular" placeholder="Celular" required>
+        </div>
+
+        <!-- Dirección -->
+        <div class="form-group">
+          <label class="form-label"><span class="label-text">Dirección</span></label>
+          <input type="text" name="direccion" placeholder="Dirección">
+        </div>
+
+        <!-- Contraseña -->
         <div class="form-group">
           <label class="form-label"><span class="label-text">Contraseña</span></label>
           <input type="password" name="password1" placeholder="Contraseña" required>
@@ -25,15 +109,12 @@
           <label class="form-label"><span class="label-text">Confirmar contraseña</span></label>
           <input type="password" name="password2" placeholder="Confirmar contraseña" required>
         </div>
+
         <button type="submit" class="btn btn-submit">Registrarse</button>
       </form>
+
       <div class="auth-divider"><span>¿Ya tienes cuenta?</span></div>
       <a href="#" class="btn btn-secondary" onclick="switchToLoginModal(); return false;">Inicia sesión aquí</a>
     </div>
-    <!-- <div class="auth-decoration">
-      <div class="decoration-shape shape-1"></div>
-      <div class="decoration-shape shape-2"></div>
-      <div class="decoration-shape shape-3"></div>
-    </div> -->
   </div>
 </div>
