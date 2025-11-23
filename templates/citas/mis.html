@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/citas/mis.css">{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Mis Citas</h2>
+  <table class="table">
+    <thead><tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Especialidad</th><th>Estado</th><th>Acciones</th></tr></thead>
+    <tbody>
+      {% for c in citas %}
+      <tr data-id="{{ c.id }}">
+        <td>{{ c.fecha|date:'d/m/Y' }}</td>
+        <td>{{ c.hora|date:'H:i' }}</td>
+        <td>{{ c.medico.user.perfil.nombres }} {{ c.medico.user.perfil.apellido_paterno }}</td>
+        <td>{{ c.especialidad.nombre }}</td>
+        <td>{{ c.estado }}</td>
+        <td>
+          <form method="post" action="/citas/{{ c.id }}/cancelar/" style="display:inline" onsubmit="return confirm('Cancelar cita?')">{% csrf_token %}<button class="btn btn-danger" {% if c.estado == 'CANCELADA' %}disabled{% endif %}>Cancelar</button></form>
+          <button class="btn btn-primary btn-reprogramar" data-id="{{ c.id }}" {% if c.fecha != c.fecha %}{% endif %}>Editar horario</button>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">Sin citas</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="modal" id="modal-reprogramar" aria-hidden="true">
+    <div class="modal-box" style="width:420px">
+      <h3>Editar Horario</h3>
+      <div class="modal-field"><label>Nueva hora</label>
+        <select id="rep-hora">
+          <option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option>
+          <option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option>
+          <option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option>
+          <option value="16:00">16:00</option><option value="16:30">16:30</option><option value="17:00">17:00</option><option value="17:30">17:30</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="rep-cancel">Cancelar</button>
+        <button class="btn-modal-ok" id="rep-ok">Guardar</button>
+      </div>
+      <p id="rep-error" style="color:#b91c1c; display:none"></p>
+    </div>
+  </div>
+
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var modal=document.getElementById('modal-reprogramar');
+  var repError=document.getElementById('rep-error');
+  var repHora=document.getElementById('rep-hora');
+  var repCancel=document.getElementById('rep-cancel');
+  var repOk=document.getElementById('rep-ok');
+  var currentId=null;
+  function open(m){ m.classList.add('is-open'); m.setAttribute('aria-hidden','false'); }
+  function close(m){ m.classList.remove('is-open'); m.setAttribute('aria-hidden','true'); }
+  document.querySelectorAll('.btn-reprogramar').forEach(function(b){ b.addEventListener('click',function(){ currentId=b.getAttribute('data-id'); open(modal); }); });
+  if(repCancel){ repCancel.addEventListener('click',function(){ close(modal); }); }
+  function getCookie(name){ var v=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v? v.pop():''; }
+  if(repOk){ repOk.addEventListener('click',function(){ repError.style.display='none'; repError.textContent=''; var fd=new URLSearchParams(); fd.append('hora',repHora.value); fetch('/citas/'+currentId+'/editar/',{ method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':getCookie('csrftoken') }, body:fd.toString() })
+      .then(function(r){ if(r.ok) return r.json(); return r.text().then(function(t){ throw new Error(t||'Error'); }); })
+      .then(function(){ close(modal); window.location.reload(); })
+      .catch(function(e){ repError.textContent='No se pudo editar: '+(e.message||'Error'); repError.style.display='block'; }); }); }
+});
+</script>
+{% endblock %}

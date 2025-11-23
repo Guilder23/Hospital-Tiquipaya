@@ -1,0 +1,14 @@
+.doctor-card{display:flex;align-items:center;gap:12px;padding:12px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:10px}
+.doctor-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.doctor-photo{width:48px;height:48px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:600;color:#374151}
+.doctor-info{flex:1}
+.doctor-actions{display:flex;gap:8px}
+.section-title{font-weight:700;margin:16px 0 8px}
+.slots{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.slot{padding:8px 10px;border-radius:8px;font-weight:600}
+.slot.free{background:#10b981;color:#fff;cursor:pointer}
+.slot.free:hover{filter:brightness(0.95)}
+.slot.busy{background:#ef4444;color:#fff;opacity:.75}
+.modal .btn-modal-ok{background:#2563eb;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
+.modal .btn-modal-cancel{background:#e5e7eb;color:#111827;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
+

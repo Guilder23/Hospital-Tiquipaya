@@ -1,0 +1,10 @@
+.table{width:100%;border-collapse:separate;border-spacing:0 6px}
+.table thead th{background:#f3f4f6;border:none;font-weight:700;color:#374151;padding:12px}
+.table tbody tr{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+.table tbody td{border:none;vertical-align:middle;font-size:.95rem;padding:12px}
+.btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-danger{background:#ef4444;color:#fff}
+.modal .modal-box{background:#fff;padding:20px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.15);width:420px;max-width:90%}
+.modal .btn-modal-ok{background:#2563eb;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
+.modal .btn-modal-cancel{background:#e5e7eb;color:#111827;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}

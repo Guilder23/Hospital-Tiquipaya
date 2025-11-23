@@ -8,9 +8,14 @@
     <h1 class="hero-title animate-title">Hospital Tiquipaya</h1>
     <p class="hero-subtitle animate-subtitle">Tu salud es nuestra prioridad</p>
     <div class="hero-buttons">
-      {% if request.user.is_authenticated %}
-        <a href="/pacientes/" class="btn btn-primary">Mis Citas</a>
-        <a href="/pacientes/" class="btn btn-secondary">Agendar Cita</a>
+      <a href="/citas/agendar/" class="btn btn-secondary">Agendar Cita</a>
+      {% if paciente %}
+        <span class="user-info">Paciente: {{ paciente.nombres }} {{ paciente.apellido_paterno }}</span>
+        <a href="/citas/mis/" class="btn btn-primary">Mis Citas</a>
+        <a href="/citas/logout/" class="btn btn-secondary">Cerrar sesión</a>
+      {% elif request.user.is_authenticated %}
+        <span class="user-info">{{ request.user.username }}</span>
+        <a href="/citas/mis/" class="btn btn-primary">Mis Citas</a>
       {% else %}
         <a href="/accounts/login/" class="btn btn-primary">Iniciar Sesión</a>
         <a href="/accounts/register/" class="btn btn-secondary">Registrarse</a>
@@ -172,7 +177,7 @@
     {% if not request.user.is_authenticated %}
       <a href="/accounts/register/" class="btn btn-primary btn-large">Registrarse Ahora</a>
     {% else %}
-      <a href="/pacientes/" class="btn btn-primary btn-large">Agendar Cita</a>
+      <a href="/citas/agendar/" class="btn btn-primary btn-large">Agendar Cita</a>
     {% endif %}
   </div>
 </section>
