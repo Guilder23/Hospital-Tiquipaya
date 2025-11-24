@@ -1,0 +1,24 @@
+<div class="tipos-editar" id="modal-editar-tipo" aria-hidden="true" role="dialog" aria-labelledby="modal-editar-titulo">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3 id="modal-editar-titulo">Editar tipo de usuario</h3>
+      <button class="modal-close-btn" type="button" data-close aria-label="Cerrar modal">×</button>
+    </div>
+    <form method="post" id="form-edit-tipo" class="modal-form">
+      {% csrf_token %}
+      <div class="form-row">
+        <label for="editar-nombre">Nombre *</label>
+        <input id="editar-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo">
+      </div>
+      <div class="form-row">
+        <label for="editar-descripcion">Descripción</label>
+        <textarea id="editar-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" type="button" data-close>Cancelar</button>
+        <button class="btn" type="submit">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

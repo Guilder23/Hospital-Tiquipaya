@@ -1,23 +1,30 @@
 {% extends "base.html" %}
-{% block extra_css %}<link rel="stylesheet" href="/static/css/accounts/tipos/list.css">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/accounts/tipos/list.css">
+<link rel="stylesheet" href="/static/css/accounts/tipos/modals/create.css">
+<link rel="stylesheet" href="/static/css/accounts/tipos/modals/edit.css">
+<link rel="stylesheet" href="/static/css/accounts/tipos/modals/view.css">
+<link rel="stylesheet" href="/static/css/accounts/tipos/modals/delete.css">
+{% endblock %}
 {% block content %}
 <section class="card">
   <h2>Tipos de usuario</h2>
   {% if request.user.is_staff %}
-  <p><a class="btn" href="/accounts/tipos/nuevo/">Nuevo tipo</a></p>
+  <p><button class="btn" id="btn-open-create">Nuevo tipo</button></p>
   {% endif %}
   <table class="table">
     <thead><tr><th>Nombre</th><th>Descripción</th><th></th></tr></thead>
     <tbody>
       {% for t in object_list %}
-      <tr>
+      <tr data-id="{{ t.id }}" data-nombre="{{ t.nombre }}" data-descripcion="{{ t.descripcion }}">
         <td>{{ t.nombre }}</td>
         <td>{{ t.descripcion }}</td>
         <td class="actions">
           {% if request.user.is_staff %}
-            <a class="link-edit" href="/accounts/tipos/{{ t.id }}/editar/">Editar</a>
-            <a class="link-delete" href="/accounts/tipos/{{ t.id }}/eliminar/">Eliminar</a>
+            <button class="link-edit btn-edit" data-id="{{ t.id }}">Editar</button>
+            <button class="link-delete btn-delete" data-id="{{ t.id }}" data-nombre="{{ t.nombre }}">Eliminar</button>
           {% endif %}
+          <button class="link-view btn-view" data-id="{{ t.id }}">Ver</button>
         </td>
       </tr>
       {% empty %}
@@ -27,5 +34,14 @@
   </table>
   <p><a href="/">Volver</a></p>
  </section>
+{% include "accounts/tipos/modals/create.html" %}
+{% include "accounts/tipos/modals/edit.html" %}
+{% include "accounts/tipos/modals/view.html" %}
+{% include "accounts/tipos/modals/delete.html" %}
 {% endblock %}
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+<script src="/static/js/accounts/tipos/modals/create.js"></script>
+<script src="/static/js/accounts/tipos/modals/edit.js"></script>
+<script src="/static/js/accounts/tipos/modals/view.js"></script>
+<script src="/static/js/accounts/tipos/modals/delete.js"></script>
+{% endblock %}

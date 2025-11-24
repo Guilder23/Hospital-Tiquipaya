@@ -111,6 +111,30 @@
   transition: all .2s ease;
 }
 
+.link-view { 
+  padding: .6rem .9rem; 
+  background: var(--color-exito); 
+  color: #fff !important; 
+  border: none; 
+  border-radius: 10px; 
+  text-decoration: none; 
+  font-weight: 600; 
+  display: inline-block; 
+  box-shadow: 0 6px 16px var(--color-sombra); 
+  transition: all .2s ease;
+  margin-left: .5rem;
+}
+
+.link-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.link-view:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
+}
+
 .link-delete:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-error);
