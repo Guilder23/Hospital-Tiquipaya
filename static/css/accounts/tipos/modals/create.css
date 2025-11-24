@@ -134,5 +134,46 @@
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
 }
+.btn-secondary {
+  background-color: var(--color-boton-cancelar);
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-secondary:hover {
+  background-color: var(--color-boton-cancelar-hover);
+}
+.btn-secondary:active {
+  background-color: var(--color-boton-cancelar-active);
+}
+.btn{
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-boton-principal);
+  color: white !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--sombra-boton-principal);
+  font-size: 0.95rem;
+}
+.btn:hover {
+  background: var(--color-boton-principal-hover);
+  box-shadow: 0 4px 12px var(--sombra-boton-principal);
+  transform: translateY(-2px);
+}
+.btn:active {
+  background: var(--color-boton-principal-active);
+  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
+  transform: translateY(0);
+}
 
 @keyframes showModal { to { transform: translateY(0); } }

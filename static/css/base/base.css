@@ -37,9 +37,16 @@
   --color-boton-principal: #0f4c75;       /* Botón normal */
   --color-boton-principal-hover: #0c3b5a; /* Botón hover */
   --color-boton-principal-active: #092f44;/* Botón active */
+  
   --color-boton-secundario: #289b9b;      /* Botón secundario normal */
   --color-boton-secundario-hover: #1f7c7c;/* Botón secundario hover */
   --color-boton-secundario-active: #176161;/* Botón secundario active */
+
+  --color-boton-cancelar:#e0f2fe ;      /* Botón cancelar normal */
+  --color-boton-cancelar-hover: #d7ecf8;/* Botón cancelar hover */
+  --color-boton-cancelar-active: #ace1fa;/* Botón
+
+  
 
   /* ==========================
      ESTADOS / FEEDBACK
