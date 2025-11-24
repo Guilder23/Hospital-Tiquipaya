@@ -21,10 +21,12 @@
         <td>{{ t.descripcion }}</td>
         <td class="actions">
           {% if request.user.is_staff %}
+            <button class="link-view btn-view" data-id="{{ t.id }}">Ver</button>
             <button class="link-edit btn-edit" data-id="{{ t.id }}">Editar</button>
             <button class="link-delete btn-delete" data-id="{{ t.id }}" data-nombre="{{ t.nombre }}">Eliminar</button>
+          {% else %}
+            <button class="link-view btn-view" data-id="{{ t.id }}">Ver</button>
           {% endif %}
-          <button class="link-view btn-view" data-id="{{ t.id }}">Ver</button>
         </td>
       </tr>
       {% empty %}

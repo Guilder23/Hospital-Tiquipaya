@@ -1,25 +1,28 @@
 /* Modal Crear Tipo */
 .tipos-crear .modal-panel {
   background: var(--color-fondo-modal);
-  border-radius: 16px;
-  padding: 0;
+  width: 100%;
   max-width: 500px;
-  box-shadow: 0 10px 40px var(--sombra-neutral-25);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  animation: slideUp 0.3s ease-out;
+  max-height: 90vh;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-informacion);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModal 0.35s ease forwards;
+  overflow-y: auto;
   position: relative;
   z-index: 1;
 }
 
 .tipos-crear .modal-header {
-  background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-secundario) 100%);
-  color: #fff;
+  /* background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-secundario) 100%); */
+  color: var(--color-informacion);
   padding: 1.5rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  text-align: center;
   border-bottom: 3px solid var(--color-terciario);
 }
 
@@ -27,6 +30,7 @@
   font-size: 1.3rem;
   font-weight: 700;
   margin: 0;
+  flex: 1;
 }
 
 .tipos-crear .modal-form {
@@ -35,27 +39,27 @@
 }
 
 .tipos-crear .form-row {
-  margin-bottom: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .tipos-crear .form-row label {
   display: block;
-  margin-bottom: 0.6rem;
+  margin-bottom: 4px;
   font-weight: 600;
   color: var(--color-texto);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .tipos-crear .form-row input,
 .tipos-crear .form-row textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 8px 10px;
   border: 2px solid var(--color-borde-input);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--color-fondo-input);
   color: var(--color-texto);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
 }
 
@@ -69,32 +73,37 @@
 
 .tipos-crear .form-row textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 70px;
   font-size: 0.9rem;
 }
 
 .tipos-crear .modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   justify-content: flex-end;
-  padding: 1.5rem;
-  border-top: 1px solid var(--color-borde-input);
-  background: #f9fafb;
+  padding: 10px 0;
+  /* border-top: 1px solid var(--color-borde-input); */
+  /* background: #f9fafb; */
 }
+
 
 .tipos-crear {
   position: fixed;
   inset: 0;
-  display: none;
-}
-
-.tipos-crear[aria-hidden="false"] {
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-overlay-modal);
   padding: 20px;
   z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+}
+
+.tipos-crear[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
 }
 
 .tipos-crear .modal-backdrop {
@@ -126,26 +135,4 @@
   transform: scale(1.1);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .tipos-crear .modal-panel {
-    max-width: 90%;
-  }
-  
-  .tipos-crear .modal-header {
-    padding: 1.2rem;
-  }
-  
-  .tipos-crear .modal-form {
-    padding: 1.2rem;
-  }
-  
-  .tipos-crear .form-row {
-    margin-bottom: 1rem;
-  }
-  
-  .tipos-crear .form-row input,
-  .tipos-crear .form-row textarea {
-    padding: 0.65rem;
-  }
-}
+@keyframes showModal { to { transform: translateY(0); } }
