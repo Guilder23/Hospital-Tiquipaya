@@ -14,22 +14,29 @@
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Lista de Especialidades</h2>
+    <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Especialidades</h2> -->
 
         <!-- Botón abrir modal custom -->
-        <button class="btn btn-primary" id="btn-open-create">
+        <!-- <button class="btn btn-primary" id="btn-open-create">
             Nueva Especialidad
         </button>
-    </div>
+    </div> -->
 
-    {% if messages %}
+    <!-- {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
         {% endfor %}
-    {% endif %}
+    {% endif %} -->
 
     <div class="card shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Lista de Especialidades</h2>
+                <!-- Botón abrir modal custom -->
+                <button class="btn btn-primary" id="btn-open-create">
+                    Nueva Especialidad
+                </button>
+            </div>
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
@@ -85,8 +92,13 @@
                 </tbody>
             </table>
         </div>
+        <!-- mensajes -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     </div>
-
 </div>
 
 <!-- Incluye modales PERO SIN BOOTSTRAP -->

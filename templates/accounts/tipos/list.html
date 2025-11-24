@@ -13,12 +13,13 @@
   <p><button class="btn" id="btn-open-create">Nuevo tipo</button></p>
   {% endif %}
   <table class="table">
-    <thead><tr><th>Nombre</th><th>Descripción</th><th></th></tr></thead>
+    <thead><tr><th>Nombre</th><th>Descripción</th><th>Fecha Creacion</th><th>Acciones</th></tr></thead>
     <tbody>
       {% for t in object_list %}
-      <tr data-id="{{ t.id }}" data-nombre="{{ t.nombre }}" data-descripcion="{{ t.descripcion }}">
+      <tr data-id="{{ t.id }}" data-nombre="{{ t.nombre }}" data-descripcion="{{ t.descripcion }}" data-creado_en="{{ t.creado_en|date:'Y-m-d H:i' }}">
         <td>{{ t.nombre }}</td>
         <td>{{ t.descripcion }}</td>
+        <td>{{ t.creado_en}} </td>
         <td class="actions">
           {% if request.user.is_staff %}
             <button class="link-view btn-view" data-id="{{ t.id }}">Ver</button>
