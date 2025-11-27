@@ -1,0 +1,47 @@
+<div class="modal pacientes-editar" id="modal-editar-ecografia" aria-hidden="true" style="display:none">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Editar Ecografía</h3>
+    <div class="form-alert alert-error" id="edit-error" style="display:none"></div>
+    <form method="post" id="form-edit">
+      {% csrf_token %}
+
+      <div class="section">
+        <h4>Información de la Ecografía</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Código</label><input id="edit-codigo" type="text" readonly></div>
+          <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input id="edit-nombre" type="text" name="nombre" required></div>
+          <div class="form-row"><label>Médico</label>
+            <select id="edit-medico" name="medico" required>
+              <option value="">-- Seleccionar médico --</option>
+              {% for medico in medicos %}
+              <option value="{{ medico.id }}">{{ medico.user.perfil.nombres }} {{ medico.user.perfil.apellido_paterno }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-row"><label>Especialidad de Ecografía</label>
+            <select id="edit-especialidad" name="especialidad" required>
+              <option value="">-- Seleccionar especialidad --</option>
+              {% for especialidad in especialidades %}
+              <option value="{{ especialidad.id }}">{{ especialidad.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-row form-row-full"><label>Descripción de la Orden</label><textarea id="edit-descripcion" name="descripcion" rows="4"></textarea></div>
+          <div class="form-row"><label>Estado</label>
+            <select id="edit-estado" name="estado" required>
+              <option value="ACTIVA">Activa</option>
+              <option value="INACTIVA">Inactiva</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn" type="submit">Guardar cambios</button>
+        <button class="btn-secondary" type="button" data-close>Cerrar</button>
+      </div>
+
+    </form>
+  </div>
+</div>
