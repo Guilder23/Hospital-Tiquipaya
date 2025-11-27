@@ -143,8 +143,8 @@
 .modal-backdrop {
   position: absolute;
   inset: 0;
-  background: var(--color-overlay-modal);
-  backdrop-filter: blur(3px);
+  background: transparent;
+  z-index: -1;
 }
 
 .modal-panel {

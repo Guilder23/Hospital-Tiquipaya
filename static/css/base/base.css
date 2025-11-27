@@ -102,7 +102,7 @@
      MODALES Y OVERLAY
      ========================== */
   --color-fondo-modal: #ffffff;             /* Fondo de los modales */
-  --color-overlay-modal: rgba(225, 236, 245, 0.55); /* Overlay semitransparente */
+  --color-overlay-modal: rgba(0, 0, 0, 0.4); /* Overlay semitransparente */
   --color-borde-modal: #c6d7e6;            /* Borde superior o contorno modal */
 
   /* ==========================
