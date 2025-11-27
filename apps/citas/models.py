@@ -57,3 +57,9 @@ class Cita(models.Model):
             minutos = int(diferencia.total_seconds() / 60)
             return minutos
         return None
+    
+    def save(self, *args, **kwargs):
+        """Sobrescribir save para calcular automáticamente la duración"""
+        if self.tiempo_inicio_atencion and self.tiempo_fin_atencion and not self.duracion_atencion_minutos:
+            self.duracion_atencion_minutos = self.calcular_duracion()
+        super().save(*args, **kwargs)

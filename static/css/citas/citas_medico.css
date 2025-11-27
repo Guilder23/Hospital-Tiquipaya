@@ -1,0 +1,82 @@
+/* Estilos para Mis Citas Hoy - Médico */
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.btn-group-vertical {
+    gap: 0.5rem;
+}
+
+.info-section {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border-left: 3px solid #0d6efd;
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0.7;
+    }
+}
+
+.alert {
+    padding: 0.75rem;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.badge {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Estilos para botones */
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.iniciar-atencion:hover,
+.finalizar-atencion:hover,
+.generar-eco:hover {
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .btn-group-vertical {
+        flex-direction: column;
+    }
+}
