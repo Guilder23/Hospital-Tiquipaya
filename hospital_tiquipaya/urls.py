@@ -10,4 +10,5 @@ urlpatterns = [
     path('pacientes/', include('apps.pacientes.urls')),
     path('citas/', include('apps.citas.urls')),
     path('ecografias/', include('apps.ecografias.urls')),
+    path('turnos/', include('apps.horarios.urls', namespace='turnos')),
 ]

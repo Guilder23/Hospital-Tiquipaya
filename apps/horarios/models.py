@@ -33,3 +33,16 @@ class HorariosAtencion(models.Model):
         if self.noche: horas.append("noche")
 
         return ", ".join(horas) if horas else "Sin días asignados"
+    
+class Turnos(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)
+    hora_ini = models.TimeField()
+    hora_fin = models.TimeField()
+
+    class Meta:
+        verbose_name = "Turno"
+        verbose_name_plural = "Turnos"
+        ordering = ['nombre']
+
+    def __str__(self):
+        return self.nombre
