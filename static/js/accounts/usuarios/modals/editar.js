@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (tipoInput) tipoInput.value = rol;
 
             // ---------- OCULTAR TODOS LOS BLOQUES ----------
-            const bloques = ['edit-campos-medico','edit-campos-admision','campos-encargado-admision'];
+            const bloques = ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision'];
             bloques.forEach(id => {
                 const b = document.getElementById(id);
                 if (b) {
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 console.log('Entrando en rama ENCARGADO DE ADMISION');
 
-                const box = document.getElementById('campos-encargado-admision');
+                const box = document.getElementById('edit-campos-encargado-admision');
                 if (!box) {
                     console.error('campos-encargado-admision no existe');
                     return;
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // ---------- ABRIR MODAL ----------
             open(modal);
 
-            ['edit-campos-medico','edit-campos-admision','campos-encargado-admision'].forEach(id => {
+            ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision'].forEach(id => {
                 const el = document.getElementById(id);
                 console.log(
                     id,
