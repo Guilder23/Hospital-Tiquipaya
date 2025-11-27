@@ -4,7 +4,7 @@
 <section class="card">
   <h2>Mis Citas</h2>
   <table class="table">
-    <thead><tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Especialidad</th><th>Estado</th><th>Acciones</th></tr></thead>
+    <thead><tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Especialidad</th><th>Estado</th><th>Atención</th><th>Ecografía</th><th>Acciones</th></tr></thead>
     <tbody>
       {% for c in citas %}
       <tr data-id="{{ c.id }}">
@@ -24,12 +24,32 @@
           {% endif %}
         </td>
         <td>
-          <form method="post" action="/citas/{{ c.id }}/cancelar/" style="display:inline" onsubmit="return confirm('Cancelar cita?')">{% csrf_token %}<button class="btn btn-danger" {% if c.estado == 'CANCELADA' %}disabled{% endif %}>Cancelar</button></form>
-          <button class="btn btn-primary btn-reprogramar" data-id="{{ c.id }}" {% if c.fecha != c.fecha %}{% endif %}>Editar horario</button>
+          {% if c.estado_atencion == 'ATENDIDO' %}
+            <span class="badge badge-activo">Atendido</span>
+          {% elif c.estado_atencion == 'EN_ATENCION' %}
+            <span class="badge badge-pendiente">En Atención</span>
+          {% else %}
+            <span class="badge badge-muted">En Espera</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if c.estado_atencion == 'ATENDIDO' %}
+            {% if c.requiere_ecografia %}
+              <span class="badge badge-activo">Sí</span>
+            {% else %}
+              <span class="badge badge-muted">No</span>
+            {% endif %}
+          {% else %}
+            <span class="badge badge-muted">-</span>
+          {% endif %}
+        </td>
+        <td>
+          <form method="post" action="/citas/{{ c.id }}/cancelar/" style="display:inline" onsubmit="return confirm('Cancelar cita?')">{% csrf_token %}<button class="btn btn-danger" {% if c.estado == 'CANCELADA' or c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Cancelar</button></form>
+          <button class="btn btn-primary btn-reprogramar" data-id="{{ c.id }}" {% if c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Editar horario</button>
         </td>
       </tr>
       {% empty %}
-      <tr><td colspan="6">Sin citas</td></tr>
+      <tr><td colspan="8">Sin citas</td></tr>
       {% endfor %}
     </tbody>
   </table>
