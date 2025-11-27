@@ -3,102 +3,155 @@
 <link rel="stylesheet" href="/static/css/accounts/usuarios/users.css">
 {% endblock %}
 {% block content %}
+
 <section class="card usuarios-lista">
-  <h2>Lista Usuario</h2>
+  <h2>Usuarios</h2>
+
   {% if puede_admin %}
-  <p><button class="btn" id="btn-open-create">Nuevo usuario</button></p>
+  <p>
+    <button class="btn" id="btn-open-create">Nuevo usuario</button>
+  </p>
   {% endif %}
+
   <table class="table">
     <thead>
       <tr>
         <th>Usuario</th>
-        <th>Nombre</th>
-        <th>Email</th>
+        <th>Nombre Complemento</th>
+        <th>CI</th>
+        <th>Correo</th>
+        <th>Fecha de Nacimiento</th>
+        <th>Sexo</th>
+        <th>Celular</th>
         <th>Rol</th>
+        <th>Estado</th>
         <th></th>
       </tr>
     </thead>
+
     <tbody>
       {% for u in usuarios %}
-      <tr data-id="{{ u.id }}" data-username="{{ u.username }}" data-first_name="{{ u.first_name }}" data-last_name="{{ u.last_name }}" data-email="{{ u.email }}" data-active="{{ u.is_active }}" data-tipo_id="{% if u.perfil and u.perfil.tipo %}{{ u.perfil.tipo.id }}{% endif %}" data-tipo_nombre="{% if u.perfil and u.perfil.tipo %}{{ u.perfil.tipo.nombre }}{% endif %}">
+      {% with p=u.perfil %}
+      <tr data-id="{{ u.id }}"
+            data-username="{{ u.username }}"
+            data-nombres="{{ p.nombres}}"
+            data-apellido_paterno="{{ p.apellido_paterno|default:'' }}"
+            data-apellido_materno="{{ p.apellido_materno|default:'' }}"
+            data-email="{{ p.correo|default:'' }}"
+            data-ci="{{ p.ci|default:'' }}"
+            data-complemento="{{ p.complemento_ci|default:'' }}"
+            data-expedido="{{ p.expedido|default:'' }}"
+            data-nacimiento="{{ p.fecha_nacimiento|default:'' }}"
+            data-sexo="{{ p.sexo|default:'' }}"
+            data-telefono="{{ p.telefono|default:'' }}"
+            data-celular="{{ p.celular|default:'' }}"
+            data-direccion="{{ p.direccion|default:'' }}"
+            data-rol="{% if p.tipo %}{{ p.tipo.nombre|default:'' }}{% endif %}"
+
+            {% if u.medico %}
+                data-especialidadid="{{ u.medico.especialidad.id|default:'' }}"
+                data-especialidad="{{ u.medico.especialidad.nombre|default:'' }}"
+                data-matricula="{{ u.medico.nro_matricula|default:'' }}"
+                data-consultorio="{{ u.medico.consultorio|default:'' }}"
+                data-turnos="{{ u.medico.turnos|default:'' }}"
+                data-dias="{{ u.medico.dias_atencion|default:'' }}"
+
+                data-medico-madrugue="{{ u.medico.turnos.madrugue|yesno:'1,0' }}"
+                data-medico-mannana="{{ u.medico.turnos.mannana|yesno:'1,0' }}"
+                data-medico-tarde="{{ u.medico.turnos.tarde|yesno:'1,0' }}"
+                data-medico-noche="{{ u.medico.turnos.noche|yesno:'1,0' }}"
+
+                data-lunes="{{ u.medico.dias_atencion.lunes|yesno:'1,0'|default:'' }}"
+                data-martes="{{ u.medico.dias_atencion.martes|yesno:'1,0' }}"
+                data-miercoles="{{ u.medico.dias_atencion.miercoles|yesno:'1,0'|default:'' }}"
+                data-jueves="{{ u.medico.dias_atencion.jueves|yesno:'1,0'|default:'' }}"
+                data-viernes="{{ u.medico.dias_atencion.viernes|yesno:'1,0'|default:'' }}"
+            {% endif %}
+
+            {% if u.admision %}
+                data-ventanilla="{{ u.admision.ventanilla|default:'' }}"
+                data-turnosadm="{{ u.admision.turnos|default:'' }}"
+
+                data-adm-madrugue="{{ u.admision.turnos.madrugue|yesno:'1,0' }}"
+                data-adm-mannana="{{ u.admision.turnos.mannana|yesno:'1,0' }}"
+                data-adm-tarde="{{ u.admision.turnos.tarde|yesno:'1,0' }}"
+                data-adm-noche="{{ u.admision.turnos.noche|yesno:'1,0' }}"
+            {% endif %}
+
+            {% if u.encargado_admision %}
+                data-ventanillaenc="{{ u.encargado_admision.ventanilla|default:'' }}"
+                data-turnosenc="{{ u.encargado_admision.turnos|default:'' }}"
+
+                data-enc-madrugue="{{ u.encargado_admision.turnos.madrugue|yesno:'1,0' }}"
+                data-enc-mannana="{{ u.encargado_admision.turnos.mannana|yesno:'1,0' }}"
+                data-enc-tarde="{{ u.encargado_admision.turnos.tarde|yesno:'1,0' }}"
+                data-enc-noche="{{ u.encargado_admision.turnos.noche|yesno:'1,0' }}"
+            {% endif %}
+        >
         <td>{{ u.username }}</td>
-        <td>{{ u.first_name }} {{ u.last_name }}</td>
-        <td>{{ u.email }}</td>
-        <td>{% if u.perfil and u.perfil.tipo %}{{ u.perfil.tipo.nombre }}{% else %}Sin rol{% endif %}</td>
+        <td>
+          {{ p.nombres }} {{ p.apellido_paterno }} {{ p.apellido_materno }}
+        </td>
+        <td>{{ p.ci }}</td>
+        <td>{{ p.correo }}</td>
+        <td>{{ p.fecha_nacimiento }}</td>
+        <td>{{ p.sexo }}</td>
+        <td>{{ p.celular }}</td>
+        <td>
+          {% if p.tipo %}
+            {{ p.tipo.nombre }}
+          {% else %}
+            Sin rol
+          {% endif %}
+        </td>
+        <td>
+          {% if u.is_active %}
+            <span class="estado activo">Activo</span>
+          {% else %}
+            <span class="estado inactivo">Inactivo</span>
+          {% endif %}
+        </td>
+
+        <!-- Acciones -->
         <td class="actions">
           <button class="link-view btn-view" data-id="{{ u.id }}">Ver</button>
+
           {% if puede_admin %}
           <button class="link-edit btn-edit" data-id="{{ u.id }}">Editar</button>
-          <button class="link-delete btn-delete" data-id="{{ u.id }}" data-username="{{ u.username }}">Eliminar</button>
+          <button 
+              class="btn-toggle"
+              data-id="{{ u.id }}"
+              data-username="{{ u.username }}"
+              data-active="{{ u.is_active }}">
+              {% if u.is_active %}
+                  Desactivar
+              {% else %}
+                  Activar
+              {% endif %}
+          </button>
           {% endif %}
         </td>
       </tr>
+      {% endwith %}
       {% empty %}
-      <tr><td colspan="5">Sin usuarios</td></tr>
+      <tr><td colspan="5">Sin usuarios registrados</td></tr>
       {% endfor %}
     </tbody>
+
   </table>
 </section>
 
-<div class="modal usuarios-editar" id="modal-editar-usuario" aria-hidden="true">
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-panel">
-    <h3>Editar usuario</h3>
-    <form method="post" id="form-edit">
-      {% csrf_token %}
-      <div class="form-row"><label>Usuario</label><input name="username" required></div>
-      <div class="form-row"><label>Nombres</label><input name="first_name"></div>
-      <div class="form-row"><label>Apellidos</label><input name="last_name"></div>
-      <div class="form-row"><label>Email</label><input name="email" type="email"></div>
-      <div class="form-row"><label>Activo</label><select name="is_active"><option value="True">Sí</option><option value="False">No</option></select></div>
-      <div class="form-row"><label>Rol</label>
-        <select name="tipo">
-          <option value="">Sin rol</option>
-          {% for t in tipos %}
-            <option value="{{ t.id }}">{{ t.nombre }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button class="btn" type="submit">Guardar</button>
-        <button class="btn-secondary" type="button" data-close>Cerrar</button>
-      </div>
-    </form>
-  </div>
-</div>
-<div class="modal usuarios-ver" id="modal-ver-usuario" aria-hidden="true">
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-panel">
-    <h3>Ver usuario</h3>
-    <div class="form-row"><label>Usuario</label><div id="view-username"></div></div>
-    <div class="form-row"><label>Nombre</label><div id="view-name"></div></div>
-    <div class="form-row"><label>Email</label><div id="view-email"></div></div>
-    <div class="form-row"><label>Activo</label><div id="view-active"></div></div>
-    <div class="form-row"><label>Rol</label><div id="view-rol"></div></div>
-    <div class="modal-actions">
-      <button class="btn-secondary" type="button" data-close>Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal usuarios-eliminar" id="modal-eliminar-usuario" aria-hidden="true">
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-panel">
-    <h3>Eliminar usuario</h3>
-    <form method="post" id="form-delete">
-      {% csrf_token %}
-      <p id="delete-text"></p>
-      <div class="modal-actions">
-        <button class="btn-danger" type="submit">Eliminar</button>
-        <button class="btn-secondary" type="button" data-close>Cerrar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 {% include "./modals/crear.html" %}
+{% include "./modals/editar.html" %}
+{% include "./modals/ver.html" %}
+{% include "./modals/deshabilitar.html" %}
 
 {% endblock %}
+
 {% block extra_js %}
 <script src="/static/js/accounts/usuarios/users.js"></script>
+<script src="/static/js/accounts/usuarios/modals/deshabilitar.js"></script>
+<script src="/static/js/accounts/usuarios/modals/view.js"></script>
+<script src="/static/js/accounts/usuarios/modals/editar.js"></script>
+
 {% endblock %}

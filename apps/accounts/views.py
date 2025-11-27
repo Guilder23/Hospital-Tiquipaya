@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, get_user_model
 from django.urls import reverse_lazy
+from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .forms import UserCreateWithProfileForm, UserUpdateWithProfileForm
@@ -117,6 +118,124 @@ def crear_usuario(request):
         "tipos": TipoUsuario.objects.all(),
     })
 
+def editar_usuario(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    perfil = getattr(user, "perfil", None)
+
+    if request.method == "POST":
+
+        # ==========================
+        # CAMPOS GENERALES
+        # ==========================
+        perfil.nombres = request.POST.get("nombres")
+        perfil.apellido_paterno = request.POST.get("apellido_paterno")
+        perfil.apellido_materno = request.POST.get("apellido_materno") or None
+        perfil.fecha_nacimiento = request.POST.get("fecha_nacimiento")
+        perfil.sexo = request.POST.get("sexo")
+        perfil.direccion = request.POST.get("direccion")
+        perfil.ci = request.POST.get("ci")
+        perfil.complemento_ci = request.POST.get("complemento_ci")
+        perfil.expedido = request.POST.get("expedido") or "CB"
+        perfil.telefono = request.POST.get("telefono") or None
+        perfil.celular = request.POST.get("celular") or None
+        perfil.correo = request.POST.get("correo") or None
+        perfil.save()
+
+        user.username = request.POST.get("username")
+        user.save()
+
+        # ==========================
+        # DETECTAR ROL
+        # ==========================
+        tipo_rol = (perfil.tipo.nombre.lower() if perfil.tipo else "").strip()
+
+        # ==========================
+        # MÉDICO
+        # ==========================
+        if tipo_rol == "medico":
+            medico = getattr(user, "medico", None)
+            if medico:
+
+                medico.especialidad_id = request.POST.get("especialidad") or None
+                medico.nro_matricula = request.POST.get("matricula") or ""
+                medico.consultorio = request.POST.get("consultorio") or ""
+                medico.save()
+
+                # Turnos médico
+                t = medico.turnos
+                t.madrugue = bool(request.POST.get("madrugue"))
+                t.mannana = bool(request.POST.get("mannana"))
+                t.tarde = bool(request.POST.get("tarde"))
+                t.noche = bool(request.POST.get("noche"))
+                t.save()
+
+                # Días médico
+                d = medico.dias_atencion
+                d.lunes = bool(request.POST.get("lunes"))
+                d.martes = bool(request.POST.get("martes"))
+                d.miercoles = bool(request.POST.get("miercoles"))
+                d.jueves = bool(request.POST.get("jueves"))
+                d.viernes = bool(request.POST.get("viernes"))
+                d.save()
+
+        # ==========================
+        # ADMISIÓN
+        # ==========================
+        elif tipo_rol == "admision":
+            adm = getattr(user, "admision", None)
+            if adm:
+                adm.ventanilla = request.POST.get("ventanilla") or ""
+                adm.save()
+
+                # Turnos admisión
+                t = adm.turnos
+                t.madrugue = bool(request.POST.get("madrugue"))
+                t.mannana = bool(request.POST.get("mannana"))
+                t.tarde = bool(request.POST.get("tarde"))
+                t.noche = bool(request.POST.get("noche"))
+                t.save()
+
+        # ==========================
+        # ENCARGADO ADMISIÓN
+        # ==========================
+        elif tipo_rol == "encargado_admision":
+            enc = getattr(user, "encargado_admision", None)
+            if enc:
+                enc.ventanilla = request.POST.get("ventanilla") or ""
+                enc.save()
+
+                # Turnos encargado
+                t = enc.turnos
+                t.madrugue = bool(request.POST.get("madrugue"))
+                t.mannana = bool(request.POST.get("mannana"))
+                t.tarde = bool(request.POST.get("tarde"))
+                t.noche = bool(request.POST.get("noche"))
+                t.save()
+
+        messages.success(request, "Usuario actualizado correctamente.")
+        return redirect("accounts:usuario_list")
+
+    return render(request, "accounts/usuarios/modals/editar.html", {
+        "usuario": user,
+        "perfil": perfil,
+        "especialidades": Especialidad.objects.all(),
+        "tipos": TipoUsuario.objects.all(),
+    })
+
+class UsuarioToggleActiveView(LoginRequiredMixin, UserPassesTestMixin, View):
+
+    def post(self, request, pk):
+        usuario = get_object_or_404(User, pk=pk)
+
+        # Alternar activo ↔ inactivo
+        usuario.is_active = not usuario.is_active
+        usuario.save()
+
+        return redirect('accounts:usuario_list')
+
+    def test_func(self):
+        return self.request.user.is_staff
+    
 # Función para verificar si un usuario es administrador
 def _es_admin(user):
     if user.is_superuser or user.is_staff:
@@ -187,9 +306,42 @@ class UsuarioListView(LoginRequiredMixin, ListView):
         ctx['especialidades'] = Especialidad.objects.all()
         return ctx
 
+
 class UsuarioDetailView(LoginRequiredMixin, DetailView):
     model = get_user_model()
-    template_name = 'accounts/usuarios/detail.html'
+    template_name = "accounts/usuarios/detail.html"
+    context_object_name = "usuario"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        user = self.get_object()
+
+        # PERFIL
+        perfil = getattr(user, "perfil", None)
+        ctx["perfil"] = perfil
+
+        rol = perfil.tipo.nombre.lower() if perfil and perfil.tipo else None
+        ctx["rol"] = rol
+
+        # SI ES MÉDICO
+        if rol == "medico":
+            medico = Medico.objects.filter(user=user).select_related(
+                "especialidad", "turnos", "dias_atencion"
+            ).first()
+            ctx["medico"] = medico
+
+        # SI ES ADMISIÓN
+        if rol == "admision":
+            adm = Admision.objects.filter(user=user).select_related("turnos").first()
+            ctx["admision"] = adm
+
+        # SI ES ENCARGADO ADMISIÓN
+        if rol == "encargado_admision":
+            enc = EncargadoAdmision.objects.filter(user=user).select_related("turnos").first()
+            ctx["encargado_admision"] = enc
+
+        return ctx
+
 
 class UsuarioCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = UserCreateWithProfileForm
@@ -215,3 +367,4 @@ class UsuarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return _es_admin(self.request.user)
+

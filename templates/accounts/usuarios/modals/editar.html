@@ -1,0 +1,176 @@
+<div id="modal-editar-usuario" class="modal" aria-hidden="true" role="dialog">
+  <div class="modal-dialog">
+    <header class="modal-header">
+      <h2>Editar Usuario</h2>
+      <button class="modal-close" data-close="modal-edit">✕</button>
+    </header>
+
+    <form id="form-edit-user" method="post">
+      {% csrf_token %}
+
+      <div class="modal-body">
+        
+        <!-- ========================================================= -->
+        <!-- DATOS GENERALES                                           -->
+        <!-- ========================================================= -->
+        <h4>Datos del usuario</h4>
+
+        <label>Nombres
+          <input name="nombres" required>
+        </label>
+
+        <label>Apellido paterno
+          <input name="apellido_paterno" required>
+        </label>
+
+        <label>Apellido materno
+          <input name="apellido_materno">
+        </label>
+
+        <label>Usuario
+          <input name="username" required>
+        </label>
+
+        <label>Correo
+          <input name="correo">
+        </label>
+
+        <label>Fecha nacimiento
+          <input type="date" name="fecha_nacimiento" required>
+        </label>
+
+        <label>Sexo
+          <select name="sexo">
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="O">Otro</option>
+          </select>
+        </label>
+
+        <label>CI
+          <input name="ci">
+        </label>
+
+        <label>Complemento
+          <input name="complemento_ci">
+        </label>
+
+        <label>Expedido
+          <select name="expedido">
+            <option value="BN">BN</option>
+            <option value="CB">CB</option>
+            <option value="CH">CH</option>
+            <option value="LP">LP</option>
+            <option value="OR">OR</option>
+            <option value="PD">PD</option>
+            <option value="PT">PT</option>
+            <option value="SC">SC</option>
+            <option value="TJ">TJ</option>
+          </select>
+        </label>
+
+        <label>Teléfono
+          <input name="telefono">
+        </label>
+
+        <label>Celular
+          <input name="celular">
+        </label>
+
+        <label>Dirección
+          <input name="direccion">
+        </label>
+
+        <label>Rol
+          <input name="tipo" readonly>
+        </label>
+
+
+        <!-- ========================================================= -->
+        <!-- CAMPOS DE MÉDICO                                           -->
+        <!-- ========================================================= -->
+        <div id="edit-campos-medico" style="display:none; margin-top:1rem;">
+
+          <h4>Datos de Médico</h4>
+
+          <label>Especialidad
+            <select name="especialidad">
+              <option value="">-- Seleccione --</option>
+              {% for esp in especialidades %}
+              <option value="{{ esp.id }}">{{ esp.nombre }}</option>
+              {% endfor %}
+            </select>
+          </label>
+
+          <label>N° Matrícula
+            <input type="text" name="matricula">
+          </label>
+
+          <label>Consultorio
+            <input name="consultorio">
+          </label>
+
+          <h4>Turnos</h4>
+          <label><input type="checkbox" name="med-madrugue"> Madrugada</label><br>
+          <label><input type="checkbox" name="med-mannana"> Mañana</label><br>
+          <label><input type="checkbox" name="med-tarde"> Tarde</label><br>
+          <label><input type="checkbox" name="med-noche"> Noche</label><br>
+
+          <h4>Días de atención</h4>
+          <label><input type="checkbox" name="lunes"> Lunes</label><br>
+          <label><input type="checkbox" name="martes"> Martes</label><br>
+          <label><input type="checkbox" name="miercoles"> Miércoles</label><br>
+          <label><input type="checkbox" name="jueves"> Jueves</label><br>
+          <label><input type="checkbox" name="viernes"> Viernes</label><br>
+
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- CAMPOS DE ADMISIÓN                                         -->
+        <!-- ========================================================= -->
+        <div id="edit-campos-admision" style="display:none; margin-top:1rem;">
+
+          <h4>Datos de Admisión</h4>
+
+          <label>Ventanilla
+            <input name="ventanilla">
+          </label>
+
+          <h4>Turnos</h4>
+          <label><input type="checkbox" name="adm-madrugue"> Madrugada</label><br>
+          <label><input type="checkbox" name="adm-mannana"> Mañana</label><br>
+          <label><input type="checkbox" name="adm-tarde"> Tarde</label><br>
+          <label><input type="checkbox" name="adm-noche"> Noche</label><br>
+
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- CAMPOS ENCARGADO ADMISION                                  -->
+        <!-- ========================================================= -->
+        <div id="campos-encargado-admision" style="display:none; margin-top:1rem;">
+
+          <h4>Encargado de Admisión</h4>
+
+          <label>Ventanilla
+            <input name="enc-ventanilla">
+          </label>
+
+          <h4>Turnos</h4>
+          <label><input type="checkbox" name="enc-madrugue"> Madrugada</label><br>
+          <label><input type="checkbox" name="enc-mannana"> Mañana</label><br>
+          <label><input type="checkbox" name="enc-tarde"> Tarde</label><br>
+          <label><input type="checkbox" name="enc-noche"> Noche</label><br>
+        </div>
+
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-secondary" data-close="modal-edit">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar</button>
+      </footer>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div id="modal-ver-usuario" class="modal" aria-hidden="true" role="dialog">
+  <div class="modal-dialog">
+    <header class="modal-header">
+      <h2>Datos del usuario</h2>
+      <button class="modal-close" data-close="modal-view">✕</button>
+    </header>
+
+    <div class="modal-body">
+      <h4>Datos generales</h4>
+      <p><strong>Usuario:</strong> <span id="v-username"></span></p>
+      <p><strong>Nombres:</strong> <span id="v-nombres"></span></p>
+      <p><strong>Apellido paterno:</strong> <span id="v-apellido-paterno"></span></p>
+      <p><strong>Apellido materno:</strong> <span id="v-apellido-materno"></span></p>
+      <p><strong>Correo:</strong> <span id="v-email"></span></p>
+      <p><strong>CI:</strong> <span id="v-ci"></span>  
+         <strong>Comp:</strong> <span id="v-complemento"></span>  
+         <strong>Exp:</strong> <span id="v-expedido"></span></p>
+      <p><strong>Fecha de nacimiento:</strong> <span id="v-nacimiento"></span></p>
+      <p><strong>Sexo:</strong> <span id="v-sexo"></span></p>
+      <p><strong>Teléfono:</strong> <span id="v-telefono"></span></p>
+      <p><strong>Celular:</strong> <span id="v-celular"></span></p>
+      <p><strong>Dirección:</strong> <span id="v-direccion"></span></p>
+
+      <h4>Rol</h4>
+      <p><span id="v-rol"></span></p>
+
+      <div id="v-medico" style="display:none;">
+        <h4>Datos de médico</h4>
+        <p><strong>Especialidad:</strong> <span id="v-especialidad"></span></p>
+        <p><strong>Nº matrícula:</strong> <span id="v-matricula"></span></p>
+        <p><strong>Consultorio:</strong> <span id="v-consultorio"></span></p>
+        <p><strong>Turnos:</strong> <span id="v-turnos"></span></p>
+        <p><strong>Días atención:</strong> <span id="v-dias"></span></p>
+      </div>
+
+      <div id="v-admision" style="display:none;">
+        <h4>Datos de admisión</h4>
+        <p><strong>Ventanilla:</strong> <span id="v-ventanilla"></span></p>
+        <p><strong>Turnos:</strong> <span id="v-turnosadm"></span></p>
+      </div>
+
+      <div id="v-encargado" style="display:none;">
+        <h4>Datos de encargado de admisión</h4>
+        <p><strong>Ventanilla:</strong> <span id="v-ventanillaenc"></span></p>
+        <p><strong>Turnos:</strong> <span id="v-turnosenc"></span></p>
+      </div>
+    </div>
+
+    <footer class="modal-footer">
+      <button class="btn-secondary" data-close="modal-view">Cerrar</button>
+    </footer>
+  </div>
+</div>

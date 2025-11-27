@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     const ROL_MEDICO = "Medico";
     const ROL_ADMISION = "Admision";
     const ROL_ENCARGADO = "Encargado de Admisión";
 
     const selectRol = document.getElementById('select-rol');
 
+    // Mostrar campos según el rol en el modal CREAR
     function toggleCamposCondicionales() {
         if (!selectRol) return;
 
@@ -31,76 +33,45 @@ document.addEventListener('DOMContentLoaded', function () {
         selectRol.addEventListener('change', toggleCamposCondicionales);
     }
 
+    // MODALES
     const modalCreate = document.getElementById('modal-crear-usuario');
-    const modalEdit = document.getElementById('modal-editar-usuario');
-    const modalDelete = document.getElementById('modal-eliminar-usuario');
-    const modalView = document.getElementById('modal-ver-usuario');
-    const btnOpenCreate = document.getElementById('btn-open-create');
+    const modalEdit   = document.getElementById('modal-editar-usuario');
+    const modalView   = document.getElementById('modal-ver-usuario');
+    const modalDeshabilitar   = document.getElementById('modal-desactivar-usuario');
 
     function open(modal) {
+        if (!modal) return;
         modal.setAttribute('aria-hidden', 'false');
+        modal.style.display = 'block';
+        modal.classList.add('active', 'show');
     }
+
     function close(modal) {
-        modal.setAttribute('aria-hidden', 'true');
-        if (modal === modalCreate && selectRol) {
-            selectRol.value = '';
-            toggleCamposCondicionales();
+        if (!modal) return;
+
+        if (modal.contains(document.activeElement)) {
+            document.activeElement.blur();
         }
+
+        modal.setAttribute('aria-hidden', 'true');
+        modal.style.display = "none";
+        modal.classList.remove('active', 'show', 'open');
     }
 
-    document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => {
-        [modalCreate, modalEdit, modalDelete, modalView].forEach(m => m && close(m));
-    }));
+    document.querySelectorAll('[data-close]').forEach(el =>
+        el.addEventListener('click', () => {
+            [modalCreate, modalEdit, modalView, modalDeshabilitar].forEach(m => m && close(m));
+        })
+    );
 
-    if (btnOpenCreate) btnOpenCreate.addEventListener('click', () => open(modalCreate));
+    const btnOpenCreate = document.getElementById('btn-open-create');
+    if (btnOpenCreate) {
+        btnOpenCreate.addEventListener('click', () => open(modalCreate));
+    }
 
-    // Editar Usuario
-    document.querySelectorAll('.btn-edit').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
-            const row = document.querySelector(`tr[data-id="${id}"]`);
-            const form = document.getElementById('form-edit');
-
-            form.setAttribute('action', `/accounts/usuarios/${id}/editar/`);
-            form.querySelector('[name="username"]').value = row.getAttribute('data-username') || '';
-            form.querySelector('[name="first_name"]').value = row.getAttribute('data-first_name') || '';
-            form.querySelector('[name="last_name"]').value = row.getAttribute('data-last_name') || '';
-            form.querySelector('[name="email"]').value = row.getAttribute('data-email') || '';
-            const activeSel = form.querySelector('[name="is_active"]');
-            if (activeSel) activeSel.value = row.getAttribute('data-active') === 'True' ? 'True' : 'False';
-            const tipoSel = form.querySelector('[name="tipo"]');
-            if (tipoSel) tipoSel.value = row.getAttribute('data-tipo_id') || '';
-            open(modalEdit);
-        });
-    });
-
-    // Eliminar Usuario
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
-            const username = btn.getAttribute('data-username');
-            const form = document.getElementById('form-delete');
-
-            form.setAttribute('action', `/accounts/usuarios/${id}/eliminar/`);
-            const txt = document.getElementById('delete-text');
-            if (txt) txt.textContent = `¿Confirmas eliminar "${username}"?`;
-            open(modalDelete);
-        });
-    });
-
-    // Ver Usuario
-    document.querySelectorAll('.btn-view').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
-            const row = document.querySelector(`tr[data-id="${id}"]`);
-
-            document.getElementById('view-username').textContent = row.getAttribute('data-username') || '';
-            document.getElementById('view-name').textContent = (row.getAttribute('data-first_name') || '') + ' ' + (row.getAttribute('data-last_name') || '');
-            document.getElementById('view-email').textContent = row.getAttribute('data-email') || '';
-            document.getElementById('view-active').textContent = row.getAttribute('data-active') === 'True' ? 'Sí' : 'No';
-            document.getElementById('view-rol').textContent = row.getAttribute('data-tipo_nombre') || 'Sin rol';
-
-            open(modalView);
-        });
-    });
+    // Exponer funciones a nivel global para los otros archivos
+    window.__modals = {
+        open,
+        close
+    };
 });

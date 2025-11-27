@@ -8,7 +8,15 @@ class DiasAtencion(models.Model):
     viernes = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Días: {self.lunes}{self.martes}{self.miercoles}{self.jueves}{self.viernes}"
+        dias = []
+
+        if self.lunes: dias.append("Lunes")
+        if self.martes: dias.append("Martes")
+        if self.miercoles: dias.append("Miércoles")
+        if self.jueves: dias.append("Jueves")
+        if self.viernes: dias.append("Viernes")
+
+        return ", ".join(dias) if dias else "Sin días asignados"
     
 class HorariosAtencion(models.Model):
     madrugue = models.BooleanField(default=False)
@@ -17,4 +25,11 @@ class HorariosAtencion(models.Model):
     noche = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Horarios: {self.madrugue}{self.mannana}{self.tarde}{self.noche}"
+        horas = []
+
+        if self.madrugue: horas.append("madrugue")
+        if self.mannana: horas.append("mañana")
+        if self.tarde: horas.append("tarde")
+        if self.noche: horas.append("noche")
+
+        return ", ".join(horas) if horas else "Sin días asignados"
