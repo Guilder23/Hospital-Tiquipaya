@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mis Citas - {{ medico }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2>Mis Citas de Hoy</h2>
+                    <p class="text-muted">{{ fecha|date:"l, d \\d\\e F \\d\\e Y" }}</p>
+                </div>
+                <div class="badge bg-primary p-3">
+                    <span class="fs-6">{{ citas.count }} cita{{ citas.count|pluralize }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if citas %}
+        <div class="row">
+            {% for cita in citas %}
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="card border-primary h-100">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">{{ cita.hora|time:"H:i" }}</h5>
+                            {% if cita.estado_atencion == 'EN_ESPERA' %}
+                                <span class="badge bg-warning">En Espera</span>
+                            {% elif cita.estado_atencion == 'EN_ATENCION' %}
+                                <span class="badge bg-danger blink">En Atención</span>
+                            {% else %}
+                                <span class="badge bg-success">Completado</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-primary mb-3">
+                                <i class="fas fa-user-circle"></i> {{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}
+                            </h6>
+                            
+                            <div class="info-section mb-3">
+                                <small class="text-muted d-block mb-2"><strong>Información del Paciente</strong></small>
+                                <p class="mb-1">
+                                    <i class="fas fa-birthday-cake"></i> <strong>Edad:</strong> 
+                                    {% if cita.paciente.get_edad %}
+                                        {{ cita.paciente.get_edad }} años
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </p>
+                                <p class="mb-1">
+                                    <i class="fas fa-id-card"></i> <strong>CI:</strong> {{ cita.paciente.ci }}
+                                </p>
+                                <p class="mb-1">
+                                    <i class="fas fa-phone"></i> <strong>Celular:</strong> {{ cita.paciente.celular|default:"N/A" }}
+                                </p>
+                            </div>
+
+                            <!-- Información de tiempo de atención -->
+                            {% if cita.estado_atencion == 'EN_ATENCION' and cita.tiempo_inicio_atencion %}
+                                <div class="alert alert-info mb-3">
+                                    <i class="fas fa-clock"></i> 
+                                    <small><strong>Iniciado:</strong> <span id="tiempo-inicio-{{ cita.id }}">{{ cita.tiempo_inicio_atencion|time:"H:i:s.u" }}</span></small>
+                                </div>
+                            {% endif %}
+
+                            {% if cita.estado_atencion == 'ATENDIDO' %}
+                                <div class="alert alert-success mb-3">
+                                    <i class="fas fa-check-circle"></i>
+                                    <small><strong>Tiempo de atención:</strong> {{ cita.duracion_atencion_minutos }} min</small>
+                                </div>
+                            {% endif %}
+
+                            <!-- Botones de acción -->
+                            <div class="btn-group-vertical w-100" role="group">
+                                {% if cita.estado_atencion == 'EN_ESPERA' %}
+                                    <button type="button" class="btn btn-success btn-sm iniciar-atencion" 
+                                            data-cita-id="{{ cita.id }}">
+                                        <i class="fas fa-play-circle"></i> Iniciar Atención
+                                    </button>
+                                {% elif cita.estado_atencion == 'EN_ATENCION' %}
+                                    <button type="button" class="btn btn-warning btn-sm finalizar-atencion" 
+                                            data-cita-id="{{ cita.id }}">
+                                        <i class="fas fa-stop-circle"></i> Finalizar Atención
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                        <i class="fas fa-check"></i> Completado
+                                    </button>
+                                {% endif %}
+                                
+                                {% if cita.estado_atencion != 'ATENDIDO' %}
+                                    <button type="button" class="btn btn-info btn-sm mt-2 generar-eco" 
+                                            data-cita-id="{{ cita.id }}">
+                                        <i class="fas fa-qrcode"></i> Generar Código ECO
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle"></i> No tienes citas programadas para hoy.
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal para mostrar código de ecografía -->
+<div class="modal fade" id="ecoModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-qrcode"></i> ¿Habilitar Ecografía?
+                </h5>
+            </div>
+            <div class="modal-body text-center p-4">
+                <p class="mb-3">¿Deseas habilitar una cita de ecografía para este paciente?</p>
+                <p class="text-muted"><small>Si es "Sí", se generará un código ECO que el paciente podrá usar para agendar su cita.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="noEcoButton">
+                    <i class="fas fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-success" id="siEcoButton">
+                    <i class="fas fa-check"></i> Sí
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mostrar código de ecografía generado -->
+<div class="modal fade" id="codigoEcoGeneradoModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle"></i> Ecografía Habilitada
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <p class="mb-3"><strong>Ecografía habilitada correctamente</strong></p>
+                <p class="text-muted">El paciente podrá agendar su cita de ecografía.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="fas fa-check"></i> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .btn-group-vertical {
+        gap: 0.5rem;
+    }
+    .info-section {
+        background-color: #f8f9fa;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border-left: 3px solid #0d6efd;
+    }
+    .blink {
+        animation: blink 1s infinite;
+    }
+    @keyframes blink {
+        0%, 50%, 100% {
+            opacity: 1;
+        }
+        25%, 75% {
+            opacity: 0.7;
+        }
+    }
+    .display-4 {
+        font-size: 2.5rem;
+    }
+</style>
+
+<script>
+let citaIdActual = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Iniciar atención
+    document.querySelectorAll('.iniciar-atencion').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const citaId = this.dataset.citaId;
+            iniciarAtencion(citaId);
+        });
+    });
+
+    // Finalizar atención
+    document.querySelectorAll('.finalizar-atencion').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const citaId = this.dataset.citaId;
+            citaIdActual = citaId;
+            const modal = new bootstrap.Modal(document.getElementById('ecoModal'));
+            modal.show();
+        });
+    });
+
+    // Generar código de ecografía manual
+    document.querySelectorAll('.generar-eco').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const citaId = this.dataset.citaId;
+            generarCodigoEco(citaId);
+        });
+    });
+
+    // Botones del modal de ecografía
+    document.getElementById('noEcoButton').addEventListener('click', function() {
+        finalizarSinEco();
+    });
+
+    document.getElementById('siEcoButton').addEventListener('click', function() {
+        finalizarConEco();
+    });
+
+    // Copiar código generado
+    document.getElementById('copiarCodigoEco').addEventListener('click', function() {
+        const codigo = document.getElementById('codigoEcoGenerado').textContent;
+        navigator.clipboard.writeText(codigo).then(() => {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-check"></i> Copiado';
+            setTimeout(() => {
+                this.innerHTML = originalText;
+            }, 2000);
+        }).catch(err => {
+            showAlert('danger', 'Error al copiar el código');
+        });
+    });
+
+    // Actualizar hora con milisegundos en tiempo real
+    setInterval(function() {
+        document.querySelectorAll('[id^="tiempo-inicio-"]').forEach(el => {
+            const now = new Date();
+            const ms = String(now.getMilliseconds()).padStart(3, '0');
+            const hms = now.toLocaleTimeString('es-ES', { hour12: false });
+            el.textContent = hms + '.' + ms;
+        });
+    }, 100);
+});
+
+function iniciarAtencion(citaId) {
+    fetch(`/citas/${citaId}/iniciar/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            showAlert('success', 'Atención iniciada correctamente');
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showAlert('danger', data.error || 'Error al iniciar atención');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('danger', 'Error en la solicitud');
+    });
+}
+
+function finalizarSinEco() {
+    procesar_ecografia(citaIdActual, 'no');
+}
+
+function finalizarConEco() {
+    procesar_ecografia(citaIdActual, 'si');
+}
+
+function procesar_ecografia(citaId, habilitar) {
+    console.log('Procesando ecografía:', { citaId, habilitar });
+    
+    const formData = new FormData();
+    formData.append('habilitar', habilitar);
+
+    fetch(`/citas/${citaId}/procesar-ecografia/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: formData
+    })
+    .then(response => {
+        console.log('Respuesta recibida:', response.status);
+        if (!response.ok) {
+            return response.json().then(err => {
+                throw new Error(`HTTP ${response.status}: ${err.error || 'Error desconocido'}`);
+            }).catch(e => {
+                throw new Error(`HTTP ${response.status}: Error al parsear respuesta`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Datos procesados:', data);
+        
+        if (data.ok) {
+            // Cerrar modal de ecografía
+            try {
+                const ecoModal = bootstrap.Modal.getInstance(document.getElementById('ecoModal'));
+                if (ecoModal) {
+                    ecoModal.hide();
+                }
+            } catch(e) {
+                console.log('Nota: Modal de eco no estaba abierto:', e.message);
+            }
+
+            if (habilitar === 'si') {
+                // Mostrar modal de confirmación
+                const codigoModal = new bootstrap.Modal(document.getElementById('codigoEcoGeneradoModal'));
+                codigoModal.show();
+                showAlert('success', 'Ecografía habilitada correctamente');
+            } else {
+                showAlert('success', 'Paciente atendido sin ecografía');
+            }
+
+            setTimeout(() => location.reload(), 2000);
+        } else {
+            console.error('Error en respuesta:', data);
+            showAlert('danger', data.error || 'Error al procesar ecografía');
+        }
+    })
+    .catch(error => {
+        console.error('Error en solicitud:', error);
+        showAlert('danger', 'Error en la solicitud: ' + error.message);
+    });
+}
+
+function generarCodigoEco(citaId) {
+    fetch(`/citas/${citaId}/generar-eco/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            document.getElementById('codigoEcoGenerado').textContent = data.codigo;
+            const modal = new bootstrap.Modal(document.getElementById('codigoEcoGeneradoModal'));
+            modal.show();
+        } else {
+            showAlert('danger', data.error || 'Error al generar código');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('danger', 'Error en la solicitud');
+    });
+}
+
+function showAlert(type, message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px; max-width: 400px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    setTimeout(() => alertDiv.remove(), 5000);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

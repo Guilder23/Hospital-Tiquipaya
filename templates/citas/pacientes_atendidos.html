@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pacientes Atendidos - {{ medico }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2>Pacientes Atendidos Hoy</h2>
+                    <p class="text-muted">{{ fecha|date:"l, d \\d\\e F \\d\\e Y" }}</p>
+                </div>
+                <div class="badge bg-primary p-3">
+                    <span class="fs-6">{{ citas_atendidas.count }} paciente{{ citas_atendidas.count|pluralize }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if citas_atendidas %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th><i class="fas fa-user"></i> Paciente</th>
+                        <th><i class="fas fa-birthday-cake"></i> Edad</th>
+                        <th><i class="fas fa-id-card"></i> CI</th>
+                        <th><i class="fas fa-phone"></i> Celular</th>
+                        <th><i class="fas fa-hourglass-end"></i> Duración</th>
+                        <th><i class="fas fa-ultrasound"></i> Ecografía</th>
+                        <th><i class="fas fa-clock"></i> Atendido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas_atendidas %}
+                        <tr>
+                            <td>
+                                <strong>{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</strong>
+                            </td>
+                            <td>
+                                {% if cita.paciente.get_edad %}
+                                    {{ cita.paciente.get_edad }} años
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                <code>{{ cita.paciente.ci }}</code>
+                            </td>
+                            <td>
+                                {{ cita.paciente.celular|default:"N/A" }}
+                            </td>
+                            <td>
+                                <span class="badge bg-info">
+                                    {{ cita.duracion_atencion_minutos|default:"—" }} min
+                                </span>
+                            </td>
+                            <td>
+                                {% if cita.requiere_ecografia %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle"></i> Habilitada
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-times-circle"></i> No habilitada
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small>{{ cita.tiempo_fin_atencion|time:"H:i:s"|default:"—" }}</small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle"></i> No has atendido a ningún paciente hoy aún.
+        </div>
+    {% endif %}
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="{% url 'citas:citas_hoy' %}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Volver a Mis Citas
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table {
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    .table thead {
+        font-weight: 600;
+    }
+    .table tbody tr {
+        transition: background-color 0.2s;
+    }
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    code {
+        background-color: #f1f3f5;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-family: 'Courier New', monospace;
+    }
+</style>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 class Paciente(models.Model):
     GENEROS = (
@@ -44,3 +45,13 @@ class Paciente(models.Model):
 
     def __str__(self):
         return f'{self.apellido_paterno} {self.apellido_materno} {self.nombres} ({self.ci})'
+    
+    def get_edad(self):
+        """Calcula la edad del paciente"""
+        if self.fecha_nacimiento:
+            hoy = date.today()
+            edad = hoy.year - self.fecha_nacimiento.year
+            if (hoy.month, hoy.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day):
+                edad -= 1
+            return edad
+        return None
