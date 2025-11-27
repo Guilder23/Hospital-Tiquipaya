@@ -1,4 +1,159 @@
 /* ======= RESET ======= */
+:root {
+  /* ==========================
+     COLORES DE MARCA / HOSPITAL
+     ========================== */
+  --color-principal: #1b8f82;        /* Color principal verde/azul */
+  --color-secundario: #289b9b;       /* Color secundario verde/azul */
+  --color-terciario: #3aa9b8;        /* Color para encabezados y bordes */
+  --color-header-pagina: #0f4c75;    /* Color header de la página */
+  --color-hover-general: #d1e8ff;    /* Hover botones generales */
+  --color-hover-editar: #4f8ec7;     /* Hover botones de editar */
+
+  /* ==========================
+     TEXTOS Y FONDOS
+     ========================== */
+  --color-texto: #0f172a;            /* Color principal del texto */
+  --color-texto-secundario: #334155; /* Texto secundario */
+  --color-fondo: #f5f7fb;            /* Fondo general de la página */
+  --color-fondo-card: #ffffff;        /* Fondo de tarjetas / bloques */
+  --color-fondo-sidebar: #ffffff;
+  --color-fondo-sidebar-link: #e8eef5;
+  --color-fondo-sidebar-link-hover: #d0e2ff;
+  --color-borde-card: #c6d7e6;
+  --color-sombra: rgba(0,0,0,0.1);   /* Sombra general de cajas */
+
+  /* ==========================
+     INPUTS / FORMULARIOS
+     ========================== */
+  --color-fondo-input: #f3f7fb;      /* Fondo de inputs */
+  --color-borde-input: #c6d7e6;       /* Borde de inputs */
+  --color-borde-input-focus: #1b8f82; /* Borde de input al hacer focus */
+  --color-placeholder: #7a7a7a;       /* Color placeholder */
+  
+  /* ==========================
+     BOTONES
+     ========================== */
+  --color-boton-principal: #0f4c75;       /* Botón normal */
+  --color-boton-principal-hover: #0c3b5a; /* Botón hover */
+  --color-boton-principal-active: #092f44;/* Botón active */
+  
+  --color-boton-secundario: #289b9b;      /* Botón secundario normal */
+  --color-boton-secundario-hover: #1f7c7c;/* Botón secundario hover */
+  --color-boton-secundario-active: #176161;/* Botón secundario active */
+
+  --color-boton-cancelar:#e0f2fe ;      /* Botón cancelar normal */
+  --color-boton-cancelar-hover: #d7ecf8;/* Botón cancelar hover */
+  --color-boton-cancelar-active: #ace1fa;/* Botón
+
+  
+
+  /* ==========================
+     ESTADOS / FEEDBACK
+     ========================== */
+  --color-exito: #22c55e;                  /* Éxito / activo */
+  --color-exito-hover: #16a34a;            /* Hover éxito */
+  --color-exito-active: #15803d;           /* Active éxito */
+  --color-error: #ef4444;                  /* Error / rechazado */
+  --color-error-hover: #dc2626;            /* Hover error */
+  --color-error-active: #b91c1c;           /* Active error */
+  --color-advertencia: #f59e0b;            /* Advertencia / pendiente */
+  --color-advertencia-hover: #d97706;      /* Hover advertencia */
+  --color-advertencia-active: #b45309;     /* Active advertencia */
+  --color-informacion: #0ea5e9;            /* Información general */
+  --color-informacion-hover: #0284c7;      /* Hover informacion */
+  --color-informacion-active: #0369a1;     /* Active informacion */
+  
+  --color-borde-exito: #22c55e;            /* Borde input / elemento con éxito */
+  --color-borde-error: #ef4444;            /* Borde input / elemento con error */
+  --color-fondo-advertencia: #fff7ed;      /* Fondo advertencia */
+  --color-fondo-informacion: #e0f2fe;      /* Fondo información */
+
+  /* ==========================
+     ICONOS Y SOMBRAS
+     ========================== */
+  --color-icono: #0f4c75;                  /* Color principal de iconos */
+  --color-icono-secundario: #0ea5e9;       /* Iconos secundarios */
+  --color-sombra-card: rgba(0,0,0,0.1);    /* Sombra de tarjetas */
+  --color-sombra-hover: rgba(0,0,0,0.15);  /* Sombra hover de tarjetas o botones */
+  
+  /* ==========================
+     SOMBRAS DE BOTONES
+     ========================== */
+  --sombra-boton-principal: rgba(15, 76, 117, 0.3);      /* Sombra botón principal hover */
+  --sombra-boton-principal-active: rgba(15, 76, 117, 0.2);
+  --sombra-exito: rgba(34, 197, 94, 0.3);               /* Sombra botón éxito hover */
+  --sombra-exito-active: rgba(34, 197, 94, 0.2);
+  --sombra-error: rgba(239, 68, 68, 0.3);               /* Sombra botón error hover */
+  --sombra-error-active: rgba(239, 68, 68, 0.2);
+  --sombra-advertencia: rgba(245, 158, 11, 0.3);        /* Sombra botón advertencia hover */
+  --sombra-advertencia-active: rgba(245, 158, 11, 0.2);
+  --sombra-informacion: rgba(14, 165, 233, 0.3);        /* Sombra botón información hover */
+  --sombra-informacion-active: rgba(14, 165, 233, 0.2);
+  --sombra-secundaria: rgba(0, 0, 0, 0.1);              /* Sombra botón secundario hover */
+  --sombra-secundaria-active: rgba(0, 0, 0, 0.08);
+  --sombra-neutral-06: rgba(0, 0, 0, 0.06);            /* Sombra neutral 6% opacidad */
+  --sombra-neutral-10: rgba(0, 0, 0, 0.1);             /* Sombra neutral 10% opacidad */
+  --sombra-neutral-15: rgba(0, 0, 0, 0.15);            /* Sombra neutral 15% opacidad */
+  --sombra-neutral-20: rgba(27, 143, 130, 0.2);        /* Sombra neutral 20% (doctor-card) */
+  --sombra-neutral-25: rgba(0, 0, 0, 0.25);            /* Sombra neutral 25% opacidad (modales) */
+
+  /* ==========================
+     MODALES Y OVERLAY
+     ========================== */
+  --color-fondo-modal: #ffffff;             /* Fondo de los modales */
+  --color-overlay-modal: rgba(225, 236, 245, 0.55); /* Overlay semitransparente */
+  --color-borde-modal: #c6d7e6;            /* Borde superior o contorno modal */
+
+  /* ==========================
+     TABLAS
+     ========================== */
+  --color-tabla-header-bg: #1b8f82;         /* Fondo header tabla */
+  --color-tabla-header-text: #ffffff;       /* Texto header tabla */
+  --color-tabla-row-bg: #ffffff;            /* Fondo filas tabla */
+  --color-tabla-row-hover-bg: #f0f9f8;      /* Fondo hover filas tabla */
+  --color-tabla-border: #e2e8f0;            /* Borde tabla */
+  --color-tabla-shadow: rgba(27, 143, 130, 0.1); /* Sombra tabla */
+
+  /* ==========================
+     BADGES
+     ========================== */
+  --badge-success-bg: #dcfce7;               /* Fondo badge éxito */
+  --badge-success-text: #166534;             /* Texto badge éxito */
+  --badge-success-border: #22c55e;           /* Borde badge éxito */
+  --badge-muted-bg: #f3f4f6;                 /* Fondo badge muted */
+  --badge-muted-text: #6b7280;               /* Texto badge muted */
+  --badge-muted-border: #d1d5db;             /* Borde badge muted */
+  
+  /* ==========================
+     ESTADOS (BADGES)
+     ========================== */
+  /* Activo */
+  --estado-activo-bg: #dcfce7;               /* Verde claro */
+  --estado-activo-text: #166534;             /* Verde oscuro */
+  --estado-activo-border: #22c55e;           /* Verde */
+  
+  /* Inactivo */
+  --estado-inactivo-bg: #f3f4f6;             /* Gris claro */
+  --estado-inactivo-text: #6b7280;           /* Gris */
+  --estado-inactivo-border: #d1d5db;         /* Gris claro */
+  
+  /* Pendiente */
+  --estado-pendiente-bg: #fef3c7;            /* Amarillo claro */
+  --estado-pendiente-text: #92400e;          /* Amarillo oscuro */
+  --estado-pendiente-border: #fbbf24;        /* Amarillo */
+  
+  /* Cancelado */
+  --estado-cancelado-bg: #fee2e2;            /* Rojo claro */
+  --estado-cancelado-text: #991b1b;          /* Rojo oscuro */
+  --estado-cancelado-border: #ef4444;        /* Rojo */
+  
+  /* Confirmado */
+  --estado-confirmado-bg: #dbeafe;           /* Azul claro */
+  --estado-confirmado-text: #1e40af;         /* Azul oscuro */
+  --estado-confirmado-border: #3b82f6;       /* Azul */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,14 +162,14 @@
 }
 
 body {
-  background: #f4f6f9;
-  color: #2d2d2d;
+  background: var(--color-fondo);
+  color: var(--color-texto);
   padding-top: 70px;
 }
 
 /* ======= HEADER ======= */
 .site-header {
-  background: #005baa;
+  background: var(--color-header-pagina);
   color: #fff;
   padding: 1rem 2rem;
   display: flex;
@@ -25,7 +180,7 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px var(--sombra-neutral-15);
 }
 
 .site-header h1 {
@@ -42,12 +197,17 @@ body {
 .site-header nav a {
   color: #fff;
   text-decoration: none;
-  font-weight: 500;
-  transition: 0.2s;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  transition: all .2s ease;
+  font-size: .95rem;
 }
 
 .site-header nav a:hover {
-  color: #d1e8ff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 .user-info {
@@ -68,18 +228,26 @@ body {
 }
 
 .logout-form button {
-  padding: 0.4rem 0.8rem;
-  background: #e63946;
+  padding: 0.6rem 1.2rem;
+  background: var(--color-error);
   border: none;
-  border-radius: 6px;
-  color: white;
+  border-radius: 8px;
+  color: #fff;
   cursor: pointer;
-  transition: 0.2s;
-  font-weight: 500;
+  transition: transform .15s ease, box-shadow .15s ease;
+  font-weight: 600;
+  font-size: .95rem;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
 }
 
 .logout-form button:hover {
-  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.logout-form button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
 }
 
 /* ======= LAYOUT ======= */
@@ -90,10 +258,10 @@ body {
 /* ======= SIDEBAR ======= */
 .sidebar {
   width: 230px;
-  background: #ffffff;
+  background: var(--color-fondo-sidebar);
   min-height: calc(100vh - 70px);
   padding: 1rem;
-  box-shadow: 3px 0 8px rgba(0,0,0,0.1);
+  box-shadow: 3px 0 8px var(--sombra-neutral-10);
   position: fixed;
   left: 0;
   top: 70px;
@@ -109,17 +277,21 @@ body {
 
 .sidebar-link {
   display: block;
-  padding: .7rem;
-  border-radius: 8px;
-  margin-bottom: .5rem;
+  padding: .8rem 1rem;
+  border-radius: 10px;
+  margin-bottom: .6rem;
   text-decoration: none;
-  color: #333;
-  background: #e8eef5;
-  transition: .2s;
+  color: var(--color-texto);
+  background: var(--color-fondo-sidebar-link);
+  transition: all .15s ease;
+  font-weight: 600;
+  box-shadow: 0 2px 6px var(--sombra-neutral-06);
 }
 
 .sidebar-link:hover {
-  background: #d0e2ff;
+  background: var(--color-fondo-sidebar-link-hover);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
 }
 
 /* ======= CONTENT ======= */
@@ -137,8 +309,75 @@ body {
 
 /* ======= CARD ======= */
 .card {
-  background: white;
+  background: var(--color-fondo-card);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  box-shadow: 0 0 10px var(--sombra-neutral-10);
+  border: 1px solid var(--color-borde-card);
+}
+
+/* ======= ESTADOS / BADGES ======= */
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+/* Estado Activo */
+.badge-activo,
+.estado-activo {
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
+}
+
+/* Estado Inactivo */
+.badge-inactivo,
+.estado-inactivo {
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
+}
+
+/* Estado Pendiente */
+.badge-pendiente,
+.estado-pendiente {
+  background: var(--estado-pendiente-bg);
+  color: var(--estado-pendiente-text);
+  border-color: var(--estado-pendiente-border);
+}
+
+/* Estado Cancelado */
+.badge-cancelado,
+.estado-cancelado {
+  background: var(--estado-cancelado-bg);
+  color: var(--estado-cancelado-text);
+  border-color: var(--estado-cancelado-border);
+}
+
+/* Estado Confirmado */
+.badge-confirmado,
+.estado-confirmado {
+  background: var(--estado-confirmado-bg);
+  color: var(--estado-confirmado-text);
+  border-color: var(--estado-confirmado-border);
+}
+
+/* Estado Success/Sí */
+.badge-success,
+.estado-success {
+  background: var(--badge-success-bg);
+  color: var(--badge-success-text);
+  border-color: var(--badge-success-border);
+}
+
+/* Estado Muted/No */
+.badge-muted,
+.estado-muted {
+  background: var(--badge-muted-bg);
+  color: var(--badge-muted-text);
+  border-color: var(--badge-muted-border);
 }

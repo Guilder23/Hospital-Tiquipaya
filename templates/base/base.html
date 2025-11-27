@@ -15,7 +15,10 @@
   <h1>Hospital Tiquipaya</h1>
   <nav>
     <a href="/">Inicio</a>
-    {% if request.user.is_authenticated %}
+    {% if paciente %}
+      <span class="user-info">Paciente: {{ paciente.nombres }} {{ paciente.apellido_paterno }}</span>
+      <a href="/citas/logout/" class="user-info">Cerrar sesión</a>
+    {% elif request.user.is_authenticated %}
       <span class="user-info">{{ request.user.username }} {% if request.user.perfil.tipo %}<span class="user-role">({{ request.user.perfil.tipo.nombre }})</span>{% endif %}</span>
       <form class="logout-form" method="post" action="/accounts/logout/">
         {% csrf_token %}
@@ -28,13 +31,20 @@
   </nav>
 </header>
 <div class="layout">
-  {% if request.user.is_authenticated %}
+  {% if paciente %}
+  <aside class="sidebar">
+    <div class="sidebar-header">Paciente</div>
+      <a class="sidebar-link" href="/citas/agendar/">Agendar cita</a>
+      <a class="sidebar-link" href="/citas/mis/">Mis Citas</a>
+  </aside>
+  {% elif request.user.is_authenticated %}
   <aside class="sidebar">
     <div class="sidebar-header">Menú</div>
       <a class="sidebar-link" href="/accounts/tipos/">Gestionar tipos de usuario</a>
       <a class="sidebar-link" href="/accounts/usuarios/">Gestionar usuarios</a>
       <a class="sidebar-link" href="/especialidades/">Gestionar especialidades</a>
       <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
+      <a class="sidebar-link" href="/ecografias/">Gestionar ecografías</a>
   </aside>
   {% endif %}
   <main class="content">

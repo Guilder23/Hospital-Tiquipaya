@@ -1,0 +1,15 @@
+<div class="modal pacientes-eliminar" id="modal-eliminar-ecografia" aria-hidden="true" style="display:none">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Eliminar (Desactivar) Ecografía</h3>
+    <p>¿Estás seguro que deseas desactivar la ecografía <strong id="delete-codigo"></strong>?</p>
+    <p style="color: #666; font-size: 14px;">Esta acción marcará la ecografía como inactiva pero no la eliminará del sistema.</p>
+    <form method="post" id="form-delete">
+      {% csrf_token %}
+      <div class="modal-actions">
+        <button class="btn btn-danger" type="submit">Desactivar</button>
+        <button class="btn-secondary" type="button" data-close>Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

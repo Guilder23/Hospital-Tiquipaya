@@ -1,11 +1,11 @@
-.confirm-form {
+/* .confirm-form {
   display: flex;
   gap: 1rem;
   margin-top: 1.2rem;
 }
 
 .btn-danger {
-  background: #d62828;
+  background: var(--color-error);
   padding: .7rem 1.2rem;
   color: white;
   border-radius: 8px;
@@ -15,18 +15,18 @@
 }
 
 .btn-danger:hover {
-  background: #a01515;
+  filter: brightness(0.9);
 }
 
 .btn-secondary {
   padding: .7rem 1rem;
   border-radius: 8px;
-  border: 1px solid #aaa;
+  border: 1px solid var(--color-borde-input);
   text-decoration: none;
-  color: #444;
+  color: var(--color-texto);
   transition: .2s;
 }
 
 .btn-secondary:hover {
-  background: #f0f0f0;
-}
+  background: var(--color-fondo-informacion);
+} */

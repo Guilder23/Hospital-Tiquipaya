@@ -6,7 +6,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
     'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
-    'apps.pacientes','apps.especialidades','apps.horarios','apps.citas','apps.accounts'
+    'apps.pacientes','apps.especialidades','apps.horarios','apps.citas','apps.accounts','apps.ecografias'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware',
@@ -21,7 +21,8 @@ TEMPLATES = [{
     'APP_DIRS':True,
     'OPTIONS':{'context_processors':[
         'django.template.context_processors.debug','django.template.context_processors.request',
-        'django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages'
+        'django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages',
+        'apps.citas.context_processors.paciente'
     ]}
 }]
 WSGI_APPLICATION = 'hospital_tiquipaya.wsgi.application'

@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: var(--color-overlay-modal);
   display: none;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
 
 /* ======= MODAL LOGIN ======= */
 .auth-modal {
-  background: #ffffff;
+  background: var(--color-fondo-modal);
   width: 380px;
   padding: 35px 30px;
   border-radius: 20px;
@@ -42,7 +42,7 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #444;
+  color: var(--color-texto);
   transition: 0.2s ease;
 }
 
@@ -60,12 +60,12 @@
 .auth-title {
   font-size: 28px;
   font-weight: 700;
-  color: #333;
+  color: var(--color-texto);
 }
 
 .auth-subtitle {
   font-size: 15px;
-  color: #777;
+  color: var(--color-texto-secundario);
 }
 
 /* ======= FORMULARIO ======= */
@@ -85,15 +85,15 @@
   width: 100%;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-borde-input);
   font-size: 15px;
   outline: none;
   transition: 0.2s;
 }
 
 .auth-form input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+  border-color: var(--color-borde-input-focus);
+  box-shadow: 0 0 0 3px rgba(27,143,130,0.25);
 }
 
 /* ======= BOTÓN SUBMIT ======= */
@@ -102,18 +102,23 @@
   padding: 13px;
   border-radius: 12px;
   border: none;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: var(--color-boton-principal);
   color: #fff;
   font-size: 16px;
   cursor: pointer;
   font-weight: 600;
   margin-top: 10px;
-  transition: 0.2s;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(59,130,246,0.35);
+  box-shadow: 0 6px 15px var(--sombra-boton-principal);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px var(--sombra-boton-principal-active);
 }
 
 /* ======= DIVISOR ======= */
@@ -130,16 +135,21 @@
   text-align: center;
   padding: 12px;
   border-radius: 12px;
-  background: #083da7;
-  color: #333;
+  background: var(--color-boton-secundario);
+  color: var(--color-texto);
   font-weight: 600;
   text-decoration: none;
-  transition: 0.2s;
+  transition: filter .2s ease, box-shadow .2s ease;
 }
 
 .btn-secondary:hover {
-  background: #062b75;
+  filter: brightness(0.9);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-secondary:active {
+  filter: brightness(0.85);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 /* ======= DECORACIONES ======= */
@@ -159,7 +169,7 @@
 .shape-1 {
   width: 140px;
   height: 140px;
-  background: #2563eb;
+  background: var(--color-principal);
   top: 10px;
   left: 0;
 }
@@ -167,7 +177,7 @@
 .shape-2 {
   width: 110px;
   height: 110px;
-  background: #3b82f6;
+  background: var(--color-secundario);
   bottom: 0;
   right: 0;
 }
@@ -175,20 +185,20 @@
 .shape-3 {
   width: 90px;
   height: 90px;
-  background: #1d4ed8;
+  background: var(--color-terciario);
   top: 130px;
   right: 20px;
 }
 
 /* ======= ALERTA ERROR ======= */
 .form-alert.alert-error {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--color-fondo-advertencia);
+  color: var(--color-error);
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 15px;
   font-size: 14px;
-  border: 1px solid #fca5a5;
+  border: 1px solid var(--color-borde-error);
 }
 
 /* ======= ANIMACIÓN ======= */

@@ -6,7 +6,7 @@
 /* ======= TITULO ======= */
 .card h2 {
   font-size: 1.6rem;
-  color: #0d4775;
+  color: var(--color-texto);
   margin-bottom: 1rem;
   text-align: left;
 }
@@ -15,98 +15,140 @@
 .btn {
   display: inline-block;
   padding: .65rem 1.2rem;
-  background: linear-gradient(135deg, #0074d9, #005baa);
+  background: var(--color-boton-principal);
   color: white !important;
   font-weight: 600;
   border-radius: 10px;
   text-decoration: none;
-  transition: .25s ease;
+  transition: all .2s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .btn:hover {
-  background: linear-gradient(135deg, #005baa, #003f73);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+  filter: brightness(0.9);
+  box-shadow: 0 3px 10px var(--color-sombra-hover);
+}
+
+.btn:active {
+  filter: brightness(0.95);
+  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
 }
 
 /* ======= TABLA ======= */
 .table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 10px;
+  border-spacing: 0;
   margin-top: 1.5rem;
+  background: var(--color-tabla-row-bg);
+  border: 1px solid var(--color-tabla-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px var(--color-tabla-shadow);
 }
 
-/* ENCABEZADOS */
-.table th {
-  background: #005baa;
-  color: #fff;
-  padding: .9rem;
-  text-align: left;
+.table thead th {
+  background: var(--color-tabla-header-bg);
+  color: var(--color-tabla-header-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-tabla-border);
+}
+
+.table tbody td {
+  padding: 12px;
+  border-top: 1px solid var(--color-tabla-border);
+  color: var(--color-texto);
   font-size: .95rem;
 }
 
-/* FILAS */
-.table tr {
-  background: #ffffff;
-  transition: .2s;
-}
-
-.table tr:hover {
-  background: #f0f6ff;
-}
-
-/* CELDAS */
-.table td {
-  padding: .9rem;
-  border-bottom: 1px solid #e0e5eb;
-  font-size: .95rem;
-}
+.table tbody tr:nth-child(odd) { background: var(--color-tabla-row-bg); }
+.table tbody tr:hover { background: var(--color-tabla-row-hover-bg); transition: background .18s ease; }
 
 /* ======= ACCIONES ======= */
 .actions {
   white-space: nowrap; /* Evita que se rompa la fila */
 }
 
-/* BOTÓN EDITAR */
-.link-edit {
-  padding: .4rem .8rem;
-  background: #e5f0ff;
-  border: 1px solid #99c2ff;
-  color: #005baa !important;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  margin-right: .5rem;
-  display: inline-block;
-  transition: .2s;
+/* Botones acciones */
+.link-edit { 
+  padding: .6rem .9rem; 
+  background: var(--color-advertencia); 
+  color: #fff !important; 
+  border: none; 
+  border-radius: 10px; 
+  text-decoration: none; 
+  font-weight: 600; 
+  margin-right: .5rem; 
+  display: inline-block; 
+  box-shadow: 0 6px 16px var(--color-sombra); 
+  transition: all .2s ease;
 }
 
 .link-edit:hover {
-  background: #cfe3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-advertencia);
 }
 
-/* BOTÓN ELIMINAR */
-.link-delete {
-  padding: .4rem .8rem;
-  background: #ffe5e5;
-  border: 1px solid #ff9b9b;
-  color: #c80000 !important;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  display: inline-block;
-  transition: .2s;
+.link-edit:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
+}
+
+.link-delete { 
+  padding: .6rem .9rem; 
+  background: var(--color-error); 
+  color: #fff !important; 
+  border: none; 
+  border-radius: 10px; 
+  text-decoration: none; 
+  font-weight: 600; 
+  display: inline-block; 
+  box-shadow: 0 6px 16px var(--color-sombra); 
+  transition: all .2s ease;
+}
+
+.link-view { 
+  padding: .6rem .9rem; 
+  background: var(--color-exito); 
+  color: #fff !important; 
+  border: none; 
+  border-radius: 10px; 
+  text-decoration: none; 
+  font-weight: 600; 
+  display: inline-block; 
+  box-shadow: 0 6px 16px var(--color-sombra); 
+  transition: all .2s ease;
+  margin-left: .5rem;
+}
+
+.link-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.link-view:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
 }
 
 .link-delete:hover {
-  background: #ffcccc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.link-delete:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
 }
 
 /* ======= LINK VOLVER ======= */
 .card p a {
   text-decoration: none;
-  color: #005baa;
+  color: var(--color-header-pagina);
   font-weight: 600;
 }
 

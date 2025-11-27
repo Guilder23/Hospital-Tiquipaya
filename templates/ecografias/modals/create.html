@@ -1,0 +1,40 @@
+<div class="modal pacientes-crear" id="modal-crear-ecografia" aria-hidden="true" style="display:none">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Crear Ecografía</h3>
+    <div class="form-alert alert-error" id="create-error" style="display:none"></div>
+    <form method="post" action="/ecografias/nuevo/" id="form-create">
+      {% csrf_token %}
+
+      <div class="section">
+        <h4>Información de la Ecografía</h4>
+        <div class="form-grid">
+          <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input type="text" name="nombre" required></div>
+          <div class="form-row"><label>Médico</label>
+            <select name="medico" required>
+              <option value="">-- Seleccionar médico --</option>
+              {% for medico in medicos %}
+              <option value="{{ medico.id }}">{{ medico.user.perfil.nombres }} {{ medico.user.perfil.apellido_paterno }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-row"><label>Especialidad de Ecografía</label>
+            <select name="especialidad" required>
+              <option value="">-- Seleccionar especialidad --</option>
+              {% for especialidad in especialidades %}
+              <option value="{{ especialidad.id }}">{{ especialidad.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-row form-row-full"><label>Descripción de la Orden</label><textarea name="descripcion" rows="4"></textarea></div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn" type="submit">Guardar</button>
+        <button class="btn-secondary" type="button" data-close>Cerrar</button>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}<link rel="stylesheet" href="/static/css/citas/orden.css">{% endblock %}
+{% block content %}
+<section class="orden">
+  <div class="header">
+    <div class="logo">Hospital Tiquipaya</div>
+    <div>Orden de Cita</div>
+  </div>
+  <div class="grid">
+    <div class="field"><strong>Paciente</strong><br>{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }} {{ cita.paciente.apellido_materno }}</div>
+    <div class="field"><strong>CI</strong><br>{{ cita.paciente.ci }}</div>
+    <div class="field"><strong>Médico</strong><br>{{ cita.medico.user.perfil.nombres }} {{ cita.medico.user.perfil.apellido_paterno }}</div>
+    <div class="field"><strong>Especialidad</strong><br>{{ cita.especialidad.nombre }}</div>
+    <div class="field"><strong>Fecha</strong><br>{{ cita.fecha|date:'d/m/Y' }}</div>
+    <div class="field"><strong>Hora</strong><br>{{ cita.hora|date:'H:i' }}</div>
+    <div class="field"><strong>Código de cita</strong><br>{{ cita.codigo }}</div>
+    <div class="field"><strong>Recomendación</strong><br>Llegar 10 minutos antes</div>
+  </div>
+  <div class="acciones">
+    <a class="btn btn-primary" href="javascript:window.print()">Generar PDF</a>
+    <a class="btn btn-secondary" href="/citas/mis/">Mis Citas</a>
+  </div>
+</section>
+{% endblock %}

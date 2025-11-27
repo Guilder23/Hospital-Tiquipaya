@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/ecografias/ecografias.css">
+<link rel="stylesheet" href="/static/css/ecografias/modals.css">
+<link rel="stylesheet" href="/static/css/ecografias/modals/create.css">
+<link rel="stylesheet" href="/static/css/ecografias/modals/edit.css">
+<link rel="stylesheet" href="/static/css/ecografias/modals/view.css">
+<link rel="stylesheet" href="/static/css/ecografias/modals/delete.css">
+{% endblock %}
+{% block content %}
+<section class="card pacientes-lista">
+  <h2>Gestión de Ecografías</h2>
+  {% if puede_admin %}
+  <p><button class="btn" id="btn-open-create">Nueva Ecografía</button></p>
+  {% endif %}
+  <table class="table pacientes">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Médico</th>
+        <th>Especialidad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for eco in ecografias %}
+      <tr data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" data-nombre="{{ eco.nombre|escapejs }}" data-medico_id="{{ eco.medico.id }}" data-especialidad_id="{{ eco.especialidad.id }}" data-descripcion="{{ eco.descripcion|escapejs }}" data-estado="{{ eco.estado }}" data-fecha_creacion="{{ eco.fecha_creacion }}">
+        <td><strong>{{ eco.codigo }}</strong></td>
+        <td>{{ eco.nombre }}</td>
+        <td>{{ eco.medico.user.perfil.nombres }} {{ eco.medico.user.perfil.apellido_paterno }}</td>
+        <td>{{ eco.especialidad.nombre }}</td>
+        <td>
+          {% if eco.estado == 'ACTIVA' %}
+            <span class="badge badge-activo">Activa</span>
+          {% else %}
+            <span class="badge badge-inactivo">Inactiva</span>
+          {% endif %}
+        </td>
+        <td class="actions">
+          <button class="btn btn-view" data-id="{{ eco.id }}" title="Ver detalles">Ver</button>
+          {% if puede_admin %}
+          <button class="btn btn-edit" data-id="{{ eco.id }}" title="Editar ecografía">Editar</button>
+          <button class="btn btn-delete" data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" title="Eliminar ecografía">Eliminar</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" style="text-align: center; padding: 20px; color: #999;">Sin ecografías registradas</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% include 'ecografias/modals/create.html' %}
+{% include 'ecografias/modals/edit.html' %}
+{% include 'ecografias/modals/view.html' %}
+{% include 'ecografias/modals/delete.html' %}
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/ecografias/modals/create.js"></script>
+<script src="/static/js/ecografias/modals/edit.js"></script>
+<script src="/static/js/ecografias/modals/view.js"></script>
+<script src="/static/js/ecografias/modals/delete.js"></script>
+{% endblock %}

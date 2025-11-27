@@ -1,4 +1,4 @@
-.tipo-form {
+/* .tipo-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -10,11 +10,13 @@
   width: 100%;
   padding: .7rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-borde-input);
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
 }
 
 .btn {
-  background: #005baa;
+  background: var(--color-boton-principal);
   padding: .7rem 1.2rem;
   color: white;
   text-decoration: none;
@@ -24,19 +26,19 @@
 }
 
 .btn:hover {
-  background: #004580;
+  filter: brightness(0.9);
 }
 
 .btn-secondary {
   margin-left: .5rem;
   text-decoration: none;
   padding: .7rem 1rem;
-  border: 1px solid #aaa;
+  border: 1px solid var(--color-borde-card);
   border-radius: 8px;
-  color: #444;
+  color: var(--color-texto);
   transition: .2s;
 }
 
 .btn-secondary:hover {
-  background: #f0f0f0;
-}
+  background: var(--color-fondo-informacion);
+} */

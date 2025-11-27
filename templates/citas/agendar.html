@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/specialties/modals/modals_base.css">
+<link rel="stylesheet" href="/static/css/citas/agendar.css">
+{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Agendar Cita (día siguiente: {{ fecha_objetivo|date:'d/m/Y' }})</h2>
+
+  {% if not paciente_validado %}
+    <div class="modal" id="modal-validar" style="display:flex" aria-hidden="false">
+      <div class="modal-box" style="width:420px">
+        <h3>Validar Paciente</h3>
+        <div class="modal-field"><label>CI</label><input id="val-ci"></div>
+        <div class="modal-field"><label>Fecha de nacimiento</label><input id="val-fn" type="date"></div>
+        <div class="modal-actions">
+          <button class="btn-modal-cancel" id="btn-validar">Continuar</button>
+        </div>
+        <p id="val-error" style="color:#b91c1c; display:none"></p>
+      </div>
+    </div>
+  {% endif %}
+
+  <div>
+    <h3 class="section-title">Turno Mañana</h3>
+    {% for m in medicos_manana %}
+      <div class="doctor-card" data-id="{{ m.id }}">
+        <div class="doctor-photo">{{ m.user.perfil.nombres|slice:":1" }}{{ m.user.perfil.apellido_paterno|slice:":1" }}</div>
+        <div class="doctor-info">
+          <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
+          <div>{{ m.especialidad.nombre }} · Mañana</div>
+        </div>
+        <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
+      </div>
+      <div class="slots" id="slots-{{ m.id }}"></div>
+    {% empty %}
+      <p>No hay médicos en turno mañana.</p>
+    {% endfor %}
+  </div>
+
+  <div style="margin-top:20px">
+    <h3 class="section-title">Turno Tarde</h3>
+    {% for m in medicos_tarde %}
+      <div class="doctor-card" data-id="{{ m.id }}">
+        <div class="doctor-photo">{{ m.user.perfil.nombres|slice:":1" }}{{ m.user.perfil.apellido_paterno|slice:":1" }}</div>
+        <div class="doctor-info">
+          <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
+          <div>{{ m.especialidad.nombre }} · Tarde</div>
+        </div>
+        <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
+      </div>
+      <div class="slots" id="slots-{{ m.id }}"></div>
+    {% empty %}
+      <p>No hay médicos en turno tarde.</p>
+    {% endfor %}
+  </div>
+
+  <div class="modal" id="modal-confirm" aria-hidden="true">
+    <div class="modal-box" style="width:420px">
+      <h3>Confirmar Cita</h3>
+      <div class="modal-field"><label>Médico</label><div id="conf-medico"></div></div>
+      <div class="modal-field"><label>Especialidad</label><div id="conf-esp"></div></div>
+      <div class="modal-field"><label>Fecha</label><div id="conf-fecha"></div></div>
+      <div class="modal-field"><label>Hora</label><div id="conf-hora"></div></div>
+      <div class="modal-field"><label>Duración</label><div>30 minutos</div></div>
+      <div class="modal-field"><label>Resumen</label><div id="conf-resumen"></div></div>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="btn-conf-cancel">Cancelar</button>
+        <button class="btn-modal-ok" id="btn-conf-ok">Confirmar cita</button>
+      </div>
+      <p id="conf-error" style="color:#b91c1c; display:none"></p>
+    </div>
+  </div>
+
+</section>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/citas/agendar.js"></script>
+{% endblock %}
+

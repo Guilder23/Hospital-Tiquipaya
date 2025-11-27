@@ -3,14 +3,14 @@
 .modal-view-box h3 {
     font-weight: 700;
     margin-bottom: 16px;
-    color: #1f2937;
+    color: var(--color-texto);
 }
 
 .modal-view-box p {
-    background: #f3f4f6;
+    background: var(--color-fondo-input);
     padding: 10px 12px;
     border-radius: 8px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--color-borde-input);
     font-size: 0.95rem;
-    color: #374151;
+    color: var(--color-texto);
 }

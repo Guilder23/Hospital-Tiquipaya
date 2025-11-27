@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #005baa 0%, #0088cc 100%);
+  background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-secundario) 100%);
   color: white;
   text-align: center;
 }
@@ -104,26 +104,37 @@
 }
 
 .btn-primary {
-  background: #ff6b6b;
-  color: white;
+  background: var(--color-boton-principal);
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background: #ff5252;
+  filter: brightness(0.9);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 10px 25px var(--color-sombra-hover);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 15px var(--sombra-boton-principal);
 }
 
 .btn-secondary {
-  background: white;
-  color: #005baa;
-  border: 2px solid white;
+  background: var(--color-fondo-card);
+  color: var(--color-header-pagina);
+  border: 2px solid var(--color-fondo-card);
+  transition: all .3s ease;
 }
 
 .btn-secondary:hover {
   background: transparent;
   color: white;
   transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+  filter: brightness(0.8);
 }
 
 .btn-large {
@@ -191,7 +202,7 @@
 
 /* ======= STATS SECTION ======= */
 .stats-section {
-  background: #f8f9fb;
+  background: var(--color-fondo);
   padding: 4rem 2rem;
   margin-top: -60px;
   position: relative;
@@ -207,7 +218,7 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--color-fondo-card);
   padding: 2rem;
   border-radius: 12px;
   text-align: center;
@@ -217,7 +228,7 @@
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 91, 170, 0.15);
+  box-shadow: 0 8px 25px var(--color-sombra-hover);
 }
 
 .stat-icon {
@@ -228,12 +239,12 @@
 .stat-number {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #005baa;
+  color: var(--color-principal);
   margin-bottom: 0.5rem;
 }
 
 .stat-label {
-  color: #666;
+  color: var(--color-texto-secundario);
   font-size: 0.95rem;
 }
 
@@ -242,7 +253,7 @@
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 3rem;
-  color: #2d2d2d;
+  color: var(--color-texto);
   font-weight: 700;
   position: relative;
   padding-bottom: 1rem;
@@ -256,14 +267,14 @@
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: linear-gradient(90deg, #005baa, #0088cc);
+  background: linear-gradient(90deg, var(--color-principal), var(--color-secundario));
   border-radius: 2px;
 }
 
 /* ======= FEATURES SECTION ======= */
 .features-section {
   padding: 4rem 2rem;
-  background: white;
+  background: var(--color-fondo-card);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -277,19 +288,19 @@
 
 .feature-card {
   padding: 2rem;
-  background: #f8f9fb;
+  background: var(--color-fondo);
   border-radius: 12px;
   text-align: center;
   transition: all 0.3s ease;
   border-top: 4px solid transparent;
 }
 
-.feature-card:nth-child(1) { border-top-color: #667eea; }
-.feature-card:nth-child(2) { border-top-color: #f093fb; }
-.feature-card:nth-child(3) { border-top-color: #4facfe; }
-.feature-card:nth-child(4) { border-top-color: #43e97b; }
-.feature-card:nth-child(5) { border-top-color: #fa709a; }
-.feature-card:nth-child(6) { border-top-color: #30cfd0; }
+.feature-card:nth-child(1) { border-top-color: var(--color-principal); }
+.feature-card:nth-child(2) { border-top-color: var(--color-secundario); }
+.feature-card:nth-child(3) { border-top-color: var(--color-terciario); }
+.feature-card:nth-child(4) { border-top-color: var(--color-exito); }
+.feature-card:nth-child(5) { border-top-color: var(--color-advertencia); }
+.feature-card:nth-child(6) { border-top-color: var(--color-error); }
 
 .feature-card.hover-lift {
   position: relative;
@@ -309,18 +320,18 @@
 .feature-card h3 {
   font-size: 1.3rem;
   margin-bottom: 0.8rem;
-  color: #2d2d2d;
+  color: var(--color-texto);
 }
 
 .feature-card p {
-  color: #666;
+  color: var(--color-texto-secundario);
   line-height: 1.6;
 }
 
 /* ======= SPECIALTIES SECTION ======= */
 .specialties-section {
   padding: 4rem 2rem;
-  background: linear-gradient(180deg, #f8f9fb 0%, #ffffff 100%);
+  background: linear-gradient(180deg, var(--color-fondo) 0%, var(--color-fondo-card) 100%);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -333,7 +344,7 @@
 }
 
 .specialty-card {
-  background: white;
+  background: var(--color-fondo-card);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -353,12 +364,12 @@
 .specialty-card h3 {
   padding: 1.5rem 1.5rem 0.5rem;
   font-size: 1.2rem;
-  color: #2d2d2d;
+  color: var(--color-texto);
 }
 
 .specialty-card p {
   padding: 0 1.5rem 1.5rem;
-  color: #666;
+  color: var(--color-texto-secundario);
   line-height: 1.6;
   font-size: 0.95rem;
 }
@@ -379,16 +390,16 @@
 }
 
 .testimonial-card {
-  background: #f8f9fb;
+  background: var(--color-fondo);
   padding: 2rem;
   border-radius: 12px;
-  border-left: 4px solid #005baa;
+  border-left: 4px solid var(--color-principal);
   transition: all 0.3s ease;
 }
 
 .testimonial-card:hover {
   transform: translateX(10px);
-  box-shadow: 0 8px 25px rgba(0, 91, 170, 0.1);
+  box-shadow: 0 8px 25px rgba(27, 143, 130, 0.1);
 }
 
 .stars {
@@ -397,7 +408,7 @@
 }
 
 .testimonial-text {
-  color: #555;
+  color: var(--color-texto-secundario);
   margin-bottom: 1.5rem;
   line-height: 1.8;
   font-size: 0.95rem;
@@ -413,7 +424,7 @@
 .author-avatar {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #005baa, #0088cc);
+  background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
   color: white;
   border-radius: 50%;
   display: flex;
@@ -425,18 +436,18 @@
 
 .author-name {
   font-weight: 600;
-  color: #2d2d2d;
+  color: var(--color-texto);
 }
 
 .author-role {
   font-size: 0.85rem;
-  color: #999;
+  color: var(--color-texto-secundario);
 }
 
 /* ======= CTA SECTION ======= */
 .cta-section {
   padding: 4rem 2rem;
-  background: linear-gradient(135deg, #005baa 0%, #0088cc 100%);
+  background: linear-gradient(135deg, var(--color-principal) 0%, var(--color-secundario) 100%);
   color: white;
   text-align: center;
   margin-top: 2rem;

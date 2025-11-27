@@ -6,7 +6,7 @@
     width: 100%;
     height: 100vh;
     z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: var(--color-overlay-modal);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,7 +23,7 @@
 
 /* Dialogo / panel del modal */
 .modal-dialog {
-    background-color: #fff;
+    background-color: var(--color-fondo-modal);
     border-radius: 8px;
     width: 90%;
     max-width: 700px;
@@ -40,7 +40,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color-borde-modal);
     flex-shrink: 0;
 }
 
@@ -62,7 +62,7 @@
     justify-content: flex-end;
     gap: 10px;
     padding: 15px 20px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--color-borde-modal);
     flex-shrink: 0;
 }
 
@@ -71,8 +71,8 @@
     grid-column: 1 / -1; 
     margin-top: 15px; 
     margin-bottom: 5px; 
-    color: #007bff; 
-    border-bottom: 2px solid #007bff; 
+    color: var(--color-header-pagina); 
+    border-bottom: 2px solid var(--color-header-pagina); 
     padding-bottom: 5px; 
     font-size: 1.1rem; 
 }
@@ -91,14 +91,16 @@
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
-    color: #555;
+    color: var(--color-texto);
 }
 
 .modal-body input:not([type="checkbox"]),
 .modal-body select,
 .modal-body textarea {
     padding: 8px 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-borde-input);
+    background: var(--color-fondo-input);
+    color: var(--color-texto);
     border-radius: 4px;
     margin-top: 5px;
     width: 100%;
@@ -112,29 +114,42 @@
     cursor: pointer;
     font-weight: bold;
     border: 1px solid transparent;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    transition: all .2s ease;
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: var(--color-boton-principal);
     color: #fff;
-    border-color: #007bff;
+    border-color: var(--color-boton-principal);
+    box-shadow: 0 4px 12px var(--sombra-neutral-06);
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    filter: brightness(0.9);
+    box-shadow: 0 6px 16px var(--sombra-boton-principal);
+}
+
+.btn-primary:active {
+    filter: brightness(0.95);
+    box-shadow: 0 2px 8px var(--sombra-boton-principal-active);
 }
 
 .btn-secondary {
-    background-color: #ccc;
-    color: #333;
-    border-color: #ccc;
+    background-color: var(--color-fondo-informacion);
+    color: var(--color-texto);
+    border-color: var(--color-borde-input);
+    box-shadow: 0 2px 8px var(--sombra-neutral-06);
+    transition: all .2s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #bbb;
-    border-color: #bbb;
+    filter: brightness(0.95);
+    box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.btn-secondary:active {
+    filter: brightness(0.9);
+    box-shadow: 0 2px 6px var(--sombra-neutral-10);
 }
 
 /* Responsivo */

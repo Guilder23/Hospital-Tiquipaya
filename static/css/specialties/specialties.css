@@ -1,7 +1,7 @@
 /* ===== CONTENEDOR Y TITULO ===== */
 .container h2 {
     font-weight: 700;
-    color: #1f2937;
+    color: var(--color-texto);
 }
 
 /* ===== CARD ===== */
@@ -16,83 +16,163 @@
 
 /* ===== TABLA ===== */
 .table {
-    margin: 0;
+    width: 100%;
     border-collapse: separate;
-    border-spacing: 0 6px;
+    border-spacing: 0;
+    margin-top: 14px;
+    background: var(--color-tabla-row-bg);
+    border: 1px solid var(--color-tabla-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px var(--color-tabla-shadow);
 }
 
 .table thead th {
-    background: #f3f4f6 !important;
-    border: none !important;
+    background: var(--color-tabla-header-bg);
+    color: var(--color-tabla-header-text);
     font-weight: 700;
-    color: #374151;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    text-transform: uppercase;
+    font-size: .75rem;
+    letter-spacing: .06em;
+    padding: 12px;
+    border-bottom: 1px solid var(--color-tabla-border);
 }
 
-.table tbody tr {
-    background: #ffffff;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
+.table tbody td {
+    padding: 12px;
+    border-top: 1px solid var(--color-tabla-border);
+    color: var(--color-texto);
+    font-size: .95rem;
 }
 
-.table tbody tr td {
-    border: none !important;
-    vertical-align: middle;
-    font-size: 0.95rem;
-    padding: 14px;
-}
-
-.table tbody tr:hover {
-    background: #f9fafb !important;
-}
+.table tbody tr:nth-child(odd) { background: var(--color-tabla-row-bg); }
+.table tbody tr:hover { background: var(--color-tabla-row-hover-bg); transition: background .18s ease; }
 
 /* ===== BADGES ===== */
-.badge.bg-success {
-    background-color: #10b981 !important;
-    padding: 6px 10px;
-    font-size: 0.75rem;
-    border-radius: 8px;
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid;
 }
 
-.badge.bg-danger {
-    background-color: #ef4444 !important;
-    padding: 6px 10px;
+.badge.bg-success,
+.badge-activo {
+    background-color: var(--estado-activo-bg) !important;
+    color: var(--estado-activo-text) !important;
+    border-color: var(--estado-activo-border) !important;
+    padding: 6px 12px;
     font-size: 0.75rem;
-    border-radius: 8px;
+    border-radius: 999px;
+}
+
+.badge.bg-danger,
+.badge-inactivo {
+    background-color: var(--estado-inactivo-bg) !important;
+    color: var(--estado-inactivo-text) !important;
+    border-color: var(--estado-inactivo-border) !important;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    border-radius: 999px;
 }
 
 /* ===== BOTONES DENTRO DE LA TABLA ===== */
 .table .btn-sm {
-    padding: 4px 10px;
-    font-size: 0.8rem;
-    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.92rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .15s ease, box-shadow .15s ease;
+    box-shadow: 0 6px 16px var(--color-sombra);
 }
 
 .btn-warning {
-    background: #f59e0b !important;
-    border: none;
+    background: var(--color-advertencia) !important;
+    color: #fff !important;
+    text-decoration: none !important;
 }
 
 .btn-warning:hover {
-    background: #d97706 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px var(--sombra-advertencia) !important;
+    text-decoration: none !important;
+    color: #fff !important;
+}
+
+.btn-warning:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 4px 12px var(--sombra-advertencia-active) !important;
+}
+
+.btn-view {
+    background: var(--color-exito) !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.btn-view:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px var(--sombra-exito) !important;
+    text-decoration: none !important;
+    color: #fff !important;
+}
+
+.btn-view:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 4px 12px var(--sombra-exito-active) !important;
 }
 
 .btn-danger {
-    background: #dc2626 !important;
-    border: none;
+    background: var(--color-error) !important;
+    color: #fff !important;
+    text-decoration: none !important;
 }
 
 .btn-danger:hover {
-    background: #b91c1c !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px var(--sombra-error) !important;
+    text-decoration: none !important;
+    color: #fff !important;
+}
+
+.btn-danger:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 4px 12px var(--sombra-error-active) !important;
 }
 
 .btn-success {
-    background: #059669 !important;
-    border: none;
+    background: var(--color-exito) !important;
+    color: #fff !important;
+    text-decoration: none !important;
 }
 
 .btn-success:hover {
-    background: #047857 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px var(--sombra-exito) !important;
+    text-decoration: none !important;
+    color: #fff !important;
+}
+
+.btn-success:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 4px 12px var(--sombra-exito-active) !important;
+}
+
+.btn-primary {
+    background: var(--color-boton-principal) !important;
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px var(--sombra-boton-principal) !important;
+    text-decoration: none !important;
+    color: #fff !important;
 }
 
 .table td .btn {
@@ -105,29 +185,34 @@
 
 /* Asegura que los <a> dentro de la tabla se vean como botones */
 .table a.btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none !important;
     color: white !important;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 6px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    box-shadow: 0 6px 16px var(--color-sombra);
 }
 
 .table a.btn:hover {
     text-decoration: none !important;
-    opacity: 0.9;
+    transform: translateY(-2px);
+    color: #fff !important;
 }
 
 /* ===== BOTÓN PRINCIPAL "NUEVA ESPECIALIDAD" ===== */
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--color-boton-principal);
+    color: #fff;
     font-weight: 600;
     padding: 10px 18px;
     font-size: 1rem;
     border-radius: 10px;
     border: none;
-    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 6px var(--color-sombra);
     display: inline-flex;
     text-decoration: none !important;
     align-items: center;
@@ -136,15 +221,15 @@
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
-    box-shadow: 0 6px 10px rgba(37, 99, 235, 0.4);
+    filter: brightness(0.9);
+    box-shadow: 0 6px 10px var(--color-sombra-hover);
     text-decoration: none !important;
     transform: translateY(-1px);
 }
 
 .btn-primary:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.4);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(15, 76, 117, 0.4);
 }
 
 .btn-primary i {
