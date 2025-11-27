@@ -2,20 +2,16 @@
 .modal.pacientes-editar {
   position: fixed;
   inset: 0;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   background: var(--color-overlay-modal);
   padding: 20px;
   z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.25s;
 }
 
 .modal.pacientes-editar[aria-hidden="false"] {
-  opacity: 1;
-  visibility: visible;
+  display: flex !important;
 }
 
 /* Panel */

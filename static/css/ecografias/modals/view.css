@@ -2,20 +2,16 @@
 .modal.pacientes-ver {
   position: fixed;
   inset: 0;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 20px;
   background: var(--color-overlay-modal);
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.25s;
   z-index: 2000;
 }
 
 .modal.pacientes-ver[aria-hidden="false"] {
-  opacity: 1;
-  visibility: visible;
+  display: flex !important;
 }
 
 .modal.pacientes-ver .modal-panel {

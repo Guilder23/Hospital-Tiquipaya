@@ -46,6 +46,7 @@
   inset: 0;
   cursor: pointer;
   z-index: 0;
+  background: var(--color-overlay-modal);
 }
 
 /* Botón cerrar */
