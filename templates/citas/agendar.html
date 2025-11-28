@@ -3,21 +3,24 @@
 {% block extra_css %}
 <link rel="stylesheet" href="/static/css/specialties/modals/modals_base.css">
 <link rel="stylesheet" href="/static/css/citas/agendar.css">
+<link rel="stylesheet" href="/static/css/citas/modals/validar.css">
 {% endblock %}
 {% block content %}
 <section class="card">
   <h2>Agendar Cita (día siguiente: {{ fecha_objetivo|date:'d/m/Y' }})</h2>
 
   {% if not paciente_validado %}
-    <div class="modal" id="modal-validar" style="display:flex" aria-hidden="false">
-      <div class="modal-box" style="width:420px">
+    <div class="modal modal-validar" id="modal-validar" aria-hidden="false">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-panel">
         <h3>Validar Paciente</h3>
-        <div class="modal-field"><label>CI</label><input id="val-ci"></div>
+        <div class="modal-field"><label>CI</label><input id="val-ci" placeholder="Ingrese su CI"></div>
         <div class="modal-field"><label>Fecha de nacimiento</label><input id="val-fn" type="date"></div>
+        <p id="val-error" style="display:none"></p>
         <div class="modal-actions">
-          <button class="btn-modal-cancel" id="btn-validar">Continuar</button>
+          <button class="btn-modal-cancel" id="btn-cerrar-validar">Cancelar</button>
+          <button class="btn-modal-primary" id="btn-validar">Continuar</button>
         </div>
-        <p id="val-error" style="color:#b91c1c; display:none"></p>
       </div>
     </div>
   {% endif %}

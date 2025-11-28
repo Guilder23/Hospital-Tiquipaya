@@ -55,7 +55,7 @@ def validar_paciente(request):
     try:
         p = Paciente.objects.get(ci=ci, fecha_nacimiento=fecha_nac, activo=True)
     except Paciente.DoesNotExist:
-        return JsonResponse({'ok': False, 'error': 'Paciente no encontrado'}, status=404)
+        return JsonResponse({'ok': False, 'error': 'Paciente no encontrado, Verifica tus datos y si no estas registrado registrate con el personal de Admision en el Hospital Tiquipaya'}, status=404)
     request.session['paciente_id'] = p.id
     return JsonResponse({'ok': True, 'redirect': reverse('citas:agendar')})
 
