@@ -9,7 +9,7 @@ from .forms import UserCreateWithProfileForm, UserUpdateWithProfileForm
 from django.contrib import messages 
 from django.contrib.auth.models import User 
 from apps.accounts.models import ( Perfil, TipoUsuario, Medico, Admision, EncargadoAdmision ) 
-from apps.horarios.models import DiasAtencion, HorariosAtencion
+from apps.horarios.models import DiasAtencion, HorariosAtencion, Turnos
 from apps.especialidades.models import Especialidad
 
 # Registro simple
@@ -57,17 +57,7 @@ def crear_usuario(request):
             tipo=tipo_obj
         )
 
-        # ================================
-        # 3. CREAR HORARIOS (TODOS LOS ROLES)
-        # ================================
-        if tipo_rol != "":
-            turnos = HorariosAtencion.objects.create(
-                madrugue=bool(request.POST.get("madrugue")),
-                mannana=bool(request.POST.get("mannana")),
-                tarde=bool(request.POST.get("tarde")),
-                noche=bool(request.POST.get("noche")),
-            )
-
+        turnos_seleccionados = request.POST.getlist("turnos")
         # ================================
         # 4. SI ES MÉDICO → CREAR DÍAS
         # ================================
@@ -80,34 +70,37 @@ def crear_usuario(request):
                 viernes=bool(request.POST.get("viernes")),
             )
 
-            Medico.objects.create(
+            medico = Medico.objects.create(
                 user=user,
                 especialidad_id=request.POST.get("especialidad") or None,
                 nro_matricula=request.POST.get("nro_matricula") or "",
                 consultorio=request.POST.get("consultorio") or "",
-                turnos=turnos,
                 dias_atencion=dias,
             )
+
+            medico.turnos.set(turnos_seleccionados) 
 
         # ================================
         # 5. SI ES ADMISIÓN
         # ================================
         elif tipo_rol == "admision":
-            Admision.objects.create(
+            adm = Admision.objects.create(
                 user=user,
                 ventanilla=request.POST.get("ventanilla") or "",
-                turnos=turnos
             )
+
+            adm.turnos.set(turnos_seleccionados)
 
         # ================================
         # 6. SI ES ENCARGADO DE ADMISIÓN
         # ================================
         elif tipo_rol == "encargado_admision":
-            EncargadoAdmision.objects.create(
+            enc = EncargadoAdmision.objects.create(
                 user=user,
                 ventanilla=request.POST.get("ventanilla") or "",
-                turnos=turnos
             )
+
+            enc.turnos.set(turnos_seleccionados)
 
         messages.success(request, "Usuario creado correctamente.")
         return redirect("accounts:usuario_list")
@@ -116,6 +109,7 @@ def crear_usuario(request):
     return render(request, "accounts/usuarios/modals/crear.html", {
         "especialidades": Especialidad.objects.all(),
         "tipos": TipoUsuario.objects.all(),
+        "turnos": Turnos.objects.all(),
     })
 
 def editar_usuario(request, pk):
@@ -156,20 +150,16 @@ def editar_usuario(request, pk):
             medico = getattr(user, "medico", None)
             if medico:
 
-                medico.especialidad_id = request.POST.get("especialidad") or None
+                medico.especialidad_id = request.POST.get("especialidad")
                 medico.nro_matricula = request.POST.get("matricula") or ""
                 medico.consultorio = request.POST.get("consultorio") or ""
                 medico.save()
 
-                # Turnos médico
-                t = medico.turnos
-                t.madrugue = bool(request.POST.get("madrugue"))
-                t.mannana = bool(request.POST.get("mannana"))
-                t.tarde = bool(request.POST.get("tarde"))
-                t.noche = bool(request.POST.get("noche"))
-                t.save()
+                # Turnos (muchos)
+                turnos_ids = request.POST.getlist("turnos")
+                medico.turnos.set(turnos_ids)
 
-                # Días médico
+                # Días
                 d = medico.dias_atencion
                 d.lunes = bool(request.POST.get("lunes"))
                 d.martes = bool(request.POST.get("martes"))
@@ -187,13 +177,8 @@ def editar_usuario(request, pk):
                 adm.ventanilla = request.POST.get("ventanilla") or ""
                 adm.save()
 
-                # Turnos admisión
-                t = adm.turnos
-                t.madrugue = bool(request.POST.get("madrugue"))
-                t.mannana = bool(request.POST.get("mannana"))
-                t.tarde = bool(request.POST.get("tarde"))
-                t.noche = bool(request.POST.get("noche"))
-                t.save()
+                turnos_ids = request.POST.getlist("turnos")
+                adm.turnos.set(turnos_ids)
 
         # ==========================
         # ENCARGADO ADMISIÓN
@@ -204,13 +189,8 @@ def editar_usuario(request, pk):
                 enc.ventanilla = request.POST.get("ventanilla") or ""
                 enc.save()
 
-                # Turnos encargado
-                t = enc.turnos
-                t.madrugue = bool(request.POST.get("madrugue"))
-                t.mannana = bool(request.POST.get("mannana"))
-                t.tarde = bool(request.POST.get("tarde"))
-                t.noche = bool(request.POST.get("noche"))
-                t.save()
+                turnos_ids = request.POST.getlist("turnos")
+                enc.turnos.set(turnos_ids)
 
         messages.success(request, "Usuario actualizado correctamente.")
         return redirect("accounts:usuario_list")
@@ -220,6 +200,8 @@ def editar_usuario(request, pk):
         "perfil": perfil,
         "especialidades": Especialidad.objects.all(),
         "tipos": TipoUsuario.objects.all(),
+        "turnos": Turnos.objects.all(),
+        "dias": getattr(user.medico, "dias_atencion", None) if hasattr(user, "medico") else None,
     })
 
 class UsuarioToggleActiveView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -297,6 +279,7 @@ class UsuarioListView(LoginRequiredMixin, ListView):
     context_object_name = 'usuarios'
 
     def get_queryset(self):
+        # Traemos todos los usuarios y prefetch de perfil para optimizar
         return get_user_model().objects.prefetch_related('perfil').all().order_by('username')
 
     def get_context_data(self, **kwargs):
@@ -304,8 +287,30 @@ class UsuarioListView(LoginRequiredMixin, ListView):
         ctx['tipos'] = TipoUsuario.objects.all()
         ctx['puede_admin'] = _es_admin(self.request.user)
         ctx['especialidades'] = Especialidad.objects.all()
-        return ctx
+        ctx['turnos'] = Turnos.objects.all()
 
+        # Diccionario para almacenar los turnos de cada usuario por id
+        usuario_turnos_ids = {}
+
+        for usuario in ctx['usuarios']:
+            # Manejar perfil (puede que no exista)
+            perfil = getattr(usuario, 'perfil', None)
+            tipo_nombre = perfil.tipo.nombre if perfil and perfil.tipo else None
+            usuario.tipo_nombre = tipo_nombre  # útil para template
+
+            # Inicializar turnos vacíos
+            usuario_turnos_ids[usuario.id] = []
+
+            # Turnos según rol
+            if hasattr(usuario, 'medico') and usuario.medico:
+                usuario_turnos_ids[usuario.id] = list(usuario.medico.turnos.values_list('id', flat=True))
+            elif hasattr(usuario, 'admision') and usuario.admision:
+                usuario_turnos_ids[usuario.id] = list(usuario.admision.turnos.values_list('id', flat=True))
+            elif hasattr(usuario, 'encargado_admision') and usuario.encargado_admision:
+                usuario_turnos_ids[usuario.id] = list(usuario.encargado_admision.turnos.values_list('id', flat=True))
+
+        ctx['usuario_turnos_ids'] = usuario_turnos_ids
+        return ctx
 
 class UsuarioDetailView(LoginRequiredMixin, DetailView):
     model = get_user_model()

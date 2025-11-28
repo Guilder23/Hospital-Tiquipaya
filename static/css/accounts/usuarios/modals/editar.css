@@ -1,8 +1,3 @@
-/* ======================================================================= */
-/* =====================   MODAL EDITAR USUARIO   ======================== */
-/* ======================================================================= */
-
-/* === Overlay === */
 .modal.usuario-edit {
     position: fixed;
     inset: 0;
@@ -23,27 +18,18 @@
     display: flex !important;
 }
 
-/* ======================================================================= */
-/* =====================   CONTENEDOR REAL DEL MODAL   ==================== */
-/* ======================================================================= */
-
 .modal.usuario-edit .modal-dialog {
     background: #fff !important;
     width: 100%;
     max-width: 750px;
     max-height: 90vh;
-
     overflow-y: auto;
     padding: 25px 30px 30px;
     border-radius: 12px;
-
     border-top: 4px solid #16a34a;
-
     box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-
     transform: translateY(-20px);
     animation: showModal 0.35s ease forwards;
-
     pointer-events: auto !important; /* Corrige el problema de clicks */
 }
 

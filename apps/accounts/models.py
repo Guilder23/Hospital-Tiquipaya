@@ -2,6 +2,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from apps.horarios.models import Turnos
 
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
@@ -80,7 +81,7 @@ class Medico(models.Model):
     nro_matricula = models.CharField(max_length=20)
     consultorio = models.CharField(max_length=50)
 
-    turnos = models.ForeignKey("horarios.HorariosAtencion", on_delete=models.SET_NULL, null=True)
+    turnos = models.ManyToManyField(Turnos)
     dias_atencion = models.ForeignKey("horarios.DiasAtencion", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -93,7 +94,7 @@ class Medico(models.Model):
 class Admision(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="admision")
     ventanilla = models.CharField(max_length=20)
-    turnos = models.ForeignKey("horarios.HorariosAtencion", on_delete=models.SET_NULL, null=True)
+    turnos = models.ManyToManyField(Turnos)
 
     def __str__(self):
         return f"Admisión - {self.user.username}"
@@ -105,7 +106,7 @@ class Admision(models.Model):
 class EncargadoAdmision(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="encargado_admision")
     ventanilla = models.CharField(max_length=20)
-    turnos = models.ForeignKey("horarios.HorariosAtencion", on_delete=models.SET_NULL, null=True)
+    turnos = models.ManyToManyField(Turnos)
 
     def __str__(self):
         return f"Encargado Admisión - {self.user.username}"

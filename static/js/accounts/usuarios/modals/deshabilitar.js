@@ -1,52 +1,53 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     if (!window.__modals) return;
 
-    const open = window.__modals.open;
+    const { open, close } = window.__modals;
 
     const modalDesactivar = document.getElementById('modal-desactivar-usuario');
-    const closeModal = window.__modals.close;
+    const form = document.getElementById('form-desactivar-usuario');
 
-    modalDesactivar.querySelectorAll('[data-close="modal-desactivar-usuario"], [data-close="modal-desactivar"]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            closeModal(modalDesactivar);
-        });
-    });
+    if (!modalDesactivar || !form) return;
 
-    // 2) Cerrar al hacer click en el overlay (fondo oscuro)
+    // ---------------- CERRAR MODAL ----------------
+    modalDesactivar.querySelectorAll('[data-close="modal-desactivar-usuario"], [data-close="modal-desactivar"]')
+        .forEach(btn => btn.addEventListener('click', () => close(modalDesactivar)));
+
     modalDesactivar.addEventListener('click', e => {
-        if (e.target === modalDesactivar) {
-            closeModal(modalDesactivar);
-        }
+        if (e.target === modalDesactivar) close(modalDesactivar);
     });
 
+    // ---------------- BOTONES DE TOGGLE ----------------
     document.querySelectorAll('.btn-toggle').forEach(btn => {
         btn.addEventListener('click', () => {
-
             const id = btn.dataset.id;
-            const username = btn.dataset.username;
-            const active = btn.dataset.active.toLowerCase() === "true";
+            const username = btn.dataset.username || '';
+            const activeRaw = (btn.dataset.active || '').toLowerCase();
+            const active = activeRaw === "true" || activeRaw === "1";
 
-            const modal = document.getElementById('modal-desactivar-usuario');
-            const form = document.getElementById('form-desactivar-usuario');
-            const texto = document.getElementById('texto-desactivar');
-            const titulo = document.getElementById('titulo-modal-usuario');
-            const btnSubmit = document.getElementById('btn-submit-modal');
+            if (!id) return console.warn('btn-toggle sin data-id');
 
-            form.setAttribute('action', `/accounts/usuarios/${id}/toggle/`);
+            // Actualizar modal
+            modalDesactivar.querySelector('#titulo-modal-usuario').textContent = active ? "Desactivar Usuario" : "Activar Usuario";
+            modalDesactivar.querySelector('#texto-desactivar').textContent = active
+                ? `¿Deseas desactivar a "${username}"?`
+                : `¿Deseas activar a "${username}"?`;
 
-            if (active) {
-                titulo.textContent = "Desactivar Usuario";
-                texto.textContent = `¿Deseas desactivar a "${username}"?`;
-                btnSubmit.textContent = "Desactivar";
-            } else {
-                titulo.textContent = "Activar Usuario";
-                texto.textContent = `¿Deseas activar a "${username}"?`;
-                btnSubmit.textContent = "Activar";
-            }
+            const btnSubmit = modalDesactivar.querySelector('#btn-submit-modal');
+            btnSubmit.textContent = active ? "Desactivar" : "Activar";
+            btnSubmit.classList.toggle('btn-danger', active);
+            btnSubmit.classList.toggle('btn-success', !active);
 
-            open(modal);
+            // Configurar action del form
+            form.action = `/accounts/usuarios/${id}/toggle/`;
+
+            // Abrir modal
+            open(modalDesactivar);
         });
     });
 
+    // ---------------- ENVIAR FORMULARIO ----------------
+    form.addEventListener('submit', e => {
+        // No previenes submit, se envía normalmente al servidor
+        close(modalDesactivar); // opcional: cerrar modal al enviar
+    });
 });

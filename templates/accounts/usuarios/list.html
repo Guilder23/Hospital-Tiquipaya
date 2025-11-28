@@ -57,39 +57,26 @@
                 data-especialidad="{{ u.medico.especialidad.nombre|default:'' }}"
                 data-matricula="{{ u.medico.nro_matricula|default:'' }}"
                 data-consultorio="{{ u.medico.consultorio|default:'' }}"
-                data-turnos="{{ u.medico.turnos|default:'' }}"
                 data-dias="{{ u.medico.dias_atencion|default:'' }}"
-
-                data-medico-madrugue="{{ u.medico.turnos.madrugue|yesno:'1,0' }}"
-                data-medico-mannana="{{ u.medico.turnos.mannana|yesno:'1,0' }}"
-                data-medico-tarde="{{ u.medico.turnos.tarde|yesno:'1,0' }}"
-                data-medico-noche="{{ u.medico.turnos.noche|yesno:'1,0' }}"
-
-                data-lunes="{{ u.medico.dias_atencion.lunes|yesno:'1,0'|default:'' }}"
+                data-lunes="{{ u.medico.dias_atencion.lunes|yesno:'1,0' }}"
                 data-martes="{{ u.medico.dias_atencion.martes|yesno:'1,0' }}"
-                data-miercoles="{{ u.medico.dias_atencion.miercoles|yesno:'1,0'|default:'' }}"
-                data-jueves="{{ u.medico.dias_atencion.jueves|yesno:'1,0'|default:'' }}"
-                data-viernes="{{ u.medico.dias_atencion.viernes|yesno:'1,0'|default:'' }}"
+                data-miercoles="{{ u.medico.dias_atencion.miercoles|yesno:'1,0' }}"
+                data-jueves="{{ u.medico.dias_atencion.jueves|yesno:'1,0' }}"
+                data-viernes="{{ u.medico.dias_atencion.viernes|yesno:'1,0' }}"
+
+                data-turnos-med="{% for t in u.medico.turnos.all %}{{ t.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
             {% endif %}
 
             {% if u.admision %}
                 data-ventanilla="{{ u.admision.ventanilla|default:'' }}"
-                data-turnosadm="{{ u.admision.turnos|default:'' }}"
+                data-turnos-med="{% for t in u.admision.turnos.all %}{{ t.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
 
-                data-adm-madrugue="{{ u.admision.turnos.madrugue|yesno:'1,0' }}"
-                data-adm-mannana="{{ u.admision.turnos.mannana|yesno:'1,0' }}"
-                data-adm-tarde="{{ u.admision.turnos.tarde|yesno:'1,0' }}"
-                data-adm-noche="{{ u.admision.turnos.noche|yesno:'1,0' }}"
             {% endif %}
 
             {% if u.encargado_admision %}
                 data-ventanillaenc="{{ u.encargado_admision.ventanilla|default:'' }}"
-                data-turnosenc="{{ u.encargado_admision.turnos|default:'' }}"
+                data-turnos-med="{% for t in u.encargado_admision.turnos.all %}{{ t.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
 
-                data-enc-madrugue="{{ u.encargado_admision.turnos.madrugue|yesno:'1,0' }}"
-                data-enc-mannana="{{ u.encargado_admision.turnos.mannana|yesno:'1,0' }}"
-                data-enc-tarde="{{ u.encargado_admision.turnos.tarde|yesno:'1,0' }}"
-                data-enc-noche="{{ u.encargado_admision.turnos.noche|yesno:'1,0' }}"
             {% endif %}
         >
         <td>{{ u.username }}</td>
@@ -118,12 +105,12 @@
 
         <!-- Acciones -->
         <td class="actions">
-          <button class="link-view btn-view" data-id="{{ u.id }}">Ver</button>
+          <button class="btn btn-view" data-id="{{ u.id }}">Ver</button>
 
           {% if puede_admin %}
-          <button class="link-edit btn-edit" data-id="{{ u.id }}">Editar</button>
+          <button class="btn btn-edit" data-id="{{ u.id }}">Editar</button>
           <button 
-              class="btn-toggle"
+              class="btn btn-toggle"
               data-id="{{ u.id }}"
               data-username="{{ u.username }}"
               data-active="{{ u.is_active }}">
