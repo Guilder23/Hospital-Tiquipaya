@@ -1,100 +1,155 @@
 {% extends "base.html" %}
-{% block extra_css %}<link rel="stylesheet" href="/static/css/accounts/usuarios/modals/crear.css">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/accounts/usuarios/modals/crear.css">
+{% endblock %}
+
 {% block content %}
-<div id="modal-crear-usuario" class="modal" aria-hidden="true" role="dialog">
-  <div class="modal-dialog">
-    <header class="modal-header">
-      <h2>Agregar Usuario</h2>
-      <button class="modal-close" data-close="modal-add">✕</button>
-    </header>
-    <form id="registrar" method="post" action="{% url 'accounts:register' %}">
-        {% csrf_token %}
-        <div class="modal-body">
-            <h4>Datos del usuario</h4>
-            <label>Nombres
-                <input name="nombres" required>
-            </label>
-            <label>Apellido paterno
-                <input name="apellido_paterno" required>
-            </label>
-            <label>Apellido materno
-                <input name="apellido_materno">
-            </label>
-            <label>Usuario (username)
-                <input name="username" required placeholder="Nombre de usuario">
-            </label>
-            <label>Contraseña
-                <input name="password" type="password" required placeholder="Contraseña">
-            </label>
-            <label>CI
-                <input name="ci">
-            </label>
-            <label>CI complemento
-                <input name="complemento_ci">
-            </label>
-            <label>Expedido
-                <select name="expedido">
-                    <option value="BN">BE</option>
-                    <option value="CB" selected>CB</option>
-                    <option value="CH">CH</option>
-                    <option value="LP">LP</option>
-                    <option value="OR">OR</option>
-                    <option value="PD">PD</option>
-                    <option value="PT">PT</option>
-                    <option value="SC">SC</option>
-                    <option value="TJ">TJ</option>
-                </select>
-            </label>
-            <label>Fecha de Nacimiento
-                <input type="date" name="fecha_nacimiento" required>
-            </label>
-            <label>Sexo
-                <select name="sexo">
-                    <option value="M">Masculino</option>
-                    <option value="F" selected>Femenino</option>
-                    <option value="O">Otro</option>
-                </select>
-            </label>
-            <label>Telefono fijo
-                <input name="telefono">
-            </label>
-            <label>Celular
-                <input name="celular">
-            </label>
-            <label>Dirección
-                <input name="direccion">
-            </label>
-            <label>Correo Electronico
-                <input name="correo">
-            </label>
-            <div class="form-row"><label>Rol</label>
+
+<div id="modal-crear-usuario" class="modal usuario-crear" aria-hidden="true">
+
+    <!-- BACKDROP (requerido para que no borre todo) -->
+    <div class="modal-backdrop" data-close></div>
+
+    <!-- PANEL del modal -->
+    <div class="modal-panel">
+
+        <h3>Agregar Usuario</h3>
+
+        <form id="registrar" method="post" action="{% url 'accounts:register' %}">
+            {% csrf_token %}
+
+            <div class="section">
+                <h4>Datos del usuario</h4>
+
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label>Nombres</label>
+                        <input name="nombres" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Apellido paterno</label>
+                        <input name="apellido_paterno" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Apellido materno</label>
+                        <input name="apellido_materno">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Usuario (username)</label>
+                        <input name="username" required placeholder="Nombre de usuario">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Contraseña</label>
+                        <input name="password" type="password" required placeholder="Contraseña">
+                    </div>
+
+                    <div class="form-row">
+                        <label>CI</label>
+                        <input name="ci">
+                    </div>
+
+                    <div class="form-row">
+                        <label>CI complemento</label>
+                        <input name="complemento_ci">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Expedido</label>
+                        <select name="expedido">
+                            <option value="BN">BE</option>
+                            <option value="CB" selected>CB</option>
+                            <option value="CH">CH</option>
+                            <option value="LP">LP</option>
+                            <option value="OR">OR</option>
+                            <option value="PD">PD</option>
+                            <option value="PT">PT</option>
+                            <option value="SC">SC</option>
+                            <option value="TJ">TJ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Fecha de Nacimiento</label>
+                        <input type="date" name="fecha_nacimiento" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Sexo</label>
+                        <select name="sexo">
+                            <option value="M">Masculino</option>
+                            <option value="F" selected>Femenino</option>
+                            <option value="O">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Telefono fijo</label>
+                        <input name="telefono">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Celular</label>
+                        <input name="celular">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Dirección</label>
+                        <input name="direccion">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Correo Electronico</label>
+                        <input name="correo">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h4>Rol</h4>
                 <select name="tipo" id="select-rol">
-                <option value="">Sin rol</option>
-                {% for t in tipos %}
-                    <option value="{{ t.nombre|lower }}">{{ t.nombre }}</option>
-                {% endfor %}
+                    <option value="">Sin rol</option>
+                    {% for t in tipos %}
+                        <option value="{{ t.nombre|lower }}">{{ t.nombre }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
-            <div class="campos-condicionales" id="campos-medico" style="display: none;">
+            <!-- CAMPOS DINÁMICOS (sin cambios, solo colocados dentro de secciones) -->
+            <div id="campos-medico" class="section" style="display:none;">
                 <h4>Datos del médico</h4>
-                <label>Especialidad
-                    <select name="especialidad">
-                        <option value="">-- Seleccionar --</option>
-                        {% for e in especialidades %}<option value="{{ e.id }}">{{ e.nombre }}</option>{% endfor %}
-                    </select>
-                </label>
-                <label>Nº matrícula
-                    <input name="nro_matricula" maxlength="20">
-                </label>
-                <label>Consultorio
-                    <input name="consultorio">
-                </label>
+
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label>Especialidad</label>
+                        <select name="especialidad">
+                            <option value="">-- Seleccionar --</option>
+                            {% for e in especialidades %}
+                            <option value="{{ e.id }}">{{ e.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Nº matrícula</label>
+                        <input name="nro_matricula" maxlength="20">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Consultorio</label>
+                        <input name="consultorio">
+                    </div>
+                </div>
+
                 <h4>Turnos de atención</h4>
                 <label><input type="checkbox" name="madrugue"> Madrugue</label>
                 <label><input type="checkbox" name="mannana"> Mañana</label>
                 <label><input type="checkbox" name="tarde"> Tarde</label>
                 <label><input type="checkbox" name="noche"> Noche</label>
+
                 <h4>Días de atención</h4>
                 <label><input type="checkbox" name="lunes"> Lunes</label>
                 <label><input type="checkbox" name="martes"> Martes</label>
@@ -102,38 +157,16 @@
                 <label><input type="checkbox" name="jueves"> Jueves</label>
                 <label><input type="checkbox" name="viernes"> Viernes</label>
             </div>
-        
-            <div class="campos-condicionales" id="campos-admision" style="display: none;">
-                <h4>Datos de Admisión</h4>
-                <label>Numero de ventanilla
-                    <input name="ventanilla">
-                </label>
-                <h4>Turnos de atención</h4>
-                <label><input type="checkbox" name="madrugue"> Madrugue</label>
-                <label><input type="checkbox" name="mannana"> Mañana</label>
-                <label><input type="checkbox" name="tarde"> Tarde</label>
-                <label><input type="checkbox" name="noche"> Noche</label>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" data-close="modal-add">Cancelar</button>
+                <button type="submit" class="btn">Crear</button>
             </div>
 
-            <div class="campos-condicionales" id="campos-encargado-admision" style="display: none;"> 
-                <h4>Datos de Encargado de Admisión</h4>
-                <label>Numero de ventanilla
-                    <input name="ventanilla">
-                </label>
-                <h4>Turnos de atención</h4>
-                <label><input type="checkbox" name="madrugue"> Madrugue</label>
-                <label><input type="checkbox" name="mannana"> Mañana</label>
-                <label><input type="checkbox" name="tarde"> Tarde</label>
-                <label><input type="checkbox" name="noche"> Noche</label>
-            </div>
-        </div>
-        <footer class="modal-footer">
-            <button type="button" class="btn-secondary" data-close="modal-add">Cancelar</button>
-            <button type="submit" class="btn-primary">Crear</button>
-        </footer>
         </form>
-  </div>
+    </div>
 </div>
 
 <script src="/static/js/accounts/usuarios/modals/crear.js"></script>
+
 {% endblock %}

@@ -1,0 +1,147 @@
+/* ======================================================================= */
+/* =====================   MODAL EDITAR USUARIO   ======================== */
+/* ======================================================================= */
+
+/* === Overlay === */
+.modal.usuario-edit {
+    position: fixed;
+    inset: 0;
+    display: none !important;          /* Oculto por defecto */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    /* FONDO OSCURO REAL */
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(4px) !important;
+
+    z-index: 2000;
+}
+
+/* Mostrar modal cuando aria-hidden = false */
+.modal.usuario-edit[aria-hidden="false"] {
+    display: flex !important;
+}
+
+/* ======================================================================= */
+/* =====================   CONTENEDOR REAL DEL MODAL   ==================== */
+/* ======================================================================= */
+
+.modal.usuario-edit .modal-dialog {
+    background: #fff !important;
+    width: 100%;
+    max-width: 750px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+    padding: 25px 30px 30px;
+    border-radius: 12px;
+
+    border-top: 4px solid #16a34a;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+
+    transform: translateY(-20px);
+    animation: showModal 0.35s ease forwards;
+
+    pointer-events: auto !important; /* Corrige el problema de clicks */
+}
+
+/* Animación modal */
+@keyframes showModal {
+    to { transform: translateY(0); }
+}
+
+/* Scroll invisible */
+.modal.usuario-edit .modal-dialog::-webkit-scrollbar { width: 0; }
+.modal.usuario-edit .modal-dialog { scrollbar-width: none; }
+
+/* ======================================================================= */
+/* =========================   TITULOS Y HEADERS   ======================== */
+/* ======================================================================= */
+
+.modal.usuario-edit h3,
+.modal.usuario-edit h4 {
+    color: #1e293b;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.modal.usuario-edit h3 {
+    text-align: center;
+    font-size: 22px;
+    color: #16a34a;
+}
+
+/* ======================================================================= */
+/* ========================   FORMULARIO E INPUTS   ======================= */
+/* ======================================================================= */
+
+label { 
+    font-size: 14px; 
+    font-weight: 500; 
+    margin-bottom: 4px; 
+    color: #1e293b; 
+}
+
+input, select { 
+    padding: 10px 12px; 
+    border-radius: 8px; 
+    border: 1px solid #cfd4da; 
+    font-size: 14px; 
+    transition: border-color .25s, box-shadow .25s;
+}
+
+input:focus, select:focus { 
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.25); 
+}
+
+/* ======================================================================= */
+/* =========================   BOTONES FOOTER   =========================== */
+/* ======================================================================= */
+
+.modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-primary {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.btn-primary:hover { background: #15803d; }
+.btn-primary:active { background: #166534; }
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #1e293b;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.btn-secondary:hover { background: #d1d5db; }
+.btn-secondary:active { background: #bdc3c7; }
+
+/* ======================================================================= */
+/* =========================   FIJAR BACKDROP   =========================== */
+/* ======================================================================= */
+
+.modal.usuario-edit .modal-backdrop {
+    background: rgba(0, 0, 0, 0.55) !important;
+    backdrop-filter: blur(4px) !important;
+    position: absolute;
+    inset: 0;
+    z-index: -1; /* Para que no tape el modal */
+}

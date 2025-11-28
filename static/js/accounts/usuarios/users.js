@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+     window.__modals = window.__modals || {};
+
     const ROL_MEDICO = "Medico";
     const ROL_ADMISION = "Admision";
     const ROL_ENCARGADO = "Encargado de Admisión";
@@ -42,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function open(modal) {
         if (!modal) return;
         modal.setAttribute('aria-hidden', 'false');
-        modal.style.display = 'block';
         modal.classList.add('active', 'show');
     }
 
@@ -54,8 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         modal.setAttribute('aria-hidden', 'true');
-        modal.style.display = "none";
-        modal.classList.remove('active', 'show', 'open');
+        modal.classList.remove('active', 'show');
     }
 
     document.querySelectorAll('[data-close]').forEach(el =>
@@ -70,8 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Exponer funciones a nivel global para los otros archivos
-    window.__modals = {
-        open,
-        close
-    };
+    window.__modals.open = open;
+    window.__modals.close = close;
 });

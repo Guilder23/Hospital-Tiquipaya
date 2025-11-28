@@ -4,7 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const { open, close } = window.__modals;
 
     document.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => close(modalView));
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modal');
+            if (modal) close(modal);
+        });
+    });
+
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close(modal);
+        });
     });
 
     document.querySelectorAll('.btn-view').forEach(btn => {

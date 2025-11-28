@@ -1,14 +1,19 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modal-crear-usuario");
 
-    if (!window.__modals) return;
-
-    const open = window.__modals.open;
-
-    const btnOpenCreate = document.getElementById('btn-open-create');
-    const modalCreate = document.getElementById('modal-crear-usuario');
-
-    if (btnOpenCreate && modalCreate) {
-        btnOpenCreate.addEventListener('click', () => open(modalCreate));
+    function openModal() {
+        modal.setAttribute("aria-hidden", "false");
     }
 
+    function closeModal() {
+        modal.setAttribute("aria-hidden", "true");
+    }
+
+    document.querySelectorAll("[data-open='crear-usuario']").forEach(btn =>
+        btn.addEventListener("click", openModal)
+    );
+
+    modal.querySelectorAll("[data-close]").forEach(btn =>
+        btn.addEventListener("click", closeModal)
+    );
 });

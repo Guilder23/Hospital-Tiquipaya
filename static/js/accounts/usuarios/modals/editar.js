@@ -9,9 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ---------- BOTONES CERRAR ----------
     modal.querySelectorAll('[data-close="modal-edit"]').forEach(btn => {
-        btn.addEventListener('click', () => close(modal));
+        btn.addEventListener('click', () => {
+            close(modal);
+        });
     });
 
+    // Cerrar al hacer click fuera del modal-dialog (overlay)
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {  // click sobre el fondo
+            close(modal);
+        }
+    });
+    
     function convertirFecha(fechaTexto) {
         const meses = {
             enero: '01', febrero: '02', marzo: '03', abril: '04',

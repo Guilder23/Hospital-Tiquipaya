@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 nombre: formEdit['nombre'].value,
                 hora_ini: formEdit['hora_ini'].value,
                 hora_fin: formEdit['hora_fin'].value,
-                estado: formEdit['estado'].value === "true"  // IMPORTANTÍSIMO
+                estado: formEdit['estado'].value === "true"
             };
 
             const response = await fetch(`${apiUrl}${id}/`, {

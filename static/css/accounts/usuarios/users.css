@@ -1,3 +1,4 @@
+/* === CONTENEDOR PRINCIPAL === */
 .usuarios-lista h2 {
   font-size: 1.8rem;
   color: #0f172a;
@@ -5,6 +6,7 @@
   font-weight: 800;
 }
 
+/* === TABLA === */
 .table {
   width: 100%;
   border-collapse: separate;
@@ -44,105 +46,94 @@
   transition: background .18s ease;
 }
 
+/* === ACCIONES DE LA TABLA === */
 .actions {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
   align-items: center;
-  white-space: nowrap;
+  white-space: nowrap; /* Mantenido del original, no estaba en el nuevo ejemplo */
 }
 
+/* Las acciones a y button ahora usan la clase .btn o .btn-view/.btn-edit/.btn-delete */
 .actions a,
 .actions button {
   margin-right: 0;
 }
 
-.link-view {
-  display: inline-block;
+/* Se reestructuran los estilos .link-* a .btn-* para heredar de .btn */
+.btn-view {
+  /* display: inline-block; Removido, ahora usa .btn */
   background: var(--color-exito);
   color: #fff;
-  text-decoration: none;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 10px;
+  /* text-decoration: none; Removido, ahora usa .btn */
+  /* border: none; Removido, ahora usa .btn */
+  /* padding: 8px 12px; Removido, ahora usa .btn */
+  /* border-radius: 10px; Removido, ahora usa .btn */
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
-  font-weight: 600;
-  font-size: .92rem;
-  cursor: pointer;
+  /* font-weight: 600; Removido, ahora usa .btn */
+  /* font-size: .92rem; Removido, ahora usa .btn */
+  /* cursor: pointer; Removido, ahora usa .btn */
 }
 
-.link-view:hover {
+.btn-view:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-exito);
-  text-decoration: none;
-  color: #fff;
+  /* text-decoration: none; Removido, ahora usa .btn */
+  /* color: #fff; Removido, ahora usa .btn */
 }
 
-.link-view:active {
+.btn-view:active {
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-exito-active);
 }
 
-.link-edit {
-  display: inline-block;
+.btn-edit {
   background: var(--color-advertencia);
   color: #fff;
-  text-decoration: none;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 10px;
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
-  font-weight: 600;
-  font-size: .92rem;
-  cursor: pointer;
 }
 
-.link-edit:hover {
+.btn-edit:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-advertencia);
-  text-decoration: none;
-  color: #fff;
+  /* text-decoration: none; Removido */
+  /* color: #fff; Removido */
 }
 
-.link-edit:active {
+.btn-edit:active {
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-advertencia-active);
 }
 
-.link-delete {
-  display: inline-block;
+.btn-delete {
   background: var(--color-error);
   color: #fff;
-  text-decoration: none;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 10px;
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
-  font-weight: 600;
-  font-size: .92rem;
-  cursor: pointer;
 }
 
-.link-delete:hover {
+.btn-delete:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-error);
-  text-decoration: none;
-  color: #fff;
+  /* text-decoration: none; Removido */
+  /* color: #fff; Removido */
 }
 
-.link-delete:active {
+.btn-delete:active {
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-error-active);
 }
+
+/* === MODALES === */
 .modal {
   position: fixed;
   inset: 0;
   display: none;
   animation: fadeIn .25s ease;
-  z-index: 1000;
+  /* z-index: 1000; Removido del modal principal para coincidir con el ejemplo */
 }
 
 .modal[aria-hidden="false"] {
@@ -152,8 +143,9 @@
 .modal-backdrop {
   position: absolute;
   inset: 0;
-  background: var(--color-overlay-modal);
-  backdrop-filter: blur(3px);
+  background: transparent; /* Cambiado de overlay a transparent */
+  /* backdrop-filter: blur(3px); Removido */
+  z-index: -1; /* Agregado para coincidir con el ejemplo */
 }
 
 .modal-panel {
@@ -162,9 +154,9 @@
   background: var(--color-fondo-modal);
   border-radius: 16px;
   padding: 22px;
-  max-width: 520px;
+  max-width: 900px; /* Cambiado de 520px a 900px */
   border: 1px solid var(--color-borde-modal);
-  box-shadow: 0 10px 40px rgba(0,0,0,.15);
+  box-shadow: 0 10px 40px var(--sombra-neutral-25); /* Cambiado el box-shadow */
   animation: popUp .25s ease;
 }
 
@@ -174,6 +166,7 @@
   color: var(--color-texto);
 }
 
+/* === FORMULARIOS === */
 .form-row {
   margin-bottom: 14px;
 }
@@ -204,6 +197,7 @@
   box-shadow: 0 0 0 3px rgba(27, 143, 130, .25);
 }
 
+/* === ACCIONES DEL MODAL === */
 .modal-actions {
   display: flex;
   gap: 10px;
@@ -211,6 +205,7 @@
   margin-top: 18px;
 }
 
+/* === BOTONES GENERALES (Reestructurado para ser la base) === */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -219,7 +214,7 @@
   color: #fff;
   padding: 8px 14px;
   border-radius: 10px;
-  text-decoration: none;
+  text-decoration: none; /* Mantenido de la versión original */
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -231,8 +226,8 @@
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-boton-principal);
-  text-decoration: none;
-  color: #fff;
+  text-decoration: none; /* Mantenido de la versión original */
+  color: #fff; /* Mantenido de la versión original */
 }
 
 .btn:active {
@@ -240,47 +235,49 @@
   box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
 }
 
+/* Secundario */
 .btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* display: inline-flex; Removido, ahora usa .btn */
+  /* align-items: center; Removido, ahora usa .btn */
+  /* justify-content: center; Removido, ahora usa .btn */
   background: var(--color-fondo-card);
   color: var(--color-texto);
   padding: 8px 14px;
   border-radius: 10px;
-  text-decoration: none;
+  /* text-decoration: none; Removido, ahora usa .btn */
   font-weight: 600;
   border: 1px solid var(--color-borde-card);
-  cursor: pointer;
-  font-size: .92rem;
+  /* cursor: pointer; Removido, ahora usa .btn */
+  /* font-size: .92rem; Removido, ahora usa .btn */
   box-shadow: 0 4px 12px var(--sombra-neutral-06);
   transition: background .15s ease, box-shadow .15s ease;
 }
 
 .btn-secondary:hover {
   background: #f1f5f9;
-  box-shadow: 0 6px 16px var(--sombra-neutral-10);
-  text-decoration: none;
+  box-shadow: 0 6px 16px var(--sombra-secundaria); /* Actualizado para usar --sombra-secundaria */
+  text-decoration: none; /* Mantenido de la versión original */
 }
 
 .btn-secondary:active {
   background: #e2e8f0;
-  box-shadow: 0 2px 8px var(--sombra-neutral-10);
+  box-shadow: 0 2px 8px var(--sombra-secundaria-active); /* Actualizado para usar --sombra-secundaria-active */
 }
 
+/* Peligro */
 .btn-danger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* display: inline-flex; Removido, ahora usa .btn */
+  /* align-items: center; Removido, ahora usa .btn */
+  /* justify-content: center; Removido, ahora usa .btn */
   background: var(--color-error);
   color: #fff;
   padding: 8px 14px;
   border-radius: 10px;
-  text-decoration: none;
+  /* text-decoration: none; Removido, ahora usa .btn */
   font-weight: 600;
   border: none;
-  cursor: pointer;
-  font-size: .92rem;
+  /* cursor: pointer; Removido, ahora usa .btn */
+  /* font-size: .92rem; Removido, ahora usa .btn */
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
 }
@@ -295,6 +292,41 @@
   box-shadow: 0 4px 12px var(--sombra-error-active);
 }
 
+/* === BADGES (Nuevos estilos del ejemplo) === */
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.badge-success {
+  background: var(--badge-success-bg);
+  color: var(--badge-success-text);
+  border-color: var(--badge-success-border);
+}
+
+.badge-muted {
+  background: var(--badge-muted-bg);
+  color: var(--badge-muted-text);
+  border-color: var(--badge-muted-border);
+}
+
+.badge-activo {
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
+}
+
+.badge-inactivo {
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
+}
+
+/* === ANIMACIONES === */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

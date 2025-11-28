@@ -4,6 +4,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const open = window.__modals.open;
 
+    const modalDesactivar = document.getElementById('modal-desactivar-usuario');
+    const closeModal = window.__modals.close;
+
+    modalDesactivar.querySelectorAll('[data-close="modal-desactivar-usuario"], [data-close="modal-desactivar"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            closeModal(modalDesactivar);
+        });
+    });
+
+    // 2) Cerrar al hacer click en el overlay (fondo oscuro)
+    modalDesactivar.addEventListener('click', e => {
+        if (e.target === modalDesactivar) {
+            closeModal(modalDesactivar);
+        }
+    });
+
     document.querySelectorAll('.btn-toggle').forEach(btn => {
         btn.addEventListener('click', () => {
 
