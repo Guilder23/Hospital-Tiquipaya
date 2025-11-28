@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/turnos/turnos.css">
+<link rel="stylesheet" href="/static/css/turnos/modals/create.css">
+<link rel="stylesheet" href="/static/css/turnos/modals/edit.css">
+<link rel="stylesheet" href="/static/css/turnos/modals/view.css">
+<link rel="stylesheet" href="/static/css/turnos/modals/delete.css">
+{% endblock %}
+{% block content %}
+
+<section class="card turnos-lista">
+    <h2>Gestión de Turnos</h2>
+    {% if puede_admin %}
+    <p><button class="btn" id="btn-open-create">Nuevo Turno</button></p>
+    {% endif %}
+
+    <table class="table turnos">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fin</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turno in lista_turnos %}
+            <tr data-id="{{ turno.id }}" 
+                data-nombre="{{ turno.nombre }}" 
+                data-hora_ini="{{ turno.hora_ini|date:'H:i' }}" 
+                data-hora_fin="{{ turno.hora_fin|date:'H:i' }}"
+                data-estado="{{ turno.estado }}">
+                
+                <td>{{ turno.nombre }}</td>
+                <td>{{ turno.hora_ini|date:"H:i" }}</td>
+                <td>{{ turno.hora_fin|date:"H:i" }}</td>
+                <td>
+                {% if turno.estado %}
+                    <span class="badge badge-activo">Activo</span>
+                {% else %}
+                    <span class="badge badge-inactivo">Inactivo</span>
+                {% endif %}
+                </td>                
+                <td class="actions">
+                    <button class="btn btn-view" data-id="{{ turno.id }}" data-estado="{{ turno.estado }}">Ver</button>
+                    {% if puede_admin %}
+                    <button 
+                        class="btn btn-edit" 
+                        data-id="{{ turno.pk }}" 
+                        data-nombre="{{ turno.nombre }}" 
+                        data-hora_ini="{{ turno.hora_ini|date:'H:i' }}" 
+                        data-hora_fin="{{ turno.hora_fin|date:'H:i' }}"
+                        data-estado="{{ turno.estado }}"
+                    >
+                        Editar
+                    </button>
+                    <button class="btn btn-delete" data-id="{{ turno.id }}" data-nombre="{{ turno.nombre }}" data-estado="{{ turno.estado }}">Eliminar</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No hay turnos registrados</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% include 'turnos/modals/create.html' %} 
+{% include 'turnos/modals/edit.html' %} 
+{% include 'turnos/modals/view.html' %} 
+{% include 'turnos/modals/delete.html' %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/turnos/modals/view.js"></script>
+<script src="/static/js/turnos/modals/create.js"></script>
+<script src="/static/js/turnos/modals/edit.js"></script>
+<script src="/static/js/turnos/modals/delete.js"></script>
+{% endblock %}

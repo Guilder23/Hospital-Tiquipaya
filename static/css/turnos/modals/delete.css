@@ -1,0 +1,112 @@
+/* ===== OVERLAY ===== */
+.turnos-eliminar[aria-hidden="false"] {
+    display: flex !important;
+}
+
+.turnos-eliminar {
+    /* ... estilos de posición/overlay ... */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-overlay-modal);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 15px;
+}
+
+/* ===== PANEL ===== */
+.turnos-eliminar .modal-panel {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-fondo-modal);
+  border-radius: 14px;
+  border-top: 4px solid var(--color-error);
+  padding: 20px 24px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: modalFade 0.25s ease-out;
+}
+
+/* Animación suave */
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== TITULO ===== */
+.turnos-eliminar .modal-panel h3 {
+  color: var(--color-error);
+  font-size: 1.2rem;
+  margin: 0 0 15px;
+  font-weight: 600;
+}
+
+/* ===== TEXTO ===== */
+.turnos-eliminar p {
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+/* ===== ACCIONES ===== */
+.turnos-eliminar .modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ===== BOTÓN ELIMINAR ===== */
+.turnos-eliminar .btn-danger {
+  background: var(--color-error);
+  border: none;
+  padding: 8px 16px;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all .2s ease;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
+}
+
+.turnos-eliminar .btn-danger:hover {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--sombra-error);
+}
+
+.turnos-eliminar .btn-danger:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--sombra-error-active);
+}
+
+/* ===== BOTÓN CERRAR ===== */
+.turnos-eliminar .btn-secondary {
+  background: var(--color-fondo-informacion);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
+}
+
+.turnos-eliminar .btn-secondary:hover {
+  filter: brightness(0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.turnos-eliminar .btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}

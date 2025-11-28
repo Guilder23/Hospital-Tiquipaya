@@ -1,0 +1,144 @@
+/* === Modal Ver Turno === */
+.modal.turnos-ver {
+    /* ... estilos de posición/overlay ... */
+    position: fixed;
+    inset: 0;
+    display: none !important;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--color-overlay-modal);
+    z-index: 2000;
+}
+
+.modal.turnos-ver[aria-hidden="false"] {
+    display: flex !important;
+}
+
+.modal.turnos-ver .modal-panel {
+  width: 100%;
+  max-width: 750px;
+  max-height: 90vh;       /* Limita altura */
+  overflow-y: auto;       /* Scroll interno */
+  padding-right: 15px;
+  background: var(--color-fondo-modal);
+  padding: 25px 30px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-informacion);
+  transform: translateY(-20px);
+  animation: showModalView 0.35s ease forwards;
+  box-shadow: 0px 8px 25px rgba(0,0,0,0.25);
+}
+
+/* Animación */
+@keyframes showModalView {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Scroll invisible */
+.modal.turnos-ver .modal-panel::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+.modal.turnos-ver .modal-panel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* === TÍTULO === */
+.modal.turnos-ver h3 {
+  margin-top: 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--color-informacion);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* === SECCIONES === */
+.modal.turnos-ver .section {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-borde-input);
+  padding-bottom: 15px;
+}
+
+.modal.turnos-ver .section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal.turnos-ver .section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-texto);
+  margin-bottom: 12px;
+}
+
+/* === GRID DOS COLUMNAS === */
+.modal.turnos-ver .form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.modal.turnos-ver .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+
+/* Campos que ocupan toda la fila */
+.modal.turnos-ver .form-row-full {
+  grid-column: span 2;
+}
+
+/* Etiquetas */
+.modal.turnos-ver label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--color-texto);
+}
+
+/* Valores */
+.modal.turnos-ver .form-row div {
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  font-size: 14px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+/* === BOTÓN CERRAR === */
+.modal.turnos-ver .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal.turnos-ver .btn-secondary {
+  padding: 10px 18px;
+  background: var(--color-fondo-informacion);
+  border: none;
+  border-radius: 8px;
+  color: var(--color-texto);
+  cursor: pointer;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
+}
+
+.modal.turnos-ver .btn-secondary:hover {
+  filter: brightness(0.95);
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.modal.turnos-ver .btn-secondary:active {
+  filter: brightness(0.9);
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}

@@ -1,0 +1,20 @@
+<div class="modal turnos-eliminar" id="modal-eliminar-turno" aria-hidden="true" style="display:none">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel">
+        <h3 id="modal-title-estado"></h3>
+
+        <p>
+            ¿Estás seguro de que quieres 
+            <strong id="accion-text"></strong> 
+            el turno: <b><span id="delete-nombre"></span></b>?
+        </p>
+
+        <input type="hidden" id="delete-id">
+        <input type="hidden" id="delete-estado">
+
+        <div class="modal-actions">
+            <button class="btn btn-danger" id="btn-confirm-delete" type="button"></button>
+            <button class="btn-secondary" type="button" data-close>Cancelar</button>
+        </div>
+    </div>
+</div>

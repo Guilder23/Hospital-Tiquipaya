@@ -38,6 +38,7 @@ class Turnos(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
     hora_ini = models.TimeField()
     hora_fin = models.TimeField()
+    estado = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Turno"

@@ -1,0 +1,37 @@
+<div class="modal turnos-editar" id="modal-editar-turno" aria-hidden="true" style="display:none">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel">
+        <h3>Editar Turno</h3>
+        <form id="form-edit-turno" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="edit-id" name="id"> 
+            <div class="section">
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="edit-nombre">Nombre del Turno</label>
+                        <input type="text" id="edit-nombre" name="nombre" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="edit-hora_ini">Hora de Inicio</label>
+                        <input type="time" id="edit-hora_ini" name="hora_ini" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="edit-hora_fin">Hora de Fin</label>
+                        <input type="time" id="edit-hora_fin" name="hora_fin" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="edit-estado">Estado</label>
+                        <select id="edit-estado" name="estado" required>
+                            <option value="true">Habilitado</option>
+                            <option value="false">Deshabilitado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" type="submit">Actualizar Turno</button>
+                <button class="btn-secondary" type="button" data-close>Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

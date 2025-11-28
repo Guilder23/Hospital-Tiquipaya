@@ -1,0 +1,29 @@
+<div class="modal turnos-crear" id="modal-crear-turno" aria-hidden="true" style="display:none">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel">
+        <h3>Crear Nuevo Turno</h3>
+        <form id="form-create-turno" method="POST">
+            {% csrf_token %}
+            <div class="section">
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label for="create-nombre">Nombre del Turno</label>
+                        <input type="text" id="create-nombre" name="nombre" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="create-hora_ini">Hora de Inicio</label>
+                        <input type="time" id="create-hora_ini" name="hora_ini" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="create-hora_fin">Hora de Fin</label>
+                        <input type="time" id="create-hora_fin" name="hora_fin" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" type="submit">Guardar Turno</button>
+                <button class="btn-secondary" type="button" data-close>Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

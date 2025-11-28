@@ -1,0 +1,293 @@
+/* === CONTENEDOR PRINCIPAL === */
+.turnos-lista {
+  padding: 16px;
+}
+
+.turnos-lista h2 {
+  font-size: 1.8rem;
+  color: #0f172a;
+  margin: 0 0 18px;
+  font-weight: 800;
+}
+
+/* === TABLA === */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 14px;
+  background: var(--color-tabla-row-bg);
+  border: 1px solid var(--color-tabla-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px var(--color-tabla-shadow);
+}
+
+.table thead th {
+  background: var(--color-tabla-header-bg);
+  color: var(--color-tabla-header-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-tabla-border);
+}
+
+.table tbody td {
+  padding: 12px;
+  border-top: 1px solid var(--color-tabla-border);
+  color: var(--color-texto);
+  font-size: .95rem;
+}
+
+.table tbody tr:nth-child(odd) {
+  background: var(--color-tabla-row-bg);
+}
+
+.table tbody tr:hover {
+  background: var(--color-tabla-row-hover-bg);
+  transition: background .18s ease;
+}
+
+/* === BOTONES MODERNOS === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-boton-principal);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: .92rem;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-boton-principal);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
+}
+
+/* Secundario */
+.btn-secondary {
+  background: var(--color-fondo-card);
+  color: var(--color-texto);
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-borde-card);
+  font-weight: 600;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
+  transition: background .15s ease, box-shadow .15s ease;
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+  box-shadow: 0 6px 16px var(--sombra-secundaria);
+}
+
+.btn-secondary:active {
+  background: #e2e8f0;
+  box-shadow: 0 2px 8px var(--sombra-secundaria-active);
+}
+
+/* Peligro */
+.btn-danger {
+  background: var(--color-error);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* === MODALES === */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  animation: fadeIn .25s ease;
+}
+
+.modal[aria-hidden="false"] {
+  display: block;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: -1;
+}
+
+.modal-panel {
+  position: relative;
+  margin: 4% auto;
+  background: var(--color-fondo-modal);
+  border-radius: 16px;
+  padding: 22px;
+  max-width: 900px;
+  border: 1px solid var(--color-borde-modal);
+  box-shadow: 0 10px 40px var(--sombra-neutral-25);
+  animation: popUp .25s ease;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popUp {
+  from { transform: scale(.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* === FORMULARIOS === */
+.form-row {
+  margin-bottom: 14px;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-texto-secundario);
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.form-row input, 
+.form-row select {
+  width: 100%;
+  padding: .65rem;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 12px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  transition: border .2s ease, box-shadow .2s ease;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  outline: none;
+  border-color: var(--color-borde-input-focus);
+  box-shadow: 0 0 0 3px rgba(27,143,130,.25);
+}
+
+/* === ACCIONES DEL MODAL === */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.badge-success {
+  background: var(--badge-success-bg);
+  color: var(--badge-success-text);
+  border-color: var(--badge-success-border);
+}
+
+.badge-muted {
+  background: var(--badge-muted-bg);
+  color: var(--badge-muted-text);
+  border-color: var(--badge-muted-border);
+}
+
+.badge-activo {
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
+}
+
+.badge-inactivo {
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
+}
+.btn-view {
+  background: var(--color-exito);
+  color: #fff;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.btn-view:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
+}
+
+.btn-edit {
+  background: var(--color-advertencia);
+  color: #fff;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-advertencia);
+}
+
+.btn-edit:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
+}
+
+.btn-delete {
+  background: var(--color-error);
+  color: #fff;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.btn-delete:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
+}
