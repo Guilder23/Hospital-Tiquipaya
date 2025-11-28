@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded',function(){
       set('view-emergencia_nombre', row.getAttribute('data-emergencia_nombre'));
       set('view-emergencia_telefono', row.getAttribute('data-emergencia_telefono'));
       set('view-emergencia_relacion', row.getAttribute('data-emergencia_relacion'));
+      set('view-numero_boleta_sus', row.getAttribute('data-numero_boleta_sus'));
+      set('view-numero_carnet_historial', row.getAttribute('data-numero_carnet_historial'));
+      set('view-numero_boleta_referencia', row.getAttribute('data-numero_boleta_referencia'));
+      set('view-numero_copias', row.getAttribute('data-numero_copias'));
       set('view-activo', row.getAttribute('data-activo')==='True'?'Activo':'Inactivo');
       set('view-registrado_en', row.getAttribute('data-registrado_en'));
       open(mView);

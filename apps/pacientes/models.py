@@ -40,6 +40,11 @@ class Paciente(models.Model):
     emergencia_telefono = models.CharField(max_length=30, blank=True)
     emergencia_relacion = models.CharField(max_length=60, blank=True)
 
+    numero_boleta_sus = models.CharField(max_length=60, blank=True, verbose_name="Número de Boleta del SUS (original)")
+    numero_carnet_historial = models.CharField(max_length=60, blank=True, verbose_name="Número del Carnet de Historial Clínico (Boleta Azul)")
+    numero_boleta_referencia = models.CharField(max_length=60, blank=True, verbose_name="Número de Boleta de Referencia (original)")
+    numero_copias = models.IntegerField(default=0, blank=True, verbose_name="Número de copias")
+
     activo = models.BooleanField(default=True)
     registrado_en = models.DateTimeField(auto_now_add=True)
 

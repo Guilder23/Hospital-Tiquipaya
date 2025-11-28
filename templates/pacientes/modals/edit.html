@@ -80,10 +80,14 @@
         </div>
       </div>
 
-      <!-- activo inactivo paciente -->
+      <!-- 🟥 SECCIÓN: Documentos Médicos -->
       <div class="form-section">
-        <h4>Estado</h4>
+        <h4>Documentos Médicos</h4>
         <div class="form-grid">
+          <div class="form-row"><label>Número de Boleta del SUS (original)</label><input name="numero_boleta_sus"></div>
+          <div class="form-row"><label>Número del Carnet de Historial Clínico (Boleta Azul)</label><input name="numero_carnet_historial"></div>
+          <div class="form-row"><label>Número de Boleta de Referencia (original)</label><input name="numero_boleta_referencia"></div>
+          <div class="form-row"><label>Número de copias</label><input type="number" name="numero_copias" min="0"></div>
           <div class="form-row"><label>Estado</label>
             <select name="activo">
               <option value="True">Activo</option>

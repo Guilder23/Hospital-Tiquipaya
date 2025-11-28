@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded',function(){
       setVal('emergencia_nombre', row.getAttribute('data-emergencia_nombre'));
       setVal('emergencia_telefono', row.getAttribute('data-emergencia_telefono'));
       setVal('emergencia_relacion', row.getAttribute('data-emergencia_relacion'));
+      setVal('numero_boleta_sus', row.getAttribute('data-numero_boleta_sus'));
+      setVal('numero_carnet_historial', row.getAttribute('data-numero_carnet_historial'));
+      setVal('numero_boleta_referencia', row.getAttribute('data-numero_boleta_referencia'));
+      setVal('numero_copias', row.getAttribute('data-numero_copias'));
       setVal('activo', row.getAttribute('data-activo')==='True'?'True':'False');
       open(mEdit);
     })
