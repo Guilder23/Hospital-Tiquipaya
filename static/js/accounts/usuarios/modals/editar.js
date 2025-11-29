@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
             close(modal);
         }
     });
-    
+
     function convertirFecha(fechaTexto) {
         const meses = {
             enero: '01', febrero: '02', marzo: '03', abril: '04',
@@ -133,15 +133,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         consultorio.value = row.dataset.consultorio || "";
                     }
 
-                    ['madrugue','mannana','tarde','noche'].forEach(turno => {
-                        const datasetKey = `medico${turno.charAt(0).toUpperCase() + turno.slice(1)}`;
-                        const check = box.querySelector(`[name="med-${turno}"]`);
+                    // TURNOS DEL MÉDICO
+                    const turnosStr = row.dataset.turnosMed || "";
+                    const idsTurnos = turnosStr.split(',').filter(Boolean);
 
-                        if (check) {
-                            check.checked = row.dataset[datasetKey] === '1';
-                        } else {
-                            console.debug('checkbox medico no encontrado:', `med-${turno}`);
-                        }
+                    idsTurnos.forEach(idTurno => {
+                        const check = form.querySelector(`#edit-turno-med-${idTurno}`);
+                        if (check) check.checked = true;
                     });
 
                     ['lunes','martes','miercoles','jueves','viernes'].forEach(dia => {
@@ -172,14 +170,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.warn('input ventanilla no encontrado en admision');
                     }
 
-                    ['madrugue','mannana','tarde','noche'].forEach(turno => {
-                        const check = box.querySelector(`[name="adm-${turno}"]`);
-                        if (check) {
-                            check.checked = row.dataset[`adm${turno.charAt(0).toUpperCase() + turno.slice(1)}`] === '1';
-                        } else {
-                            console.debug('checkbox adm no encontrado:', `adm-${turno}`);
-                        }
+                    // TURNOS DE ADMISION
+                    const turnosStr = row.dataset.turnosAdm || "";
+                    const idsTurnos = turnosStr.split(',').filter(Boolean);
+
+                    idsTurnos.forEach(idTurno => {
+                        const check = form.querySelector(`#edit-turno-adm-${idTurno}`);
+                        if (check) check.checked = true;
                     });
+
                     console.log(row.dataset);
 
                     console.log('campos-admision computed display:', window.getComputedStyle(box).display);
@@ -206,20 +205,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     vent.value = row.dataset.ventanillaenc || "";
                 }
 
-                // ----------- TURNOS -----------
-                const claves = {
-                    madrugue: "encMadrugue",
-                    mannana: "encMannana",
-                    tarde: "encTarde",
-                    noche: "encNoche"
-                };
+                // TURNOS ENCARGADO
+                const turnosStr = row.dataset.turnosEnc || "";
+                const idsTurnos = turnosStr.split(',').filter(Boolean);
 
-                Object.entries(claves).forEach(([turno, datasetKey]) => {
-                    const check = box.querySelector(`[name="enc-${turno}"]`);
-                    if (check) {
-                        check.checked = row.dataset[datasetKey] === '1';
-                    }
+                idsTurnos.forEach(idTurno => {
+                    const check = form.querySelector(`#edit-turno-enc-${idTurno}`);
+                    if (check) check.checked = true;
                 });
+
                 console.log(row.dataset);
 
                 console.log('campos-encargado-admision OK');

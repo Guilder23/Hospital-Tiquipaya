@@ -24,9 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
             medico.style.display = 'block';
             medico.querySelector('select[name="especialidad"]').setAttribute('required', 'true');
         } else if (rolSeleccionado === ROL_ADMISION) {
-            document.getElementById('campos-admision').style.display = 'block';
+            const adm = document.getElementById('campos-admision');
+            adm.style.display = 'block';
+            adm.querySelector('input[name="ventanilla"]').setAttribute('required', 'true');
         } else if (rolSeleccionado === ROL_ENCARGADO) {
             document.getElementById('campos-encargado-admision').style.display = 'block';
+            const enc = document.getElementById('campos-encargado-admision');
+            enc.style.display = 'block';
+            enc.querySelector('input[name="enc_ventanilla"]').setAttribute('required', 'true');
         }
     }
 

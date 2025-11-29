@@ -145,10 +145,12 @@
                 </div>
 
                 <h4>Turnos de atención</h4>
-                <label><input type="checkbox" name="madrugue"> Madrugue</label>
-                <label><input type="checkbox" name="mannana"> Mañana</label>
-                <label><input type="checkbox" name="tarde"> Tarde</label>
-                <label><input type="checkbox" name="noche"> Noche</label>
+                {% for turno in turnos %}
+                    <label>
+                        <input type="checkbox" name="turnos" value="{{ turno.id }}">
+                        {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+                    </label><br>
+                {% endfor %}
 
                 <h4>Días de atención</h4>
                 <label><input type="checkbox" name="lunes"> Lunes</label>
@@ -156,6 +158,45 @@
                 <label><input type="checkbox" name="miercoles"> Miércoles</label>
                 <label><input type="checkbox" name="jueves"> Jueves</label>
                 <label><input type="checkbox" name="viernes"> Viernes</label>
+            </div>
+
+            <div id="campos-admision" class="section campos-condicionales" style="display:none;">
+                <h4>Datos de Admisión</h4>
+
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label>Ventanilla</label>
+                        <input name="ventanilla">
+                    </div>
+                </div>
+
+                <h4>Turnos</h4>
+                {% for turno in turnos %}
+                    <label>
+                        <input type="checkbox" name="turnos" value="{{ turno.id }}">
+                        {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+                    </label><br>
+                {% endfor %}
+            </div>
+
+            <div id="campos-encargado-admision" class="section campos-condicionales" style="display:none;">
+                <h4>Encargado de Admisión</h4>
+
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label>Ventanilla</label>
+                        <input name="enc_ventanilla">
+                    </div>
+                </div>
+
+                <h4>Turnos</h4>
+                {% for turno in turnos %}
+                    <input type="checkbox"
+                        name="turnos"
+                        value="{{ turno.id }}"
+                        {% if turno.id in usuario_turnos.usuario.id %}checked{% endif %}>
+                    {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+                {% endfor %}
             </div>
 
             <div class="modal-actions">
