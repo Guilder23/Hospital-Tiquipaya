@@ -26,36 +26,24 @@
   {% endif %}
 
   <div>
-    <h3 class="section-title">Turno Mañana</h3>
-    {% for m in medicos_manana %}
-      <div class="doctor-card" data-id="{{ m.id }}">
-        <div class="doctor-photo">{{ m.user.perfil.nombres|slice:":1" }}{{ m.user.perfil.apellido_paterno|slice:":1" }}</div>
-        <div class="doctor-info">
-          <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
-          <div>{{ m.especialidad.nombre }} · Mañana</div>
+    {% for turno_info in turnos_data %}
+      <h3 class="section-title">Turno {{ turno_info.turno.nombre }}</h3>
+      {% for m in turno_info.medicos %}
+        <div class="doctor-card" data-id="{{ m.id }}">
+          <div class="doctor-photo">{{ m.user.perfil.nombres|slice:":1" }}{{ m.user.perfil.apellido_paterno|slice:":1" }}</div>
+          <div class="doctor-info">
+            <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
+            <div>{{ m.especialidad.nombre }} · {{ turno_info.turno.nombre }}</div>
+          </div>
+          <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
         </div>
-        <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
-      </div>
-      <div class="slots" id="slots-{{ m.id }}"></div>
+        <div class="slots" id="slots-{{ m.id }}"></div>
+      {% empty %}
+        <p>No hay médicos disponibles en este turno.</p>
+      {% endfor %}
+      {% if not forloop.last %}<div style="margin-top:20px"></div>{% endif %}
     {% empty %}
-      <p>No hay médicos en turno mañana.</p>
-    {% endfor %}
-  </div>
-
-  <div style="margin-top:20px">
-    <h3 class="section-title">Turno Tarde</h3>
-    {% for m in medicos_tarde %}
-      <div class="doctor-card" data-id="{{ m.id }}">
-        <div class="doctor-photo">{{ m.user.perfil.nombres|slice:":1" }}{{ m.user.perfil.apellido_paterno|slice:":1" }}</div>
-        <div class="doctor-info">
-          <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
-          <div>{{ m.especialidad.nombre }} · Tarde</div>
-        </div>
-        <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
-      </div>
-      <div class="slots" id="slots-{{ m.id }}"></div>
-    {% empty %}
-      <p>No hay médicos en turno tarde.</p>
+      <p>No hay turnos disponibles en este momento.</p>
     {% endfor %}
   </div>
 

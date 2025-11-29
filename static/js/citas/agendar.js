@@ -58,7 +58,27 @@ document.addEventListener('DOMContentLoaded',function(){
     var id=btn.getAttribute('data-id');
     fetch('/citas/agenda/'+id+'/')
       .then(function(r){ return r.json(); })
-      .then(function(data){ var cont=document.getElementById('slots-'+id); if(!cont) return; cont.innerHTML=''; ['mannana','tarde'].forEach(function(turno){ var lista=data.turnos[turno]||[]; lista.forEach(function(s){ var d=document.createElement('div'); d.className='slot '+(s.ocupado?'busy':'free'); d.textContent=s.hora; d.setAttribute('data-hora',s.hora); d.setAttribute('data-medico',id); if(!s.ocupado){ d.addEventListener('click',onSelectSlot); } cont.appendChild(d); }); }); document.getElementById('conf-fecha').textContent=data.fecha; });
+      .then(function(data){ 
+        var cont=document.getElementById('slots-'+id); 
+        if(!cont) return; 
+        cont.innerHTML=''; 
+        // Iterar sobre los turnos dinámicos retornados
+        Object.keys(data.turnos).forEach(function(turnoNombre){ 
+          var lista=data.turnos[turnoNombre]||[]; 
+          lista.forEach(function(s){ 
+            var d=document.createElement('div'); 
+            d.className='slot '+(s.ocupado?'busy':'free'); 
+            d.textContent=s.hora; 
+            d.setAttribute('data-hora',s.hora); 
+            d.setAttribute('data-medico',id); 
+            if(!s.ocupado){ 
+              d.addEventListener('click',onSelectSlot); 
+            } 
+            cont.appendChild(d); 
+          }); 
+        }); 
+        document.getElementById('conf-fecha').textContent=data.fecha; 
+      });
   }); });
   
   var modalConfirm=document.getElementById('modal-confirm');

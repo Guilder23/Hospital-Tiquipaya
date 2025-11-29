@@ -12,6 +12,7 @@ from apps.pacientes.models import Paciente
 from apps.accounts.models import Medico
 from apps.citas.models import Cita
 from apps.ecografias.models import Ecografia
+from apps.horarios.models import Turnos
 from django.db import IntegrityError
 
 def _manana():
@@ -29,19 +30,32 @@ def _generar_codigo_unico(tipo=''):
     timestamp = int(timezone.now().timestamp() * 1000) % 1000000
     return f"{tipo}{timestamp:08d}"
 
-def _slots_turno(turno):
+def _slots_turno(turno_obj):
+    """Genera slots de 30 minutos basado en un objeto Turno
+    
+    Args:
+        turno_obj: Objeto Turnos con hora_ini y hora_fin
+    
+    Returns:
+        Lista de objetos time con intervalos de 30 minutos
+    """
     slots = []
-    if turno == 'mannana':
-        inicio, fin = time(8,0), time(12,0)
-    elif turno == 'tarde':
-        inicio, fin = time(14,0), time(18,0)
-    else:
+    if not turno_obj:
         return slots
+    
+    try:
+        inicio = turno_obj.hora_ini
+        fin = turno_obj.hora_fin
+    except AttributeError:
+        return slots
+    
     h = datetime.combine(_manana(), inicio)
     limite = datetime.combine(_manana(), fin)
+    
     while h < limite:
         slots.append(h.time())
         h += timedelta(minutes=30)
+    
     return slots
 
 @require_POST
@@ -63,34 +77,45 @@ def validar_paciente(request):
 def agendar_inicio(request):
     pid = request.session.get('paciente_id')
     manana = _manana()
-    medicos_manana = Medico.objects.filter(turnos__mannana=True)
-    medicos_tarde = Medico.objects.filter(turnos__tarde=True)
+    
+    # Obtener todos los turnos activos
+    turnos_activos = Turnos.objects.filter(estado=True).order_by('hora_ini')
+    
+    # Para cada turno, obtener los médicos que trabajan en ese turno
+    turnos_data = []
+    for turno in turnos_activos:
+        medicos = Medico.objects.filter(turnos=turno)
+        turnos_data.append({
+            'turno': turno,
+            'medicos': medicos
+        })
+    
     ctx = {
         'paciente_validado': bool(pid),
         'fecha_objetivo': manana,
-        'medicos_manana': medicos_manana,
-        'medicos_tarde': medicos_tarde,
+        'turnos_data': turnos_data,
     }
     return render(request, 'citas/agendar.html', ctx)
 
 def agenda_medico(request, medico_id):
     m = get_object_or_404(Medico, id=medico_id)
     manana = _manana()
-    turnos = []
-    if m.turnos and m.turnos.mannana:
-        turnos.append('mannana')
-    if m.turnos and m.turnos.tarde:
-        turnos.append('tarde')
+    
+    # Obtener los turnos del médico
+    turnos_medico = m.turnos.filter(estado=True).order_by('hora_ini')
+    
     resultado = {}
     ocupados = set(Cita.objects.filter(medico=m, fecha=manana).exclude(estado='CANCELADA').values_list('hora', flat=True))
-    for t in turnos:
+    
+    for turno in turnos_medico:
         lista = []
-        for h in _slots_turno(t):
+        for h in _slots_turno(turno):
             lista.append({
                 'hora': h.strftime('%H:%M'),
                 'ocupado': h in ocupados
             })
-        resultado[t] = lista
+        resultado[turno.nombre] = lista
+    
     return JsonResponse({'fecha': manana.strftime('%Y-%m-%d'), 'turnos': resultado})
 
 @require_POST
@@ -108,9 +133,17 @@ def confirmar_cita(request):
         return JsonResponse({'ok': False, 'error': 'Hora inválida'}, status=400)
     if Cita.objects.filter(paciente_id=pid, fecha=manana).exclude(estado='CANCELADA').exists():
         return JsonResponse({'ok': False, 'error': 'Solo puedes tener una cita. Si quieres cambiar de horario primero debes cancelarla y escoger un nuevo horario'}, status=409)
-    turno_ok = (m.turnos and ((m.turnos.mannana and time(8,0) <= h < time(12,0)) or (m.turnos.tarde and time(14,0) <= h < time(18,0))))
+    
+    # Validar que la hora está dentro de los turnos del médico
+    turno_ok = False
+    for turno in m.turnos.filter(estado=True):
+        if turno.hora_ini <= h < turno.hora_fin:
+            turno_ok = True
+            break
+    
     if not turno_ok:
         return JsonResponse({'ok': False, 'error': 'Hora fuera de turno'}, status=400)
+    
     if Cita.objects.filter(medico=m, fecha=manana, hora=h).exclude(estado='CANCELADA').exists():
         return JsonResponse({'ok': False, 'error': 'Slot ocupado'}, status=409)
     paciente = get_object_or_404(Paciente, id=pid)
