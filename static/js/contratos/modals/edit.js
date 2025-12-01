@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('edit-nombre').value = nombre;
       document.getElementById('edit-fecha_inicio').value = fechaInicio;
       document.getElementById('edit-fecha_fin').value = fechaFin;
-      document.getElementById('edit-estado').value = estado === "true" ? "true" : "false";
+      document.getElementById('edit-estado').value = (estado === 'true') ? 'true' : 'false';
 
       openModal(mEdit);
     });
@@ -56,4 +56,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-

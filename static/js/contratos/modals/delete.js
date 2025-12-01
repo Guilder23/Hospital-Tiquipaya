@@ -15,30 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       const id = btn.dataset.id;
       const nombre = btn.dataset.nombre;
-      const estado = btn.dataset.estado;
       document.getElementById('delete-id').value = id;
       document.getElementById('delete-nombre').textContent = nombre;
-      document.getElementById('delete-estado').value = estado;
-
-      const title = document.getElementById('modal-title-estado');
-      const accion = document.getElementById('accion-text');
-      if (estado === 'true') {
-        title.textContent = 'Deshabilitar Contrato';
-        accion.textContent = 'deshabilitar';
-        btnConfirmDelete.textContent = 'Deshabilitar';
-      } else {
-        title.textContent = 'Habilitar Contrato';
-        accion.textContent = 'habilitar';
-        btnConfirmDelete.textContent = 'Habilitar';
-      }
+      btnConfirmDelete.textContent = 'Deshabilitar';
       openModal(mDelete);
     });
   });
 
   btnConfirmDelete.addEventListener('click', async function() {
     const id = document.getElementById('delete-id').value;
-    const estadoActual = document.getElementById('delete-estado').value;
-    const body = JSON.stringify({ estado: estadoActual === 'true' ? false : true });
+    const body = JSON.stringify({ estado: false });
     const response = await fetch(`${apiUrl}${id}/`, {
       method: 'PATCH',
       headers: { 'X-CSRFToken': getCsrfToken(), 'Content-Type': 'application/json' },
@@ -50,4 +36,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-
