@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/contratos/contratos.css">
+<link rel="stylesheet" href="/static/css/contratos/modals/create.css">
+<link rel="stylesheet" href="/static/css/contratos/modals/edit.css">
+<link rel="stylesheet" href="/static/css/contratos/modals/view.css">
+<link rel="stylesheet" href="/static/css/contratos/modals/delete.css">
+{% endblock %}
+{% block content %}
+
+<section class="card contratos-lista">
+    <h2>Gestión de Contratos</h2>
+    {% if puede_admin %}
+    <p><button class="btn" id="btn-open-create">Nuevo Contrato</button></p>
+    {% endif %}
+
+    <table class="table contratos">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrato in lista_contratos %}
+            <tr data-id="{{ contrato.id }}"
+                data-nombre="{{ contrato.nombre }}"
+                data-fecha_inicio="{{ contrato.fecha_inicio|date:'Y-m-d' }}"
+                data-fecha_fin="{{ contrato.fecha_fin|date:'Y-m-d' }}"
+                data-estado="{{ contrato.estado }}">
+                <td>{{ contrato.nombre }}</td>
+                <td>{{ contrato.fecha_inicio|date:"d/m/Y" }}</td>
+                <td>{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
+                <td>
+                    {% if contrato.estado %}
+                        <span class="badge badge-activo">Activo</span>
+                    {% else %}
+                        <span class="badge badge-inactivo">Inactivo</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <button class="btn btn-view" data-id="{{ contrato.id }}" data-estado="{{ contrato.estado }}">Ver</button>
+                    {% if puede_admin %}
+                    <button class="btn btn-edit"
+                        data-id="{{ contrato.id }}"
+                        data-nombre="{{ contrato.nombre }}"
+                        data-fecha_inicio="{{ contrato.fecha_inicio|date:'Y-m-d' }}"
+                        data-fecha_fin="{{ contrato.fecha_fin|date:'Y-m-d' }}"
+                        data-estado="{{ contrato.estado }}">Editar</button>
+                    <button class="btn btn-delete" data-id="{{ contrato.id }}" data-nombre="{{ contrato.nombre }}" data-estado="{{ contrato.estado }}">Eliminar</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No hay contratos registrados</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% include 'contratos/modals/create.html' %}
+{% include 'contratos/modals/edit.html' %}
+{% include 'contratos/modals/view.html' %}
+{% include 'contratos/modals/delete.html' %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/contratos/modals/view.js"></script>
+<script src="/static/js/contratos/modals/create.js"></script>
+<script src="/static/js/contratos/modals/edit.js"></script>
+<script src="/static/js/contratos/modals/delete.js"></script>
+{% endblock %}
+

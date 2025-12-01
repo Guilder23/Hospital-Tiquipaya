@@ -64,6 +64,14 @@ class Perfil(models.Model):
         blank=True
     )
 
+    # Contrato
+    contrato = models.ForeignKey(
+        'contratos.Contrato',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return f"{self.nombres} {self.apellido_paterno}"
 

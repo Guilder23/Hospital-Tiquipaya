@@ -1,0 +1,26 @@
+<div class="modal" id="modal-crear-contrato" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <h3>Nuevo Contrato</h3>
+    <form id="form-create-contrato">
+      {% csrf_token %}
+      <div class="form-row">
+        <label>Nombre</label>
+        <input name="nombre" required>
+      </div>
+      <div class="form-row">
+        <label>Fecha inicio</label>
+        <input type="date" name="fecha_inicio" required>
+      </div>
+      <div class="form-row">
+        <label>Fecha fin</label>
+        <input type="date" name="fecha_fin" required>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" type="submit">Crear</button>
+        <button class="btn-secondary" type="button" data-close>Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
