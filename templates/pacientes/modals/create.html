@@ -48,8 +48,21 @@
       <div class="section">
         <h4>Seguro</h4>
         <div class="form-grid">
-          <div class="form-row"><label>¿Tiene seguro?</label><select name="tiene_seguro"><option value="False">No</option><option value="True">Sí</option></select></div>
-          <div class="form-row"><label>Número de seguro</label><input name="numero_seguro"></div>
+          <div class="form-row"><label>¿Tiene seguro?</label><select name="tiene_seguro" id="crear-tiene-seguro"><option value="False">No</option><option value="True">Sí</option></select></div>
+          <div class="form-row"><label>Número de seguro</label><input name="numero_seguro" id="crear-numero-seguro"></div>
+          <div class="form-row form-row-full" id="crear-tipo-seguro-row" style="display:none"><label>Tipo de seguro</label>
+            <select name="tipo_seguro" id="crear-tipo-seguro">
+              <option value="">Seleccione una opción</option>
+              <option value="SUS">Sistema Único de Salud (SUS)</option>
+              <option value="CNS">Caja Nacional de Salud (CNS)</option>
+              <option value="CP">Caja Petrolera</option>
+              <option value="SU">Seguro Universitario</option>
+              <option value="CSSM">Corporación del Seguro Social Militar</option>
+              <option value="CC">Caja de Caminos</option>
+              <option value="CBPE">Cajas Bancarias Privada y Estatal</option>
+              <option value="OTRO">OTRO</option>
+            </select>
+          </div>
         </div>
       </div>
 

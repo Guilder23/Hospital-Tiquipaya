@@ -39,7 +39,7 @@ class PacienteCreateForm(PacienteBaseForm):
             'telefono_fijo','celular','email',
             'zona','calle','numero_domicilio','direccion',
             'nacionalidad',
-            'tiene_seguro','numero_seguro',
+            'tiene_seguro','numero_seguro','tipo_seguro',
             'emergencia_nombre','emergencia_telefono','emergencia_relacion',
             'numero_boleta_sus','numero_carnet_historial','numero_boleta_referencia','numero_copias',
         ]
@@ -54,7 +54,7 @@ class PacienteUpdateForm(PacienteBaseForm):
             'telefono_fijo','celular','email',
             'zona','calle','numero_domicilio','direccion',
             'nacionalidad',
-            'tiene_seguro','numero_seguro',
+            'tiene_seguro','numero_seguro','tipo_seguro',
             'emergencia_nombre','emergencia_telefono','emergencia_relacion',
             'numero_boleta_sus','numero_carnet_historial','numero_boleta_referencia','numero_copias',
             'activo'
