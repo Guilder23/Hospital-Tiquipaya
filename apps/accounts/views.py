@@ -205,7 +205,7 @@ def editar_usuario(request, pk):
         "especialidades": Especialidad.objects.all(),
         "tipos": TipoUsuario.objects.all(),
         "turnos": Turnos.objects.all(),
-        "contratos": Contrato.objects.filter(estado=True),
+        "contratos": (lambda pf: [*Contrato.objects.filter(estado=True), *( [] if not pf or not pf.contrato else ([pf.contrato] if not Contrato.objects.filter(id=pf.contrato_id, estado=True).exists() else []) )])(perfil),
         "dias": getattr(user.medico, "dias_atencion", None) if hasattr(user, "medico") else None,
     })
 

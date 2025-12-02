@@ -85,6 +85,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 el.value = valor;
             });
 
+            // ---------- CONTRATO ----------
+            const contratoSel = form.querySelector('[name="contrato"]');
+            if (contratoSel) {
+                const contratoId = row.dataset.contratoid || "";
+                contratoSel.value = contratoId;
+            }
+
             // ---------- ROL ----------
             const rol = (row.dataset.rol || "")
                 .trim()

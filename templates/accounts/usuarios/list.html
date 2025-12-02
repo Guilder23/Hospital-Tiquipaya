@@ -51,6 +51,7 @@
             data-celular="{{ p.celular|default:'' }}"
             data-direccion="{{ p.direccion|default:'' }}"
             data-rol="{% if p.tipo %}{{ p.tipo.nombre|default:'' }}{% endif %}"
+            data-contratoid="{% if p.contrato %}{{ p.contrato.id }}{% endif %}"
 
             {% if u.medico %}
                 data-especialidadid="{{ u.medico.especialidad.id|default:'' }}"
