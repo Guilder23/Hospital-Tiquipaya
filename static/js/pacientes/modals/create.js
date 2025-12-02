@@ -8,6 +8,18 @@ document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',function(){if(mCreate)close(mCreate)})})
   if(btnOpenCreate){btnOpenCreate.addEventListener('click',function(){open(mCreate)})}
   if(form){
+    // Seguro: habilitar/deshabilitar y mostrar tipo
+    var selTiene = document.getElementById('crear-tiene-seguro');
+    var inpNumero = document.getElementById('crear-numero-seguro');
+    var tipoRow = document.getElementById('crear-tipo-seguro-row');
+    function syncSeguroUI(){
+      var v = selTiene ? selTiene.value : 'False';
+      var activo = (v === 'True');
+      if(inpNumero){ inpNumero.disabled = !activo; if(!activo){ inpNumero.value=''; } }
+      if(tipoRow){ tipoRow.style.display = activo ? 'block' : 'none'; }
+    }
+    if(selTiene){ selTiene.addEventListener('change', syncSeguroUI); syncSeguroUI(); }
+
     form.addEventListener('submit',function(e){
       e.preventDefault();
       if(errorBox){ errorBox.style.display='none'; errorBox.textContent=''; }

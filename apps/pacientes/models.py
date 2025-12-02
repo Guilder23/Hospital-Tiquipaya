@@ -1,6 +1,19 @@
 from django.db import models
 from datetime import date
 
+# Opciones de tipo de seguro
+TIPOS_SEGURO = (
+    ('SUS', 'Sistema Único de Salud (SUS)'),
+    ('CNS', 'Caja Nacional de Salud (CNS)'),
+    ('CP', 'Caja Petrolera'),
+    ('SU', 'Seguro Universitario'),
+    ('CSSM', 'Corporación del Seguro Social Militar'),
+    ('CC', 'Caja de Caminos'),
+    ('CBPE', 'Cajas Bancarias Privada y Estatal'),
+    ('SHT', 'Seguro Hospital Tiquipaya'),
+    ('OTRO', 'OTRO'),
+)
+
 class Paciente(models.Model):
     GENEROS = (
         ('M', 'Masculino'),
@@ -35,6 +48,7 @@ class Paciente(models.Model):
 
     tiene_seguro = models.BooleanField(default=False)
     numero_seguro = models.CharField(max_length=60, blank=True)
+    tipo_seguro = models.CharField(max_length=20, choices=TIPOS_SEGURO, blank=True)
 
     emergencia_nombre = models.CharField(max_length=120, blank=True)
     emergencia_telefono = models.CharField(max_length=30, blank=True)
@@ -60,3 +74,4 @@ class Paciente(models.Model):
                 edad -= 1
             return edad
         return None
+    

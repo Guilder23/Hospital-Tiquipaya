@@ -109,6 +109,16 @@
             </div>
 
             <div class="section">
+                <h4>Contrato</h4>
+                <select name="contrato">
+                    <option value="">Sin contrato</option>
+                    {% for c in contratos %}
+                        <option value="{{ c.id }}">{{ c.nombre }} ({{ c.fecha_inicio|date:'d/m/Y' }} - {{ c.fecha_fin|date:'d/m/Y' }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="section">
                 <h4>Rol</h4>
                 <select name="tipo" id="select-rol">
                     <option value="">Sin rol</option>

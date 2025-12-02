@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User 
 from apps.accounts.models import ( Perfil, TipoUsuario, Medico, Admision, EncargadoAdmision ) 
 from apps.horarios.models import DiasAtencion, HorariosAtencion, Turnos
+from apps.contratos.models import Contrato
 from apps.especialidades.models import Especialidad
 
 # Registro simple
@@ -40,67 +41,68 @@ def crear_usuario(request):
         if tipo_rol:
             tipo_obj = TipoUsuario.objects.filter(nombre__iexact=tipo_rol).first()
 
-        perfil = Perfil.objects.create(
-            user=user,
-            nombres=request.POST.get("nombres"),
-            apellido_paterno=request.POST.get("apellido_paterno"),
-            apellido_materno=request.POST.get("apellido_materno") or None,
-            fecha_nacimiento=request.POST.get("fecha_nacimiento"),
-            sexo=request.POST.get("sexo"),
-            direccion=request.POST.get("direccion"),
-            ci=request.POST.get("ci"),
-            complemento_ci=request.POST.get("complemento_ci"),
-            expedido=request.POST.get("expedido") or "CB",
-            telefono=request.POST.get("telefono") or None,
-            celular=request.POST.get("celular") or None,
-            correo=request.POST.get("correo") or None,
-            tipo=tipo_obj
+    perfil = Perfil.objects.create(
+        user=user,
+        nombres=request.POST.get("nombres"),
+        apellido_paterno=request.POST.get("apellido_paterno"),
+        apellido_materno=request.POST.get("apellido_materno") or None,
+        fecha_nacimiento=request.POST.get("fecha_nacimiento"),
+        sexo=request.POST.get("sexo"),
+        direccion=request.POST.get("direccion"),
+        ci=request.POST.get("ci"),
+        complemento_ci=request.POST.get("complemento_ci"),
+        expedido=request.POST.get("expedido") or "CB",
+        telefono=request.POST.get("telefono") or None,
+        celular=request.POST.get("celular") or None,
+        correo=request.POST.get("correo") or None,
+        tipo=tipo_obj,
+        contrato_id=request.POST.get("contrato") or None
+    )
+
+    turnos_seleccionados = request.POST.getlist("turnos")
+    # ================================
+    # 4. SI ES MÉDICO → CREAR DÍAS
+    # ================================
+    if tipo_rol == "medico":
+        dias = DiasAtencion.objects.create(
+            lunes=bool(request.POST.get("lunes")),
+            martes=bool(request.POST.get("martes")),
+            miercoles=bool(request.POST.get("miercoles")),
+            jueves=bool(request.POST.get("jueves")),
+            viernes=bool(request.POST.get("viernes")),
         )
 
-        turnos_seleccionados = request.POST.getlist("turnos")
-        # ================================
-        # 4. SI ES MÉDICO → CREAR DÍAS
-        # ================================
-        if tipo_rol == "medico":
-            dias = DiasAtencion.objects.create(
-                lunes=bool(request.POST.get("lunes")),
-                martes=bool(request.POST.get("martes")),
-                miercoles=bool(request.POST.get("miercoles")),
-                jueves=bool(request.POST.get("jueves")),
-                viernes=bool(request.POST.get("viernes")),
-            )
+        medico = Medico.objects.create(
+            user=user,
+            especialidad_id=request.POST.get("especialidad") or None,
+            nro_matricula=request.POST.get("nro_matricula") or "",
+            consultorio=request.POST.get("consultorio") or "",
+            dias_atencion=dias,
+        )
 
-            medico = Medico.objects.create(
-                user=user,
-                especialidad_id=request.POST.get("especialidad") or None,
-                nro_matricula=request.POST.get("nro_matricula") or "",
-                consultorio=request.POST.get("consultorio") or "",
-                dias_atencion=dias,
-            )
+        medico.turnos.set(turnos_seleccionados) 
 
-            medico.turnos.set(turnos_seleccionados) 
+    # ================================
+    # 5. SI ES ADMISIÓN
+    # ================================
+    elif tipo_rol == "admision":
+        adm = Admision.objects.create(
+            user=user,
+            ventanilla=request.POST.get("ventanilla") or "",
+        )
 
-        # ================================
-        # 5. SI ES ADMISIÓN
-        # ================================
-        elif tipo_rol == "admision":
-            adm = Admision.objects.create(
-                user=user,
-                ventanilla=request.POST.get("ventanilla") or "",
-            )
+        adm.turnos.set(turnos_seleccionados)
 
-            adm.turnos.set(turnos_seleccionados)
+    # ================================
+    # 6. SI ES ENCARGADO DE ADMISIÓN
+    # ================================
+    elif tipo_rol == "encargado_admision":
+        enc = EncargadoAdmision.objects.create(
+            user=user,
+            ventanilla=request.POST.get("ventanilla") or "",
+        )
 
-        # ================================
-        # 6. SI ES ENCARGADO DE ADMISIÓN
-        # ================================
-        elif tipo_rol == "encargado_admision":
-            enc = EncargadoAdmision.objects.create(
-                user=user,
-                ventanilla=request.POST.get("ventanilla") or "",
-            )
-
-            enc.turnos.set(turnos_seleccionados)
+        enc.turnos.set(turnos_seleccionados)
 
         messages.success(request, "Usuario creado correctamente.")
         return redirect("accounts:usuario_list")
@@ -110,6 +112,7 @@ def crear_usuario(request):
         "especialidades": Especialidad.objects.all(),
         "tipos": TipoUsuario.objects.all(),
         "turnos": Turnos.objects.all(),
+        "contratos": Contrato.objects.filter(estado=True),
     })
 
 def editar_usuario(request, pk):
@@ -133,6 +136,7 @@ def editar_usuario(request, pk):
         perfil.telefono = request.POST.get("telefono") or None
         perfil.celular = request.POST.get("celular") or None
         perfil.correo = request.POST.get("correo") or None
+        perfil.contrato_id = request.POST.get("contrato") or None
         perfil.save()
 
         user.username = request.POST.get("username")
@@ -201,6 +205,7 @@ def editar_usuario(request, pk):
         "especialidades": Especialidad.objects.all(),
         "tipos": TipoUsuario.objects.all(),
         "turnos": Turnos.objects.all(),
+        "contratos": (lambda pf: [*Contrato.objects.filter(estado=True), *( [] if not pf or not pf.contrato else ([pf.contrato] if not Contrato.objects.filter(id=pf.contrato_id, estado=True).exists() else []) )])(perfil),
         "dias": getattr(user.medico, "dias_atencion", None) if hasattr(user, "medico") else None,
     })
 
@@ -288,6 +293,7 @@ class UsuarioListView(LoginRequiredMixin, ListView):
         ctx['puede_admin'] = _es_admin(self.request.user)
         ctx['especialidades'] = Especialidad.objects.all()
         ctx['turnos'] = Turnos.objects.all()
+        ctx['contratos'] = Contrato.objects.filter(estado=True)
 
         # Diccionario para almacenar los turnos de cada usuario por id
         usuario_turnos_ids = {}

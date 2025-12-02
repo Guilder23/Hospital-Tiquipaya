@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var ts=row.getAttribute('data-tiene_seguro')==='True'?'True':'False';
       setVal('tiene_seguro', ts);
       setVal('numero_seguro', row.getAttribute('data-numero_seguro'));
+      setVal('tipo_seguro', row.getAttribute('data-tipo_seguro'));
       setVal('emergencia_nombre', row.getAttribute('data-emergencia_nombre'));
       setVal('emergencia_telefono', row.getAttribute('data-emergencia_telefono'));
       setVal('emergencia_relacion', row.getAttribute('data-emergencia_relacion'));
@@ -38,6 +39,18 @@ document.addEventListener('DOMContentLoaded',function(){
       setVal('numero_copias', row.getAttribute('data-numero_copias'));
       setVal('activo', row.getAttribute('data-activo')==='True'?'True':'False');
       open(mEdit);
+
+      // Seguro: habilitar/deshabilitar y mostrar tipo
+      var selTiene = document.getElementById('editar-tiene-seguro');
+      var inpNumero = document.getElementById('editar-numero-seguro');
+      var tipoRow = document.getElementById('editar-tipo-seguro-row');
+      function syncSeguroUI(){
+        var v = selTiene ? selTiene.value : 'False';
+        var activo = (v === 'True');
+        if(inpNumero){ inpNumero.disabled = !activo; if(!activo){ inpNumero.value=''; } }
+        if(tipoRow){ tipoRow.style.display = activo ? 'block' : 'none'; }
+      }
+      if(selTiene){ selTiene.addEventListener('change', syncSeguroUI); syncSeguroUI(); }
     })
   })
 });

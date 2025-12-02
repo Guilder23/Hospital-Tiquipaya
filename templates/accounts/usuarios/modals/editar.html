@@ -81,6 +81,15 @@
           <input name="direccion">
         </label>
 
+        <label>Contrato
+          <select name="contrato">
+            <option value="">Sin contrato</option>
+            {% for c in contratos %}
+              <option value="{{ c.id }}">{{ c.nombre }} ({{ c.fecha_inicio|date:'d/m/Y' }} - {{ c.fecha_fin|date:'d/m/Y' }})</option>
+            {% endfor %}
+          </select>
+        </label>
+
         <label>Rol
           <input name="tipo" readonly>
         </label>
