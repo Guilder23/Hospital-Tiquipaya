@@ -56,9 +56,18 @@
                                 <p class="mb-1">
                                     <i class="fas fa-id-card"></i> <strong>CI:</strong> {{ cita.paciente.ci }}
                                 </p>
+                                {% if cita.paciente.tiene_seguro %}
                                 <p class="mb-1">
-                                    <i class="fas fa-phone"></i> <strong>Celular:</strong> {{ cita.paciente.celular|default:"N/A" }}
+                                    <i class="fas fa-shield-alt"></i> <strong>Seguro:</strong> {{ cita.paciente.get_tipo_seguro_display|default:"N/A" }}
                                 </p>
+                                <p class="mb-1">
+                                    <i class="fas fa-hashtag"></i> <strong>N°:</strong> {{ cita.paciente.numero_seguro|default:"N/A" }}
+                                </p>
+                                {% else %}
+                                <p class="mb-1">
+                                    <i class="fas fa-shield-alt"></i> <strong>Seguro:</strong> Sin seguro
+                                </p>
+                                {% endif %}
                             </div>
 
                             <!-- Información de tiempo de atención -->
