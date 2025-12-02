@@ -10,6 +10,7 @@ TIPOS_SEGURO = (
     ('CSSM', 'Corporación del Seguro Social Militar'),
     ('CC', 'Caja de Caminos'),
     ('CBPE', 'Cajas Bancarias Privada y Estatal'),
+    ('SHT', 'Seguro Hospital Tiquipaya'),
     ('OTRO', 'OTRO'),
 )
 
