@@ -6,6 +6,8 @@ class DiasAtencion(models.Model):
     miercoles = models.BooleanField(default=False)
     jueves = models.BooleanField(default=False)
     viernes = models.BooleanField(default=False)
+    sabado = models.BooleanField(default=False)
+    domingo = models.BooleanField(default=False)
 
     def __str__(self):
         dias = []
@@ -15,6 +17,8 @@ class DiasAtencion(models.Model):
         if self.miercoles: dias.append("Miércoles")
         if self.jueves: dias.append("Jueves")
         if self.viernes: dias.append("Viernes")
+        if self.sabado: dias.append("Sábado")
+        if self.domingo: dias.append("Domingo")
 
         return ", ".join(dias) if dias else "Sin días asignados"
     

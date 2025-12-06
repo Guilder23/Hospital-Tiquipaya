@@ -73,6 +73,36 @@ def validar_paciente(request):
     request.session['paciente_id'] = p.id
     return JsonResponse({'ok': True, 'redirect': reverse('citas:agendar')})
 
+def _obtener_nombre_dia(fecha):
+    """Obtiene el nombre del día de la semana (0=lunes, 6=domingo)"""
+    dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    return dias[fecha.weekday()]
+
+def _medico_trabaja_en_dia(medico, fecha):
+    """Verifica si un médico trabaja en un día específico"""
+    if not medico.dias_atencion:
+        # Si no tiene días de atención configurados, asumimos que trabaja todos los días
+        return True
+    
+    nombre_dia = _obtener_nombre_dia(fecha)
+    dias_atencion = medico.dias_atencion
+    
+    # Mapear nombre del día al atributo correspondiente
+    atributos_dia = {
+        'lunes': 'lunes',
+        'martes': 'martes',
+        'miercoles': 'miercoles',
+        'jueves': 'jueves',
+        'viernes': 'viernes',
+        'sabado': 'sabado',
+        'domingo': 'domingo'
+    }
+    
+    atributo = atributos_dia.get(nombre_dia)
+    if atributo:
+        return getattr(dias_atencion, atributo, False)
+    return False
+
 @ensure_csrf_cookie
 def agendar_inicio(request):
     pid = request.session.get('paciente_id')
@@ -81,13 +111,18 @@ def agendar_inicio(request):
     # Obtener todos los turnos activos
     turnos_activos = Turnos.objects.filter(estado=True).order_by('hora_ini')
     
-    # Para cada turno, obtener los médicos que trabajan en ese turno
+    # Para cada turno, obtener los médicos que trabajan en ese turno Y en el día siguiente
     turnos_data = []
     for turno in turnos_activos:
-        medicos = Medico.objects.filter(turnos=turno)
+        # Filtrar médicos que trabajan en este turno
+        medicos_turno = Medico.objects.filter(turnos=turno)
+        
+        # Filtrar médicos que trabajan en el día siguiente
+        medicos_disponibles = [m for m in medicos_turno if _medico_trabaja_en_dia(m, manana)]
+        
         turnos_data.append({
             'turno': turno,
-            'medicos': medicos
+            'medicos': medicos_disponibles
         })
     
     ctx = {
