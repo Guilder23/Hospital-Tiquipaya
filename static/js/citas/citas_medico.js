@@ -62,9 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
     // Botones del modal de ecografía
     const noEcoBtn = document.getElementById('noEcoButton');
     const siEcoBtn = document.getElementById('siEcoButton');
+    const cerrarEcoBtn = document.getElementById('cerrarEcoButton');
     
     if (noEcoBtn) {
         noEcoBtn.addEventListener('click', function() {
@@ -75,6 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (siEcoBtn) {
         siEcoBtn.addEventListener('click', function() {
             procesar_ecografia(citaIdActual, 'si');
+        });
+    }
+    
+    // Botón cerrar modal (solo cierra sin hacer nada)
+    if (cerrarEcoBtn) {
+        cerrarEcoBtn.addEventListener('click', function() {
+            const ecoModal = bootstrap.Modal.getInstance(document.getElementById('ecoModal'));
+            if (ecoModal) {
+                ecoModal.hide();
+            }
         });
     }
 
@@ -115,7 +127,54 @@ function procesar_ecografia(citaId, habilitar) {
     
     const formData = new FormData();
     formData.append('habilitar', habilitar);
+    
+    // Si se habilita, obtener datos del formulario
+    if (habilitar === 'si') {
+        const especialidadSelect = document.getElementById('ecoEspecialidad');
+        const comentarioTextarea = document.getElementById('ecoComentario');
+        
+        console.log('Elementos encontrados:', {
+            especialidadSelect: !!especialidadSelect,
+            comentarioTextarea: !!comentarioTextarea
+        });
+        
+        if (!especialidadSelect || !comentarioTextarea) {
+            showAlert('danger', 'Error: No se encontraron los campos del formulario');
+            console.error('No se encontraron los elementos del formulario');
+            return;
+        }
+        
+        const especialidadId = especialidadSelect.value;
+        const comentario = comentarioTextarea.value;
+        
+        console.log('Valores capturados del formulario:', {
+            especialidadId: especialidadId,
+            comentario: comentario,
+            especialidadIdType: typeof especialidadId,
+            comentarioType: typeof comentario
+        });
+        
+        if (!especialidadId || especialidadId === '') {
+            showAlert('danger', 'Por favor selecciona una especialidad');
+            return;
+        }
+        
+        if (!comentario || !comentario.trim()) {
+            showAlert('danger', 'Por favor ingresa un comentario');
+            return;
+        }
+        
+        formData.append('especialidad', especialidadId);
+        formData.append('comentario', comentario);
+        
+        console.log('FormData preparado:');
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+        }
+    }
 
+    console.log('Enviando request a /citas/' + citaId + '/procesar-ecografia/');
+    
     fetch(`/citas/${citaId}/procesar-ecografia/`, {
         method: 'POST',
         headers: {
@@ -127,6 +186,7 @@ function procesar_ecografia(citaId, habilitar) {
         console.log('Respuesta recibida:', response.status);
         if (!response.ok) {
             return response.json().then(err => {
+                console.error('Error response:', err);
                 throw new Error(`HTTP ${response.status}: ${err.error || 'Error desconocido'}`);
             }).catch(e => {
                 throw new Error(`HTTP ${response.status}: Error al parsear respuesta`);
@@ -166,11 +226,3 @@ function procesar_ecografia(citaId, habilitar) {
     });
 }
 
-// Evento para botones del modal
-document.getElementById('noEco').addEventListener('click', function() {
-    procesar_ecografia(citaIdActual, 'no');
-});
-
-document.getElementById('siEco').addEventListener('click', function() {
-    procesar_ecografia(citaIdActual, 'si');
-});

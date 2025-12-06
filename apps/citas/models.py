@@ -37,8 +37,10 @@ class Cita(models.Model):
     tiempo_fin_atencion = models.DateTimeField(null=True, blank=True)
     duracion_atencion_minutos = models.IntegerField(null=True, blank=True)
     
-    # Campo para ecografía
+    # Campos para ecografía
     requiere_ecografia = models.BooleanField(default=False)
+    especialidad_ecografia = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_ecografia')
+    comentario_ecografia = models.TextField(null=True, blank=True)
     
     creada_en = models.DateTimeField(auto_now_add=True)
 

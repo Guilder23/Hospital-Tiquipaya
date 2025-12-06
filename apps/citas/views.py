@@ -13,6 +13,7 @@ from apps.accounts.models import Medico
 from apps.citas.models import Cita
 from apps.ecografias.models import Ecografia
 from apps.horarios.models import Turnos
+from apps.especialidades.models import Especialidad
 from django.db import IntegrityError
 
 def _manana():
@@ -267,10 +268,14 @@ def citas_medico_hoy(request):
         estado_atencion='ATENDIDO'
     ).order_by('hora').select_related('paciente', 'especialidad')
     
+    # Obtener todas las especialidades para el formulario de ecografía
+    especialidades = Especialidad.objects.all()
+    
     ctx = {
         'medico': medico,
         'citas': citas,
         'fecha': hoy,
+        'especialidades': especialidades,
     }
     return render(request, 'citas/citas_medico.html', ctx)
 
@@ -384,9 +389,33 @@ def procesar_ecografia(request, cita_id):
             cita.tiempo_fin_atencion = timezone.now()
             cita.duracion_atencion_minutos = cita.calcular_duracion()
         
-        # Actualizar el campo de ecografía
+        # Actualizar el campo de ecografía y datos relacionados
         cita.requiere_ecografia = habilitar
-        cita.save(update_fields=['estado_atencion', 'tiempo_fin_atencion', 'duracion_atencion_minutos', 'requiere_ecografia'])
+        
+        if habilitar:
+            # Obtener especialidad y comentario si se habilita ecografía
+            especialidad_id = request.POST.get('especialidad')
+            comentario = request.POST.get('comentario')
+            
+            print(f"DEBUG: especialidad_id={especialidad_id}, comentario={comentario}")
+            
+            if not especialidad_id:
+                return JsonResponse({'ok': False, 'error': 'La especialidad es requerida'}, status=400)
+            
+            if not comentario or not comentario.strip():
+                return JsonResponse({'ok': False, 'error': 'El comentario es requerido'}, status=400)
+            
+            try:
+                especialidad = Especialidad.objects.get(id=especialidad_id)
+                cita.especialidad_ecografia = especialidad
+                cita.comentario_ecografia = comentario
+                print(f"DEBUG: Especialidad guardada: {especialidad.nombre}, Comentario: {comentario}")
+            except Especialidad.DoesNotExist:
+                return JsonResponse({'ok': False, 'error': 'Especialidad no válida'}, status=400)
+        
+        cita.save(update_fields=['estado_atencion', 'tiempo_fin_atencion', 'duracion_atencion_minutos', 'requiere_ecografia', 'especialidad_ecografia', 'comentario_ecografia'])
+        
+        print(f"DEBUG: Cita guardada. requiere_ecografia={cita.requiere_ecografia}, especialidad_ecografia={cita.especialidad_ecografia}, comentario_ecografia={cita.comentario_ecografia}")
         
         if habilitar:
             return JsonResponse({
@@ -400,6 +429,7 @@ def procesar_ecografia(request, cita_id):
             })
     
     except Exception as e:
+        print(f"ERROR: {str(e)}")
         return JsonResponse({'ok': False, 'error': f'Error al procesar: {str(e)}'}, status=500)
 
 
