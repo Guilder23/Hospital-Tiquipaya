@@ -1,0 +1,23 @@
+{% load static %}
+<header class="site-header">
+  <div class="site-header-left">
+    <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
+    <h1>Hospital Tiquipaya</h1>
+  </div>
+  <nav>
+    <a href="/">Inicio</a>
+    {% if paciente %}
+      <span class="user-info">Paciente: {{ paciente.nombres }} {{ paciente.apellido_paterno }}</span>
+      <a href="/citas/logout/" class="user-info">Cerrar sesión</a>
+    {% elif request.user.is_authenticated %}
+      <span class="user-info">{{ request.user.username }} {% if request.user.perfil.tipo %}<span class="user-role">({{ request.user.perfil.tipo.nombre }})</span>{% endif %}</span>
+      <form class="logout-form" method="post" action="/accounts/logout/">
+        {% csrf_token %}
+        <button type="submit">Salir</button>
+      </form>
+    {% else %}
+      <a href="#" onclick="toggleRegisterModal(); return false;">Registrarse</a>
+      <a href="#" onclick="toggleLoginModal(); return false;">Ingresar</a>
+    {% endif %}
+  </nav>
+</header>
