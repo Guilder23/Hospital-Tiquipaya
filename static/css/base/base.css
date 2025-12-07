@@ -304,3 +304,9 @@ body {
   background: var(--color-advertencia);
   color: #fff;
 }
+
+.table-responsive { width: 100%; overflow-x: auto; }
+.table-responsive .table { width: 100%; border-collapse: collapse; }
+@media (max-width: 992px) {
+  .table { min-width: 800px; }
+}

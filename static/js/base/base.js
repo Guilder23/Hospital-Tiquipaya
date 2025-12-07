@@ -23,4 +23,13 @@ document.addEventListener('DOMContentLoaded', function(){
       localStorage.removeItem('toast_type');
     }
   }catch(e){}
+  var tables = document.querySelectorAll('table');
+  tables.forEach(function(t){
+    if(!t.closest('.table-responsive')){
+      var wrap = document.createElement('div');
+      wrap.className = 'table-responsive';
+      t.parentNode.insertBefore(wrap, t);
+      wrap.appendChild(t);
+    }
+  });
 });
