@@ -136,3 +136,7 @@
     padding: 2rem;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
+
+/* Z-index para modales de ecografía por encima del sidebar */
+.modal-backdrop { position: fixed; inset: 0; z-index: 1900; }
+.modal { z-index: 1920; }
