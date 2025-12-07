@@ -1,228 +1,126 @@
-<div id="modal-editar-usuario" class="modal usuario-edit" aria-hidden="true" role="dialog">
-  <div class="modal-dialog">
-    <header class="modal-header">
-      <h2>Editar Usuario</h2>
-      <button class="modal-close" data-close="modal-edit">✕</button>
-    </header>
+<div id="modal-editar-usuario" class="modal usuario-crear" aria-hidden="true">
+  <div class="modal-backdrop" data-close="modal-edit"></div>
+  <div class="modal-panel">
+    <h3>Editar Usuario</h3>
 
     <form id="form-edit-user" method="post">
       {% csrf_token %}
 
-      <div class="modal-body">
-        
-        <!-- ========================================================= -->
-        <!-- DATOS GENERALES                                           -->
-        <!-- ========================================================= -->
+      <div class="section">
         <h4>Datos del usuario</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Nombres</label><input name="nombres" required></div>
+          <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required></div>
+          <div class="form-row"><label>Apellido materno</label><input name="apellido_materno"></div>
+          <div class="form-row"><label>Usuario</label><input name="username" required></div>
+          <div class="form-row"><label>Correo</label><input name="correo"></div>
+          <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required></div>
+          <div class="form-row"><label>Sexo</label>
+            <select name="sexo">
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+              <option value="O">Otro</option>
+            </select>
+          </div>
+          <div class="form-row"><label>CI</label><input name="ci"></div>
+          <div class="form-row"><label>Complemento</label><input name="complemento_ci"></div>
+          <div class="form-row"><label>Expedido</label>
+            <select name="expedido">
+              <option value="BN">BN</option>
+              <option value="CB">CB</option>
+              <option value="CH">CH</option>
+              <option value="LP">LP</option>
+              <option value="OR">OR</option>
+              <option value="PD">PD</option>
+              <option value="PT">PT</option>
+              <option value="SC">SC</option>
+              <option value="TJ">TJ</option>
+            </select>
+          </div>
+          <div class="form-row"><label>Teléfono</label><input name="telefono"></div>
+          <div class="form-row"><label>Celular</label><input name="celular"></div>
+          <div class="form-row"><label>Dirección</label><input name="direccion"></div>
+          <div class="form-row"><label>Contrato</label>
+            <select name="contrato">
+              <option value="">Sin contrato</option>
+              {% for c in contratos %}
+                <option value="{{ c.id }}">{{ c.nombre }} ({{ c.fecha_inicio|date:'d/m/Y' }} - {{ c.fecha_fin|date:'d/m/Y' }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-row"><label>Rol</label><input name="tipo" readonly></div>
+          <div class="form-row"><label>Estado</label>
+            <select name="is_active">
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-        <label>Nombres
-          <input name="nombres" required>
-        </label>
-
-        <label>Apellido paterno
-          <input name="apellido_paterno" required>
-        </label>
-
-        <label>Apellido materno
-          <input name="apellido_materno">
-        </label>
-
-        <label>Usuario
-          <input name="username" required>
-        </label>
-
-        <label>Correo
-          <input name="correo">
-        </label>
-
-        <label>Fecha nacimiento
-          <input type="date" name="fecha_nacimiento" required>
-        </label>
-
-        <label>Sexo
-          <select name="sexo">
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
-            <option value="O">Otro</option>
-          </select>
-        </label>
-
-        <label>CI
-          <input name="ci">
-        </label>
-
-        <label>Complemento
-          <input name="complemento_ci">
-        </label>
-
-        <label>Expedido
-          <select name="expedido">
-            <option value="BN">BN</option>
-            <option value="CB">CB</option>
-            <option value="CH">CH</option>
-            <option value="LP">LP</option>
-            <option value="OR">OR</option>
-            <option value="PD">PD</option>
-            <option value="PT">PT</option>
-            <option value="SC">SC</option>
-            <option value="TJ">TJ</option>
-          </select>
-        </label>
-
-        <label>Teléfono
-          <input name="telefono">
-        </label>
-
-        <label>Celular
-          <input name="celular">
-        </label>
-
-        <label>Dirección
-          <input name="direccion">
-        </label>
-
-        <label>Contrato
-          <select name="contrato">
-            <option value="">Sin contrato</option>
-            {% for c in contratos %}
-              <option value="{{ c.id }}">{{ c.nombre }} ({{ c.fecha_inicio|date:'d/m/Y' }} - {{ c.fecha_fin|date:'d/m/Y' }})</option>
-            {% endfor %}
-          </select>
-        </label>
-
-        <label>Rol
-          <input name="tipo" readonly>
-        </label>
-
-
-        <!-- ========================================================= -->
-        <!-- CAMPOS DE MÉDICO                                           -->
-        <!-- ========================================================= -->
-        <div id="edit-campos-medico" style="display:none; margin-top:1rem;">
-
-          <h4>Datos de Médico</h4>
-
-          <label>Especialidad
+      <div id="edit-campos-medico" class="section campos-condicionales" style="display:none;">
+        <h4>Datos de Médico</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Especialidad</label>
             <select name="especialidad">
               <option value="">-- Seleccione --</option>
               {% for esp in especialidades %}
               <option value="{{ esp.id }}">{{ esp.nombre }}</option>
               {% endfor %}
             </select>
-          </label>
-
-          <label>N° Matrícula
-            <input type="text" name="matricula">
-          </label>
-
-          <label>Consultorio
-            <input name="consultorio">
-          </label>
-
-          <h4>Turnos</h4>
-          {% for turno in turnos %}
-              <label>
-                  <input type="checkbox"
-                    name="turnos"
-                    value="{{ turno.id }}"
-                    id="edit-turno-med-{{ turno.id }}"
-                    {% if turno.id in usuario_turnos_ids %}checked{% endif %}>
-                  {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
-              </label><br>
-          {% endfor %}
-          <h4>Días de atención</h4>
-
-          <label>
-              <input type="checkbox" name="lunes" {% if dias and dias.lunes %}checked{% endif %}>
-              Lunes
-          </label>
-
-          <label>
-              <input type="checkbox" name="martes" {% if dias and dias.martes %}checked{% endif %}>
-              Martes
-          </label>
-
-          <label>
-              <input type="checkbox" name="miercoles" {% if dias and dias.miercoles %}checked{% endif %}>
-              Miércoles
-          </label>
-
-          <label>
-              <input type="checkbox" name="jueves" {% if dias and dias.jueves %}checked{% endif %}>
-              Jueves
-          </label>
-
-          <label>
-              <input type="checkbox" name="viernes" {% if dias and dias.viernes %}checked{% endif %}>
-              Viernes
-          </label>
-
-          <label>
-              <input type="checkbox" name="sabado" {% if dias and dias.sabado %}checked{% endif %}>
-              Sábado
-          </label>
-
-          <label>
-              <input type="checkbox" name="domingo" {% if dias and dias.domingo %}checked{% endif %}>
-              Domingo
-          </label>
+          </div>
+          <div class="form-row"><label>N° Matrícula</label><input type="text" name="matricula"></div>
+          <div class="form-row"><label>Consultorio</label><input name="consultorio"></div>
         </div>
-
-
-        <!-- ========================================================= -->
-        <!-- CAMPOS DE ADMISIÓN                                         -->
-        <!-- ========================================================= -->
-        <div id="edit-campos-admision" style="display:none; margin-top:1rem;">
-
-          <h4>Datos de Admisión</h4>
-
-          <label>Ventanilla
-            <input name="ventanilla">
-          </label>
-
-          <h4>Turnos</h4>
-          {% for turno in turnos %}
-              <label>
-                  <input type="checkbox"
-                    name="turnos"
-                    value="{{ turno.id }}"
-                    id="edit-turno-adm-{{ turno.id }}"
-                    {% if turno.id in usuario_turnos_ids %}checked{% endif %}>
-                  {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
-              </label><br>
-          {% endfor %}
-        </div>
-
-
-        <!-- ========================================================= -->
-        <!-- CAMPOS ENCARGADO ADMISION                                  -->
-        <!-- ========================================================= -->
-        <div id="edit-campos-encargado-admision" style="display:none; margin-top:1rem;">
-
-          <h4>Encargado de Admisión</h4>
-
-          <label>Ventanilla
-            <input name="enc-ventanilla">
-          </label>
-
-          <h4>Turnos</h4>
-          {% for turno in turnos %}
-              <input type="checkbox"
-                name="turnos"
-                value="{{ turno.id }}"
-                id="edit-turno-enc-{{ turno.id }}"
-                {% if turno.id in usuario_turnos_ids %}checked{% endif %}>
-              {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
-          {% endfor %}
-        </div>
-
+        <h4>Turnos</h4>
+        {% for turno in turnos %}
+          <label>
+            <input type="checkbox" name="turnos" value="{{ turno.id }}" id="edit-turno-med-{{ turno.id }}">
+            {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+          </label><br>
+        {% endfor %}
+        <h4>Días de atención</h4>
+        <label><input type="checkbox" name="lunes" {% if dias and dias.lunes %}checked{% endif %}> Lunes</label>
+        <label><input type="checkbox" name="martes" {% if dias and dias.martes %}checked{% endif %}> Martes</label>
+        <label><input type="checkbox" name="miercoles" {% if dias and dias.miercoles %}checked{% endif %}> Miércoles</label>
+        <label><input type="checkbox" name="jueves" {% if dias and dias.jueves %}checked{% endif %}> Jueves</label>
+        <label><input type="checkbox" name="viernes" {% if dias and dias.viernes %}checked{% endif %}> Viernes</label>
+        <label><input type="checkbox" name="sabado" {% if dias and dias.sabado %}checked{% endif %}> Sábado</label>
+        <label><input type="checkbox" name="domingo" {% if dias and dias.domingo %}checked{% endif %}> Domingo</label>
       </div>
 
-      <footer class="modal-footer">
+      <div id="edit-campos-admision" class="section campos-condicionales" style="display:none;">
+        <h4>Datos de Admisión</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Ventanilla</label><input name="ventanilla"></div>
+        </div>
+        <h4>Turnos</h4>
+        {% for turno in turnos %}
+          <label>
+            <input type="checkbox" name="turnos" value="{{ turno.id }}" id="edit-turno-adm-{{ turno.id }}">
+            {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+          </label><br>
+        {% endfor %}
+      </div>
+
+      <div id="edit-campos-encargado-admision" class="section campos-condicionales" style="display:none;">
+        <h4>Encargado de Admisión</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>Ventanilla</label><input name="enc-ventanilla"></div>
+        </div>
+        <h4>Turnos</h4>
+        {% for turno in turnos %}
+          <label>
+            <input type="checkbox" name="turnos" value="{{ turno.id }}" id="edit-turno-enc-{{ turno.id }}">
+            {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+          </label><br>
+        {% endfor %}
+      </div>
+
+      <div class="modal-actions">
         <button type="button" class="btn-secondary" data-close="modal-edit">Cancelar</button>
         <button type="submit" class="btn-primary">Guardar</button>
-      </footer>
-
+      </div>
     </form>
   </div>
 </div>

@@ -27,13 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!id) return console.warn('btn-toggle sin data-id');
 
             // Actualizar modal
-            modalDesactivar.querySelector('#titulo-modal-usuario').textContent = active ? "Desactivar Usuario" : "Activar Usuario";
+            modalDesactivar.querySelector('#titulo-modal-usuario').textContent = active ? "Eliminar Usuario" : "Activar Usuario";
             modalDesactivar.querySelector('#texto-desactivar').textContent = active
-                ? `¿Deseas desactivar a "${username}"?`
+                ? `¿Deseas eliminar (desactivar) a "${username}"?`
                 : `¿Deseas activar a "${username}"?`;
 
             const btnSubmit = modalDesactivar.querySelector('#btn-submit-modal');
-            btnSubmit.textContent = active ? "Desactivar" : "Activar";
+            btnSubmit.textContent = active ? "Eliminar" : "Activar";
             btnSubmit.classList.toggle('btn-danger', active);
             btnSubmit.classList.toggle('btn-success', !active);
 

@@ -145,6 +145,10 @@ def editar_usuario(request, pk):
         perfil.save()
 
         user.username = request.POST.get("username")
+        # Estado activo/inactivo
+        is_active_raw = request.POST.get("is_active")
+        if is_active_raw is not None:
+            user.is_active = (str(is_active_raw).lower() in ["true","1","yes","on"])
         user.save()
 
         # ==========================

@@ -1,20 +1,20 @@
-<div id="modal-desactivar-usuario" class="modal" aria-hidden="true" role="dialog">
-  <div class="modal-dialog">
-    <header class="modal-header">
-      <h2 id="titulo-modal-usuario">Desactivar Usuario</h2>
-      <button class="modal-close" data-close="modal-desactivar-usuario">✕</button>
-    </header>
-
+<div id="modal-desactivar-usuario" class="modal usuario-crear" aria-hidden="true">
+  <div class="modal-backdrop" data-close="modal-desactivar-usuario"></div>
+  <div class="modal-panel">
+    <h3 id="titulo-modal-usuario">Eliminar Usuario</h3>
     <form id="form-desactivar-usuario" method="post">
       {% csrf_token %}
-      <div class="modal-body">
-        <p id="texto-desactivar"></p>
+      <div class="section">
+        <div class="form-grid">
+          <div class="form-row form-row-full">
+            <p id="texto-desactivar"></p>
+          </div>
+        </div>
       </div>
-
-      <footer class="modal-footer">
+      <div class="modal-actions">
         <button type="button" class="btn-secondary" data-close="modal-desactivar-usuario">Cancelar</button>
-        <button type="submit" id="btn-submit-modal" class="btn btn-danger">Confirmar</button>
-      </footer>
+        <button type="submit" id="btn-submit-modal" class="btn btn-danger">Eliminar</button>
+      </div>
     </form>
   </div>
 </div>

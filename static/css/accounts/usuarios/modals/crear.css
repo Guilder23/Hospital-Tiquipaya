@@ -37,6 +37,8 @@
     backdrop-filter: none !important;
     filter: none !important;
     background: var(--color-fondo-modal) !important;
+    position: relative !important;
+    z-index: 2 !important;
 }
 
 /* Animación */
