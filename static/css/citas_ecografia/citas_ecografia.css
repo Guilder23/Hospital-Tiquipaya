@@ -1,0 +1,125 @@
+/* Estilos principales para citas de ecografía */
+
+.citas-ecografia-lista h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.btn#btn-open-create {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn#btn-open-create:hover {
+    background-color: #218838;
+    border-color: #218838;
+    transform: translateY(-2px);
+}
+
+.citas-ecografia {
+    border-collapse: collapse;
+}
+
+.citas-ecografia thead th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    padding: 1rem;
+}
+
+.citas-ecografia tbody tr {
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 0.2s ease;
+}
+
+.citas-ecografia tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.citas-ecografia tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.citas-ecografia .badge {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-programada {
+    background-color: #007bff;
+    color: white;
+}
+
+.badge-realizada {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-cancelada {
+    background-color: #dc3545;
+    color: white;
+}
+
+.badge-reprogramada {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.citas-ecografia .actions {
+    white-space: nowrap;
+}
+
+.citas-ecografia .btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+.citas-ecografia .btn-view {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.citas-ecografia .btn-view:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.citas-ecografia .btn-edit {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #333;
+}
+
+.citas-ecografia .btn-edit:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+.citas-ecografia .btn-delete {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.citas-ecografia .btn-delete:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}

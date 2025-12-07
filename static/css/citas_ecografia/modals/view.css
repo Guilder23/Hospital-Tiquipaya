@@ -1,0 +1,48 @@
+/* Estilos para modal de ver detalles */
+
+#modal-view .modal-dialog {
+    max-width: 500px;
+}
+
+#modal-view .modal-body {
+    padding: 2rem;
+}
+
+.view-content {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+}
+
+.view-content p {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1rem;
+}
+
+.view-content p:last-child {
+    margin-bottom: 0;
+}
+
+.view-content strong {
+    font-weight: 600;
+    color: #212529;
+}
+
+.view-content span {
+    color: #495057;
+    word-break: break-word;
+}
+
+#modal-view .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+#modal-view .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}

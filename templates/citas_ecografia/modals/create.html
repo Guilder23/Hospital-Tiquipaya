@@ -1,0 +1,74 @@
+<!-- Modal: Agendar Nueva Cita de Ecografía -->
+<div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="createLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createLabel">Nueva Cita de Ecografía</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="create-alert" class="alert alert-danger d-none" role="alert"></div>
+
+                <!-- Paso 1: Búsqueda de Paciente -->
+                <div class="step" id="step-1">
+                    <h6>Paso 1: Buscar Paciente</h6>
+                    <div class="form-group mb-3">
+                        <label for="search-input">Buscar por CI:</label>
+                        <input type="text" class="form-control" id="search-input" placeholder="Ingrese CI o nombre del paciente">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btn-search">Buscar</button>
+                </div>
+
+                <!-- Paso 2: Seleccionar Paciente -->
+                <div class="step d-none" id="step-2">
+                    <h6>Paciente Seleccionado</h6>
+                    <div class="patient-info">
+                        <p><strong>Nombre:</strong> <span id="patient-names"></span></p>
+                        <p><strong>CI:</strong> <span id="patient-ci"></span></p>
+                        <p><strong>Especialidad Solicitada:</strong> <span id="patient-specialty"></span></p>
+                        <p><strong>Comentario Médico:</strong> <span id="patient-comment"></span></p>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="btn-back-search">Atrás</button>
+                </div>
+
+                <!-- Paso 3: Seleccionar Fecha y Médico -->
+                <div class="step d-none" id="step-3">
+                    <h6>Paso 3: Seleccionar Fecha y Médico</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="select-date">Fecha:</label>
+                                <input type="date" class="form-control" id="select-date">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="select-doctor">Médico:</label>
+                                <select class="form-control" id="select-doctor">
+                                    <option value="">Seleccione un médico</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="btn-back-patient">Atrás</button>
+                </div>
+
+                <!-- Paso 4: Seleccionar Hora -->
+                <div class="step d-none" id="step-4">
+                    <h6>Paso 4: Seleccionar Hora</h6>
+                    <div id="horarios-container" class="horarios-grid">
+                        <!-- Horarios disponibles -->
+                    </div>
+                    <input type="hidden" id="selected-hour">
+                    <button type="button" class="btn btn-secondary" id="btn-back-doctor">Atrás</button>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary d-none" id="btn-confirm">Agendar Cita</button>
+            </div>
+        </div>
+    </div>
+</div>

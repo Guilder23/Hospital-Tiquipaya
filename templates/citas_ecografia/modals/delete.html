@@ -1,0 +1,22 @@
+<!-- Modal: Cancelar Cita de Ecografía -->
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="deleteLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteLabel">Cancelar Cita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>¿Está seguro de que desea cancelar la cita de ecografía para:</p>
+                <p><strong id="delete-paciente"></strong></p>
+                <p class="text-muted">Esta acción no se puede deshacer.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, mantener</button>
+                <button type="button" class="btn btn-danger" id="btn-confirm-delete">Sí, cancelar cita</button>
+            </div>
+        </div>
+    </div>
+</div>

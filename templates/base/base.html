@@ -47,6 +47,13 @@
       <a class="sidebar-link" href="/citas/medico/atendidos/">Pacientes Atendidos</a>
       <a class="sidebar-link" href="/">Dashboard</a>
   </aside>
+  {% elif request.user.is_authenticated and request.user.perfil and request.user.perfil.tipo and request.user.perfil.tipo.nombre|lower == 'admision' %}
+  <aside class="sidebar">
+    <div class="sidebar-header">Admisión</div>
+      <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
+      <a class="sidebar-link" href="/pacientes/">Gestionar Pacientes</a>
+      <a class="sidebar-link" href="/">Dashboard</a>
+  </aside>
   {% elif request.user.is_authenticated %}
   <aside class="sidebar">
     <div class="sidebar-header">Menú</div>
@@ -55,8 +62,11 @@
       <a class="sidebar-link" href="/especialidades/">Gestionar especialidades</a>
       <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
       <a class="sidebar-link" href="/ecografias/">Gestionar ecografías</a>
+      <a class="sidebar-link" href="/citas-ecografia/agendar/">Agendar Cita de Ecografía</a>
+      <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
       <a class="sidebar-link" href="/turnos/">Gestionar turnos</a>
       <a class="sidebar-link" href="/contratos/">Gestionar contratos</a>
+      
   </aside>
   {% endif %}
   <main class="content">
