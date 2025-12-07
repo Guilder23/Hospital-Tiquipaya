@@ -7,8 +7,8 @@
 }
 
 .btn#btn-open-create {
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color:var(--color-boton-principal);
+    border-color: var(--color-boton-principal);
     color: white;
     padding: 0.5rem 1.5rem;
     font-weight: 500;
@@ -16,21 +16,34 @@
 }
 
 .btn#btn-open-create:hover {
-    background-color: #218838;
-    border-color: #218838;
+    background-color:var(--color-boton-principal-hover);
+    border-color: var(--color-boton-principal-hover);
     transform: translateY(-2px);
+}
+.btn#btn-open-create:active {
+    background-color:var(--color-boton-principal-active);
+    border-color: var(--color-boton-principal-active);
+    transform: translateY(0);
 }
 
 .citas-ecografia {
     border-collapse: collapse;
 }
-
+.table.citas-ecografia{
+    border: 1px solid var(--color-tabla-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 .citas-ecografia thead th {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: var(--color-tabla-header-bg);
+    color: var(--color-tabla-header-text);
     font-weight: 600;
-    border-bottom: 2px solid #dee2e6;
+    border-bottom: 2px solid var(--color-tabla-header-border);
     padding: 1rem;
+    border-right: 1px solid var(--color-tabla-header-border);
+    text-align: left;
 }
 
 .citas-ecografia tbody tr {
