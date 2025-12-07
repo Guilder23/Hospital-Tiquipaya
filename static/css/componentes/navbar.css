@@ -26,7 +26,15 @@
 
 .sidebar-toggle { display: none; background: transparent; border: none; color: #fff; font-size: 1.4rem; padding: 0.4rem; border-radius: 8px; }
 .sidebar-toggle:focus { outline: none; }
+.nav-toggle { display: none; background: transparent; border: none; color: #fff; font-size: 1.4rem; padding: 0.4rem; border-radius: 8px; }
+.nav-toggle:focus { outline: none; }
 
 @media (max-width: 992px) {
   .sidebar-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .site-header nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--color-header-pagina); padding: 12px; flex-direction: column; gap: 0.75rem; box-shadow: 0 2px 8px var(--sombra-neutral-15); }
+  .site-header nav a { display: block; }
+  body.nav-open .site-header nav { display: flex; }
+  .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 950; }
+  body.nav-open .nav-overlay { display: block; }
 }
