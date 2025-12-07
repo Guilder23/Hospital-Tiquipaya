@@ -44,7 +44,7 @@
           {% endif %}
         </td>
         <td>
-          <form method="post" action="/citas/{{ c.id }}/cancelar/" style="display:inline" onsubmit="return confirm('Cancelar cita?')">{% csrf_token %}<button class="btn btn-danger" {% if c.estado == 'CANCELADA' or c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Cancelar</button></form>
+          <form method="post" action="/citas/{{ c.id }}/cancelar/" class="cancel-form" style="display:inline">{% csrf_token %}<button type="button" class="btn btn-danger btn-cancel" {% if c.estado == 'CANCELADA' or c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Cancelar</button></form>
           <button class="btn btn-primary btn-reprogramar" data-id="{{ c.id }}" {% if c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Editar horario</button>
         </td>
       </tr>
@@ -73,6 +73,19 @@
     </div>
   </div>
 
+  <div class="modal" id="modal-cancelar" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box" style="max-width:420px">
+      <h3>Cancelar cita</h3>
+      <p>¿Está seguro de que desea cancelar esta cita?</p>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="cancel-no">No, mantener</button>
+        <button class="btn-modal-ok" id="cancel-yes">Sí, cancelar</button>
+      </div>
+      <p id="cancel-error" style="display:none"></p>
+    </div>
+  </div>
+
 </section>
 {% endblock %}
 {% block extra_js %}
@@ -93,6 +106,28 @@ document.addEventListener('DOMContentLoaded',function(){
       .then(function(r){ if(r.ok) return r.json(); return r.text().then(function(t){ throw new Error(t||'Error'); }); })
       .then(function(){ close(modal); window.location.reload(); })
       .catch(function(e){ repError.textContent='No se pudo editar: '+(e.message||'Error'); repError.style.display='block'; }); }); }
+
+  var modalCancel=document.getElementById('modal-cancelar');
+  var cancelNo=document.getElementById('cancel-no');
+  var cancelYes=document.getElementById('cancel-yes');
+  var cancelError=document.getElementById('cancel-error');
+  var currentCancelForm=null;
+  function openCancel(){ modalCancel.classList.add('is-open'); modalCancel.setAttribute('aria-hidden','false'); }
+  function closeCancel(){ modalCancel.classList.remove('is-open'); modalCancel.setAttribute('aria-hidden','true'); }
+  document.querySelectorAll('.btn-cancel').forEach(function(b){ b.addEventListener('click', function(){ cancelError.style.display='none'; cancelError.textContent=''; currentCancelForm=b.closest('form'); openCancel(); }); });
+  if(cancelNo){ cancelNo.addEventListener('click', function(){ closeCancel(); }); }
+  document.querySelectorAll('#modal-cancelar [data-close]').forEach(function(el){ el.addEventListener('click', function(){ closeCancel(); }); });
+  if(cancelYes){ cancelYes.addEventListener('click', function(){
+    if(!currentCancelForm) return;
+    cancelYes.disabled = true;
+    cancelError.style.display='none'; cancelError.textContent='';
+    var url = currentCancelForm.getAttribute('action');
+    fetch(url, { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':getCookie('csrftoken') }, body:'' })
+      .then(function(r){ if(r.ok) return r.json(); return r.text().then(function(t){ throw new Error(t||'Error'); }); })
+      .then(function(){ closeCancel(); if(window.showToast) window.showToast('Cita cancelada','success'); window.location.reload(); })
+      .catch(function(e){ cancelError.textContent='No se pudo cancelar: '+(e.message||'Error'); cancelError.style.display='block'; })
+      .finally(function(){ cancelYes.disabled = false; });
+  }); }
 });
 </script>
 {% endblock %}
