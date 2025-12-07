@@ -2,9 +2,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
      window.__modals = window.__modals || {};
 
-    const ROL_MEDICO = "Medico";
-    const ROL_ADMISION = "Admision";
-    const ROL_ENCARGADO = "Encargado de Admisión";
+    const normalize = function(str){
+        if (!str) return '';
+        return str
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim();
+    };
 
     const selectRol = document.getElementById('select-rol');
 
@@ -13,25 +18,25 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!selectRol) return;
 
         const rolSeleccionado = selectRol.options[selectRol.selectedIndex].text.trim();
+        const rolNorm = normalize(rolSeleccionado);
 
         document.querySelectorAll('.campos-condicionales').forEach(bloque => {
             bloque.style.display = 'none';
             bloque.querySelectorAll('[required]').forEach(inp => inp.removeAttribute('required'));
         });
 
-        if (rolSeleccionado === ROL_MEDICO) {
+        if (rolNorm.includes('medico')) {
             const medico = document.getElementById('campos-medico');
             medico.style.display = 'block';
             medico.querySelector('select[name="especialidad"]').setAttribute('required', 'true');
-        } else if (rolSeleccionado === ROL_ADMISION) {
+        } else if ((rolNorm.includes('admision') && !rolNorm.includes('encargado')) || rolNorm.includes('recepcionista')) {
             const adm = document.getElementById('campos-admision');
             adm.style.display = 'block';
             adm.querySelector('input[name="ventanilla"]').setAttribute('required', 'true');
-        } else if (rolSeleccionado === ROL_ENCARGADO) {
-            document.getElementById('campos-encargado-admision').style.display = 'block';
+        } else if (rolNorm.includes('encargado') && rolNorm.includes('admision')) {
             const enc = document.getElementById('campos-encargado-admision');
             enc.style.display = 'block';
-            enc.querySelector('input[name="enc_ventanilla"]').setAttribute('required', 'true');
+            enc.querySelector('input[name="ventanilla"]').setAttribute('required', 'true');
         }
     }
 
