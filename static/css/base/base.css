@@ -165,12 +165,16 @@ body {
   background: var(--color-fondo);
   color: var(--color-texto);
   padding-top: 70px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 
 /* ======= LAYOUT ======= */
 .layout {
   display: flex;
+  flex: 1 0 auto;
 }
 
 
