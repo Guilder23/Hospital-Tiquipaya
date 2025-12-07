@@ -178,6 +178,9 @@ function cargarHorarios() {
     if (!medicoId || !fecha) return;
 
     citaEcografiaData.medico_id = medicoId;
+    const selectDoctorEl = document.getElementById('select-doctor');
+    const medicoNombre = selectDoctorEl && selectDoctorEl.options[selectDoctorEl.selectedIndex] ? selectDoctorEl.options[selectDoctorEl.selectedIndex].textContent : '';
+    citaEcografiaData.medico_nombre = medicoNombre;
 
     const formData = new FormData();
     formData.append('medico_id', medicoId);
@@ -197,13 +200,11 @@ function cargarHorarios() {
             return;
         }
 
-        const horasDisponibles = [];
+        const slots = [];
         if (data.horarios) {
             Object.values(data.horarios).forEach(lista => {
                 lista.forEach(item => {
-                    if (item.disponible) {
-                        horasDisponibles.push(item.hora);
-                    }
+                    slots.push({ hora: item.hora, disponible: !!item.disponible });
                 });
             });
         }
@@ -212,7 +213,16 @@ function cargarHorarios() {
             showAlert('create-alert', data.mensaje, 'success');
         }
 
-        mostrarHorarios(horasDisponibles);
+        mostrarHorarios(slots);
+        // Mostrar resumen de selección (fecha y médico)
+        try {
+            const d = new Date(fecha);
+            const fechaStr = isNaN(d.getTime()) ? fecha : d.toLocaleDateString('es-ES', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+            const sd = document.getElementById('summary-date');
+            const sm = document.getElementById('summary-doctor');
+            if (sd) sd.textContent = fechaStr;
+            if (sm) sm.textContent = medicoNombre || '-';
+        } catch(e) {}
         showStep(4);
     })
     .catch(error => {
@@ -221,23 +231,32 @@ function cargarHorarios() {
     });
 }
 
-function mostrarHorarios(horarios) {
+function mostrarHorarios(slots) {
     const container = document.getElementById('horarios-container');
     container.innerHTML = '';
 
-    horarios.forEach(hora => {
+    slots.forEach(slot => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.textContent = hora;
+        button.textContent = slot.hora;
         button.classList.add('horario-btn');
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.horario-btn').forEach(btn => {
-                btn.classList.remove('selected');
+        if (slot.disponible) {
+            button.classList.add('horario-free');
+            button.setAttribute('title','Horario libre');
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.horario-btn.horario-free').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                button.classList.add('selected');
+                document.getElementById('selected-hour').value = slot.hora;
+                document.getElementById('btn-confirm').classList.remove('d-none');
             });
-            button.classList.add('selected');
-            document.getElementById('selected-hour').value = hora;
-            document.getElementById('btn-confirm').classList.remove('d-none');
-        });
+        } else {
+            button.classList.add('horario-busy');
+            button.disabled = true;
+            button.setAttribute('title','Horario ocupado');
+            button.setAttribute('aria-disabled','true');
+        }
         container.appendChild(button);
     });
 }
