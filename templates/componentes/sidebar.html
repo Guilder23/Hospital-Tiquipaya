@@ -16,7 +16,7 @@
   <aside class="sidebar">
     <div class="sidebar-header">Admisión</div>
       <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
-      <a class="sidebar-link" href="/accounts/usuarios/">Gestionar usuarios</a>
+      <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
   </aside>
 {% elif request.user.is_authenticated and request.user.perfil and request.user.perfil.tipo and request.user.perfil.tipo.nombre|lower == 'admision' %}
   <aside class="sidebar">
