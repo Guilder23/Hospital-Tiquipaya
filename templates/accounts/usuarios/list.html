@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block extra_css %}
 <link rel="stylesheet" href="/static/css/accounts/usuarios/users.css">
+<link rel="stylesheet" href="/static/css/accounts/usuarios/modals/crear.css">
 <link rel="stylesheet" href="/static/css/accounts/usuarios/modals/editar.css">
 <link rel="stylesheet" href="/static/css/accounts/usuarios/modals/view.css">
 <link rel="stylesheet" href="/static/css/accounts/usuarios/modals/deshabilitar.css">
-
 {% endblock %}
 {% block content %}
 
@@ -52,6 +52,7 @@
             data-direccion="{{ p.direccion|default:'' }}"
             data-rol="{% if p.tipo %}{{ p.tipo.nombre|default:'' }}{% endif %}"
             data-contratoid="{% if p.contrato %}{{ p.contrato.id }}{% endif %}"
+            data-active="{{ u.is_active|yesno:'true,false' }}"
 
             {% if u.medico %}
                 data-especialidadid="{{ u.medico.especialidad.id|default:'' }}"
@@ -64,6 +65,8 @@
                 data-miercoles="{{ u.medico.dias_atencion.miercoles|yesno:'1,0' }}"
                 data-jueves="{{ u.medico.dias_atencion.jueves|yesno:'1,0' }}"
                 data-viernes="{{ u.medico.dias_atencion.viernes|yesno:'1,0' }}"
+                data-sabado="{{ u.medico.dias_atencion.sabado|yesno:'1,0' }}"
+                data-domingo="{{ u.medico.dias_atencion.domingo|yesno:'1,0' }}"
 
                 data-turnos-med="{% for t in u.medico.turnos.all %}{{ t.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
             {% endif %}
@@ -116,7 +119,7 @@
               data-username="{{ u.username }}"
               data-active="{{ u.is_active }}">
               {% if u.is_active %}
-                  Desactivar
+                  Eliminar
               {% else %}
                   Activar
               {% endif %}

@@ -10,3 +10,25 @@ def paciente(request):
             request.session.pop('paciente_id', None)
     return {'paciente': obj}
 
+
+def user_roles(request):
+    """Agregar información de roles del usuario al contexto"""
+    context = {}
+    
+    if request.user.is_authenticated:
+        # Verificar si es personal de admisión
+        try:
+            context['is_admision'] = hasattr(request.user, 'admision') and request.user.admision is not None
+        except:
+            context['is_admision'] = False
+        
+        # Verificar si es médico
+        try:
+            context['is_medico'] = hasattr(request.user, 'medico') and request.user.medico is not None
+        except:
+            context['is_medico'] = False
+    else:
+        context['is_admision'] = False
+        context['is_medico'] = False
+    
+    return context

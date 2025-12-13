@@ -1,59 +1,7 @@
-/* === Modal Ver Usuario === */
-.modal.usuario-ver {
-    position: fixed;
-    inset: 0;
-    display: none !important;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.55) !important;;
-    z-index: 2000;
-    backdrop-filter: none !important;
-    filter: none !important;
-}
-
-.modal.usuario-ver[aria-hidden="false"] {
-    display: flex !important;
-}
-
-#modal-ver-usuario .modal-dialog {
-    position: relative !important;
-    width: 100%;
-    max-width: 700px;
-    max-height: 90vh;
-    overflow-y: auto;
-    background: var(--color-fondo-modal, #fff);
-    padding: 25px 30px;
-    border-radius: 12px;
-    border-top: 4px solid #0ea5e9; /* azul para diferenciar */
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    transform: translateY(-20px);
-    animation: showModalView 0.35s ease forwards;
-}
-
-/* Animación */
-@keyframes showModalView {
-    to { transform: translateY(0); }
-}
-
-/* Scroll invisible */
-#modal-ver-usuario .modal-dialog::-webkit-scrollbar { width: 0; background: transparent; }
-#modal-ver-usuario .modal-dialog { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* === Header === */
-#modal-ver-usuario .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-#modal-ver-usuario .modal-header h2 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #0ea5e9;
-    margin: 0;
-}
+/* Overrides específicos del modal VER sobre el diseño base de usuario-crear */
+#modal-ver-usuario .modal-panel { border-top: 4px solid #0ea5e9; position: relative !important; z-index: 2 !important; }
+#modal-ver-usuario h3 { color: #0ea5e9; }
+#modal-ver-usuario .modal-backdrop { z-index: 1 !important; }
 
 #modal-ver-usuario .modal-close {
     border: none;

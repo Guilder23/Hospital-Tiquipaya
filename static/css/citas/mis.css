@@ -133,7 +133,7 @@
   inset: 0;
   display: none;
   animation: fadeIn .25s ease;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modal.is-open {
@@ -149,6 +149,7 @@
   inset: 0;
   background: var(--color-overlay-modal);
   backdrop-filter: blur(3px);
+  z-index: 1990;
 }
 
 .modal-box {
@@ -161,6 +162,7 @@
   border: 1px solid var(--color-borde-modal);
   box-shadow: 0 10px 40px var(--sombra-neutral-25);
   animation: popUp .25s ease;
+  z-index: 2001;
 }
 
 .modal-box h3 {

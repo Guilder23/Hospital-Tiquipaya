@@ -128,8 +128,8 @@
                 </select>
             </div>
 
-            <!-- CAMPOS DINÁMICOS (sin cambios, solo colocados dentro de secciones) -->
-            <div id="campos-medico" class="section" style="display:none;">
+            <!-- CAMPOS DINÁMICOS -->
+            <div id="campos-medico" class="section campos-condicionales" style="display:none;">
                 <h4>Datos del médico</h4>
 
                 <div class="form-grid">
@@ -168,6 +168,8 @@
                 <label><input type="checkbox" name="miercoles"> Miércoles</label>
                 <label><input type="checkbox" name="jueves"> Jueves</label>
                 <label><input type="checkbox" name="viernes"> Viernes</label>
+                <label><input type="checkbox" name="sabado"> Sábado</label>
+                <label><input type="checkbox" name="domingo"> Domingo</label>
             </div>
 
             <div id="campos-admision" class="section campos-condicionales" style="display:none;">
@@ -195,17 +197,16 @@
                 <div class="form-grid">
                     <div class="form-row">
                         <label>Ventanilla</label>
-                        <input name="enc_ventanilla">
+                        <input name="ventanilla">
                     </div>
                 </div>
 
                 <h4>Turnos</h4>
                 {% for turno in turnos %}
-                    <input type="checkbox"
-                        name="turnos"
-                        value="{{ turno.id }}"
-                        {% if turno.id in usuario_turnos.usuario.id %}checked{% endif %}>
-                    {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+                    <label>
+                        <input type="checkbox" name="turnos" value="{{ turno.id }}">
+                        {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+                    </label><br>
                 {% endfor %}
             </div>
 

@@ -1,0 +1,60 @@
+/* Estilos para modal de cancelar cita */
+
+#modal-delete .modal-dialog {
+    max-width: 400px;
+}
+
+#modal-delete .modal-body {
+    padding: 2rem;
+}
+
+#modal-delete .modal-body p {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1rem;
+}
+
+#modal-delete .modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+#modal-delete .modal-body strong {
+    font-weight: 600;
+    color: #212529;
+}
+
+#modal-delete .text-muted {
+    color: #6c757d !important;
+    font-size: 0.875rem;
+}
+
+#modal-delete .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+#modal-delete .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+#modal-delete .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+#modal-delete .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+#delete-paciente {
+    color: #212529;
+    font-weight: 600;
+}

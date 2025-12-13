@@ -61,9 +61,14 @@ def crear_usuario(request):
 
     turnos_seleccionados = request.POST.getlist("turnos")
     # ================================
-    # 4. SI ES MÉDICO → CREAR DÍAS
+    # 4. DETECTAR ROL NORMALIZADO
     # ================================
-    if tipo_rol == "medico":
+    rol_norm = (tipo_obj.nombre if tipo_obj else (tipo_rol or "")).strip().lower()
+
+    # ================================
+    # MÉDICO → CREAR DÍAS
+    # ================================
+    if "medico" in rol_norm:
         dias = DiasAtencion.objects.create(
             lunes=bool(request.POST.get("lunes")),
             martes=bool(request.POST.get("martes")),
@@ -83,9 +88,9 @@ def crear_usuario(request):
         medico.turnos.set(turnos_seleccionados) 
 
     # ================================
-    # 5. SI ES ADMISIÓN
+    # ADMISIÓN
     # ================================
-    elif tipo_rol == "admision":
+    elif "admision" in rol_norm and "encargado" not in rol_norm:
         adm = Admision.objects.create(
             user=user,
             ventanilla=request.POST.get("ventanilla") or "",
@@ -94,9 +99,9 @@ def crear_usuario(request):
         adm.turnos.set(turnos_seleccionados)
 
     # ================================
-    # 6. SI ES ENCARGADO DE ADMISIÓN
+    # ENCARGADO DE ADMISIÓN
     # ================================
-    elif tipo_rol == "encargado_admision":
+    elif "encargado" in rol_norm and "admision" in rol_norm:
         enc = EncargadoAdmision.objects.create(
             user=user,
             ventanilla=request.POST.get("ventanilla") or "",
@@ -140,6 +145,10 @@ def editar_usuario(request, pk):
         perfil.save()
 
         user.username = request.POST.get("username")
+        # Estado activo/inactivo
+        is_active_raw = request.POST.get("is_active")
+        if is_active_raw is not None:
+            user.is_active = (str(is_active_raw).lower() in ["true","1","yes","on"])
         user.save()
 
         # ==========================

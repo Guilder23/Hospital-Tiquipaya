@@ -131,13 +131,34 @@
                     <i class="fas fa-qrcode"></i> ¿Habilitar Ecografía?
                 </h5>
             </div>
-            <div class="modal-body text-center p-4">
+            <div class="modal-body p-4">
                 <p class="mb-3">¿Deseas habilitar una cita de ecografía para este paciente?</p>
                 <p class="text-muted"><small>Si es "Sí", se generará un código ECO que el paciente podrá usar para agendar su cita.</small></p>
+                
+                <!-- Formulario para ecografía -->
+                <form id="ecoForm">
+                    <div class="mb-3">
+                        <label for="ecoEspecialidad" class="form-label"><strong>Especialidad para Ecografía</strong></label>
+                        <select class="form-select" id="ecoEspecialidad" name="especialidad">
+                            <option value="">-- Seleccionar especialidad --</option>
+                            {% for esp in especialidades %}
+                                <option value="{{ esp.id }}">{{ esp.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="ecoComentario" class="form-label"><strong>Comentario / Especificación</strong></label>
+                        <textarea class="form-control" id="ecoComentario" name="comentario" rows="3" placeholder="Descripción de la ecografía que necesita el paciente..."></textarea>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="noEcoButton">
                     <i class="fas fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-secondary" id="cerrarEcoButton">
+                    <i class="fas fa-times-circle"></i> Cerrar
                 </button>
                 <button type="button" class="btn btn-success" id="siEcoButton">
                     <i class="fas fa-check"></i> Sí

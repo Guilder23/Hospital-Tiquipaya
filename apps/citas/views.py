@@ -13,6 +13,7 @@ from apps.accounts.models import Medico
 from apps.citas.models import Cita
 from apps.ecografias.models import Ecografia
 from apps.horarios.models import Turnos
+from apps.especialidades.models import Especialidad
 from django.db import IntegrityError
 
 def _manana():
@@ -73,6 +74,36 @@ def validar_paciente(request):
     request.session['paciente_id'] = p.id
     return JsonResponse({'ok': True, 'redirect': reverse('citas:agendar')})
 
+def _obtener_nombre_dia(fecha):
+    """Obtiene el nombre del día de la semana (0=lunes, 6=domingo)"""
+    dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    return dias[fecha.weekday()]
+
+def _medico_trabaja_en_dia(medico, fecha):
+    """Verifica si un médico trabaja en un día específico"""
+    if not medico.dias_atencion:
+        # Si no tiene días de atención configurados, asumimos que trabaja todos los días
+        return True
+    
+    nombre_dia = _obtener_nombre_dia(fecha)
+    dias_atencion = medico.dias_atencion
+    
+    # Mapear nombre del día al atributo correspondiente
+    atributos_dia = {
+        'lunes': 'lunes',
+        'martes': 'martes',
+        'miercoles': 'miercoles',
+        'jueves': 'jueves',
+        'viernes': 'viernes',
+        'sabado': 'sabado',
+        'domingo': 'domingo'
+    }
+    
+    atributo = atributos_dia.get(nombre_dia)
+    if atributo:
+        return getattr(dias_atencion, atributo, False)
+    return False
+
 @ensure_csrf_cookie
 def agendar_inicio(request):
     pid = request.session.get('paciente_id')
@@ -81,13 +112,18 @@ def agendar_inicio(request):
     # Obtener todos los turnos activos
     turnos_activos = Turnos.objects.filter(estado=True).order_by('hora_ini')
     
-    # Para cada turno, obtener los médicos que trabajan en ese turno
+    # Para cada turno, obtener los médicos que trabajan en ese turno Y en el día siguiente
     turnos_data = []
     for turno in turnos_activos:
-        medicos = Medico.objects.filter(turnos=turno)
+        # Filtrar médicos que trabajan en este turno
+        medicos_turno = Medico.objects.filter(turnos=turno)
+        
+        # Filtrar médicos que trabajan en el día siguiente
+        medicos_disponibles = [m for m in medicos_turno if _medico_trabaja_en_dia(m, manana)]
+        
         turnos_data.append({
             'turno': turno,
-            'medicos': medicos
+            'medicos': medicos_disponibles
         })
     
     ctx = {
@@ -232,10 +268,14 @@ def citas_medico_hoy(request):
         estado_atencion='ATENDIDO'
     ).order_by('hora').select_related('paciente', 'especialidad')
     
+    # Obtener todas las especialidades para el formulario de ecografía
+    especialidades = Especialidad.objects.all()
+    
     ctx = {
         'medico': medico,
         'citas': citas,
         'fecha': hoy,
+        'especialidades': especialidades,
     }
     return render(request, 'citas/citas_medico.html', ctx)
 
@@ -349,9 +389,33 @@ def procesar_ecografia(request, cita_id):
             cita.tiempo_fin_atencion = timezone.now()
             cita.duracion_atencion_minutos = cita.calcular_duracion()
         
-        # Actualizar el campo de ecografía
+        # Actualizar el campo de ecografía y datos relacionados
         cita.requiere_ecografia = habilitar
-        cita.save(update_fields=['estado_atencion', 'tiempo_fin_atencion', 'duracion_atencion_minutos', 'requiere_ecografia'])
+        
+        if habilitar:
+            # Obtener especialidad y comentario si se habilita ecografía
+            especialidad_id = request.POST.get('especialidad')
+            comentario = request.POST.get('comentario')
+            
+            print(f"DEBUG: especialidad_id={especialidad_id}, comentario={comentario}")
+            
+            if not especialidad_id:
+                return JsonResponse({'ok': False, 'error': 'La especialidad es requerida'}, status=400)
+            
+            if not comentario or not comentario.strip():
+                return JsonResponse({'ok': False, 'error': 'El comentario es requerido'}, status=400)
+            
+            try:
+                especialidad = Especialidad.objects.get(id=especialidad_id)
+                cita.especialidad_ecografia = especialidad
+                cita.comentario_ecografia = comentario
+                print(f"DEBUG: Especialidad guardada: {especialidad.nombre}, Comentario: {comentario}")
+            except Especialidad.DoesNotExist:
+                return JsonResponse({'ok': False, 'error': 'Especialidad no válida'}, status=400)
+        
+        cita.save(update_fields=['estado_atencion', 'tiempo_fin_atencion', 'duracion_atencion_minutos', 'requiere_ecografia', 'especialidad_ecografia', 'comentario_ecografia'])
+        
+        print(f"DEBUG: Cita guardada. requiere_ecografia={cita.requiere_ecografia}, especialidad_ecografia={cita.especialidad_ecografia}, comentario_ecografia={cita.comentario_ecografia}")
         
         if habilitar:
             return JsonResponse({
@@ -365,6 +429,7 @@ def procesar_ecografia(request, cita_id):
             })
     
     except Exception as e:
+        print(f"ERROR: {str(e)}")
         return JsonResponse({'ok': False, 'error': f'Error al procesar: {str(e)}'}, status=500)
 
 

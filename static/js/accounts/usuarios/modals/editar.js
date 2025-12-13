@@ -92,6 +92,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 contratoSel.value = contratoId;
             }
 
+            // ---------- ESTADO (is_active) ----------
+            const estadoSel = form.querySelector('[name="is_active"]');
+            if (estadoSel) {
+                const activo = (row.dataset.active || '').toLowerCase();
+                estadoSel.value = (activo === 'true' || activo === '1') ? 'true' : 'false';
+            }
+
             // ---------- ROL ----------
             const rol = (row.dataset.rol || "")
                 .trim()

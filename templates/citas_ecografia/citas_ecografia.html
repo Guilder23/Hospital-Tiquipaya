@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/citas_ecografia/citas_ecografia.css">
+<link rel="stylesheet" href="/static/css/citas_ecografia/modals/create.css">
+<link rel="stylesheet" href="/static/css/citas_ecografia/modals/edit.css">
+<link rel="stylesheet" href="/static/css/citas_ecografia/modals/view.css">
+<link rel="stylesheet" href="/static/css/citas_ecografia/modals/delete.css">
+{% endblock %}
+
+{% block content %}
+
+<section class="card citas-ecografia-lista">
+    <h2>Gestión de Citas de Ecografía</h2>
+    <p><button class="btn" id="btn-open-create">Nueva Cita de Ecografía</button></p>
+
+    <table class="table citas-ecografia">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>CI</th>
+                <th>Especialidad</th>
+                <th>Médico</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr data-id="{{ cita.id }}"
+                data-paciente="{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}"
+                data-ci="{{ cita.paciente.ci }}"
+                data-especialidad="{{ cita.especialidad.nombre }}"
+                data-medico="{{ cita.medico.user.perfil.nombres }} {{ cita.medico.user.perfil.apellido_paterno }}"
+                data-fecha="{{ cita.fecha|date:'Y-m-d' }}"
+                data-hora="{{ cita.hora }}"
+                data-estado="{{ cita.estado }}"
+                data-comentario="{{ cita.comentario_medico }}"
+                data-resultado="{{ cita.resultado_ecografia }}">
+                <td>{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</td>
+                <td>{{ cita.paciente.ci }}</td>
+                <td>{{ cita.especialidad.nombre }}</td>
+                <td>{{ cita.medico.user.perfil.nombres }} {{ cita.medico.user.perfil.apellido_paterno }}</td>
+                <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                <td>{{ cita.hora|time:"H:i" }}</td>
+                <td>
+                    {% if cita.estado == 'PROGRAMADA' %}
+                        <span class="badge badge-programada">Programada</span>
+                    {% elif cita.estado == 'REALIZADA' %}
+                        <span class="badge badge-realizada">Realizada</span>
+                    {% elif cita.estado == 'CANCELADA' %}
+                        <span class="badge badge-cancelada">Cancelada</span>
+                    {% else %}
+                        <span class="badge badge-reprogramada">Reprogramada</span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <button class="btn btn-view" data-id="{{ cita.id }}">Ver</button>
+                    {% if cita.estado != 'CANCELADA' %}
+                    <button class="btn btn-edit" data-id="{{ cita.id }}"
+                        data-paciente="{{ cita.paciente.id }}"
+                        data-medico="{{ cita.medico.id }}"
+                        data-fecha="{{ cita.fecha|date:'Y-m-d' }}"
+                        data-hora="{{ cita.hora }}"
+                        data-estado="{{ cita.estado }}"
+                        data-comentario="{{ cita.comentario_medico }}"
+                        data-resultado="{{ cita.resultado_ecografia }}">Editar</button>
+                    <button class="btn btn-delete" data-id="{{ cita.id }}" data-paciente="{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}">Cancelar</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">No hay citas de ecografía registradas</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% include 'citas_ecografia/modals/create.html' %}
+{% include 'citas_ecografia/modals/edit.html' %}
+{% include 'citas_ecografia/modals/view.html' %}
+{% include 'citas_ecografia/modals/delete.html' %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/citas_ecografia/citas_ecografia.js"></script>
+<script src="/static/js/citas_ecografia/modals/create.js"></script>
+<script src="/static/js/citas_ecografia/modals/edit.js"></script>
+<script src="/static/js/citas_ecografia/modals/view.js"></script>
+<script src="/static/js/citas_ecografia/modals/delete.js"></script>
+{% endblock %}
+
