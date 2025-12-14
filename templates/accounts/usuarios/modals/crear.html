@@ -129,7 +129,7 @@
             </div>
 
             <!-- CAMPOS DINÁMICOS -->
-            <div id="campos-medico" class="section campos-condicionales" style="display:none;">
+            <div id="campos-medico" class="section campos-condicionales" style="display:none !important;">
                 <h4>Datos del médico</h4>
 
                 <div class="form-grid">
@@ -172,7 +172,7 @@
                 <label><input type="checkbox" name="domingo"> Domingo</label>
             </div>
 
-            <div id="campos-admision" class="section campos-condicionales" style="display:none;">
+            <div id="campos-admision" class="section campos-condicionales" style="display:none !important;">
                 <h4>Datos de Admisión</h4>
 
                 <div class="form-grid">
@@ -191,7 +191,7 @@
                 {% endfor %}
             </div>
 
-            <div id="campos-encargado-admision" class="section campos-condicionales" style="display:none;">
+            <div id="campos-encargado-admision" class="section campos-condicionales" style="display:none !important;">
                 <h4>Encargado de Admisión</h4>
 
                 <div class="form-grid">
@@ -210,6 +210,47 @@
                 {% endfor %}
             </div>
 
+            <div id="campos-ecografo" class="section campos-condicionales" style="display:none !important;">
+                <h4>Datos del ecógrafo</h4>
+
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label>Nº matrícula</label>
+                        <input name="nro_matricula" maxlength="20">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Consultorio</label>
+                        <input name="consultorio">
+                    </div>
+                </div>
+
+                <h4>Ecografías que realiza</h4>
+                {% for eco in ecografias %}
+                    <label>
+                        <input type="checkbox" name="ecografias" value="{{ eco.id }}">
+                        {{ eco.codigo }} - {{ eco.nombre }}
+                    </label><br>
+                {% endfor %}
+
+                <h4>Turnos de atención</h4>
+                {% for turno in turnos %}
+                    <label>
+                        <input type="checkbox" name="turnos" value="{{ turno.id }}">
+                        {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+                    </label><br>
+                {% endfor %}
+
+                <h4>Días de atención</h4>
+                <label><input type="checkbox" name="lunes"> Lunes</label>
+                <label><input type="checkbox" name="martes"> Martes</label>
+                <label><input type="checkbox" name="miercoles"> Miércoles</label>
+                <label><input type="checkbox" name="jueves"> Jueves</label>
+                <label><input type="checkbox" name="viernes"> Viernes</label>
+                <label><input type="checkbox" name="sabado"> Sábado</label>
+                <label><input type="checkbox" name="domingo"> Domingo</label>
+            </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn-secondary" data-close="modal-add">Cancelar</button>
                 <button type="submit" class="btn">Crear</button>
@@ -220,5 +261,32 @@
 </div>
 
 <script src="/static/js/accounts/usuarios/modals/crear.js"></script>
+
+<script>
+// Debug: verificar que el select funciona correctamente
+setTimeout(() => {
+    const selectRol = document.getElementById("select-rol");
+    const camposEco = document.getElementById("campos-ecografo");
+    
+    if (selectRol && camposEco) {
+        console.log("✓ Debug: Elementos encontrados");
+        console.log("Select valor actual:", selectRol.value);
+        console.log("Campos ecografo display:", window.getComputedStyle(camposEco).display);
+        
+        // Agregar listener directo para test
+        selectRol.addEventListener("change", () => {
+            console.log("SELECT CAMBIÓ a:", selectRol.value);
+            if (selectRol.value.toLowerCase().includes("ecografo")) {
+                console.log("ECOGRAFO DETECTADO - mostrando campos");
+                camposEco.style.setProperty("display", "block", "important");
+            } else {
+                camposEco.style.setProperty("display", "none", "important");
+            }
+        });
+    } else {
+        console.warn("✗ No se encontraron elementos", {selectRol: !!selectRol, camposEco: !!camposEco});
+    }
+}, 500);
+</script>
 
 {% endblock %}

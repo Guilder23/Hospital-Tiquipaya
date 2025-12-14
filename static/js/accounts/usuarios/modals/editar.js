@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (tipoInput) tipoInput.value = rol;
 
             // ---------- OCULTAR TODOS LOS BLOQUES ----------
-            const bloques = ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision'];
+            const bloques = ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision','edit-campos-ecografo'];
             bloques.forEach(id => {
                 const b = document.getElementById(id);
                 if (b) {
@@ -232,6 +232,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 console.log('campos-encargado-admision OK');
 
+            }
+
+            // ---------- BLOQUE ENCARGADO ADMISION ----------
+            else if (rol.toLowerCase() === 'encargado de admisión' 
+                || rol.toLowerCase() === 'encargado de admision') {
+
+                console.log('Entrando en rama ENCARGADO DE ADMISION');
+
+                const box = document.getElementById('edit-campos-encargado-admision');
+                if (!box) {
+                    console.error('campos-encargado-admision no existe');
+                    return;
+                }
+
+                box.style.display = 'block';
+
+                // ----------- VENTANILLA -----------
+                const vent = box.querySelector('[name="enc-ventanilla"]');
+                if (vent) {
+                    vent.value = row.dataset.ventanillaenc || "";
+                }
+
+                // TURNOS ENCARGADO
+                const turnosStr = row.dataset.turnosEnc || "";
+                const idsTurnos = turnosStr.split(',').filter(Boolean);
+
+                idsTurnos.forEach(idTurno => {
+                    const check = form.querySelector(`#edit-turno-enc-${idTurno}`);
+                    if (check) check.checked = true;
+                });
+
+                console.log(row.dataset);
+
+                console.log('campos-encargado-admision OK');
+
+            } 
+            // ---------- BLOQUE ECÓGRAFO ----------
+            else if (rol === 'ecografo') {
+                console.log('Entrando en rama ECOGRAFO');
+                const box = document.getElementById('edit-campos-ecografo');
+                if (!box) { console.error('edit-campos-ecografo no existe'); }
+                else {
+                    box.style.display = 'block';
+
+                    const matricula = box.querySelector('[name="nro_matricula"]');
+                    const consultorio = box.querySelector('[name="consultorio"]');
+
+                    if (matricula) {
+                        matricula.value = row.dataset.matricula || "";
+                    }
+                    if (consultorio) {
+                        consultorio.value = row.dataset.consultorio || "";
+                    }
+
+                    // ECOGRAFÍAS DEL ECÓGRAFO
+                    const ecoStr = row.dataset.ecografias || "";
+                    const idsEco = ecoStr.split(',').filter(Boolean);
+
+                    idsEco.forEach(idEco => {
+                        const check = form.querySelector(`#edit-eco-${idEco}`);
+                        if (check) check.checked = true;
+                    });
+
+                    // TURNOS DEL ECÓGRAFO
+                    const turnosStr = row.dataset.turnosEco || "";
+                    const idsTurnos = turnosStr.split(',').filter(Boolean);
+
+                    idsTurnos.forEach(idTurno => {
+                        const check = form.querySelector(`#edit-turno-eco-${idTurno}`);
+                        if (check) check.checked = true;
+                    });
+
+                    ['lunes','martes','miercoles','jueves','viernes'].forEach(dia => {
+                        const check = box.querySelector(`[name="${dia}"]`);
+                        if (check) {
+                            check.checked = row.dataset[dia] === '1';
+                        }
+                    });
+                    console.log(row.dataset);
+                }
             } else {
                 console.log('Rol no reconocido:', rol);
             }
@@ -239,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // ---------- ABRIR MODAL ----------
             open(modal);
 
-            ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision'].forEach(id => {
+            ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision','edit-campos-ecografo'].forEach(id => {
                 const el = document.getElementById(id);
                 console.log(
                     id,

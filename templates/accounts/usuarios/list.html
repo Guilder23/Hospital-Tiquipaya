@@ -82,6 +82,20 @@
                 data-turnos-med="{% for t in u.encargado_admision.turnos.all %}{{ t.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
 
             {% endif %}
+
+            {% if u.ecografo %}
+                data-matricula="{{ u.ecografo.nro_matricula|default:'' }}"
+                data-consultorio="{{ u.ecografo.consultorio|default:'' }}"
+                data-lunes="{{ u.ecografo.dias_atencion.lunes|yesno:'1,0' }}"
+                data-martes="{{ u.ecografo.dias_atencion.martes|yesno:'1,0' }}"
+                data-miercoles="{{ u.ecografo.dias_atencion.miercoles|yesno:'1,0' }}"
+                data-jueves="{{ u.ecografo.dias_atencion.jueves|yesno:'1,0' }}"
+                data-viernes="{{ u.ecografo.dias_atencion.viernes|yesno:'1,0' }}"
+                data-sabado="{{ u.ecografo.dias_atencion.sabado|yesno:'1,0' }}"
+                data-domingo="{{ u.ecografo.dias_atencion.domingo|yesno:'1,0' }}"
+                data-ecografias="{% for e in u.ecografo.ecografias.all %}{{ e.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
+                data-turnos-eco="{% for t in u.ecografo.turnos.all %}{{ t.id }}{% if not forloop.last %},{% endif %}{% endfor %}"
+            {% endif %}
         >
         <td>{{ u.username }}</td>
         <td>

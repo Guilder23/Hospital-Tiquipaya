@@ -8,10 +8,11 @@ from .forms import UserCreateWithProfileForm, UserUpdateWithProfileForm
 
 from django.contrib import messages 
 from django.contrib.auth.models import User 
-from apps.accounts.models import ( Perfil, TipoUsuario, Medico, Admision, EncargadoAdmision ) 
+from apps.accounts.models import ( Perfil, TipoUsuario, Medico, Admision, EncargadoAdmision, Ecografo ) 
 from apps.horarios.models import DiasAtencion, HorariosAtencion, Turnos
 from apps.contratos.models import Contrato
 from apps.especialidades.models import Especialidad
+from apps.ecografias.models import Ecografia
 
 # Registro simple
 def crear_usuario(request):
@@ -75,6 +76,8 @@ def crear_usuario(request):
             miercoles=bool(request.POST.get("miercoles")),
             jueves=bool(request.POST.get("jueves")),
             viernes=bool(request.POST.get("viernes")),
+            sabado=bool(request.POST.get("sabado")),
+            domingo=bool(request.POST.get("domingo")),
         )
 
         medico = Medico.objects.create(
@@ -109,8 +112,38 @@ def crear_usuario(request):
 
         enc.turnos.set(turnos_seleccionados)
 
+    # ================================
+    # ECÓGRAFO
+    # ================================
+    elif "ecografo" in rol_norm or "ecógrafo" in rol_norm:
+        dias = DiasAtencion.objects.create(
+            lunes=bool(request.POST.get("lunes")),
+            martes=bool(request.POST.get("martes")),
+            miercoles=bool(request.POST.get("miercoles")),
+            jueves=bool(request.POST.get("jueves")),
+            viernes=bool(request.POST.get("viernes")),
+            sabado=bool(request.POST.get("sabado")),
+            domingo=bool(request.POST.get("domingo")),
+        )
+
+        ecografo = Ecografo.objects.create(
+            user=user,
+            nro_matricula=request.POST.get("nro_matricula") or "",
+            consultorio=request.POST.get("consultorio") or "",
+            dias_atencion=dias,
+        )
+
+        ecografo.turnos.set(turnos_seleccionados)
+        
+        # Asignar ecografías seleccionadas
+        ecografias_ids = request.POST.getlist("ecografias")
+        ecografo.ecografias.set(ecografias_ids)
+
         messages.success(request, "Usuario creado correctamente.")
         return redirect("accounts:usuario_list")
+
+    messages.success(request, "Usuario creado correctamente.")
+    return redirect("accounts:usuario_list")
 
     # GET
     return render(request, "accounts/usuarios/modals/crear.html", {
@@ -118,6 +151,7 @@ def crear_usuario(request):
         "tipos": TipoUsuario.objects.all(),
         "turnos": Turnos.objects.all(),
         "contratos": Contrato.objects.filter(estado=True),
+        "ecografias": Ecografia.objects.filter(estado='ACTIVA'),
     })
 
 def editar_usuario(request, pk):
@@ -179,6 +213,8 @@ def editar_usuario(request, pk):
                 d.miercoles = bool(request.POST.get("miercoles"))
                 d.jueves = bool(request.POST.get("jueves"))
                 d.viernes = bool(request.POST.get("viernes"))
+                d.sabado = bool(request.POST.get("sabado"))
+                d.domingo = bool(request.POST.get("domingo"))
                 d.save()
 
         # ==========================
@@ -205,6 +241,36 @@ def editar_usuario(request, pk):
                 turnos_ids = request.POST.getlist("turnos")
                 enc.turnos.set(turnos_ids)
 
+        # ==========================
+        # ECÓGRAFO
+        # ==========================
+        elif tipo_rol == "ecografo" or tipo_rol == "ecógrafo":
+            ecografo = getattr(user, "ecografo", None)
+            if ecografo:
+                ecografo.nro_matricula = request.POST.get("nro_matricula") or ""
+                ecografo.consultorio = request.POST.get("consultorio") or ""
+                ecografo.save()
+
+                # Turnos
+                turnos_ids = request.POST.getlist("turnos")
+                ecografo.turnos.set(turnos_ids)
+
+                # Ecografías
+                ecografias_ids = request.POST.getlist("ecografias")
+                ecografo.ecografias.set(ecografias_ids)
+
+                # Días
+                d = ecografo.dias_atencion
+                if d:
+                    d.lunes = bool(request.POST.get("lunes"))
+                    d.martes = bool(request.POST.get("martes"))
+                    d.miercoles = bool(request.POST.get("miercoles"))
+                    d.jueves = bool(request.POST.get("jueves"))
+                    d.viernes = bool(request.POST.get("viernes"))
+                    d.sabado = bool(request.POST.get("sabado"))
+                    d.domingo = bool(request.POST.get("domingo"))
+                    d.save()
+
         messages.success(request, "Usuario actualizado correctamente.")
         return redirect("accounts:usuario_list")
 
@@ -215,7 +281,8 @@ def editar_usuario(request, pk):
         "tipos": TipoUsuario.objects.all(),
         "turnos": Turnos.objects.all(),
         "contratos": (lambda pf: [*Contrato.objects.filter(estado=True), *( [] if not pf or not pf.contrato else ([pf.contrato] if not Contrato.objects.filter(id=pf.contrato_id, estado=True).exists() else []) )])(perfil),
-        "dias": getattr(user.medico, "dias_atencion", None) if hasattr(user, "medico") else None,
+        "dias": getattr(user.medico, "dias_atencion", None) if hasattr(user, "medico") else (getattr(user.ecografo, "dias_atencion", None) if hasattr(user, "ecografo") else None),
+        "ecografias": Ecografia.objects.filter(estado='ACTIVA'),
     })
 
 class UsuarioToggleActiveView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -303,6 +370,7 @@ class UsuarioListView(LoginRequiredMixin, ListView):
         ctx['especialidades'] = Especialidad.objects.all()
         ctx['turnos'] = Turnos.objects.all()
         ctx['contratos'] = Contrato.objects.filter(estado=True)
+        ctx['ecografias'] = Ecografia.objects.filter(estado='ACTIVA')
 
         # Diccionario para almacenar los turnos de cada usuario por id
         usuario_turnos_ids = {}
@@ -323,6 +391,8 @@ class UsuarioListView(LoginRequiredMixin, ListView):
                 usuario_turnos_ids[usuario.id] = list(usuario.admision.turnos.values_list('id', flat=True))
             elif hasattr(usuario, 'encargado_admision') and usuario.encargado_admision:
                 usuario_turnos_ids[usuario.id] = list(usuario.encargado_admision.turnos.values_list('id', flat=True))
+            elif hasattr(usuario, 'ecografo') and usuario.ecografo:
+                usuario_turnos_ids[usuario.id] = list(usuario.ecografo.turnos.values_list('id', flat=True))
 
         ctx['usuario_turnos_ids'] = usuario_turnos_ids
         return ctx
@@ -359,6 +429,13 @@ class UsuarioDetailView(LoginRequiredMixin, DetailView):
         if rol == "encargado_admision":
             enc = EncargadoAdmision.objects.filter(user=user).select_related("turnos").first()
             ctx["encargado_admision"] = enc
+
+        # SI ES ECÓGRAFO
+        if rol == "ecografo" or rol == "ecógrafo":
+            ecografo = Ecografo.objects.filter(user=user).prefetch_related(
+                "ecografias", "turnos", "dias_atencion"
+            ).first()
+            ctx["ecografo"] = ecografo
 
         return ctx
 

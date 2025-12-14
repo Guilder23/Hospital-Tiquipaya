@@ -117,6 +117,36 @@
         {% endfor %}
       </div>
 
+      <div id="edit-campos-ecografo" class="section campos-condicionales" style="display:none;">
+        <h4>Datos de Ecógrafo</h4>
+        <div class="form-grid">
+          <div class="form-row"><label>N° Matrícula</label><input type="text" name="nro_matricula"></div>
+          <div class="form-row"><label>Consultorio</label><input name="consultorio"></div>
+        </div>
+        <h4>Ecografías que realiza</h4>
+        {% for eco in ecografias %}
+          <label>
+            <input type="checkbox" name="ecografias" value="{{ eco.id }}" id="edit-eco-{{ eco.id }}">
+            {{ eco.codigo }} - {{ eco.nombre }}
+          </label><br>
+        {% endfor %}
+        <h4>Turnos</h4>
+        {% for turno in turnos %}
+          <label>
+            <input type="checkbox" name="turnos" value="{{ turno.id }}" id="edit-turno-eco-{{ turno.id }}">
+            {{ turno.nombre }} ({{ turno.hora_ini }} - {{ turno.hora_fin }})
+          </label><br>
+        {% endfor %}
+        <h4>Días de atención</h4>
+        <label><input type="checkbox" name="lunes" {% if dias and dias.lunes %}checked{% endif %}> Lunes</label>
+        <label><input type="checkbox" name="martes" {% if dias and dias.martes %}checked{% endif %}> Martes</label>
+        <label><input type="checkbox" name="miercoles" {% if dias and dias.miercoles %}checked{% endif %}> Miércoles</label>
+        <label><input type="checkbox" name="jueves" {% if dias and dias.jueves %}checked{% endif %}> Jueves</label>
+        <label><input type="checkbox" name="viernes" {% if dias and dias.viernes %}checked{% endif %}> Viernes</label>
+        <label><input type="checkbox" name="sabado" {% if dias and dias.sabado %}checked{% endif %}> Sábado</label>
+        <label><input type="checkbox" name="domingo" {% if dias and dias.domingo %}checked{% endif %}> Domingo</label>
+      </div>
+
       <div class="modal-actions">
         <button type="button" class="btn-secondary" data-close="modal-edit">Cancelar</button>
         <button type="submit" class="btn-primary">Guardar</button>

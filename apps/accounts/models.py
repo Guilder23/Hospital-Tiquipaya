@@ -118,3 +118,26 @@ class EncargadoAdmision(models.Model):
 
     def __str__(self):
         return f"Encargado Admisión - {self.user.username}"
+
+
+# ------------------------
+# MODELO ECÓGRAFO
+# ------------------------
+class Ecografo(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='ecografo'
+    )
+
+    nro_matricula = models.CharField(max_length=20, blank=True)
+    consultorio = models.CharField(max_length=50, blank=True)
+
+    # Ecografías que el ecógrafo sabe realizar
+    ecografias = models.ManyToManyField('ecografias.Ecografia', related_name='ecografos')
+    
+    turnos = models.ManyToManyField(Turnos)
+    dias_atencion = models.ForeignKey("horarios.DiasAtencion", on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.perfil.nombres} {self.user.perfil.apellido_paterno} (Ecógrafo)"
