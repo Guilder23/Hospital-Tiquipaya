@@ -21,7 +21,7 @@
                 <th>Paciente</th>
                 <th>CI</th>
                 <th>Especialidad</th>
-                <th>Médico</th>
+                <th>Ecógrafo</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Estado</th>
@@ -34,7 +34,7 @@
                 data-paciente="{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}"
                 data-ci="{{ cita.paciente.ci }}"
                 data-especialidad="{{ cita.especialidad.nombre }}"
-                data-medico="{{ cita.medico.user.perfil.nombres }} {{ cita.medico.user.perfil.apellido_paterno }}"
+                data-ecografo="{{ cita.medico.user.perfil.nombres }} {{ cita.medico.user.perfil.apellido_paterno }}"
                 data-fecha="{{ cita.fecha|date:'Y-m-d' }}"
                 data-hora="{{ cita.hora }}"
                 data-estado="{{ cita.estado }}"

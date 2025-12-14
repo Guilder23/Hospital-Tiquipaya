@@ -11,7 +11,7 @@ from apps.citas_ecografia.models import CitaEcografia
 from apps.citas.models import Cita
 from apps.pacientes.models import Paciente
 from apps.especialidades.models import Especialidad
-from apps.accounts.models import Medico
+from apps.accounts.models import Medico, Ecografo
 from apps.horarios.models import DiasAtencion
 
 
@@ -155,11 +155,15 @@ def agendar_cita_ecografia(request):
                 especialidad = cita_consulta.ecografia.especialidad if cita_consulta.ecografia else None
                 comentario_medico = cita_consulta.comentario_ecografia
                 
-                # Obtener médicos disponibles para esa especialidad
-                if especialidad:
-                    medicos_disponibles = Medico.objects.filter(
-                        especialidad=especialidad
-                    )
+                # Obtener ecógrafos asignados a esta ecografía específica
+                if cita_consulta.ecografia:
+                    ecografos = cita_consulta.ecografia.ecografos.all()
+                    # Si no hay ecógrafos asignados a esta ecografía, buscar ecógrafos de esa especialidad
+                    if not ecografos.exists():
+                        ecografos = Ecografo.objects.filter(
+                            ecografias_asignadas__especialidad=cita_consulta.ecografia.especialidad
+                        ).distinct()
+                    medicos_disponibles = ecografos
     
     ctx = {
         'paciente': paciente,
@@ -206,11 +210,19 @@ def buscar_paciente_ecografia(request):
         especialidad_id = cita_consulta.ecografia.especialidad.id if cita_consulta.ecografia else None
         especialidad_nombre = cita_consulta.ecografia.especialidad.nombre if cita_consulta.ecografia else None
         comentario_medico = cita_consulta.comentario_ecografia
-        if especialidad_id:
-            medicos = Medico.objects.filter(especialidad_id=especialidad_id)
+        
+        # Obtener ecógrafos que tienen asignada esta ecografía específica
+        if cita_consulta.ecografia:
+            ecografos = cita_consulta.ecografia.ecografos.all()
+            # Si no hay ecógrafos asignados a esta ecografía, buscar ecógrafos de esa especialidad
+            if not ecografos.exists():
+                ecografos = Ecografo.objects.filter(
+                    ecografias_asignadas__especialidad=cita_consulta.ecografia.especialidad
+                ).distinct()
+            
             medicos_disponibles = [
-                {'id': m.id, 'nombre': f"{m.user.perfil.nombres} {m.user.perfil.apellido_paterno}"}
-                for m in medicos
+                {'id': e.id, 'nombre': f"{e.user.perfil.nombres} {e.user.perfil.apellido_paterno}"}
+                for e in ecografos
             ]
 
     return JsonResponse({
