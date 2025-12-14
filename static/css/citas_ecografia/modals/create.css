@@ -1,15 +1,35 @@
 /* Estilos para modal de crear cita */
 
 #modal-create .modal-dialog {
-    max-width: 600px;
+    max-width: 700px;
 }
 
 #modal-create .modal-body {
     padding: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .step {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+    animation: slideDown 0.3s ease-in-out;
+}
+
+.step:last-child {
+    border-bottom: none;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .step h6 {
@@ -18,6 +38,23 @@
     margin-bottom: 1rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid #007bff;
+    display: flex;
+    align-items: center;
+}
+
+.step h6::before {
+    content: attr(data-step);
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    margin-right: 0.5rem;
+    font-size: 0.85rem;
+    flex-shrink: 0;
 }
 
 .step.d-none {

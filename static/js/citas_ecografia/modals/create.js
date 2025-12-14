@@ -97,6 +97,13 @@ function buscarPaciente() {
         return;
     }
 
+    // Limpiar pasos 3 y 4 si existen datos previos
+    document.getElementById('select-date').value = '';
+    document.getElementById('select-doctor').innerHTML = '<option value="">Seleccione un médico</option>';
+    document.getElementById('selected-hour').value = '';
+    document.getElementById('horarios-container').innerHTML = '';
+    document.getElementById('btn-confirm').classList.add('d-none');
+
     fetch('/citas-ecografia/buscar-paciente/', {
         method: 'POST',
         headers: {
@@ -301,10 +308,21 @@ function agendarCita() {
 }
 
 function showStep(stepNumber) {
-    document.querySelectorAll('.step').forEach(step => {
-        step.classList.add('d-none');
-    });
-    document.getElementById('step-' + stepNumber).classList.remove('d-none');
+    // Mostrar todos los pasos hasta el step actual
+    for (let i = 1; i <= 4; i++) {
+        const step = document.getElementById('step-' + i);
+        if (i <= stepNumber) {
+            step.classList.remove('d-none');
+        } else {
+            step.classList.add('d-none');
+        }
+    }
+    
+    // Scroll al final del modal para ver el paso actual
+    const modalBody = document.querySelector('#modal-create .modal-body');
+    setTimeout(() => {
+        modalBody.scrollTop = modalBody.scrollHeight;
+    }, 100);
 }
 
 function resetCreateForm() {
