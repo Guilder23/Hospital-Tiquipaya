@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const especialidad = box.querySelector('[name="especialidad"]');
                     const matricula = box.querySelector('[name="matricula"]');
-                    const consultorio = box.querySelector('[name="consultorio"]');
+                    const consultorio = box.querySelector('[name="consultorio_medico"]');
 
                     if (especialidad) {
                         const val = row.dataset.especialidadid || "";

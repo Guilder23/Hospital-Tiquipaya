@@ -199,7 +199,7 @@ def editar_usuario(request, pk):
 
                 medico.especialidad_id = request.POST.get("especialidad")
                 medico.nro_matricula = request.POST.get("matricula") or ""
-                medico.consultorio = request.POST.get("consultorio") or ""
+                medico.consultorio = request.POST.get("consultorio_medico") or ""
                 medico.save()
 
                 # Turnos (muchos)
