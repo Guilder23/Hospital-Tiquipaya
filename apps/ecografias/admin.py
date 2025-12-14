@@ -4,14 +4,14 @@ from .models import Ecografia
 
 @admin.register(Ecografia)
 class EcografiaAdmin(admin.ModelAdmin):
-    list_display = ('codigo', 'nombre', 'medico', 'especialidad', 'estado', 'fecha_creacion')
-    list_filter = ('especialidad', 'estado', 'fecha_creacion', 'medico')
-    search_fields = ('codigo', 'nombre', 'medico__user__first_name')
+    list_display = ('codigo', 'nombre', 'ecografo', 'especialidad', 'estado', 'fecha_creacion')
+    list_filter = ('especialidad', 'estado', 'fecha_creacion', 'ecografo')
+    search_fields = ('codigo', 'nombre', 'ecografo__user__first_name')
     readonly_fields = ('codigo', 'fecha_creacion', 'fecha_actualizacion')
     
     fieldsets = (
         ('Información General', {
-            'fields': ('codigo', 'nombre', 'medico', 'especialidad')
+            'fields': ('codigo', 'nombre', 'ecografo', 'especialidad')
         }),
         ('Detalles', {
             'fields': ('descripcion', 'estado')

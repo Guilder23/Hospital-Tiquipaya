@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var errorBox=document.getElementById('edit-error');
   var codigoInput=document.getElementById('edit-codigo');
   var nombreInput=document.getElementById('edit-nombre');
-  var medicoInput=document.getElementById('edit-medico');
+  var ecografoInput=document.getElementById('edit-ecografo');
   var especialidadInput=document.getElementById('edit-especialidad');
   var descripcionInput=document.getElementById('edit-descripcion');
   var estadoInput=document.getElementById('edit-estado');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded',function(){
       currentId=row.getAttribute('data-id');
       codigoInput.value=row.getAttribute('data-codigo');
       nombreInput.value=row.getAttribute('data-nombre');
-      medicoInput.value=row.getAttribute('data-medico_id');
+      ecografoInput.value=row.getAttribute('data-ecografo_id');
       especialidadInput.value=row.getAttribute('data-especialidad_id');
       descripcionInput.value=row.getAttribute('data-descripcion')||'';
       estadoInput.value=row.getAttribute('data-estado');

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var mView=document.getElementById('modal-ver-ecografia');
   var codigoSpan=document.getElementById('view-codigo');
   var nombreSpan=document.getElementById('view-nombre');
-  var medicoSpan=document.getElementById('view-medico');
+  var ecografoSpan=document.getElementById('view-ecografo');
   var especialidadSpan=document.getElementById('view-especialidad');
   var descripcionSpan=document.getElementById('view-descripcion');
   var estadoSpan=document.getElementById('view-estado');
@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded',function(){
       var row=this.closest('tr');
       codigoSpan.textContent=row.getAttribute('data-codigo');
       nombreSpan.textContent=row.getAttribute('data-nombre');
-      var medicoId=row.getAttribute('data-medico_id');
-      var medicoOpt=document.querySelector('#edit-medico option[value="'+medicoId+'"]');
-      medicoSpan.textContent=medicoOpt?medicoOpt.textContent:'N/A';
+      var ecografoId=row.getAttribute('data-ecografo_id');
+      var ecografoOpt=document.querySelector('#edit-ecografo option[value="'+ecografoId+'"]');
+      ecografoSpan.textContent=ecografoOpt?ecografoOpt.textContent:'N/A';
       var especialidadId=row.getAttribute('data-especialidad_id');
       var especialidadOpt=document.querySelector('#edit-especialidad option[value="'+especialidadId+'"]');
       especialidadSpan.textContent=especialidadOpt?especialidadOpt.textContent:'N/A';

@@ -10,11 +10,11 @@
         <h4>Información de la Ecografía</h4>
         <div class="form-grid">
           <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input type="text" name="nombre" required></div>
-          <div class="form-row"><label>Médico</label>
-            <select name="medico" required>
-              <option value="">-- Seleccionar médico --</option>
-              {% for medico in medicos %}
-              <option value="{{ medico.id }}">{{ medico.user.perfil.nombres }} {{ medico.user.perfil.apellido_paterno }}</option>
+          <div class="form-row"><label>Ecógrafo</label>
+            <select name="ecografo" required>
+              <option value="">-- Seleccionar ecógrafo --</option>
+              {% for ecografo in ecografos %}
+              <option value="{{ ecografo.id }}">{{ ecografo.user.perfil.nombres }} {{ ecografo.user.perfil.apellido_paterno }}</option>
               {% endfor %}
             </select>
           </div>

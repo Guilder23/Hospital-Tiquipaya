@@ -8,7 +8,7 @@ class Ecografia(models.Model):
         ('INACTIVA', 'Inactiva'),
     )
 
-    medico = models.ForeignKey('accounts.Medico', on_delete=models.CASCADE, related_name='ecografias')
+    ecografo = models.ForeignKey('accounts.Ecografo', on_delete=models.CASCADE, related_name='ecografias_asignadas')
     especialidad = models.ForeignKey('especialidades.Especialidad', on_delete=models.CASCADE)
     
     nombre = models.CharField(max_length=150, default="Ecografía")

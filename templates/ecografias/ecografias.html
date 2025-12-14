@@ -26,10 +26,10 @@
     </thead>
     <tbody>
       {% for eco in ecografias %}
-      <tr data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" data-nombre="{{ eco.nombre|escapejs }}" data-medico_id="{{ eco.medico.id }}" data-especialidad_id="{{ eco.especialidad.id }}" data-descripcion="{{ eco.descripcion|escapejs }}" data-estado="{{ eco.estado }}" data-fecha_creacion="{{ eco.fecha_creacion }}">
+      <tr data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" data-nombre="{{ eco.nombre|escapejs }}" data-ecografo_id="{{ eco.ecografo.id }}" data-especialidad_id="{{ eco.especialidad.id }}" data-descripcion="{{ eco.descripcion|escapejs }}" data-estado="{{ eco.estado }}" data-fecha_creacion="{{ eco.fecha_creacion }}">
         <td><strong>{{ eco.codigo }}</strong></td>
         <td>{{ eco.nombre }}</td>
-        <td>{{ eco.medico.user.perfil.nombres }} {{ eco.medico.user.perfil.apellido_paterno }}</td>
+        <td>{{ eco.ecografo.user.perfil.nombres }} {{ eco.ecografo.user.perfil.apellido_paterno }}</td>
         <td>{{ eco.especialidad.nombre }}</td>
         <td>
           {% if eco.estado == 'ACTIVA' %}

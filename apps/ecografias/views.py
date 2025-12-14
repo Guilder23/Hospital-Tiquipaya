@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect, JsonResponse
 from django import forms
-from apps.accounts.models import Perfil, Medico
+from apps.accounts.models import Perfil, Ecografo
 from apps.especialidades.models import Especialidad
 from .models import Ecografia
 
@@ -23,7 +23,7 @@ def _es_admin(user):
 class EcografiaBaseForm(forms.ModelForm):
     class Meta:
         model = Ecografia
-        fields = ['nombre', 'medico', 'especialidad', 'descripcion']
+        fields = ['nombre', 'ecografo', 'especialidad', 'descripcion']
 
 
 class EcografiaCreateForm(EcografiaBaseForm):
@@ -33,7 +33,7 @@ class EcografiaCreateForm(EcografiaBaseForm):
 class EcografiaUpdateForm(forms.ModelForm):
     class Meta:
         model = Ecografia
-        fields = ['nombre', 'medico', 'especialidad', 'descripcion', 'estado']
+        fields = ['nombre', 'ecografo', 'especialidad', 'descripcion', 'estado']
 
 
 class EcografiaListView(LoginRequiredMixin, ListView):
@@ -44,7 +44,7 @@ class EcografiaListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['puede_admin'] = _es_admin(self.request.user)
-        ctx['medicos'] = Medico.objects.all()
+        ctx['ecografos'] = Ecografo.objects.all()
         ctx['especialidades'] = Especialidad.objects.all()
         return ctx
 
