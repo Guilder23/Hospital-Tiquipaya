@@ -62,29 +62,92 @@
 }
 
 /* Calendario de fechas */
+.calendario-container {
+    margin-bottom: 1rem;
+}
+
+.calendario-mes {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px solid #007bff;
+}
+
+.calendario-mes:last-child {
+    border-bottom: none;
+}
+
+.calendario-mes-titulo {
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    text-transform: capitalize;
+}
+
+.calendario-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-align: center;
+    color: #007bff;
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
 .calendario-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 0.5rem;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.75rem;
     margin-bottom: 1rem;
 }
 
 .fecha-btn {
-    padding: 0.75rem;
+    padding: 0.5rem;
     text-align: center;
-    border: 2px solid #dee2e6;
-    border-radius: 0.375rem;
-    background-color: #f8f9fa;
-    color: #333;
+    border: 2px solid #20c997;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    color: #007bff;
     cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.85rem;
-    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(32, 201, 151, 0.2);
 }
 
-.fecha-btn:hover:not(:disabled) {
-    background-color: #e9ecef;
-    border-color: #007bff;
+.fecha-btn:disabled {
+    background-color: #f8f9fa;
+    color: #ccc;
+    border-color: #dee2e6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.fecha-btn.fecha-vacia {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+    box-shadow: none;
+}
+
+.fecha-btn.fecha-vacia:hover {
+    background-color: transparent;
+    border: none;
+}
+
+.fecha-btn:hover:not(:disabled):not(.fecha-vacia) {
+    background-color: #20c997;
+    color: #ffffff;
+    border-color: #20c997;
+    box-shadow: 0 4px 8px rgba(32, 201, 151, 0.4);
+    transform: translateY(-2px);
 }
 
 .fecha-btn.selected {

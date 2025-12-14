@@ -409,32 +409,97 @@ function generarCalendario(ecografo) {
         const fechaFin = new Date(ecografo.contrato_fin);
         const diasTrabajo = ecografo.dias_trabajo_numeros; // [0=lunes, 1=martes, etc]
         
-        let fechaActual = new Date();
+        const contenedorGral = document.createElement('div');
+        contenedorGral.className = 'calendario-container';
+        
+        // Crear encabezados de días (constantes para todos los meses)
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'calendario-header';
+        const diasNombre = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        diasNombre.forEach(dia => {
+            const headerDay = document.createElement('div');
+            headerDay.textContent = dia;
+            headerDiv.appendChild(headerDay);
+        });
+        contenedorGral.appendChild(headerDiv);
+        
+        // Iterar por meses
+        let fechaActual = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), 1);
         
         while (fechaActual <= fechaFin) {
-            // Obtener el día de la semana (getDay() retorna 0-6, donde 0=domingo, 1=lunes, etc)
-            // Pero el backend usa 0=lunes, 6=domingo, así que necesito convertir
-            let diaSemana = fechaActual.getDay();
-            // Convertir: 0(dom) -> 6, 1(lun) -> 0, 2(mar) -> 1, etc
-            diaSemana = (diaSemana + 6) % 7;
+            const mesMoment = new Date(fechaActual);
             
-            const esHabilitado = diasTrabajo.includes(diaSemana);
+            // Crear contenedor del mes
+            const mesDiv = document.createElement('div');
+            mesDiv.className = 'calendario-mes';
             
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'fecha-btn';
-            btn.textContent = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1);
-            btn.dataset.fecha = fechaActual.toISOString().split('T')[0];
+            // Título del mes
+            const mesTitle = document.createElement('div');
+            mesTitle.className = 'calendario-mes-titulo';
+            const opciones = { month: 'long', year: 'numeric' };
+            mesTitle.textContent = mesMoment.toLocaleDateString('es-ES', opciones);
+            mesDiv.appendChild(mesTitle);
             
-            if (!esHabilitado || fechaActual < new Date()) {
-                btn.disabled = true;
-            } else {
-                btn.addEventListener('click', () => seleccionarFecha(btn));
+            // Grid del mes
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'calendario-grid';
+            
+            // Encontrar el primer lunes del mes
+            let primerDia = new Date(mesMoment.getFullYear(), mesMoment.getMonth(), 1);
+            let diaSemana = (primerDia.getDay() + 6) % 7; // 0=lunes
+            
+            // Agregar celdas vacías al inicio
+            for (let i = 0; i < diaSemana; i++) {
+                const celda = document.createElement('div');
+                celda.className = 'fecha-btn fecha-vacia';
+                gridDiv.appendChild(celda);
             }
             
-            container.appendChild(btn);
-            fechaActual.setDate(fechaActual.getDate() + 1);
+            // Agregar días del mes
+            const ultimoDia = new Date(mesMoment.getFullYear(), mesMoment.getMonth() + 1, 0).getDate();
+            
+            for (let dia = 1; dia <= ultimoDia; dia++) {
+                const fecha = new Date(mesMoment.getFullYear(), mesMoment.getMonth(), dia);
+                
+                // Verificar si está en el rango del contrato
+                const estaEnRango = fecha >= fechaInicio && fecha <= fechaFin;
+                
+                // Obtener día de la semana normalizado
+                let diaSemanaNormalizado = (fecha.getDay() + 6) % 7; // 0=lunes
+                const esHabilitado = diasTrabajo.includes(diaSemanaNormalizado);
+                
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'fecha-btn';
+                btn.textContent = dia;
+                btn.dataset.fecha = fecha.toISOString().split('T')[0];
+                
+                // Deshabilitar si no está en rango, no es día habilitado, o es fecha pasada
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+                
+                if (!estaEnRango || !esHabilitado || fecha < hoy) {
+                    btn.disabled = true;
+                } else {
+                    btn.addEventListener('click', () => seleccionarFecha(btn));
+                }
+                
+                gridDiv.appendChild(btn);
+            }
+            
+            mesDiv.appendChild(gridDiv);
+            contenedorGral.appendChild(mesDiv);
+            
+            // Pasar al siguiente mes
+            fechaActual.setMonth(fechaActual.getMonth() + 1);
+            
+            // Parar si ya pasamos el mes de fin
+            if (fechaActual > fechaFin) {
+                break;
+            }
         }
+        
+        container.appendChild(contenedorGral);
     } catch (error) {
         console.error('Error generando calendario:', error);
         container.innerHTML = '<p class="text-danger">Error al generar el calendario</p>';
