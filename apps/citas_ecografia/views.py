@@ -152,13 +152,14 @@ def agendar_cita_ecografia(request):
             if not cita_consulta:
                 messages.warning(request, 'Este paciente no está habilitado para ecografía')
             else:
-                especialidad = cita_consulta.especialidad_ecografia
+                especialidad = cita_consulta.ecografia.especialidad if cita_consulta.ecografia else None
                 comentario_medico = cita_consulta.comentario_ecografia
                 
                 # Obtener médicos disponibles para esa especialidad
-                medicos_disponibles = Medico.objects.filter(
-                    especialidad=especialidad
-                )
+                if especialidad:
+                    medicos_disponibles = Medico.objects.filter(
+                        especialidad=especialidad
+                    )
     
     ctx = {
         'paciente': paciente,
@@ -202,8 +203,8 @@ def buscar_paciente_ecografia(request):
 
     if cita_consulta:
         habilitado = True
-        especialidad_id = cita_consulta.especialidad_ecografia.id if cita_consulta.especialidad_ecografia else None
-        especialidad_nombre = cita_consulta.especialidad_ecografia.nombre if cita_consulta.especialidad_ecografia else None
+        especialidad_id = cita_consulta.ecografia.especialidad.id if cita_consulta.ecografia else None
+        especialidad_nombre = cita_consulta.ecografia.especialidad.nombre if cita_consulta.ecografia else None
         comentario_medico = cita_consulta.comentario_ecografia
         if especialidad_id:
             medicos = Medico.objects.filter(especialidad_id=especialidad_id)
@@ -347,7 +348,7 @@ def crear_cita_ecografia(request):
         cita = CitaEcografia.objects.create(
             paciente=paciente,
             medico=medico,
-            especialidad=cita_consulta.especialidad_ecografia,
+            especialidad=cita_consulta.ecografia.especialidad,
             fecha=fecha,
             hora=hora,
             codigo=codigo,
