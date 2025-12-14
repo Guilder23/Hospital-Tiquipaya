@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (check) check.checked = true;
                     });
 
-                    ['lunes','martes','miercoles','jueves','viernes'].forEach(dia => {
+                    ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'].forEach(dia => {
                         const check = box.querySelector(`[name="${dia}"]`);
                         if (check) {
                             check.checked = row.dataset[dia] === '1';
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (check) check.checked = true;
                     });
 
-                    ['lunes','martes','miercoles','jueves','viernes'].forEach(dia => {
+                    ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'].forEach(dia => {
                         const check = box.querySelector(`[name="${dia}"]`);
                         if (check) {
                             check.checked = row.dataset[dia] === '1';
