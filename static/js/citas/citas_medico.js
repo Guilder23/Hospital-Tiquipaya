@@ -130,32 +130,32 @@ function procesar_ecografia(citaId, habilitar) {
     
     // Si se habilita, obtener datos del formulario
     if (habilitar === 'si') {
-        const especialidadSelect = document.getElementById('ecoEspecialidad');
+        const ecografiaSelect = document.getElementById('ecoEcografia');
         const comentarioTextarea = document.getElementById('ecoComentario');
         
         console.log('Elementos encontrados:', {
-            especialidadSelect: !!especialidadSelect,
+            ecografiaSelect: !!ecografiaSelect,
             comentarioTextarea: !!comentarioTextarea
         });
         
-        if (!especialidadSelect || !comentarioTextarea) {
+        if (!ecografiaSelect || !comentarioTextarea) {
             showAlert('danger', 'Error: No se encontraron los campos del formulario');
             console.error('No se encontraron los elementos del formulario');
             return;
         }
         
-        const especialidadId = especialidadSelect.value;
+        const ecografiaId = ecografiaSelect.value;
         const comentario = comentarioTextarea.value;
         
         console.log('Valores capturados del formulario:', {
-            especialidadId: especialidadId,
+            ecografiaId: ecografiaId,
             comentario: comentario,
-            especialidadIdType: typeof especialidadId,
+            ecografiaIdType: typeof ecografiaId,
             comentarioType: typeof comentario
         });
         
-        if (!especialidadId || especialidadId === '') {
-            showAlert('danger', 'Por favor selecciona una especialidad');
+        if (!ecografiaId || ecografiaId === '') {
+            showAlert('danger', 'Por favor selecciona una ecografía');
             return;
         }
         
@@ -164,7 +164,7 @@ function procesar_ecografia(citaId, habilitar) {
             return;
         }
         
-        formData.append('especialidad', especialidadId);
+        formData.append('ecografia', ecografiaId);
         formData.append('comentario', comentario);
         
         console.log('FormData preparado:');

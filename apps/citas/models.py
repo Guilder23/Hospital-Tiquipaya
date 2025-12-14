@@ -39,7 +39,7 @@ class Cita(models.Model):
     
     # Campos para ecografía
     requiere_ecografia = models.BooleanField(default=False)
-    especialidad_ecografia = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_ecografia')
+    ecografia = models.ForeignKey('ecografias.Ecografia', on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_solicitadas')
     comentario_ecografia = models.TextField(null=True, blank=True)
     
     creada_en = models.DateTimeField(auto_now_add=True)

@@ -138,11 +138,11 @@
                 <!-- Formulario para ecografía -->
                 <form id="ecoForm">
                     <div class="mb-3">
-                        <label for="ecoEspecialidad" class="form-label"><strong>Especialidad para Ecografía</strong></label>
-                        <select class="form-select" id="ecoEspecialidad" name="especialidad">
-                            <option value="">-- Seleccionar especialidad --</option>
-                            {% for esp in especialidades %}
-                                <option value="{{ esp.id }}">{{ esp.nombre }}</option>
+                        <label for="ecoEcografia" class="form-label"><strong>Ecografía a Realizar</strong></label>
+                        <select class="form-select" id="ecoEcografia" name="ecografia">
+                            <option value="">-- Seleccionar ecografía --</option>
+                            {% for eco in ecografias %}
+                                <option value="{{ eco.id }}">{{ eco.nombre }} ({{ eco.codigo }})</option>
                             {% endfor %}
                         </select>
                     </div>
