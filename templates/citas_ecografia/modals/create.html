@@ -32,25 +32,36 @@
                     <button type="button" class="btn btn-secondary" id="btn-back-search">Atrás</button>
                 </div>
 
-                <!-- Paso 3: Seleccionar Fecha y Ecógrafo -->
+                <!-- Paso 3: Seleccionar Ecógrafo y Fecha -->
                 <div class="step d-none" id="step-3">
-                    <h6 data-step="3">Paso 3: Seleccionar Fecha y Ecógrafo</h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label for="select-date">Fecha:</label>
-                                <input type="date" class="form-control" id="select-date">
-                            </div>
+                    <h6 data-step="3">Paso 3: Seleccionar Ecógrafo y Fecha</h6>
+                    
+                    <!-- Paso 3a: Seleccionar Ecógrafo -->
+                    <div id="step-3a">
+                        <div class="form-group mb-3">
+                            <label for="select-doctor">Ecógrafo:</label>
+                            <select class="form-control" id="select-doctor">
+                                <option value="">Seleccione un ecógrafo</option>
+                            </select>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label for="select-doctor">Ecógrafo:</label>
-                                <select class="form-control" id="select-doctor">
-                                    <option value="">Seleccione un ecógrafo</option>
-                                </select>
+                    </div>
+                    
+                    <!-- Paso 3b: Información del contrato del ecógrafo -->
+                    <div id="step-3b" class="d-none">
+                        <div class="alert alert-info mb-3">
+                            <strong>Información del Ecógrafo:</strong><br>
+                            <span id="eco-contrato-info"></span>
+                        </div>
+                        
+                        <!-- Calendario de días disponibles -->
+                        <div class="form-group mb-3">
+                            <label>Fechas Disponibles:</label>
+                            <div id="calendario-container" class="calendario-grid">
+                                <!-- Calendario generado por JS -->
                             </div>
                         </div>
                     </div>
+                    
                     <button type="button" class="btn btn-secondary" id="btn-back-patient">Atrás</button>
                 </div>
 
@@ -66,6 +77,7 @@
                         <!-- Horarios disponibles -->
                     </div>
                     <input type="hidden" id="selected-hour">
+                    <input type="hidden" id="selected-date">
                     <button type="button" class="btn btn-secondary" id="btn-back-doctor">Atrás</button>
                 </div>
             </div>

@@ -217,7 +217,7 @@ def buscar_paciente_ecografia(request):
             # Si no hay ecógrafos asignados a esta ecografía, buscar ecógrafos de esa especialidad
             if not ecografos.exists():
                 ecografos = Ecografo.objects.filter(
-                    ecografias_asignadas__especialidad=cita_consulta.ecografia.especialidad
+                    ecografias__especialidad=cita_consulta.ecografia.especialidad
                 ).distinct()
             
             medicos_disponibles = [
@@ -333,12 +333,12 @@ def crear_cita_ecografia(request):
     
     try:
         paciente_id = request.POST.get('paciente_id')
-        medico_id = request.POST.get('medico_id')
+        ecografo_id = request.POST.get('ecografo_id')
         fecha_str = request.POST.get('fecha')
         hora_str = request.POST.get('hora')
         
         paciente = Paciente.objects.get(id=paciente_id)
-        medico = Medico.objects.get(id=medico_id)
+        ecografo = Ecografo.objects.get(id=ecografo_id)
         fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
         hora = datetime.strptime(hora_str, '%H:%M').time()
         
@@ -359,7 +359,7 @@ def crear_cita_ecografia(request):
         
         cita = CitaEcografia.objects.create(
             paciente=paciente,
-            medico=medico,
+            medico=ecografo,
             especialidad=cita_consulta.ecografia.especialidad,
             fecha=fecha,
             hora=hora,

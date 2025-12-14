@@ -1,7 +1,7 @@
 from django.db import models
 from apps.pacientes.models import Paciente
 from apps.especialidades.models import Especialidad
-from apps.accounts.models import Medico
+from apps.accounts.models import Ecografo
 from django.utils import timezone
 
 class CitaEcografia(models.Model):
@@ -25,8 +25,8 @@ class CitaEcografia(models.Model):
     # Referencia a la cita original que generó esta ecografía
     cita_consulta = models.ForeignKey('citas.Cita', on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_ecografia_generadas')
     
-    # Médico que realiza la ecografía
-    medico = models.ForeignKey(Medico, on_delete=models.CASCADE, related_name='citas_ecografia')
+    # Ecógrafo que realiza la ecografía
+    medico = models.ForeignKey(Ecografo, on_delete=models.CASCADE, related_name='citas_ecografia')
     
     # Información de fecha y hora
     fecha = models.DateField()

@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnBackPatient = document.getElementById('btn-back-patient');
     const btnBackDoctor = document.getElementById('btn-back-doctor');
     const btnConfirm = document.getElementById('btn-confirm');
-    const selectDate = document.getElementById('select-date');
     const selectDoctor = document.getElementById('select-doctor');
     const searchInput = document.getElementById('search-input');
     const modalCreate = new bootstrap.Modal(document.getElementById('modal-create'));
@@ -63,14 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Cambio de fecha
-    if (selectDate) {
-        selectDate.addEventListener('change', cargarMedicosDisponibles);
-    }
-
-    // Cambio de médico
+    // Cambio de médico/ecógrafo
     if (selectDoctor) {
-        selectDoctor.addEventListener('change', cargarHorarios);
+        selectDoctor.addEventListener('change', seleccionarEcografo);
     }
 
     // Volver a médico
@@ -98,10 +92,12 @@ function buscarPaciente() {
     }
 
     // Limpiar pasos 3 y 4 si existen datos previos
-    document.getElementById('select-date').value = '';
-    document.getElementById('select-doctor').innerHTML = '<option value="">Seleccione un médico</option>';
+    document.getElementById('select-doctor').innerHTML = '<option value="">Seleccione un ecógrafo</option>';
     document.getElementById('selected-hour').value = '';
+    document.getElementById('selected-date').value = '';
     document.getElementById('horarios-container').innerHTML = '';
+    document.getElementById('calendario-container').innerHTML = '';
+    document.getElementById('step-3b').classList.add('d-none');
     document.getElementById('btn-confirm').classList.add('d-none');
 
     fetch('/citas-ecografia/buscar-paciente/', {
@@ -278,7 +274,7 @@ function agendarCita() {
 
     const formData = new FormData();
     formData.append('paciente_id', citaEcografiaData.paciente_id);
-    formData.append('medico_id', citaEcografiaData.medico_id);
+    formData.append('ecografo_id', citaEcografiaData.ecografo_id);
     formData.append('fecha', citaEcografiaData.fecha);
     formData.append('hora', hora);
 
@@ -327,9 +323,12 @@ function showStep(stepNumber) {
 
 function resetCreateForm() {
     document.getElementById('search-input').value = '';
-    document.getElementById('select-date').value = '';
-    document.getElementById('select-doctor').innerHTML = '<option value="">Seleccione un médico</option>';
+    document.getElementById('select-doctor').innerHTML = '<option value="">Seleccione un ecógrafo</option>';
     document.getElementById('selected-hour').value = '';
+    document.getElementById('selected-date').value = '';
+    document.getElementById('horarios-container').innerHTML = '';
+    document.getElementById('calendario-container').innerHTML = '';
+    document.getElementById('step-3b').classList.add('d-none');
     document.getElementById('btn-confirm').classList.add('d-none');
     document.getElementById('create-alert').classList.add('d-none');
     showStep(1);
@@ -339,4 +338,200 @@ function showAlert(elementId, message, type) {
     const alert = document.getElementById(elementId);
     alert.className = `alert alert-${type} d-block`;
     alert.textContent = message;
+}
+
+function seleccionarEcografo() {
+    const selectDoctor = document.getElementById('select-doctor');
+    const ecoId = selectDoctor.value;
+    
+    if (!ecoId) {
+        document.getElementById('step-3b').classList.add('d-none');
+        return;
+    }
+    
+    // Obtener información del ecógrafo (contrato, días de atención, turnos)
+    fetch(`/citas-ecografia/api/ecografo/${ecoId}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data || data.error) {
+            showAlert('create-alert', data.error || 'Error al cargar información del ecógrafo', 'danger');
+            return;
+        }
+
+        citaEcografiaData.ecografo_id = ecoId;
+        citaEcografiaData.ecografo = data;
+        
+        // Validar que exista contrato
+        if (!data.contrato_inicio || !data.contrato_fin) {
+            showAlert('create-alert', 'El ecógrafo no tiene un contrato asignado', 'warning');
+            return;
+        }
+
+        // Mostrar información del contrato
+        const contratoInfo = document.getElementById('eco-contrato-info');
+        const fechaInicio = new Date(data.contrato_inicio).toLocaleDateString('es-ES');
+        const fechaFin = new Date(data.contrato_fin).toLocaleDateString('es-ES');
+        contratoInfo.innerHTML = `
+            <strong>${data.nombre}</strong><br>
+            Contrato: ${fechaInicio} a ${fechaFin}<br>
+            Días: ${data.dias_trabajo.join(', ')}
+        `;
+        
+        // Generar calendario
+        generarCalendario(data);
+        
+        // Mostrar sección 3b
+        document.getElementById('step-3b').classList.remove('d-none');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('create-alert', 'Error al cargar información del ecógrafo', 'danger');
+    });
+}
+
+function generarCalendario(ecografo) {
+    const container = document.getElementById('calendario-container');
+    container.innerHTML = '';
+    
+    if (!ecografo.contrato_inicio || !ecografo.contrato_fin) {
+        container.innerHTML = '<p class="text-danger">No hay contrato disponible para este ecógrafo</p>';
+        return;
+    }
+    
+    try {
+        const fechaInicio = new Date(ecografo.contrato_inicio);
+        const fechaFin = new Date(ecografo.contrato_fin);
+        const diasTrabajo = ecografo.dias_trabajo_numeros; // [0=lunes, 1=martes, etc]
+        
+        let fechaActual = new Date();
+        
+        while (fechaActual <= fechaFin) {
+            // Obtener el día de la semana (getDay() retorna 0-6, donde 0=domingo, 1=lunes, etc)
+            // Pero el backend usa 0=lunes, 6=domingo, así que necesito convertir
+            let diaSemana = fechaActual.getDay();
+            // Convertir: 0(dom) -> 6, 1(lun) -> 0, 2(mar) -> 1, etc
+            diaSemana = (diaSemana + 6) % 7;
+            
+            const esHabilitado = diasTrabajo.includes(diaSemana);
+            
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'fecha-btn';
+            btn.textContent = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1);
+            btn.dataset.fecha = fechaActual.toISOString().split('T')[0];
+            
+            if (!esHabilitado || fechaActual < new Date()) {
+                btn.disabled = true;
+            } else {
+                btn.addEventListener('click', () => seleccionarFecha(btn));
+            }
+            
+            container.appendChild(btn);
+            fechaActual.setDate(fechaActual.getDate() + 1);
+        }
+    } catch (error) {
+        console.error('Error generando calendario:', error);
+        container.innerHTML = '<p class="text-danger">Error al generar el calendario</p>';
+    }
+}
+
+function seleccionarFecha(btn) {
+    // Remover selección anterior
+    document.querySelectorAll('#calendario-container .fecha-btn.selected').forEach(b => {
+        b.classList.remove('selected');
+    });
+    
+    // Marcar como seleccionado
+    btn.classList.add('selected');
+    const fecha = btn.dataset.fecha;
+    document.getElementById('selected-date').value = fecha;
+    
+    // Cargar horarios disponibles para ese día
+    cargarHorariosDelDia(fecha);
+}
+
+function cargarHorariosDelDia(fecha) {
+    // Obtener turnos del ecógrafo para ese día
+    const ecografo = citaEcografiaData.ecografo;
+    
+    // Los turnos del ecógrafo son los mismos para todos sus días de atención
+    const turnosDelDia = ecografo.turnos;
+    
+    if (!turnosDelDia || turnosDelDia.length === 0) {
+        showAlert('create-alert', 'No hay turnos disponibles para este ecógrafo', 'warning');
+        return;
+    }
+    
+    // Mostrar paso 4
+    showStep(4);
+    
+    // Generar horarios
+    generarHorarios(turnosDelDia, fecha);
+}
+
+function generarHorarios(turnos, fecha) {
+    const container = document.getElementById('horarios-container');
+    container.innerHTML = '';
+    
+    if (!turnos || turnos.length === 0) {
+        container.innerHTML = '<p class="text-warning">No hay turnos disponibles</p>';
+        return;
+    }
+    
+    turnos.forEach(turno => {
+        const horaInicio = turno.hora_ini;
+        const horaFin = turno.hora_fin;
+        
+        // Convertir strings HH:MM a minutos
+        const [hiHora, hiMin] = horaInicio.split(':');
+        const [hfHora, hfMin] = horaFin.split(':');
+        
+        let minutoInicio = parseInt(hiHora) * 60 + parseInt(hiMin);
+        let minutoFin = parseInt(hfHora) * 60 + parseInt(hfMin);
+        
+        // Generar slots de 30 minutos
+        while (minutoInicio < minutoFin) {
+            const horas = Math.floor(minutoInicio / 60);
+            const minutos = minutoInicio % 60;
+            const horaSlot = `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+            
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'horario-btn horario-free';
+            btn.textContent = horaSlot;
+            btn.dataset.hora = horaSlot;
+            btn.dataset.turnoId = turno.id;
+            btn.addEventListener('click', () => seleccionarHora(btn, fecha, horaSlot));
+            
+            container.appendChild(btn);
+            
+            // Incrementar 30 minutos
+            minutoInicio += 30;
+        }
+    });
+}
+
+function seleccionarHora(btn, fecha, horaSlot) {
+    // Remover selección anterior
+    document.querySelectorAll('#horarios-container .horario-btn.selected').forEach(b => {
+        b.classList.remove('selected');
+    });
+    
+    // Marcar como seleccionado
+    btn.classList.add('selected');
+    document.getElementById('selected-hour').value = horaSlot;
+    document.getElementById('selected-date').value = fecha;
+    
+    // Guardar información en el objeto global
+    citaEcografiaData.fecha = fecha;
+    citaEcografiaData.hora = horaSlot;
+    
+    // Mostrar botón de confirmación
+    document.getElementById('btn-confirm').classList.remove('d-none');
 }
