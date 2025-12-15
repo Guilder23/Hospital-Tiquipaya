@@ -201,7 +201,26 @@
 
     function marcarEnAtencion(citaId) {
         if (confirm('¿Marcar esta cita como "En Atención"?')) {
-            alert('Funcionalidad en desarrollo. ID Cita: ' + citaId);
+            const formData = new FormData();
+            formData.append('cita_id', citaId);
+
+            fetch('/citas-ecografia/mis-citas/' + citaId + '/atender/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert(data.mensaje);
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
     }
 
@@ -210,7 +229,7 @@
     }
 
     function verDetalles(citaId) {
-        alert('Funcionalidad en desarrollo. ID Cita: ' + citaId);
+        window.location.href = '/citas-ecografia/mis-citas/' + citaId + '/detalle/';
     }
 </script>
 

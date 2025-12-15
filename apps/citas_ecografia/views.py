@@ -145,6 +145,107 @@ def mis_citas_ecografia(request):
 
 
 @login_required
+@require_POST
+def atender_cita_ecografia(request, cita_id):
+    """Marcar una cita como en atención y registrar el inicio"""
+    try:
+        ecografo = request.user.ecografo
+    except Exception:
+        return JsonResponse({
+            'ok': False,
+            'error': 'No tienes permiso para acceder a esta funcionalidad'
+        }, status=403)
+    
+    try:
+        cita = CitaEcografia.objects.get(id=cita_id, medico=ecografo)
+        
+        # Cambiar estado a EN_ATENCION
+        cita.estado_atencion = 'EN_ATENCION'
+        cita.tiempo_inicio_atencion = timezone.now()
+        cita.save()
+        
+        return JsonResponse({
+            'ok': True,
+            'mensaje': 'Cita marcada como "En Atención"',
+            'cita_id': cita.id
+        })
+    
+    except CitaEcografia.DoesNotExist:
+        return JsonResponse({
+            'ok': False,
+            'error': 'Cita no encontrada o no pertenece a ti'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'ok': False,
+            'error': str(e)
+        }, status=500)
+
+
+@login_required
+def ver_detalle_cita_ecografia(request, cita_id):
+    """Ver detalles completos de una cita de ecografía"""
+    try:
+        ecografo = request.user.ecografo
+    except Exception:
+        messages.error(request, 'No tienes permiso para acceder')
+        return redirect('home')
+    
+    try:
+        cita = CitaEcografia.objects.get(id=cita_id, medico=ecografo)
+    except CitaEcografia.DoesNotExist:
+        messages.error(request, 'Cita no encontrada')
+        return redirect('citas_ecografia:mis_citas')
+    
+    ctx = {
+        'cita': cita,
+        'ecografo': ecografo,
+    }
+    return render(request, 'citas_ecografia/detalle_cita.html', ctx)
+
+
+@login_required
+@require_POST
+def guardar_resultado_cita(request, cita_id):
+    """Guardar resultado de la ecografía y marcar como realizada"""
+    try:
+        ecografo = request.user.ecografo
+    except Exception:
+        return JsonResponse({
+            'ok': False,
+            'error': 'No tienes permiso'
+        }, status=403)
+    
+    try:
+        cita = CitaEcografia.objects.get(id=cita_id, medico=ecografo)
+        
+        resultado = request.POST.get('resultado_ecografia', '')
+        
+        # Actualizar resultado y estado
+        cita.resultado_ecografia = resultado
+        cita.estado = 'REALIZADA'
+        cita.estado_atencion = 'ATENDIDO'
+        cita.tiempo_fin_atencion = timezone.now()
+        cita.save()
+        
+        return JsonResponse({
+            'ok': True,
+            'mensaje': 'Resultado guardado. Cita marcada como realizada'
+        })
+    
+    except CitaEcografia.DoesNotExist:
+        return JsonResponse({
+            'ok': False,
+            'error': 'Cita no encontrada'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'ok': False,
+            'error': str(e)
+        }, status=500)
+
+
+@login_required
 def agendar_cita_ecografia(request):
     """Vista para agendar nueva cita de ecografía"""
     # Permitir Admisión y Encargado de Admisión

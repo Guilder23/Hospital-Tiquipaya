@@ -8,6 +8,9 @@ urlpatterns = [
     path('', views.citas_ecografia_list, name='list'),
     # Esto le aparece al ecógrafo de las citas que tiene que atender (mis-citas)
     path('mis-citas/', views.mis_citas_ecografia, name='mis_citas'),
+    path('mis-citas/<int:cita_id>/detalle/', views.ver_detalle_cita_ecografia, name='detalle_cita'),
+    path('mis-citas/<int:cita_id>/atender/', views.atender_cita_ecografia, name='atender_cita'),
+    path('mis-citas/<int:cita_id>/guardar-resultado/', views.guardar_resultado_cita, name='guardar_resultado'),
     path('agendar/', views.agendar_cita_ecografia, name='agendar'),
     path('buscar-paciente/', views.buscar_paciente_ecografia, name='buscar_paciente'),
     path('obtener-horarios/', views.obtener_horarios_medico, name='obtener_horarios'),

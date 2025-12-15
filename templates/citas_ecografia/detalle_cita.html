@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/citas_ecografia/detalle_cita.css">
+{% endblock %}
+
+{% block content %}
+
+{% csrf_token %}
+<div class="detalle-container">
+    <!-- Botón Volver -->
+    <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn-volver">Volver a Mis Citas</a>
+
+    <!-- Card Detalle -->
+    <div class="card detalle-card">
+        <div class="detalle-header">
+            <h1>Detalle de Cita de Ecografía</h1>
+            <span class="estado-badge {% if cita.estado == 'REALIZADA' %}realizada{% elif cita.estado_atencion == 'EN_ATENCION' %}en-atencion{% else %}programada{% endif %}">
+                {{ cita.get_estado_display }}
+            </span>
+        </div>
+
+        <!-- Información del Paciente -->
+        <div class="seccion">
+            <h2 class="seccion-titulo">Información del Paciente</h2>
+            <div class="info-grid">
+                <div class="info-bloque">
+                    <label>Nombre Completo</label>
+                    <div class="info-valor">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>CI</label>
+                    <div class="info-valor">{{ cita.paciente.ci }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Edad</label>
+                    <div class="info-valor">{{ cita.paciente.get_edad }} años</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Sexo</label>
+                    <div class="info-valor">{{ cita.paciente.get_sexo_display }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Teléfono</label>
+                    <div class="info-valor">{{ cita.paciente.celular }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Dirección</label>
+                    <div class="info-valor">{{ cita.paciente.direccion|default:"No registrada" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información de la Cita -->
+        <div class="seccion">
+            <h2 class="seccion-titulo">Información de la Cita</h2>
+            <div class="info-grid">
+                <div class="info-bloque">
+                    <label>Fecha</label>
+                    <div class="info-valor">{{ cita.fecha|date:"d/m/Y" }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Hora</label>
+                    <div class="info-valor">{{ cita.hora|time:"H:i" }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Especialidad</label>
+                    <div class="info-valor">{{ cita.especialidad.nombre }}</div>
+                </div>
+                <div class="info-bloque">
+                    <label>Código de Cita</label>
+                    <div class="info-valor">{{ cita.codigo }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comentario del Médico -->
+        {% if cita.comentario_medico %}
+        <div class="seccion">
+            <h2 class="seccion-titulo">Comentario del Médico Solicitante</h2>
+            <div class="comentario-box">
+                {{ cita.comentario_medico }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Información de Atención -->
+        <div class="seccion">
+            <h2 class="seccion-titulo">Información de Atención</h2>
+            <div class="info-grid">
+                <div class="info-bloque">
+                    <label>Estado de Atención</label>
+                    <div class="info-valor">
+                        {% if cita.estado_atencion == 'EN_ESPERA' %}
+                            <span class="badge badge-espera">En Espera</span>
+                        {% elif cita.estado_atencion == 'EN_ATENCION' %}
+                            <span class="badge badge-atencion">En Atención</span>
+                        {% else %}
+                            <span class="badge badge-atendido">Atendido</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if cita.tiempo_inicio_atencion %}
+                <div class="info-bloque">
+                    <label>Inicio de Atención</label>
+                    <div class="info-valor">{{ cita.tiempo_inicio_atencion|date:"d/m/Y H:i" }}</div>
+                </div>
+                {% endif %}
+                {% if cita.tiempo_fin_atencion %}
+                <div class="info-bloque">
+                    <label>Fin de Atención</label>
+                    <div class="info-valor">{{ cita.tiempo_fin_atencion|date:"d/m/Y H:i" }}</div>
+                </div>
+                {% endif %}
+                {% if cita.duracion_atencion_minutos %}
+                <div class="info-bloque">
+                    <label>Duración</label>
+                    <div class="info-valor">{{ cita.duracion_atencion_minutos }} minutos</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Resultado de la Ecografía -->
+        {% if cita.resultado_ecografia or cita.estado_atencion != 'EN_ESPERA' %}
+        <div class="seccion">
+            <h2 class="seccion-titulo">Resultado de la Ecografía</h2>
+            {% if cita.resultado_ecografia %}
+            <div class="resultado-box">
+                {{ cita.resultado_ecografia|linebreaks }}
+            </div>
+            {% else %}
+            <p class="texto-neutral">Sin resultado registrado</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Acciones -->
+        <div class="seccion-acciones">
+            {% if cita.estado != 'REALIZADA' and cita.estado != 'CANCELADA' %}
+                {% if cita.estado_atencion == 'EN_ESPERA' %}
+                <button class="btn btn-primary" data-action="atender-cita" data-cita-id="{{ cita.id }}">
+                    Iniciar Atención
+                </button>
+                {% elif cita.estado_atencion == 'EN_ATENCION' %}
+                <button class="btn btn-success" data-action="abrir-resultado" data-cita-id="{{ cita.id }}">
+                    Finalizar y Registrar Resultado
+                </button>
+                {% endif %}
+            {% endif %}
+            
+            <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn btn-secondary">
+                Volver a Mis Citas
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para registrar resultado -->
+<div id="modalResultado" class="modal">
+    <div class="modal-contenido">
+        <div class="modal-header">
+            <h2>Registrar Resultado de Ecografía</h2>
+            <button class="btn-cerrar" data-action="cerrar-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="formResultado">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="resultado">Resultado de la Ecografía:</label>
+                    <textarea id="resultado" name="resultado_ecografia" rows="6" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Guardar Resultado</button>
+                    <button type="button" class="btn btn-secondary" data-action="cerrar-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let citaIdActual = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manejar acciones con data attributes
+        document.addEventListener('click', function(e) {
+            const button = e.target.closest('[data-action]');
+            if (!button) return;
+
+            const action = button.getAttribute('data-action');
+            const citaId = button.getAttribute('data-cita-id');
+
+            switch(action) {
+                case 'atender-cita':
+                    marcarEnAtencion(citaId);
+                    break;
+                case 'abrir-resultado':
+                    abrirFormularioResultado(citaId);
+                    break;
+                case 'cerrar-modal':
+                    cerrarModal();
+                    break;
+            }
+        });
+
+        // Manejar envío del formulario
+        const formResultado = document.getElementById('formResultado');
+        if (formResultado) {
+            formResultado.addEventListener('submit', function(e) {
+                e.preventDefault();
+                guardarResultado();
+            });
+        }
+    });
+
+    function marcarEnAtencion(citaId) {
+        if (confirm('¿Iniciar atención de esta cita?')) {
+            const formData = new FormData();
+            formData.append('cita_id', citaId);
+
+            fetch('/citas-ecografia/mis-citas/' + citaId + '/atender/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert(data.mensaje);
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+
+    function abrirFormularioResultado(citaId) {
+        citaIdActual = citaId;
+        document.getElementById('modalResultado').style.display = 'block';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalResultado').style.display = 'none';
+        citaIdActual = null;
+    }
+
+    function guardarResultado() {
+        const formData = new FormData();
+        formData.append('resultado_ecografia', document.getElementById('resultado').value);
+
+        fetch('/citas-ecografia/mis-citas/' + citaIdActual + '/guardar-resultado/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.ok) {
+                alert(data.mensaje);
+                location.reload();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Cerrar modal al hacer clic fuera
+    window.onclick = function(event) {
+        const modal = document.getElementById('modalResultado');
+        if (event.target == modal) {
+            cerrarModal();
+        }
+    }
+</script>
+
+{% endblock %}
