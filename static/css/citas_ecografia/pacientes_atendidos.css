@@ -1,0 +1,236 @@
+/* ============================================
+   Pacientes Atendidos - Estilos
+   ============================================ */
+
+.pacientes-atendidos-container {
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header Section */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-content h1 {
+    color: var(--color-tabla-header-bg, #2c5282);
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+}
+
+.header-content .subtitulo {
+    color: #666;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.stats-bar {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-tabla-header-bg, #2c5282);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+/* Filtros Section */
+.filtros-section {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filtros-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.filtro-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.filtro-grupo label {
+    font-size: 0.8rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.filtro-grupo input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.filtro-grupo input:focus {
+    outline: none;
+    border-color: var(--color-tabla-header-bg, #2c5282);
+}
+
+/* Tabla Section */
+.tabla-section {
+    padding: 0;
+    overflow: hidden;
+}
+
+.tabla-responsive {
+    overflow-x: auto;
+}
+
+.tabla-atendidos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-atendidos thead {
+    background: var(--color-tabla-header-bg, #2c5282);
+}
+
+.tabla-atendidos th {
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tabla-atendidos tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+.tabla-atendidos tbody tr:hover {
+    background: #f8fafc;
+}
+
+.tabla-atendidos td {
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.paciente-info .nombre {
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.resultado-preview {
+    color: #666;
+    font-size: 0.85rem;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Botones */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--color-tabla-header-bg, #2c5282);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1a365d;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.btn-secondary:hover {
+    background: #cbd5e0;
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.btn-view {
+    background: #48bb78;
+    color: white;
+}
+
+.btn-view:hover {
+    background: #38a169;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 3rem;
+    text-align: center;
+    color: #666;
+}
+
+/* Card */
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stats-bar {
+        justify-content: center;
+    }
+
+    .filtros-form {
+        flex-direction: column;
+    }
+
+    .filtro-grupo {
+        width: 100%;
+    }
+
+    .filtro-grupo input {
+        width: 100%;
+    }
+
+    .tabla-atendidos th,
+    .tabla-atendidos td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}

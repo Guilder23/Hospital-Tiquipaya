@@ -119,29 +119,101 @@ def mis_citas_ecografia(request):
         'paciente', 'especialidad', 'medico'
     ).order_by('fecha', 'hora')
     
-    # Separar citas por estado
+    # Separar citas por estado y fecha
     citas_hoy = []
     citas_proximas = []
-    citas_pasadas = []
+    citas_atendidas = []
     
     hoy = timezone.now().date()
     
     for cita in citas:
-        if cita.fecha == hoy:
+        # Si la cita está REALIZADA, va al historial
+        if cita.estado == 'REALIZADA':
+            citas_atendidas.append(cita)
+        # Si es de hoy y no está realizada
+        elif cita.fecha == hoy:
             citas_hoy.append(cita)
+        # Si es futura
         elif cita.fecha > hoy:
             citas_proximas.append(cita)
+        # Si es pasada pero no fue atendida
         else:
-            citas_pasadas.append(cita)
+            citas_atendidas.append(cita)
+    
+    # Ordenar atendidas por fecha descendente (más recientes primero)
+    citas_atendidas.sort(key=lambda x: (x.fecha, x.hora), reverse=True)
     
     ctx = {
         'citas_hoy': citas_hoy,
         'citas_proximas': citas_proximas,
-        'citas_pasadas': citas_pasadas,
+        'citas_atendidas': citas_atendidas,
         'total_citas': len(citas),
+        'total_atendidas': len([c for c in citas_atendidas if c.estado == 'REALIZADA']),
         'ecografo': ecografo,
     }
     return render(request, 'citas_ecografia/mis_citas.html', ctx)
+
+
+@login_required
+def pacientes_atendidos_ecografia(request):
+    """Vista para mostrar historial de pacientes atendidos en tabla"""
+    try:
+        ecografo = request.user.ecografo
+    except Exception:
+        messages.error(request, 'No tienes acceso a esta sección.')
+        return redirect('home')
+    
+    # Filtros
+    fecha_desde = request.GET.get('fecha_desde', '')
+    fecha_hasta = request.GET.get('fecha_hasta', '')
+    buscar = request.GET.get('buscar', '')
+    
+    # Base query - solo citas realizadas
+    citas = CitaEcografia.objects.filter(
+        medico=ecografo,
+        estado='REALIZADA'
+    ).select_related(
+        'paciente', 'especialidad'
+    ).order_by('-fecha', '-hora')
+    
+    # Aplicar filtros
+    if fecha_desde:
+        citas = citas.filter(fecha__gte=fecha_desde)
+    if fecha_hasta:
+        citas = citas.filter(fecha__lte=fecha_hasta)
+    if buscar:
+        citas = citas.filter(
+            Q(paciente__nombres__icontains=buscar) |
+            Q(paciente__apellido_paterno__icontains=buscar) |
+            Q(paciente__ci__icontains=buscar)
+        )
+    
+    # Estadísticas
+    hoy = timezone.now().date()
+    inicio_semana = hoy - timedelta(days=hoy.weekday())
+    
+    atendidos_hoy = CitaEcografia.objects.filter(
+        medico=ecografo,
+        estado='REALIZADA',
+        fecha=hoy
+    ).count()
+    
+    atendidos_semana = CitaEcografia.objects.filter(
+        medico=ecografo,
+        estado='REALIZADA',
+        fecha__gte=inicio_semana
+    ).count()
+    
+    ctx = {
+        'citas_atendidas': citas,
+        'atendidos_hoy': atendidos_hoy,
+        'atendidos_semana': atendidos_semana,
+        'filtro_desde': fecha_desde,
+        'filtro_hasta': fecha_hasta,
+        'filtro_buscar': buscar,
+        'ecografo': ecografo,
+    }
+    return render(request, 'citas_ecografia/pacientes_atendidos.html', ctx)
 
 
 @login_required

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/citas_ecografia/pacientes_atendidos.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="pacientes-atendidos-container">
+    <!-- Header -->
+    <div class="header-section card">
+        <div class="header-content">
+            <h1>Pacientes Atendidos</h1>
+            <p class="subtitulo">Historial de ecografías realizadas</p>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">{{ citas_atendidas|length }}</div>
+                <div class="stat-label">Total Atendidos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ atendidos_hoy }}</div>
+                <div class="stat-label">Hoy</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ atendidos_semana }}</div>
+                <div class="stat-label">Esta Semana</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filtros-section card">
+        <form method="GET" class="filtros-form">
+            <div class="filtro-grupo">
+                <label for="fecha_desde">Desde:</label>
+                <input type="date" id="fecha_desde" name="fecha_desde" value="{{ filtro_desde }}">
+            </div>
+            <div class="filtro-grupo">
+                <label for="fecha_hasta">Hasta:</label>
+                <input type="date" id="fecha_hasta" name="fecha_hasta" value="{{ filtro_hasta }}">
+            </div>
+            <div class="filtro-grupo">
+                <label for="buscar">Buscar paciente:</label>
+                <input type="text" id="buscar" name="buscar" placeholder="Nombre o CI" value="{{ filtro_buscar }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="{% url 'citas_ecografia:pacientes_atendidos' %}" class="btn btn-secondary">Limpiar</a>
+        </form>
+    </div>
+
+    <!-- Tabla de pacientes atendidos -->
+    <div class="tabla-section card">
+        {% if citas_atendidas %}
+        <div class="tabla-responsive">
+            <table class="tabla-atendidos">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Paciente</th>
+                        <th>CI</th>
+                        <th>Especialidad</th>
+                        <th>Resultado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas_atendidas %}
+                    <tr>
+                        <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                        <td>{{ cita.hora|time:"H:i" }}</td>
+                        <td>
+                            <div class="paciente-info">
+                                <span class="nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</span>
+                            </div>
+                        </td>
+                        <td>{{ cita.paciente.ci }}</td>
+                        <td>{{ cita.especialidad.nombre }}</td>
+                        <td>
+                            <div class="resultado-preview">
+                                {{ cita.resultado_ecografia|truncatewords:10 }}
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'citas_ecografia:detalle_cita' cita_id=cita.id %}" class="btn btn-sm btn-view">
+                                Ver
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No hay pacientes atendidos en el rango seleccionado</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

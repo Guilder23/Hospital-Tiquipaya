@@ -24,8 +24,8 @@
                 <div class="stat-label">Próximas</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">{{ total_citas }}</div>
-                <div class="stat-label">Total Agendadas</div>
+                <div class="stat-number">{{ total_atendidas }}</div>
+                <div class="stat-label">Atendidas</div>
             </div>
         </div>
     </div>
@@ -130,12 +130,12 @@
         {% endif %}
     </div>
 
-    <!-- Citas Pasadas -->
-    {% if citas_pasadas %}
+    <!-- Pacientes Atendidos -->
+    {% if citas_atendidas %}
     <div class="citas-section">
-        <h2 class="section-title">Historial de Citas</h2>
+        <h2 class="section-title">Pacientes Atendidos</h2>
         <div class="citas-list">
-            {% for cita in citas_pasadas %}
+            {% for cita in citas_atendidas %}
             <div class="cita-row card cita-pasada">
                 <div class="cita-info-principal">
                     <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
