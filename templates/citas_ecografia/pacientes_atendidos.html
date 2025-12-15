@@ -62,6 +62,7 @@
                         <th>Paciente</th>
                         <th>CI</th>
                         <th>Especialidad</th>
+                        <th>Estado Atención</th>
                         <th>Resultado</th>
                         <th>Acciones</th>
                     </tr>
@@ -78,6 +79,11 @@
                         </td>
                         <td>{{ cita.paciente.ci }}</td>
                         <td>{{ cita.especialidad.nombre }}</td>
+                        <td>
+                            <span class="badge-estado {% if cita.estado_atencion == 'ATENDIDO' %}atendido{% elif cita.estado_atencion == 'EN_ATENCION' %}en-atencion{% else %}espera{% endif %}">
+                                {{ cita.get_estado_atencion_display }}
+                            </span>
+                        </td>
                         <td>
                             <div class="resultado-preview">
                                 {{ cita.resultado_ecografia|truncatewords:10 }}

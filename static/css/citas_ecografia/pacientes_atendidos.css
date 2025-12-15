@@ -147,6 +147,31 @@
     white-space: nowrap;
 }
 
+/* Badge Estado Atención */
+.badge-estado {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-estado.atendido {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.badge-estado.en-atencion {
+    background: #feebc8;
+    color: #744210;
+}
+
+.badge-estado.espera {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
 /* Botones */
 .btn {
     padding: 0.5rem 1rem;

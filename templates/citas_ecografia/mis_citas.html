@@ -38,8 +38,11 @@
             {% for cita in citas_hoy %}
             <div class="cita-row card cita-hoy">
                 <div class="cita-info-principal">
-                    <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
-                    <div class="cita-hora">{{ cita.hora|time:"H:i" }}</div>
+                    <div class="paciente-datos">
+                        <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
+                        <div class="cita-hora">{{ cita.hora|time:"H:i" }}</div>
+                    </div>
+                    <div class="estado-badge programada">{{ cita.get_estado_atencion_display }}</div>
                 </div>
                 
                 <div class="cita-info-secundaria">
@@ -68,8 +71,6 @@
                     <button class="btn btn-atender" data-action="atender" data-cita-id="{{ cita.id }}">Atender</button>
                     <button class="btn btn-view" data-action="ver" data-cita-id="{{ cita.id }}">Ver</button>
                 </div>
-
-                <div class="estado-badge programada">Programada</div>
             </div>
             {% endfor %}
         </div>
@@ -88,8 +89,11 @@
             {% for cita in citas_proximas %}
             <div class="cita-row card">
                 <div class="cita-info-principal">
-                    <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
-                    <div class="cita-fecha">{{ cita.fecha|date:"d/m/Y" }} - {{ cita.hora|time:"H:i" }}</div>
+                    <div class="paciente-datos">
+                        <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
+                        <div class="cita-fecha">{{ cita.fecha|date:"d/m/Y" }} - {{ cita.hora|time:"H:i" }}</div>
+                    </div>
+                    <div class="estado-badge programada">Programada</div>
                 </div>
                 
                 <div class="cita-info-secundaria">
@@ -118,8 +122,6 @@
                     <button class="btn btn-edit" data-action="editar" data-cita-id="{{ cita.id }}">Editar</button>
                     <button class="btn btn-view" data-action="ver" data-cita-id="{{ cita.id }}">Ver</button>
                 </div>
-
-                <div class="estado-badge programada">Programada</div>
             </div>
             {% endfor %}
         </div>
