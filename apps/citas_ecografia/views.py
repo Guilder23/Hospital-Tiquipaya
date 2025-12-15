@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Q
+from django.utils import timezone
 from datetime import datetime, timedelta
 import uuid
 
@@ -96,6 +97,51 @@ def citas_ecografia_list(request):
         'citas': citas,
     }
     return render(request, 'citas_ecografia/citas_ecografia.html', ctx)
+
+# vista para eu el ecografo vea sus citas agendadas
+@login_required
+def mis_citas_ecografia(request):
+    """Vista para que el ecógrafo vea sus citas de ecografía agendadas"""
+    # Verificar que el usuario sea ecógrafo
+    try:
+        ecografo = request.user.ecografo
+    except Exception:
+        messages.error(request, 'No tienes acceso a esta sección. Solo ecógrafos pueden acceder.')
+        return redirect('home')
+    
+    # Obtener todas las citas agendadas para este ecógrafo
+    # Ordenadas por fecha y hora
+    citas = CitaEcografia.objects.filter(
+        medico=ecografo
+    ).exclude(
+        estado='CANCELADA'
+    ).select_related(
+        'paciente', 'especialidad', 'medico'
+    ).order_by('fecha', 'hora')
+    
+    # Separar citas por estado
+    citas_hoy = []
+    citas_proximas = []
+    citas_pasadas = []
+    
+    hoy = timezone.now().date()
+    
+    for cita in citas:
+        if cita.fecha == hoy:
+            citas_hoy.append(cita)
+        elif cita.fecha > hoy:
+            citas_proximas.append(cita)
+        else:
+            citas_pasadas.append(cita)
+    
+    ctx = {
+        'citas_hoy': citas_hoy,
+        'citas_proximas': citas_proximas,
+        'citas_pasadas': citas_pasadas,
+        'total_citas': len(citas),
+        'ecografo': ecografo,
+    }
+    return render(request, 'citas_ecografia/mis_citas.html', ctx)
 
 
 @login_required

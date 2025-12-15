@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/citas_ecografia/mis_citas.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="mis-citas-container">
+    <!-- Header Section -->
+    <div class="header-section card">
+        <div class="header-content">
+            <h1>Mis Citas de Ecografía</h1>
+            <p class="bienvenida">Bienvenido, {{ ecografo.user.perfil.nombres }} {{ ecografo.user.perfil.apellido_paterno }}</p>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">{{ citas_hoy|length }}</div>
+                <div class="stat-label">Citas Hoy</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ citas_proximas|length }}</div>
+                <div class="stat-label">Próximas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ total_citas }}</div>
+                <div class="stat-label">Total Agendadas</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Citas de Hoy -->
+    <div class="citas-section">
+        <h2 class="section-title">Citas de Hoy</h2>
+        {% if citas_hoy %}
+        <div class="citas-list">
+            {% for cita in citas_hoy %}
+            <div class="cita-row card cita-hoy">
+                <div class="cita-info-principal">
+                    <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
+                    <div class="cita-hora">{{ cita.hora|time:"H:i" }}</div>
+                </div>
+                
+                <div class="cita-info-secundaria">
+                    <div class="info-item">
+                        <span class="info-label">CI:</span>
+                        <span class="info-value">{{ cita.paciente.ci }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Especialidad:</span>
+                        <span class="info-value">{{ cita.especialidad.nombre }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Edad:</span>
+                        <span class="info-value">{{ cita.paciente.get_edad }} años</span>
+                    </div>
+                </div>
+
+                {% if cita.comentario_medico %}
+                <div class="comentario-seccion">
+                    <div class="comentario-titulo">Comentario del Médico:</div>
+                    <div class="comentario-texto">{{ cita.comentario_medico }}</div>
+                </div>
+                {% endif %}
+
+                <div class="cita-acciones">
+                    <button class="btn btn-atender" data-action="atender" data-cita-id="{{ cita.id }}">Atender</button>
+                    <button class="btn btn-view" data-action="ver" data-cita-id="{{ cita.id }}">Ver</button>
+                </div>
+
+                <div class="estado-badge programada">Programada</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state card">
+            <p>No hay citas programadas para hoy</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Citas Próximas -->
+    <div class="citas-section">
+        <h2 class="section-title">Próximas Citas</h2>
+        {% if citas_proximas %}
+        <div class="citas-list">
+            {% for cita in citas_proximas %}
+            <div class="cita-row card">
+                <div class="cita-info-principal">
+                    <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
+                    <div class="cita-fecha">{{ cita.fecha|date:"d/m/Y" }} - {{ cita.hora|time:"H:i" }}</div>
+                </div>
+                
+                <div class="cita-info-secundaria">
+                    <div class="info-item">
+                        <span class="info-label">CI:</span>
+                        <span class="info-value">{{ cita.paciente.ci }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Especialidad:</span>
+                        <span class="info-value">{{ cita.especialidad.nombre }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Edad:</span>
+                        <span class="info-value">{{ cita.paciente.get_edad }} años</span>
+                    </div>
+                </div>
+
+                {% if cita.comentario_medico %}
+                <div class="comentario-seccion">
+                    <div class="comentario-titulo">Comentario del Médico:</div>
+                    <div class="comentario-texto">{{ cita.comentario_medico }}</div>
+                </div>
+                {% endif %}
+
+                <div class="cita-acciones">
+                    <button class="btn btn-edit" data-action="editar" data-cita-id="{{ cita.id }}">Editar</button>
+                    <button class="btn btn-view" data-action="ver" data-cita-id="{{ cita.id }}">Ver</button>
+                </div>
+
+                <div class="estado-badge programada">Programada</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state card">
+            <p>No hay citas próximas agendadas</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Citas Pasadas -->
+    {% if citas_pasadas %}
+    <div class="citas-section">
+        <h2 class="section-title">Historial de Citas</h2>
+        <div class="citas-list">
+            {% for cita in citas_pasadas %}
+            <div class="cita-row card cita-pasada">
+                <div class="cita-info-principal">
+                    <div class="paciente-nombre">{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}</div>
+                    <div class="cita-fecha">{{ cita.fecha|date:"d/m/Y" }} - {{ cita.hora|time:"H:i" }}</div>
+                </div>
+                
+                <div class="cita-info-secundaria">
+                    <div class="info-item">
+                        <span class="info-label">CI:</span>
+                        <span class="info-value">{{ cita.paciente.ci }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Especialidad:</span>
+                        <span class="info-value">{{ cita.especialidad.nombre }}</span>
+                    </div>
+                </div>
+
+                {% if cita.resultado_ecografia %}
+                <div class="comentario-seccion">
+                    <div class="comentario-titulo">Resultado:</div>
+                    <div class="comentario-texto">{{ cita.resultado_ecografia }}</div>
+                </div>
+                {% endif %}
+
+                <div class="cita-acciones">
+                    <button class="btn btn-view" data-action="ver" data-cita-id="{{ cita.id }}">Ver Detalles</button>
+                </div>
+
+                <div class="estado-badge {% if cita.estado == 'REALIZADA' %}realizada{% else %}programada{% endif %}">
+                    {{ cita.get_estado_display }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manejar clics en botones de acciones
+        document.querySelectorAll('.cita-acciones .btn').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const action = this.getAttribute('data-action');
+                const citaId = this.getAttribute('data-cita-id');
+                
+                switch(action) {
+                    case 'atender':
+                        marcarEnAtencion(citaId);
+                        break;
+                    case 'editar':
+                        editarCita(citaId);
+                        break;
+                    case 'ver':
+                        verDetalles(citaId);
+                        break;
+                }
+            });
+        });
+    });
+
+    function marcarEnAtencion(citaId) {
+        if (confirm('¿Marcar esta cita como "En Atención"?')) {
+            alert('Funcionalidad en desarrollo. ID Cita: ' + citaId);
+        }
+    }
+
+    function editarCita(citaId) {
+        alert('Funcionalidad en desarrollo. ID Cita: ' + citaId);
+    }
+
+    function verDetalles(citaId) {
+        alert('Funcionalidad en desarrollo. ID Cita: ' + citaId);
+    }
+</script>
+
+{% endblock %}
