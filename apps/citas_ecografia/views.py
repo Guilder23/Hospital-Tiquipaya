@@ -410,6 +410,7 @@ def buscar_paciente_ecografia(request):
     especialidad_nombre = None
     comentario_medico = None
     medicos_disponibles = []
+    ecografia_asignada = None
 
     if not term or not term.isdigit():
         return JsonResponse({'ok': False, 'error': 'Debes ingresar el CI del paciente'}, status=400)
@@ -429,6 +430,7 @@ def buscar_paciente_ecografia(request):
         especialidad_id = cita_consulta.ecografia.especialidad.id if cita_consulta.ecografia else None
         especialidad_nombre = cita_consulta.ecografia.especialidad.nombre if cita_consulta.ecografia else None
         comentario_medico = cita_consulta.comentario_ecografia
+        ecografia_asignada = cita_consulta.ecografia.nombre if cita_consulta.ecografia else None
         
         # Obtener ecógrafos que tienen asignada esta ecografía específica
         if cita_consulta.ecografia:
@@ -457,6 +459,7 @@ def buscar_paciente_ecografia(request):
         'especialidad_id': especialidad_id,
         'especialidad_nombre': especialidad_nombre,
         'comentario_medico': comentario_medico,
+        'ecografia_asignada': ecografia_asignada,
         'medicos_disponibles': medicos_disponibles
     })
 

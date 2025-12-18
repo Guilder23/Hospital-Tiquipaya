@@ -121,6 +121,7 @@ function buscarPaciente() {
         document.getElementById('patient-names').textContent = `${data.paciente.nombres} ${data.paciente.apellido_paterno}`;
         document.getElementById('patient-ci').textContent = data.paciente.ci;
         document.getElementById('patient-specialty').textContent = data.especialidad_nombre || '-';
+        document.getElementById('patient-ecografia').textContent = data.ecografia_asignada || '-';
         document.getElementById('patient-comment').textContent = data.comentario_medico || '-';
 
         // Guardar médicos disponibles en el objeto global
