@@ -28,8 +28,16 @@ class PacienteBaseForm(forms.ModelForm):
             v = val.strip().lower()
             return v in ('true','1','on','yes','si')
         return bool(val)
+    
+    def clean_numero_copias(self):
+        val = self.cleaned_data.get('numero_copias')
+        if val is None or val == '':
+            return 0
+        return val
 
 class PacienteCreateForm(PacienteBaseForm):
+    numero_copias = forms.IntegerField(required=False, initial=0)
+    
     class Meta:
         model = Paciente
         fields = [
@@ -45,6 +53,8 @@ class PacienteCreateForm(PacienteBaseForm):
         ]
 
 class PacienteUpdateForm(PacienteBaseForm):
+    numero_copias = forms.IntegerField(required=False, initial=0)
+    
     class Meta:
         model = Paciente
         fields = [

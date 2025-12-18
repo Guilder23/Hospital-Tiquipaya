@@ -33,9 +33,21 @@ document.addEventListener('DOMContentLoaded',function(){
             setTimeout(function(){ window.location.reload(); }, 600);
             return null;
           }
-          return res.text();
+          return res.json();
         })
-        .then(function(text){ if(text===null) return; if(errorBox){ errorBox.textContent='Error al guardar. Verifica los datos.'; errorBox.style.display='block'; } })
+        .then(function(data){ 
+          if(data===null) return; 
+          if(errorBox){ 
+            var msgs = [];
+            for(var field in data){
+              if(data.hasOwnProperty(field)){
+                msgs.push(field + ': ' + data[field].join(', '));
+              }
+            }
+            errorBox.textContent = msgs.length > 0 ? msgs.join(' | ') : 'Error al guardar. Verifica los datos.'; 
+            errorBox.style.display='block'; 
+          } 
+        })
         .catch(function(){ if(errorBox){ errorBox.textContent='Error de conexión'; errorBox.style.display='block'; } });
     });
   }
