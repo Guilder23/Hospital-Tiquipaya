@@ -79,6 +79,7 @@ def _slots_turno(turno_obj, fecha):
 
 
 @login_required
+@login_required
 def citas_ecografia_list(request):
     """Lista todas las citas de ecografía del Personal de Admisión"""
     # Verificar permisos: superusuario o permiso asignado

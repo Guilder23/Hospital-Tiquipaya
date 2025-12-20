@@ -125,7 +125,7 @@
         <td class="actions">
           <button class="btn btn-view" data-id="{{ u.id }}">Ver</button>
 
-          {% if user.is_superuser or puede_admin %}
+          {% if user.is_superuser or permiso_actual.puede_editar %}
           <button class="btn btn-edit" data-id="{{ u.id }}">Editar</button>
           <button 
               class="btn btn-toggle"

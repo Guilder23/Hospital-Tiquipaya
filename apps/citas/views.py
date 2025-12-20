@@ -251,6 +251,7 @@ def home(request):
 # =============================================
 
 @login_required
+@login_required
 def citas_medico_hoy(request):
     """Vista para que el médico vea sus citas del día"""
     try:

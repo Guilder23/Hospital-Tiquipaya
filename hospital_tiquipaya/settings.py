@@ -13,8 +13,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'apps.permisos.middleware.PermisosMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'apps.permisos.middleware.PermisosMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 ROOT_URLCONF = 'hospital_tiquipaya.urls'

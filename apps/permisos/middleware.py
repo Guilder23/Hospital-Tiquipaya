@@ -17,7 +17,14 @@ class PermisosMiddleware:
         '/accounts/logout/',
         '/static/',
         '/media/',
-        # '/' - REMOVIDO porque hace que TODAS las rutas sean públicas
+    ]
+    
+    # Rutas que no requieren validación de permisos (específicas de usuarios autenticados)
+    RUTAS_SIN_VALIDACION = [
+        '/citas/medico/hoy/',
+        '/citas/medico/atendidos/',
+        '/citas-ecografia/mis-citas/',
+        '/citas-ecografia/pacientes-atendidos/',
     ]
     
     def __init__(self, get_response):
@@ -27,6 +34,14 @@ class PermisosMiddleware:
         # Permitir rutas públicas y la home específicamente
         if request.path == '/' or any(request.path.startswith(ruta) for ruta in self.RUTAS_PUBLICAS):
             return self.get_response(request)
+        
+        # Rutas que no requieren validación de permisos (para usuarios autenticados)
+        if any(request.path.startswith(ruta) for ruta in self.RUTAS_SIN_VALIDACION):
+            if request.user.is_authenticated:
+                return self.get_response(request)
+            else:
+                # Si no está autenticado, redirigir a login
+                return redirect('accounts:login')
         
         # Si es superusuario o admin/staff, crear un permiso virtual que permite editar todo
         if request.user.is_authenticated and es_admin_o_staff(request.user):
