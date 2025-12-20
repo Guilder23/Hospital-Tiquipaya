@@ -7,6 +7,7 @@ from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin # Agregamos LoginRequiredMixin
+from django.contrib import messages
 import json
 
 # Asegúrate de que este import sea correcto
@@ -68,7 +69,9 @@ class TurnoAPIView(View):
                 hora_ini=data['hora_ini'],
                 hora_fin=data['hora_fin']
             )
-            return JsonResponse(model_to_dict(turno), status=201)
+            msg = f'Turno "{turno.nombre}" creado correctamente.'
+            messages.success(request, msg)
+            return JsonResponse({**model_to_dict(turno), 'message': msg}, status=201)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
@@ -96,7 +99,9 @@ class TurnoAPIView(View):
                 turno.hora_fin = data['hora_fin']
                 
             turno.save()
-            return JsonResponse(model_to_dict(turno))
+            msg = f'Turno "{turno.nombre}" editado correctamente.'
+            messages.success(request, msg)
+            return JsonResponse({**model_to_dict(turno), 'message': msg})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
@@ -109,7 +114,9 @@ class TurnoAPIView(View):
             turno = Turnos.objects.get(pk=pk)
             turno.estado = False  # Lo deshabilita
             turno.save()
-            return JsonResponse({'message': 'Turno deshabilitado con éxito'})
+            msg = f'Turno "{turno.nombre}" deshabilitado con éxito'
+            messages.success(request, msg)
+            return JsonResponse({'message': msg})
         except Turnos.DoesNotExist:
             return JsonResponse({'error': 'Turno no encontrado'}, status=404)
         except Exception as e:

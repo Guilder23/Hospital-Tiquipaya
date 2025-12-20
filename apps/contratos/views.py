@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 import json
 
 from apps.accounts.models import Perfil
@@ -48,7 +49,9 @@ class ContratoAPIView(View):
                 fecha_inicio=data['fecha_inicio'],
                 fecha_fin=data['fecha_fin']
             )
-            return JsonResponse(model_to_dict(contrato), status=201)
+            msg = f'Contrato "{contrato.nombre}" creado correctamente.'
+            messages.success(request, msg)
+            return JsonResponse({**model_to_dict(contrato), 'message': msg}, status=201)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
@@ -72,7 +75,9 @@ class ContratoAPIView(View):
             if 'fecha_fin' in data:
                 contrato.fecha_fin = data['fecha_fin']
             contrato.save()
-            return JsonResponse(model_to_dict(contrato))
+            msg = f'Contrato "{contrato.nombre}" editado correctamente.'
+            messages.success(request, msg)
+            return JsonResponse({**model_to_dict(contrato), 'message': msg})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
@@ -84,7 +89,9 @@ class ContratoAPIView(View):
             contrato = Contrato.objects.get(pk=pk)
             contrato.estado = False
             contrato.save()
-            return JsonResponse({'message': 'Contrato deshabilitado con éxito'})
+            msg = f'Contrato "{contrato.nombre}" deshabilitado con éxito'
+            messages.success(request, msg)
+            return JsonResponse({'message': msg})
         except Contrato.DoesNotExist:
             return JsonResponse({'error': 'Contrato no encontrado'}, status=404)
         except Exception as e:
