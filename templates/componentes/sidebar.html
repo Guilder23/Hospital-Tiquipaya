@@ -18,7 +18,6 @@
 
     {% if tiene_permiso_admin %}
       {# Solo opciones de administración para Administrador #}
-      <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}">Gestión de permisos</a>
       <a class="sidebar-link" href="{% url 'accounts:tipousuario_list' %}">Gestionar tipos de usuario</a>
       <a class="sidebar-link" href="{% url 'accounts:usuario_list' %}">Gestionar usuarios</a>
       <a class="sidebar-link" href="{% url 'lista_especialidades' %}">Gestionar especialidades</a>
@@ -27,6 +26,9 @@
       <a class="sidebar-link" href="{% url 'citas_ecografia:list' %}">Gestionar Citas de Ecografía</a>
       <a class="sidebar-link" href="{% url 'turnos:lista' %}">Gestionar turnos</a>
       <a class="sidebar-link" href="{% url 'contratos:list' %}">Gestionar contratos</a>
+      <!-- 🔹 Separador -->
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}">Gestión de permisos</a>
     {% else %}
       {% if modulos_sidebar %}
         {% for item in modulos_sidebar %}
