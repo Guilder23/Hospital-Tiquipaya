@@ -92,13 +92,13 @@ class PermisosMiddleware:
                         # Verificar si tiene acceso
                         if not permiso.tiene_acceso():
                             messages.error(request, f'No tienes permiso para acceder a {modulo.nombre}')
-                            logger.warning(f"  ❌ Sin acceso a {modulo.nombre}")
+                            logger.warning(f"  [DENY] Sin acceso a {modulo.nombre}")
                             return redirect('home')
                         
                         # Verificar si es método de modificación y solo tiene vista
                         if request.method in ['POST', 'PUT', 'DELETE', 'PATCH'] and permiso.es_solo_vista():
                             messages.error(request, f'Solo tienes permiso de lectura en {modulo.nombre}')
-                            logger.warning(f"  ❌ Solo lectura en {modulo.nombre}")
+                            logger.warning(f"  [READ-ONLY] Solo lectura en {modulo.nombre}")
                             return redirect('home')
                         
                         # Agregar el permiso al request para uso en templates
@@ -108,16 +108,16 @@ class PermisosMiddleware:
                     except Permiso.DoesNotExist:
                         # Si no existe permiso específico, denegar acceso
                         messages.error(request, f'No tienes permiso configurado para acceder a este módulo')
-                        logger.error(f"  ❌ Permiso no existe para {tipo_usuario} → {modulo}")
+                        logger.error(f"  [ERROR] Permiso no existe para {tipo_usuario} → {modulo}")
                         return redirect('home')
                 else:
-                    logger.warning(f"  ⚠️  No se encontró módulo para {request.path}")
+                    logger.warning(f"  [WARNING] No se encontró módulo para {request.path}")
                 
             except AttributeError:
                 # Usuario sin perfil
                 if not request.path.startswith('/permisos/'):
                     messages.warning(request, 'No tienes un perfil configurado. Contacta al administrador.')
-                    logger.error(f"  ❌ Usuario sin perfil: {request.user.username}")
+                    logger.error(f"  [ERROR] Usuario sin perfil: {request.user.username}")
                     return redirect('home')
         
         response = self.get_response(request)

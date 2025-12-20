@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-chart-bar"></i> Dashboard Administrativo</h1>
+        <p class="subtitle">Panel de control del Hospital Tiquipaya</p>
+    </div>
+    
+    <!-- DEBUG INFO -->
+    <div id="debug-info" style="background: #f0f0f0; padding: 10px; border-radius: 8px; margin-bottom: 1rem; display: none;">
+        <small><i class="fas fa-tools"></i> DEBUG: Cargando datos...</small>
+    </div>
+
+    <!-- CARDS DE RESUMEN RÁPIDO -->
+    <div class="quick-stats">
+        <div class="stat-card stat-blue">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-content">
+                <h3>Pacientes</h3>
+                <p class="stat-number" id="total-pacientes">-</p>
+                <span class="stat-label">Total registrados</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-green">
+            <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="stat-content">
+                <h3>Citas</h3>
+                <p class="stat-number" id="total-citas">-</p>
+                <span class="stat-label">Total del sistema</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-orange">
+            <div class="stat-icon"><i class="fas fa-hospital-user"></i></div>
+            <div class="stat-content">
+                <h3>Médicos</h3>
+                <p class="stat-number" id="total-medicos">-</p>
+                <span class="stat-label">Profesionales</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-purple">
+            <div class="stat-icon"><i class="fas fa-stethoscope"></i></div>
+            <div class="stat-content">
+                <h3>Ecografías</h3>
+                <p class="stat-number" id="total-ecografias">-</p>
+                <span class="stat-label">Servicios</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA 1: ESTADÍSTICAS PRINCIPALES -->
+    <div class="dashboard-grid grid-2">
+        <!-- CITAS HOY vs PROGRAMADAS -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-clipboard-list"></i> Citas Hoy</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Citas Hoy</span>
+                        <span class="status-value" id="citas-hoy">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Programadas</span>
+                        <span class="status-value" id="citas-programadas">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Completadas</span>
+                        <span class="status-value" id="citas-completadas">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Canceladas</span>
+                        <span class="status-value" id="citas-canceladas">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PACIENTES -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-users"></i> Pacientes</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Total</span>
+                        <span class="status-value" id="pac-total">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Activos</span>
+                        <span class="status-value" id="pac-activos">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Con Seguro</span>
+                        <span class="status-value" id="pac-con-seguro">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Sin Seguro</span>
+                        <span class="status-value" id="pac-sin-seguro">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA 2: GRÁFICOS -->
+    <div class="dashboard-grid grid-2">
+        <!-- CITAS POR DÍA (ÚLTIMOS 7 DÍAS) -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-chart-line"></i> Citas Últimos 7 Días</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="citasChart"></canvas>
+            </div>
+        </div>
+
+        <!-- CITAS POR TIPO -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-hospital-user"></i> Citas por Tipo</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="tiposChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA 3: MÁS GRÁFICOS -->
+    <div class="dashboard-grid grid-2">
+        <!-- CITAS POR ESTADO -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-chart-pie"></i> Citas por Estado</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="estadoChart"></canvas>
+            </div>
+        </div>
+
+        <!-- PACIENTES POR GÉNERO -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-users"></i> Pacientes por Género</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="generoChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA 4: TOP 5 -->
+    <div class="dashboard-grid grid-2">
+        <!-- TOP 5 ESPECIALIDADES -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-bullseye"></i> Top 5 Especialidades</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="especialidadesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- TOP 5 MÉDICOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-user-md"></i> Top 5 Médicos</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="medicosChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA 5: INFORMACIÓN ADICIONAL -->
+    <div class="dashboard-grid grid-3">
+        <!-- ECOGRAFÍAS -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-microscope"></i> Ecografías</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Total</span>
+                        <span class="status-value" id="eco-total">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Completadas</span>
+                        <span class="status-value" id="eco-completadas">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Pendientes</span>
+                        <span class="status-value" id="eco-pendientes">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTRATOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-file-contract"></i> Contratos</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Total</span>
+                        <span class="status-value" id="con-total">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Vigentes</span>
+                        <span class="status-value" id="con-vigentes">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Especialidades</span>
+                        <span class="status-value" id="esp-total">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USUARIOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-lock"></i> Sistema</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Usuarios</span>
+                        <span class="status-value" id="usr-total">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Admins</span>
+                        <span class="status-value" id="usr-admins">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Médicos Act.</span>
+                        <span class="status-value" id="med-activos">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILA 6: COMPARATIVAS -->
+    <div class="dashboard-grid grid-2">
+        <!-- ESTE MES vs MES PASADO -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-chart-bar"></i> Comparativa Mensual (Citas)</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="comparativaChart"></canvas>
+            </div>
+        </div>
+
+        <!-- SEGURO -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-shield-alt"></i> Cobertura de Seguros</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="seguroChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+{% endblock %}

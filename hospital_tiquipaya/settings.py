@@ -7,7 +7,7 @@ INSTALLED_APPS = [
     'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
     'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
     'apps.pacientes','apps.especialidades','apps.horarios','apps.citas','apps.accounts','apps.ecografias',
-    'apps.contratos','apps.citas_ecografia','apps.permisos'
+    'apps.contratos','apps.citas_ecografia','apps.permisos','apps.dashboard'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware',

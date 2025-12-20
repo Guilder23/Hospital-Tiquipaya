@@ -18,6 +18,8 @@
 
     {% if tiene_permiso_admin %}
       {# Solo opciones de administración para Administrador #}
+      <a class="sidebar-link" href="{% url 'dashboard:dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <div class="sidebar-divider"></div>
       <a class="sidebar-link" href="{% url 'accounts:tipousuario_list' %}">Gestionar tipos de usuario</a>
       <a class="sidebar-link" href="{% url 'accounts:usuario_list' %}">Gestionar usuarios</a>
       <a class="sidebar-link" href="{% url 'lista_especialidades' %}">Gestionar especialidades</a>
@@ -38,7 +40,7 @@
             {% endif %}
             {{ item.nombre }}
             {% if item.es_solo_vista %}
-              <span class="badge-solo-vista" title="Solo Vista">👁️</span>
+              <span class="badge-solo-vista" title="Solo Vista"><i class="fas fa-eye"></i></span>
             {% endif %}
           </a>
         {% endfor %}

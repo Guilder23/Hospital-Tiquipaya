@@ -4,6 +4,7 @@ from apps.citas import views as citas_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', citas_views.home, name='home'),
+    path('dashboard/', include('apps.dashboard.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('apps.accounts.urls')),
     path('especialidades/', include('apps.especialidades.urls')),
