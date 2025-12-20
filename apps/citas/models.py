@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 from apps.pacientes.models import Paciente
 from apps.especialidades.models import Especialidad
 import uuid
@@ -41,6 +42,9 @@ class Cita(models.Model):
     requiere_ecografia = models.BooleanField(default=False)
     ecografia = models.ForeignKey('ecografias.Ecografia', on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_solicitadas')
     comentario_ecografia = models.TextField(null=True, blank=True)
+    
+    # Auditoría: quién creó la cita
+    usuario_creador = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='citas_creadas')
     
     creada_en = models.DateTimeField(auto_now_add=True)
 

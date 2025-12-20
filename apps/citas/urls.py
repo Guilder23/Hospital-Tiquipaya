@@ -21,4 +21,9 @@ urlpatterns = [
     path('<int:cita_id>/finalizar/', views.finalizar_atencion, name='finalizar_atencion'),
     path('<int:cita_id>/procesar-ecografia/', views.procesar_ecografia, name='procesar_ecografia'),
     path('<int:cita_id>/generar-eco/', views.generar_codigo_ecografia, name='generar_eco'),
+    
+    # URLs para agendamiento por personal del hospital
+    path('agendar-usuario/', views.agendar_cita_usuario, name='agendar_usuario'),
+    path('buscar-paciente/', views.buscar_paciente_usuario, name='buscar_paciente'),
+    path('confirmar-usuario/', views.confirmar_cita_usuario, name='confirmar_usuario'),
 ]

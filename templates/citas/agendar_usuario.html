@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/specialties/modals/modals_base.css">
+<link rel="stylesheet" href="/static/css/citas/agendar.css">
+<link rel="stylesheet" href="/static/css/citas/modals/validar.css">
+<style>
+  .paciente-search {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+  }
+  
+  .search-results.active {
+    display: block;
+  }
+  
+  .search-result-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .search-result-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .search-result-item strong {
+    display: block;
+    color: #333;
+  }
+  
+  .search-result-item small {
+    color: #666;
+  }
+  
+  .paciente-seleccionado {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  
+  .paciente-seleccionado.active {
+    display: block;
+  }
+  
+  .btn-limpiar-paciente {
+    margin-top: 10px;
+    background-color: #757575;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-limpiar-paciente:hover {
+    background-color: #616161;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Agendar Cita - Por Personal del Hospital (día siguiente: {{ fecha_objetivo|date:'d/m/Y' }})</h2>
+  
+  <div class="paciente-search">
+    <label for="buscar-paciente"><strong>Buscar Paciente por CI o Nombre:</strong></label>
+    <input 
+      type="text" 
+      id="buscar-paciente" 
+      class="search-input" 
+      placeholder="Ej: 12345678 o Juan Pérez"
+      autocomplete="off"
+    >
+    <div class="search-results" id="search-results"></div>
+  </div>
+  
+  <div class="paciente-seleccionado" id="paciente-seleccionado">
+    <div>
+      <strong>Paciente Seleccionado:</strong>
+      <div id="paciente-info" style="margin-top: 8px;"></div>
+      <button type="button" class="btn-limpiar-paciente" id="btn-limpiar-paciente">Limpiar selección</button>
+    </div>
+  </div>
+  
+  <div>
+    {% for turno_info in turnos_data %}
+      <h3 class="section-title">Turno {{ turno_info.turno.nombre }}</h3>
+      {% for m in turno_info.medicos %}
+        <div class="doctor-card" data-id="{{ m.id }}">
+          <div class="doctor-photo">{{ m.user.perfil.nombres|slice:":1" }}{{ m.user.perfil.apellido_paterno|slice:":1" }}</div>
+          <div class="doctor-info">
+            <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
+            <div>{{ m.especialidad.nombre }} · {{ turno_info.turno.nombre }}</div>
+          </div>
+          <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
+        </div>
+        <div class="slots" id="slots-{{ m.id }}"></div>
+      {% empty %}
+        <p>No hay médicos disponibles en este turno.</p>
+      {% endfor %}
+      {% if not forloop.last %}<div style="margin-top:20px"></div>{% endif %}
+    {% empty %}
+      <p>No hay turnos disponibles en este momento.</p>
+    {% endfor %}
+  </div>
+
+  <div class="modal" id="modal-confirm" aria-hidden="true">
+    <div class="modal-box" style="width:420px">
+      <h3>Confirmar Cita</h3>
+      <div class="modal-field"><label>Paciente</label><div id="conf-paciente"></div></div>
+      <div class="modal-field"><label>Médico</label><div id="conf-medico"></div></div>
+      <div class="modal-field"><label>Especialidad</label><div id="conf-esp"></div></div>
+      <div class="modal-field"><label>Fecha</label><div id="conf-fecha"></div></div>
+      <div class="modal-field"><label>Hora</label><div id="conf-hora"></div></div>
+      <div class="modal-field"><label>Duración</label><div>30 minutos</div></div>
+      <div class="modal-field"><label>Agendado por</label><div id="conf-usuario"></div></div>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="btn-conf-cancel">Cancelar</button>
+        <button class="btn-modal-ok" id="btn-conf-ok">Confirmar cita</button>
+      </div>
+      <p id="conf-error" style="color:#b91c1c; display:none"></p>
+    </div>
+  </div>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Override para agendar_usuario - Manejo de búsqueda y selección de paciente
+// Variables globales
+let pacienteSeleccionado = null;
+let slotSeleccionado = null;
+
+function getCookie(name) {
+  let v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return v ? v.pop() : '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const inputBuscar = document.getElementById('buscar-paciente');
+  const searchResults = document.getElementById('search-results');
+  const pacienteDiv = document.getElementById('paciente-seleccionado');
+  const pacienteInfo = document.getElementById('paciente-info');
+  const btnLimpiar = document.getElementById('btn-limpiar-paciente');
+  const confPaciente = document.getElementById('conf-paciente');
+  const modalConfirm = document.getElementById('modal-confirm');
+  const btnConfCancel = document.getElementById('btn-conf-cancel');
+  const btnConfOk = document.getElementById('btn-conf-ok');
+  const confError = document.getElementById('conf-error');
+  
+  // Mostrar usuario creador
+  const usuario = '{{ usuario_creador.perfil.nombres }} {{ usuario_creador.perfil.apellido_paterno }}';
+  document.getElementById('conf-usuario').textContent = usuario;
+  
+  // ===== BÚSQUEDA DE PACIENTES =====
+  let debounceTimer;
+  inputBuscar.addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    const query = this.value.trim();
+    
+    if (query.length < 2) {
+      searchResults.classList.remove('active');
+      return;
+    }
+    
+    debounceTimer = setTimeout(() => {
+      fetch(`/citas/buscar-paciente/?q=${encodeURIComponent(query)}`)
+        .then(r => r.json())
+        .then(data => {
+          if (!data.pacientes || data.pacientes.length === 0) {
+            searchResults.innerHTML = '<div class="search-result-item">No se encontraron pacientes</div>';
+            searchResults.classList.add('active');
+            return;
+          }
+          
+          searchResults.innerHTML = data.pacientes.map(p => `
+            <div class="search-result-item" data-id="${p.id}" data-ci="${p.ci}" data-nombres="${p.nombres}" data-apellido="${p.apellido_paterno}">
+              <strong>${p.nombres} ${p.apellido_paterno}</strong>
+              <small>CI: ${p.ci} | Nacimiento: ${p.fecha_nacimiento}</small>
+            </div>
+          `).join('');
+          
+          searchResults.classList.add('active');
+          
+          searchResults.querySelectorAll('.search-result-item').forEach(item => {
+            item.addEventListener('click', function() {
+              pacienteSeleccionado = {
+                id: this.dataset.id,
+                ci: this.dataset.ci,
+                nombres: this.dataset.nombres,
+                apellido: this.dataset.apellido
+              };
+              
+              inputBuscar.value = `${this.dataset.nombres} ${this.dataset.apellido}`;
+              searchResults.classList.remove('active');
+              
+              pacienteInfo.innerHTML = `
+                <p><strong>${pacienteSeleccionado.nombres} ${pacienteSeleccionado.apellido}</strong></p>
+                <p>CI: ${pacienteSeleccionado.ci}</p>
+              `;
+              pacienteDiv.classList.add('active');
+              confPaciente.textContent = `${pacienteSeleccionado.nombres} ${pacienteSeleccionado.apellido}`;
+            });
+          });
+        })
+        .catch(err => console.error('Error:', err));
+    }, 300);
+  });
+  
+  btnLimpiar.addEventListener('click', function() {
+    pacienteSeleccionado = null;
+    inputBuscar.value = '';
+    pacienteDiv.classList.remove('active');
+    searchResults.classList.remove('active');
+    confPaciente.textContent = '';
+  });
+  
+  // ===== VER HORARIOS DE MÉDICO =====
+  document.querySelectorAll('.btn-horarios').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const medicoId = this.getAttribute('data-id');
+      const slotsContainer = document.getElementById(`slots-${medicoId}`);
+      const card = document.querySelector(`.doctor-card[data-id="${medicoId}"]`);
+      
+      if (!slotsContainer) return;
+      
+      // Obtener horarios del médico
+      fetch(`/citas/agenda/${medicoId}/`)
+        .then(r => r.json())
+        .then(data => {
+          slotsContainer.innerHTML = '';
+          
+          // Extraer información del médico
+          const info = card.querySelector('.doctor-info');
+          const nombreMedico = info ? info.querySelector('div').textContent : '';
+          const especialidad = info ? info.querySelectorAll('div')[1]?.textContent?.split(' · ')[0] : '';
+          
+          // Guardar fecha
+          const fecha = data.fecha;
+          document.getElementById('conf-fecha').textContent = fecha;
+          
+          // Crear slots
+          Object.keys(data.turnos).forEach(turnoNombre => {
+            const lista = data.turnos[turnoNombre] || [];
+            lista.forEach(s => {
+              const slotEl = document.createElement('div');
+              slotEl.className = `slot ${s.ocupado ? 'busy' : 'free'}`;
+              slotEl.textContent = s.hora;
+              slotEl.setAttribute('data-hora', s.hora);
+              slotEl.setAttribute('data-medico', medicoId);
+              
+              if (!s.ocupado) {
+                slotEl.style.cursor = 'pointer';
+                slotEl.addEventListener('click', function() {
+                  // Guardar slot seleccionado
+                  slotSeleccionado = {
+                    medico: medicoId,
+                    hora: s.hora,
+                    nombreMedico: nombreMedico,
+                    especialidad: especialidad,
+                    fecha: fecha
+                  };
+                  
+                  // Llenar modal
+                  document.getElementById('conf-medico').textContent = nombreMedico;
+                  document.getElementById('conf-esp').textContent = especialidad;
+                  document.getElementById('conf-hora').textContent = s.hora;
+                  
+                  // Abrir modal
+                  modalConfirm.setAttribute('aria-hidden', 'false');
+                  
+                  console.log('Slot seleccionado:', slotSeleccionado);
+                });
+              }
+              
+              slotsContainer.appendChild(slotEl);
+            });
+          });
+        })
+        .catch(err => console.error('Error:', err));
+    });
+  });
+  
+  // ===== CERRAR MODAL =====
+  btnConfCancel.addEventListener('click', function() {
+    modalConfirm.setAttribute('aria-hidden', 'true');
+    slotSeleccionado = null;
+  });
+  
+  // ===== CONFIRMAR CITA =====
+  btnConfOk.addEventListener('click', async function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    confError.style.display = 'none';
+    confError.textContent = '';
+    
+    // Validaciones
+    if (!pacienteSeleccionado) {
+      confError.textContent = 'Debes seleccionar un paciente primero';
+      confError.style.display = 'block';
+      return;
+    }
+    
+    if (!slotSeleccionado) {
+      confError.textContent = 'Debes seleccionar un horario primero';
+      confError.style.display = 'block';
+      return;
+    }
+    
+    // Enviar confirmación
+    const formData = new FormData();
+    formData.append('paciente_id', pacienteSeleccionado.id);
+    formData.append('medico_id', slotSeleccionado.medico);
+    formData.append('hora', slotSeleccionado.hora);
+    
+    try {
+      const response = await fetch('/citas/confirmar-usuario/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data.ok) {
+        alert(`✓ ${data.mensaje}\nCódigo de cita: ${data.codigo}`);
+        pacienteSeleccionado = null;
+        slotSeleccionado = null;
+        inputBuscar.value = '';
+        pacienteDiv.classList.remove('active');
+        modalConfirm.setAttribute('aria-hidden', 'true');
+        location.reload();
+      } else {
+        confError.textContent = data.error || 'Error desconocido';
+        confError.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      confError.textContent = 'Error al agendar la cita';
+      confError.style.display = 'block';
+    }
+  });
+});
+</script>
+{% endblock %}

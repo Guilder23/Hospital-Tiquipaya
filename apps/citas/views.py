@@ -458,3 +458,130 @@ def pacientes_atendidos(request):
         'fecha': hoy,
     }
     return render(request, 'citas/pacientes_atendidos.html', ctx)
+
+
+# =============================================
+# VISTAS PARA AGENDAMIENTO POR USUARIOS DEL SISTEMA
+# (Admin, Recepción, Encargado de Admisión, etc.)
+# =============================================
+
+@login_required
+def agendar_cita_usuario(request):
+    """Vista para que usuarios autenticados (admin, recepción, etc.) agenden citas"""
+    manana = _manana()
+    
+    # Obtener todos los turnos activos
+    turnos_activos = Turnos.objects.filter(estado=True).order_by('hora_ini')
+    
+    # Para cada turno, obtener los médicos que trabajan en ese turno Y en el día siguiente
+    turnos_data = []
+    for turno in turnos_activos:
+        # Filtrar médicos que trabajan en este turno
+        medicos_turno = Medico.objects.filter(turnos=turno)
+        
+        # Filtrar médicos que trabajan en el día siguiente
+        medicos_disponibles = [m for m in medicos_turno if _medico_trabaja_en_dia(m, manana)]
+        
+        turnos_data.append({
+            'turno': turno,
+            'medicos': medicos_disponibles
+        })
+    
+    ctx = {
+        'fecha_objetivo': manana,
+        'turnos_data': turnos_data,
+        'usuario_creador': request.user,
+    }
+    return render(request, 'citas/agendar_usuario.html', ctx)
+
+
+@login_required
+def buscar_paciente_usuario(request):
+    """API endpoint para buscar pacientes por CI o nombre"""
+    query = request.GET.get('q', '').strip()
+    
+    if len(query) < 2:
+        return JsonResponse({'pacientes': []})
+    
+    from django.db.models import Q
+    pacientes = Paciente.objects.filter(
+        Q(ci__icontains=query) | 
+        Q(nombres__icontains=query) | 
+        Q(apellido_paterno__icontains=query),
+        activo=True
+    ).values('id', 'ci', 'nombres', 'apellido_paterno', 'fecha_nacimiento')[:20]
+    
+    return JsonResponse({
+        'pacientes': list(pacientes)
+    })
+
+
+@login_required
+@require_POST
+def confirmar_cita_usuario(request):
+    """Confirmar cita agendada por usuario autenticado"""
+    paciente_id = request.POST.get('paciente_id')
+    medico_id = request.POST.get('medico_id')
+    hora_str = request.POST.get('hora')
+    
+    if not all([paciente_id, medico_id, hora_str]):
+        return JsonResponse({'ok': False, 'error': 'Datos incompletos'}, status=400)
+    
+    try:
+        paciente = Paciente.objects.get(id=paciente_id, activo=True)
+        medico = Medico.objects.get(id=medico_id)
+    except (Paciente.DoesNotExist, Medico.DoesNotExist):
+        return JsonResponse({'ok': False, 'error': 'Paciente o médico no encontrado'}, status=404)
+    
+    manana = _manana()
+    
+    try:
+        h = datetime.strptime(hora_str, '%H:%M').time()
+    except Exception:
+        return JsonResponse({'ok': False, 'error': 'Hora inválida'}, status=400)
+    
+    # Validar que el paciente no tenga otra cita el mismo día
+    if Cita.objects.filter(paciente=paciente, fecha=manana).exclude(estado='CANCELADA').exists():
+        return JsonResponse({'ok': False, 'error': 'Este paciente ya tiene una cita agendada para mañana'}, status=409)
+    
+    # Validar que la hora está dentro de los turnos del médico
+    turno_ok = False
+    for turno in medico.turnos.filter(estado=True):
+        if turno.hora_ini <= h < turno.hora_fin:
+            turno_ok = True
+            break
+    
+    if not turno_ok:
+        return JsonResponse({'ok': False, 'error': 'Hora fuera de turno'}, status=400)
+    
+    # Validar que la hora no esté ocupada
+    if Cita.objects.filter(medico=medico, fecha=manana, hora=h).exclude(estado='CANCELADA').exists():
+        return JsonResponse({'ok': False, 'error': 'El slot ya está ocupado'}, status=409)
+    
+    # Generar código
+    codigo = _generar_codigo_unico('CITA')
+    
+    # Eliminar registros cancelados del mismo slot
+    Cita.objects.filter(medico=medico, fecha=manana, hora=h, estado='CANCELADA').delete()
+    
+    try:
+        cita = Cita.objects.create(
+            paciente=paciente,
+            especialidad=medico.especialidad,
+            medico=medico,
+            fecha=manana,
+            hora=h,
+            codigo=codigo,
+            estado='PROGRAMADA',
+            tipo_cita='CONSULTA',
+            usuario_creador=request.user  # Registrar quién creó la cita
+        )
+        
+        return JsonResponse({
+            'ok': True,
+            'cita_id': cita.id,
+            'codigo': cita.codigo,
+            'mensaje': f'Cita agendada exitosamente para {paciente.nombres}'
+        })
+    except IntegrityError:
+        return JsonResponse({'ok': False, 'error': 'Error al agendar la cita (slot ocupado)'}, status=409)
