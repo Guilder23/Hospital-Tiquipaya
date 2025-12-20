@@ -28,8 +28,8 @@
       <a class="sidebar-link" href="{% url 'citas_ecografia:list' %}">Gestionar Citas de Ecografía</a>
       <a class="sidebar-link" href="{% url 'turnos:lista' %}">Gestionar turnos</a>
       <a class="sidebar-link" href="{% url 'contratos:list' %}">Gestionar contratos</a>
-      <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}">Gestión de permisos</a>
       <div class="sidebar-divider"></div>
+            <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}"> <i class="fas fa-lock"></i> Gestión de permisos</a>
       <a class="sidebar-link" href="{% url 'citas:agendar_usuario' %}"><i class="fas fa-calendar-plus"></i> Agendar Cita (Usuario)</a>
     {% else %}
       {% if modulos_sidebar %}

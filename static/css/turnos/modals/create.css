@@ -17,13 +17,13 @@
 .modal.turnos-crear .modal-panel {
     /* Mantenemos todos los estilos del panel, solo cambiamos la clase principal */
     width: 100%;
-    max-width: 750px;
+    max-width: 700px;
     /* ... el resto de estilos del panel ... */
-    max-height: 90vh;
+    max-height: 75vh;
     overflow-y: auto;
     padding-right: 15px;
     background: #fff;
-    padding: 25px 30px;
+    padding: 18px 24px;
     border-radius: 12px;
     border-top: 4px solid #16a34a; /* Color éxito/verde */
     transform: translateY(-20px);
@@ -42,27 +42,27 @@
 .modal.turnos-crear h3 {
   text-align: center;
   color: #16a34a;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
-.section { margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
+.section { margin-bottom: 14px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
 .section:last-child { border-bottom: none; padding-bottom: 0; }
-.section h4 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1e293b; }
+.section h4 { font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #1e293b; }
 
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
 .form-row { display: flex; flex-direction: column; }
 .form-row-full { grid-column: span 2; }
-label { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #1e293b; }
-input, select { padding: 10px 12px; border-radius: 8px; border: 1px solid #cfd4da; outline: none; font-size: 14px; transition: 0.25s; }
+label { font-size: 13px; font-weight: 500; margin-bottom: 3px; color: #1e293b; }
+input, select { padding: 8px 10px; border-radius: 8px; border: 1px solid #cfd4da; outline: none; font-size: 13px; transition: 0.25s; }
 input:focus, select:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.25); }
 
-.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; }
-.modal-actions .btn { background: #16a34a; color: #fff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: all .2s ease; box-shadow: 0 4px 12px var(--sombra-neutral-06); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+.modal-actions .btn { background: #16a34a; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all .2s ease; box-shadow: 0 4px 12px var(--sombra-neutral-06); }
 .modal-actions .btn:hover { background: #15803d; box-shadow: 0 6px 16px var(--sombra-exito); }
 .modal-actions .btn:active { background: #166534; box-shadow: 0 2px 8px var(--sombra-exito-active); }
-.modal-actions .btn-secondary { background: #e5e7eb; color: #1e293b; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: all .2s ease; box-shadow: 0 2px 8px var(--sombra-neutral-06); }
+.modal-actions .btn-secondary { background: #e5e7eb; color: #1e293b; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all .2s ease; box-shadow: 0 2px 8px var(--sombra-neutral-06); }
 .modal-actions .btn-secondary:hover { background: #d1d5db; box-shadow: 0 4px 12px var(--sombra-neutral-10); }
 .modal-actions .btn-secondary:active { background: #bdc3c7; box-shadow: 0 2px 6px var(--sombra-neutral-10); }
 

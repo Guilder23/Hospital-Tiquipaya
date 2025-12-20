@@ -17,12 +17,12 @@
 
 .modal.turnos-ver .modal-panel {
   width: 100%;
-  max-width: 750px;
-  max-height: 90vh;       /* Limita altura */
+  max-width: 700px;
+  max-height: 75vh;       /* Limita altura */
   overflow-y: auto;       /* Scroll interno */
   padding-right: 15px;
   background: var(--color-fondo-modal);
-  padding: 25px 30px;
+  padding: 18px 24px;
   border-radius: 12px;
   border-top: 4px solid var(--color-informacion);
   transform: translateY(-20px);
@@ -50,18 +50,18 @@
 /* === TÍTULO === */
 .modal.turnos-ver h3 {
   margin-top: 0;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: bold;
   color: var(--color-informacion);
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 /* === SECCIONES === */
 .modal.turnos-ver .section {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   border-bottom: 1px solid var(--color-borde-input);
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 .modal.turnos-ver .section:last-child {
@@ -70,23 +70,23 @@
 }
 
 .modal.turnos-ver .section h4 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--color-texto);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 /* === GRID DOS COLUMNAS === */
 .modal.turnos-ver .form-row {
   display: flex;
   flex-direction: column;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .modal.turnos-ver .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px 20px;
+  gap: 10px 16px;
 }
 
 /* Campos que ocupan toda la fila */
@@ -96,21 +96,21 @@
 
 /* Etiquetas */
 .modal.turnos-ver label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   color: var(--color-texto);
 }
 
 /* Valores */
 .modal.turnos-ver .form-row div {
-  padding: 10px 12px;
+  padding: 8px 10px;
   border: 1px solid var(--color-borde-input);
   border-radius: 8px;
   background: var(--color-fondo-input);
   color: var(--color-texto);
-  font-size: 14px;
-  min-height: 36px;
+  font-size: 13px;
+  min-height: 32px;
   display: flex;
   align-items: center;
 }
@@ -119,11 +119,11 @@
 .modal.turnos-ver .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
 }
 
 .modal.turnos-ver .btn-secondary {
-  padding: 10px 18px;
+  padding: 8px 16px;
   background: var(--color-fondo-informacion);
   border: none;
   border-radius: 8px;

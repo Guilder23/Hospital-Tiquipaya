@@ -1,2 +1,86 @@
-@import url('/static/css/turnos/modals/delete.css');
+/* Estilos para modal eliminar contrato */
+#modal-eliminar-contrato {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--color-overlay-modal);
+    z-index: 2000;
+}
 
+#modal-eliminar-contrato[aria-hidden="false"] {
+    display: flex !important;
+}
+
+#modal-eliminar-contrato .modal-panel {
+    width: 100%;
+    max-width: 380px;
+    background: #fff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border-top: 4px solid #ef4444;
+    transform: translateY(-20px);
+    animation: showModal 0.35s ease forwards;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+@keyframes showModal {
+  to { transform: translateY(0); }
+}
+
+#modal-eliminar-contrato h3 {
+  text-align: center;
+  color: #ef4444;
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+#modal-eliminar-contrato p {
+  font-size: 14px;
+  margin-bottom: 14px;
+  color: #444;
+}
+
+#modal-eliminar-contrato .modal-actions { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+}
+
+#modal-eliminar-contrato .btn-danger { 
+    background: #ef4444; 
+    color: #fff; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: all .2s ease; 
+}
+
+#modal-eliminar-contrato .btn-danger:hover { 
+    background: #dc2626; 
+}
+
+#modal-eliminar-contrato .btn-secondary { 
+    background: #e5e7eb; 
+    color: #1e293b; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: all .2s ease; 
+}
+
+#modal-eliminar-contrato .btn-secondary:hover { 
+    background: #d1d5db; 
+}
+
+#modal-eliminar-contrato .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--color-overlay-modal);
+    backdrop-filter: blur(3px);
+}

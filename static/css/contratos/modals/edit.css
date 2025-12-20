@@ -1,2 +1,115 @@
-@import url('/static/css/turnos/modals/edit.css');
+/* Estilos para modal editar contrato */
+#modal-editar-contrato {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--color-overlay-modal);
+    z-index: 2000;
+}
 
+#modal-editar-contrato[aria-hidden="false"] {
+    display: flex !important;
+}
+
+#modal-editar-contrato .modal-panel {
+    width: 100%;
+    max-width: 480px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border-top: 4px solid #f59e0b;
+    transform: translateY(-20px);
+    animation: showModal 0.35s ease forwards;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+@keyframes showModal {
+  to { transform: translateY(0); }
+}
+
+#modal-editar-contrato .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
+#modal-editar-contrato .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
+
+#modal-editar-contrato h3 {
+  text-align: center;
+  color: #f59e0b;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+#modal-editar-contrato .form-row { 
+    display: flex; 
+    flex-direction: column; 
+    margin-bottom: 10px;
+}
+
+#modal-editar-contrato label { 
+    font-size: 13px; 
+    font-weight: 500; 
+    margin-bottom: 3px; 
+    color: #1e293b; 
+}
+
+#modal-editar-contrato input, 
+#modal-editar-contrato select { 
+    padding: 8px 10px; 
+    border-radius: 8px; 
+    border: 1px solid #cfd4da; 
+    outline: none; 
+    font-size: 13px; 
+    transition: 0.25s; 
+}
+
+#modal-editar-contrato input:focus, 
+#modal-editar-contrato select:focus { 
+    border-color: #f59e0b; 
+    box-shadow: 0 0 0 3px rgba(245,158,11,0.25); 
+}
+
+#modal-editar-contrato .modal-actions { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 12px; 
+}
+
+#modal-editar-contrato .btn { 
+    background: #f59e0b; 
+    color: #fff; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: all .2s ease; 
+}
+
+#modal-editar-contrato .btn:hover { 
+    filter: brightness(0.9); 
+}
+
+#modal-editar-contrato .btn-secondary { 
+    background: #e5e7eb; 
+    color: #1e293b; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: all .2s ease; 
+}
+
+#modal-editar-contrato .btn-secondary:hover { 
+    background: #d1d5db; 
+}
+
+#modal-editar-contrato .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--color-overlay-modal);
+    backdrop-filter: blur(3px);
+}
