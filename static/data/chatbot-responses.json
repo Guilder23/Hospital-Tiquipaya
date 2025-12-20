@@ -1,0 +1,167 @@
+{
+  "responses": [
+    {
+      "keywords": ["agendar", "cita", "agendar cita", "como agendo", "quiero agendar", "agendar consulta"],
+      "response": "¡Claro! Puedes agendar una cita de dos formas:\n\n👤 **Si eres paciente:** Haz clic en 'Agendar Cita' desde el inicio\n\n👨‍⚕️ **Si eres personal del hospital:** Usa 'Agendar Cita (Usuario)' para agendar para un paciente\n\n¿Necesitas que te guíe directamente?",
+      "buttons": [
+        { "text": "Ir a Agendar Cita", "link": "/citas/agendar/" },
+        { "text": "Agendar para Paciente", "link": "/citas/agendar-usuario/" }
+      ]
+    },
+    {
+      "keywords": ["donde", "ubicación", "dirección", "hospital", "localización"],
+      "response": "📍 **Hospital Tiquipaya**\n\nNos encontramos en la ciudad de Tiquipaya, Bolivia.\n\nEstamos comprometidos con brindar la mejor atención médica a nuestra comunidad.\n\n¿Hay algo más en lo que pueda ayudarte?"
+    },
+    {
+      "keywords": ["horario", "hora", "atienden", "hasta que hora", "abierto"],
+      "response": "⏰ **Horarios de Atención**\n\n🏥 **Turnos Disponibles:**\n• Mañana: 08:00 - 12:30\n• Tarde: 14:00 - 18:00\n\n📅 Atendemos de lunes a viernes\n\n¿Te gustaría agendar una cita?"
+    },
+    {
+      "keywords": ["especialidades", "especialidad", "medicos", "médicos", "doctor", "doctores"],
+      "response": "🏥 **Especialidades Disponibles**\n\n• Medicina General\n• Ginecología\n• Pediatría\n• Cardiología\n• Dermatología\n• Oftalmología\n• Odontología\n• Psicología\n\n¿Deseas agendar una cita con alguna especialidad?"
+    },
+    {
+      "keywords": ["precio", "costo", "cuanto cuesta", "valor", "pago"],
+      "response": "💰 **Información sobre Costos**\n\nLos precios varían según la especialidad y el tipo de consulta.\n\nPara información exacta, contacta con recepción.\n\n¿Deseas agendar una cita?"
+    },
+    {
+      "keywords": ["pacientes", "mis citas", "historial", "citas agendadas"],
+      "response": "📋 **Tus Citas**\n\nPuedes ver tus citas en la opción 'Mis Citas'.\n\nAhí encontrarás fechas, horarios, médicos y tu historial.\n\n¿Deseas agendar una nueva cita?",
+      "buttons": [
+        { "text": "Mis Citas", "link": "/citas/mis/" }
+      ]
+    },
+    {
+      "keywords": ["contacto", "teléfono", "whatsapp", "llamar", "comunicar"],
+      "response": "📞 **Contacto**\n\n📱 WhatsApp: +591 123 456 789\n📧 Email: info@hospitaltiquipaya.bo\n🏥 Atención presencial en Tiquipaya\n\n¿En qué más puedo ayudarte?"
+    },
+    {
+      "keywords": ["requisitos", "documentos", "que necesito", "documentación"],
+      "response": "📄 **Requisitos para Agendar**\n\n✓ Cédula de Identidad\n✓ Nombre completo\n✓ Fecha de nacimiento\n\nSi eres nuevo paciente, deberás registrarte.\n\n¿Deseas ayuda para agendar?"
+    },
+    {
+      "keywords": ["cancelar", "reprogramar", "cambiar cita"],
+      "response": "🔄 **Cancelar o Reprogramar Cita**\n\nPuedes hacerlo:\n\n• Desde 'Mis Citas'\n• Por teléfono\n• En recepción\n\n¿Necesitas ayuda con una cita?"
+    },
+    {
+      "keywords": ["emergencia", "urgencia", "accidente", "grave"],
+      "response": "🚨 **Emergencias**\n\nEn caso de emergencia:\n\n📞 Llama a los servicios de emergencia\n🏥 Acude directamente al hospital\n\n⚠️ Este asistente no reemplaza atención médica inmediata."
+    },
+    {
+      "keywords": ["seguro", "seguros", "convenio", "aseguradora"],
+      "response": "🏥 **Seguros y Convenios**\n\nTrabajamos con diferentes seguros médicos.\n\nPara confirmar cobertura, consulta con recepción.\n\n¿Deseas agendar con seguro?"
+    },
+    {
+      "keywords": ["resultados", "examenes", "análisis", "laboratorio"],
+      "response": "🧪 **Resultados de Exámenes**\n\nPuedes consultar resultados de:\n\n✓ Laboratorio\n✓ Ecografías\n\nConsulta en recepción para más detalles."
+    },
+    {
+      "keywords": ["ecografia", "ultrasonido", "eco"],
+      "response": "🩺 **Ecografías**\n\nRealizamos distintos tipos de ecografías.\n\n📅 Puedes agendar una ecografía desde el sistema o en recepción.\n\n¿Deseas agendar ahora?"
+    },
+    {
+      "keywords": ["niños", "pediatria", "bebes", "infantil"],
+      "response": "👶 **Pediatría**\n\nAtendemos bebés, niños y adolescentes con médicos especializados.\n\n¿Deseas agendar una cita pediátrica?"
+    },
+    {
+      "keywords": ["medicos disponibles", "doctor hoy", "hay doctor"],
+      "response": "👨‍⚕️ **Disponibilidad Médica**\n\nLa disponibilidad depende del día y la especialidad.\n\nPuedes verificar horarios al momento de agendar."
+    },
+    {
+      "keywords": ["espera", "tiempo de espera", "demora"],
+      "response": "⏳ **Tiempo de Espera**\n\nEl tiempo puede variar según la especialidad y cantidad de pacientes.\n\nRecomendamos llegar 10–15 minutos antes."
+    },
+    {
+      "keywords": ["sabado", "domingo", "fin de semana"],
+      "response": "📅 **Atención en Fines de Semana**\n\nLa atención regular es de lunes a viernes.\n\nPara emergencias, acude directamente al hospital."
+    },
+    {
+      "keywords": ["registrarme", "nuevo paciente", "registro"],
+      "response": "📝 **Registro de Nuevo Paciente**\n\nNecesitas tu Cédula de Identidad y datos personales.\n\nNuestro personal puede ayudarte en recepción."
+    },
+    {
+      "keywords": ["queja", "reclamo", "sugerencia"],
+      "response": "💬 **Quejas y Sugerencias**\n\nValoramos tu opinión.\n\nPuedes comunicarte con administración o recepción.\n\nGracias por ayudarnos a mejorar."
+    },
+    {
+      "keywords": ["hola", "hey", "buenos días", "buenas tardes", "buenas noches"],
+      "response": "¡Hola! 👋 Bienvenido a Hospital Tiquipaya.\n\nSoy tu asistente virtual.\n\n¿En qué puedo ayudarte hoy?"
+    },
+    {
+      "keywords": ["ayuda", "información", "que puedo hacer"],
+      "response": "Puedo ayudarte con:\n\n✅ Agendar citas\n✅ Horarios y especialidades\n✅ Tus citas\n✅ Contacto\n✅ Requisitos\n\n¿Sobre qué deseas información?"
+    },
+    {
+      "keywords": ["gracias", "thanks"],
+      "response": "¡Con gusto! 😊\n\nSi tienes otra pregunta, aquí estaré."
+    },
+    {
+      "keywords": ["cardiologia", "corazón", "cardiologo", "presión", "hipertensión"],
+      "response": "❤️ **Cardiología**\n\nEspecializados en enfermedades cardiovasculares.\n\nAtendemos:\n• Control de presión arterial\n• Problemas cardíacos\n• Prevención de enfermedades del corazón\n\n¿Deseas agendar una cita con cardiología?"
+    },
+    {
+      "keywords": ["ginecologia", "ginecólogo", "mujer", "embarazo", "parto"],
+      "response": "👩‍⚕️ **Ginecología**\n\nAtendemos a las mujeres en todas las etapas de su vida.\n\n• Control de embarazo\n• Planificación familiar\n• Prevención de cáncer\n\n¿Deseas agendar una cita con ginecología?"
+    },
+    {
+      "keywords": ["dermatologia", "piel", "acne", "dermatólogo", "lunares"],
+      "response": "🧴 **Dermatología**\n\nEspecialistas en salud de la piel.\n\nAtendemos:\n• Acné y cicatrices\n• Alergias cutáneas\n• Lunares y manchas\n\n¿Deseas agendar una cita con dermatología?"
+    },
+    {
+      "keywords": ["oftalmologia", "ojos", "vista", "oftalmólogo", "lentes"],
+      "response": "👁️ **Oftalmología**\n\nCuidamos tu salud visual.\n\n• Revisión de vista\n• Cataratas\n• Glaucoma\n• Prescripción de lentes\n\n¿Deseas agendar una cita con oftalmología?"
+    },
+    {
+      "keywords": ["psicologia", "psicólogo", "depresión", "estrés", "ansiedad"],
+      "response": "🧠 **Psicología**\n\nAyuda profesional para tu salud mental.\n\n• Estrés y ansiedad\n• Depresión\n• Terapia familiar\n\n¿Deseas agendar una cita con psicología?"
+    },
+    {
+      "keywords": ["odontologia", "dentista", "dientes", "odontólogo", "caries"],
+      "response": "😁 **Odontología**\n\nCuidamos tu salud bucal.\n\n• Limpiezas y desinfecciones\n• Tratamiento de caries\n• Ortodoncia\n\n¿Deseas agendar una cita con odontología?"
+    },
+    {
+      "keywords": ["medicina general", "doctor general", "médico general"],
+      "response": "🏥 **Medicina General**\n\nNuestros médicos generales:\n\n• Atienden todo tipo de consultas\n• Realizan diagnósticos\n• Refieren a especialistas si es necesario\n\n¿Deseas agendar una cita con medicina general?"
+    },
+    {
+      "keywords": ["como funciona", "como usar", "instrucciones"],
+      "response": "📱 **¿Cómo Funciona?**\n\n1️⃣ Elige 'Agendar Cita'\n2️⃣ Selecciona especialidad y médico\n3️⃣ Elige fecha y hora disponible\n4️⃣ Confirma tu cita\n\n¡Listo! Recibirás confirmación.\n\n¿Necesitas ayuda?"
+    },
+    {
+      "keywords": ["cédula", "ci", "identidad", "datos personales"],
+      "response": "🆔 **Cédula de Identidad**\n\nNecesitarás tu CI para:\n\n• Registrarte como paciente\n• Agendar citas\n• Acceder al historial médico\n\nMantén tus datos actualizados en recepción."
+    },
+    {
+      "keywords": ["historial médico", "antecedentes", "historia clínica"],
+      "response": "📋 **Historial Médico**\n\nGuardamos tu:\n\n• Historia de consultas\n• Diagnósticos\n• Recetas y tratamientos\n• Resultados de exámenes\n\nPuedes solicitarlo en recepción."
+    },
+    {
+      "keywords": ["recepción", "recepcionista", "hablar con alguien"],
+      "response": "📞 **Recepción**\n\nNuestro equipo está disponible en:\n\n📱 Teléfono: +591 123 456 789\n🏥 Presencial: Hospital Tiquipaya\n⏰ Lunes a viernes: 08:00 - 18:00\n\n¿Hay algo más en lo que pueda ayudarte?"
+    },
+    {
+      "keywords": ["cita cancelada", "cita rechazada", "problema con cita"],
+      "response": "😔 **Problema con tu Cita**\n\nSi tu cita fue cancelada:\n\n• Verifica el email de confirmación\n• Contacta con recepción\n• Agenda una nueva cita\n\n¿Necesitas agendar nuevamente?"
+    },
+    {
+      "keywords": ["pago en linea", "pagar cita", "metodo pago"],
+      "response": "💳 **Formas de Pago**\n\nPuedes pagar:\n\n• En recepción (efectivo)\n• Transferencia bancaria\n• Consulta opciones de pago con recepción\n\n¿Necesitas más información?"
+    },
+    {
+      "keywords": ["promoción", "descuento", "oferta"],
+      "response": "🎉 **Promociones**\n\nConsulta con recepción sobre:\n\n• Paquetes de chequeos\n• Promociones especiales\n• Descuentos por referencia\n\n📞 Contacta para más detalles."
+    },
+    {
+      "keywords": ["cita online", "telemedicina", "consulta virtual"],
+      "response": "💻 **Consultas**\n\nActualmente realizamos:\n\n✅ Consultas presenciales\n\nConsulta con recepción sobre opciones disponibles.\n\n¿Deseas agendar una cita presencial?"
+    },
+    {
+      "keywords": ["receta", "medicina", "medicamento"],
+      "response": "💊 **Recetas y Medicamentos**\n\nEl médico te proporcionará una receta que puedes:\n\n• Presentar en cualquier farmacia\n• Guardar en tu historial\n• Consultar con recepción\n\n¿Necesitas algo más?"
+    },
+    {
+      "keywords": ["vacuna", "vacunación", "inmunización"],
+      "response": "💉 **Vacunas**\n\nConsultamos disponibilidad de vacunas.\n\nContacta con recepción o:\n\n📞 Llama para información de programas de vacunación.\n\n¿Deseas agendar?"
+    }
+  ]
+}
