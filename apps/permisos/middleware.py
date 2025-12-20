@@ -34,6 +34,11 @@ class PermisosMiddleware:
         '/citas/confirmar-usuario/',
     ]
     
+    # Rutas dinámicas de citas (ej: /citas/123/iniciar/)
+    RUTAS_CITAS_DINAMICAS = [
+        '/citas/',  # Esto cubrirá /citas/{id}/iniciar/, /citas/{id}/finalizar/, etc.
+    ]
+    
     def __init__(self, get_response):
         self.get_response = get_response
     
@@ -41,6 +46,13 @@ class PermisosMiddleware:
         # Permitir rutas públicas y la home específicamente
         if request.path == '/' or any(request.path.startswith(ruta) for ruta in self.RUTAS_PUBLICAS):
             return self.get_response(request)
+        
+        # Rutas dinámicas de citas que requieren autenticación
+        if any(request.path.startswith(ruta) for ruta in self.RUTAS_CITAS_DINAMICAS):
+            if request.user.is_authenticated:
+                return self.get_response(request)
+            else:
+                return redirect('accounts:login')
         
         # Rutas que no requieren validación de permisos (para usuarios autenticados)
         if any(request.path.startswith(ruta) for ruta in self.RUTAS_SIN_VALIDACION):
