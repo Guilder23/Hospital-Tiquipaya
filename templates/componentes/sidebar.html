@@ -26,11 +26,9 @@
       <a class="sidebar-link" href="{% url 'citas_ecografia:list' %}">Gestionar Citas de Ecografía</a>
       <a class="sidebar-link" href="{% url 'turnos:lista' %}">Gestionar turnos</a>
       <a class="sidebar-link" href="{% url 'contratos:list' %}">Gestionar contratos</a>
-      <!-- 🔹 Opción de agendamiento de citas para admin -->
+      <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}">Gestión de permisos</a>
       <div class="sidebar-divider"></div>
       <a class="sidebar-link" href="{% url 'citas:agendar_usuario' %}"><i class="fas fa-calendar-plus"></i> Agendar Cita (Usuario)</a>
-      <div class="sidebar-divider"></div>
-      <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}">Gestión de permisos</a>
     {% else %}
       {% if modulos_sidebar %}
         {% for item in modulos_sidebar %}
@@ -44,9 +42,6 @@
             {% endif %}
           </a>
         {% endfor %}
-        <!-- 🔹 Opción de agendamiento de citas para usuarios con permisos -->
-        <div class="sidebar-divider"></div>
-        <a class="sidebar-link" href="{% url 'citas:agendar_usuario' %}"><i class="fas fa-calendar-plus"></i> Agendar Cita (Usuario)</a>
       {% else %}
         <p style="padding: 10px; color: #999; font-size: 12px;">
           No tienes rol asignado. Contacta al administrador.

@@ -25,6 +25,10 @@ class PermisosMiddleware:
         '/citas/medico/atendidos/',
         '/citas-ecografia/mis-citas/',
         '/citas-ecografia/pacientes-atendidos/',
+        '/citas/agendar-usuario/',
+        '/citas/buscar-paciente/',
+        '/citas/confirmar-usuario/',
+        '/citas/agenda/',
     ]
     
     def __init__(self, get_response):

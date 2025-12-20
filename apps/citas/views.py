@@ -466,6 +466,7 @@ def pacientes_atendidos(request):
 # =============================================
 
 @login_required
+@login_required
 def agendar_cita_usuario(request):
     """Vista para que usuarios autenticados (admin, recepción, etc.) agenden citas"""
     manana = _manana()
