@@ -31,7 +31,7 @@ def asignar_permisos(request, tipo_id):
     """Vista para asignar permisos a un tipo de usuario (estilo matriz)"""
     tipo = get_object_or_404(TipoUsuario, id=tipo_id)
     # Solo mostrar módulos principales (excluir gestión interna)
-    modulos_excluidos = ['Usuarios', 'Tipos de Usuario', 'Gestión de Permisos']
+    modulos_excluidos = ['Usuarios', 'Gestión de Permisos']
     modulos = Modulo.objects.filter(activo=True).exclude(nombre__in=modulos_excluidos).order_by('orden', 'nombre')
     
     # Obtener módulos por defecto para este tipo

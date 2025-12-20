@@ -47,7 +47,7 @@ def permisos_usuario(request):
             ).order_by('modulo__orden')
             
             # Excluir módulos de gestión interna
-            modulos_excluidos = ['Usuarios', 'Tipos de Usuario', 'Gestión de Permisos']
+            modulos_excluidos = ['Usuarios', 'Gestión de Permisos']
             
             # Construir lista de módulos (permisos + módulos por defecto)
             modulos_dict = {}
