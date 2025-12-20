@@ -89,7 +89,9 @@ def crear_usuario(request):
             dias_atencion=dias,
         )
 
-        medico.turnos.set(turnos_seleccionados) 
+        medico.turnos.set(turnos_seleccionados)
+        messages.success(request, "Usuario creado correctamente.")
+        return redirect("accounts:usuario_list")
 
     # ================================
     # ADMISIÓN
@@ -101,6 +103,8 @@ def crear_usuario(request):
         )
 
         adm.turnos.set(turnos_seleccionados)
+        messages.success(request, "Usuario creado correctamente.")
+        return redirect("accounts:usuario_list")
 
     # ================================
     # ENCARGADO DE ADMISIÓN
@@ -112,6 +116,8 @@ def crear_usuario(request):
         )
 
         enc.turnos.set(turnos_seleccionados)
+        messages.success(request, "Usuario creado correctamente.")
+        return redirect("accounts:usuario_list")
 
     # ================================
     # ECÓGRAFO
@@ -142,9 +148,6 @@ def crear_usuario(request):
 
         messages.success(request, "Usuario creado correctamente.")
         return redirect("accounts:usuario_list")
-
-    messages.success(request, "Usuario creado correctamente.")
-    return redirect("accounts:usuario_list")
 
     # GET
     return render(request, "accounts/usuarios/modals/crear.html", {
@@ -292,8 +295,14 @@ class UsuarioToggleActiveView(LoginRequiredMixin, UserPassesTestMixin, View):
         usuario = get_object_or_404(User, pk=pk)
 
         # Alternar activo ↔ inactivo
-        usuario.is_active = not usuario.is_active
+        estado_nuevo = not usuario.is_active
+        usuario.is_active = estado_nuevo
         usuario.save()
+
+        if estado_nuevo:
+            messages.success(request, f'Usuario "{usuario.username}" activado correctamente.')
+        else:
+            messages.success(request, f'Usuario "{usuario.username}" desactivado correctamente.')
 
         return redirect('accounts:usuario_list')
 
@@ -329,7 +338,9 @@ class TipoUsuarioCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
         obj = form.save(commit=False)
         obj.creado_por = self.request.user
         form.instance = obj
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, f'Tipo de usuario "{obj.nombre}" creado correctamente.')
+        return response
 
 class TipoUsuarioUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = TipoUsuario
@@ -345,7 +356,9 @@ class TipoUsuarioUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         obj = form.save(commit=False)
         obj.actualizado_por = self.request.user
         form.instance = obj
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, f'Tipo de usuario "{obj.nombre}" actualizado correctamente.')
+        return response
 
 class TipoUsuarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = TipoUsuario
@@ -355,6 +368,13 @@ class TipoUsuarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     def test_func(self):
         permiso = getattr(self.request, 'permiso_actual', None)
         return permiso and permiso.puede_editar() if permiso else False
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        nombre = obj.nombre
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, f'Tipo de usuario "{nombre}" eliminado correctamente.')
+        return response
 
 # ----- Usuarios -----
 class UsuarioListView(LoginRequiredMixin, ListView):

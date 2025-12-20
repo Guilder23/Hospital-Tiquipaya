@@ -4,6 +4,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django import forms
 from apps.accounts.models import Perfil, TipoUsuario
 from apps.citas.models import Cita
@@ -87,6 +88,11 @@ class PacienteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         obj.activo = True
         obj.save()
         self.object = obj
+        msg = f'Paciente "{obj.nombres}" creado correctamente.'
+        messages.success(self.request, msg)
+        # Si es AJAX, retornar JSON con el mensaje
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True, 'message': msg, 'redirect': str(self.get_success_url())})
         return HttpResponseRedirect(self.get_success_url())
     def form_invalid(self, form):
         return JsonResponse(form.errors, status=400)
@@ -101,6 +107,14 @@ class PacienteUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         permiso = getattr(self.request, 'permiso_actual', None)
         return permiso and permiso.puede_editar() if permiso else False
+    def form_valid(self, form):
+        obj = form.save()
+        msg = f'Paciente "{obj.nombres}" actualizado correctamente.'
+        messages.success(self.request, msg)
+        # Si es AJAX, retornar JSON con el mensaje
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True, 'message': msg, 'redirect': str(self.get_success_url())})
+        return super().form_valid(form)
     def form_invalid(self, form):
         return JsonResponse(form.errors, status=400)
 
@@ -115,8 +129,14 @@ class PacienteDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return permiso and permiso.puede_editar() if permiso else False
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+        nombre = self.object.nombres
         self.object.activo = False
         self.object.save(update_fields=['activo'])
+        msg = f'Paciente "{nombre}" eliminado correctamente.'
+        messages.success(request, msg)
+        # Si es AJAX, retornar JSON con el mensaje
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True, 'message': msg, 'redirect': str(self.get_success_url())})
         return HttpResponseRedirect(self.get_success_url())
 
 

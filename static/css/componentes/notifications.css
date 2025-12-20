@@ -1,0 +1,67 @@
+/* Toast Notifications - Bottom Left */
+
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+}
+
+.toast-notification {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid;
+    font-size: 13px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast-notification.success {
+    border-left-color: #10b981;
+    background-color: #f0fdf4;
+}
+
+.toast-notification.error {
+    border-left-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+.toast-notification.warning {
+    border-left-color: #f59e0b;
+    background-color: #fffbf0;
+}
+
+.toast-notification.info {
+    border-left-color: #3b82f6;
+    background-color: #f0f9ff;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}
+
+.toast-notification.removing {
+    animation: slideOut 0.3s ease-in forwards;
+}

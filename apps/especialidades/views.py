@@ -60,6 +60,7 @@ def activar_especialidad(request, id):
     especialidad = get_object_or_404(Especialidad, id=id)
     especialidad.estado = True
     especialidad.save()
+    messages.success(request, f'Especialidad "{especialidad.nombre}" activada correctamente.')
     return redirect('lista_especialidades')
 
 @login_required
@@ -68,3 +69,9 @@ def desactivar_especialidad(request, id):
     if not (permiso and permiso.puede_editar()):
         messages.error(request, "No tienes permiso para desactivar especialidades")
         return redirect('lista_especialidades')
+
+    especialidad = get_object_or_404(Especialidad, id=id)
+    especialidad.estado = False
+    especialidad.save()
+    messages.success(request, f'Especialidad "{especialidad.nombre}" desactivada correctamente.')
+    return redirect('lista_especialidades')

@@ -1,0 +1,10 @@
+<div id="toast-container"></div>
+{% if messages %}
+<div id="django-messages" style="display:none;">
+[
+{% for message in messages %}
+  {"text": "{{ message|escapejs }}", "type": "{{ message.tags }}"}{% if not forloop.last %},{% endif %}
+{% endfor %}
+]
+</div>
+{% endif %}
