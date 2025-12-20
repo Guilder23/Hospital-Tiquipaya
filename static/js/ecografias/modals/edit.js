@@ -34,12 +34,23 @@ document.addEventListener('DOMContentLoaded',function(){
       e.preventDefault();
       if(errorBox){ errorBox.style.display='none'; errorBox.textContent=''; }
       var fd=new FormData(form);
-      fetch(form.getAttribute('action'),{ method:'POST', body:fd, credentials:'same-origin' })
+      fetch(form.getAttribute('action'),{ method:'POST', body:fd, credentials:'same-origin', headers:{'X-Requested-With':'XMLHttpRequest'} })
         .then(function(res){
           if(res.status<400){
-            close(mEdit);
-            setTimeout(function(){ window.location.reload(); }, 600);
-            return null;
+            return res.json().then(function(data){
+              if(data.success){
+                close(mEdit);
+                if(typeof showNotification === 'function'){
+                  showNotification(data.message, 'success');
+                }
+                setTimeout(function(){ window.location.href = data.redirect; }, 1500);
+              }
+              return null;
+            }).catch(function(){
+              close(mEdit);
+              setTimeout(function(){ window.location.reload(); }, 600);
+              return null;
+            });
           }
           return res.text();
         })

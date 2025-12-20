@@ -560,6 +560,9 @@ def crear_cita_ecografia(request):
             cita_consulta=cita_consulta
         )
         
+        msg = f'Cita de ecografía agendada correctamente para {paciente.nombres}'
+        messages.success(request, msg)
+        
         return JsonResponse({
             'ok': True,
             'mensaje': 'Cita de ecografía creada exitosamente',
@@ -603,6 +606,9 @@ def editar_cita_ecografia(request, cita_id):
         cita.comentario_medico = comentario_medico
         cita.resultado_ecografia = resultado_ecografia
         cita.save()
+        
+        msg = 'Cita de ecografía actualizada correctamente'
+        messages.success(request, msg)
         
         return JsonResponse({
             'ok': True,
