@@ -10,7 +10,7 @@
 
 <section class="card turnos-lista">
     <h2>Gestión de Turnos</h2>
-    {% if puede_admin %}
+    {% if user.is_superuser or permiso_actual.puede_editar %}
     <p><button class="btn" id="btn-open-create">Nuevo Turno</button></p>
     {% endif %}
 
@@ -44,7 +44,7 @@
                 </td>                
                 <td class="actions">
                     <button class="btn btn-view" data-id="{{ turno.id }}" data-estado="{{ turno.estado }}">Ver</button>
-                    {% if puede_admin %}
+                    {% if user.is_superuser or permiso_actual.puede_editar %}
                     <button 
                         class="btn btn-edit" 
                         data-id="{{ turno.pk }}" 

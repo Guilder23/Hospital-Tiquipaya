@@ -33,10 +33,11 @@
             <div class="d-flex flex-column align-items-start mb-3">
                 <h2>Lista de Especialidades</h2>
                 <!-- Botón abrir modal custom -->
+                {% if user.is_superuser or permiso_actual.puede_editar %}
                 <button class="btn btn-primary" id="btn-open-create">
                     Nueva Especialidad
                 </button>
-            </div>
+                {% endif %}
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
@@ -71,6 +72,7 @@
                         </td>
                         <td>
                             <button class="btn btn-warning btn-sm btn-view">Ver</button>
+                            {% if user.is_superuser or permiso_actual.puede_editar %}
                             <button class="btn btn-warning btn-sm btn-edit">Editar</button>
 
                             {% if esp.estado %}
@@ -81,6 +83,7 @@
                                 <a href="{% url 'activar_especialidad' esp.id %}" class="btn btn-success btn-sm">
                                     Activar
                                 </a>
+                            {% endif %}
                             {% endif %}
                         </td>
                     </tr>

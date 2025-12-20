@@ -10,7 +10,7 @@
 {% block content %}
 <section class="card pacientes-lista">
   <h2>Gestión de Ecografías</h2>
-  {% if puede_admin %}
+  {% if user.is_superuser or permiso_actual.puede_editar %}
   <p><button class="btn" id="btn-open-create">Nueva Ecografía</button></p>
   {% endif %}
   <table class="table pacientes">
@@ -40,7 +40,7 @@
         </td>
         <td class="actions">
           <button class="btn btn-view" data-id="{{ eco.id }}" title="Ver detalles">Ver</button>
-          {% if puede_admin %}
+          {% if user.is_superuser or permiso_actual.puede_editar %}
           <button class="btn btn-edit" data-id="{{ eco.id }}" title="Editar ecografía">Editar</button>
           <button class="btn btn-delete" data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" title="Eliminar ecografía">Eliminar</button>
           {% endif %}

@@ -7,18 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 from apps.accounts.models import Perfil
+from apps.permisos.utils import es_admin_o_staff
 from .models import Contrato
 
 def _es_admin(user):
-    if user.is_superuser or user.is_staff:
-        return True
-    try:
-        perfil = user.perfil
-    except Perfil.DoesNotExist:
-        return False
-    if perfil.tipo is None:
-        return False
-    return perfil.tipo.nombre.lower() == 'administrador'
+    return es_admin_o_staff(user)
 
 class ContratoListView(ListView):
     model = Contrato
@@ -27,7 +20,7 @@ class ContratoListView(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['puede_admin'] = _es_admin(self.request.user)
+        ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
         return ctx
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -43,6 +36,9 @@ class ContratoAPIView(View):
         return JsonResponse({'error': 'ID requerido'}, status=400)
 
     def post(self, request):
+        permiso = getattr(request, 'permiso_actual', None)
+        if not (permiso and permiso.puede_editar()):
+            return JsonResponse({'error': 'No tienes permiso para crear'}, status=403)
         try:
             data = json.loads(request.body)
             if not all(k in data for k in ('nombre','fecha_inicio','fecha_fin')):
@@ -57,6 +53,9 @@ class ContratoAPIView(View):
             return JsonResponse({'error': str(e)}, status=400)
 
     def patch(self, request, pk):
+        permiso = getattr(request, 'permiso_actual', None)
+        if not (permiso and permiso.puede_editar()):
+            return JsonResponse({'error': 'No tienes permiso para editar'}, status=403)
         try:
             contrato = Contrato.objects.get(pk=pk)
         except Contrato.DoesNotExist:
@@ -78,6 +77,9 @@ class ContratoAPIView(View):
             return JsonResponse({'error': str(e)}, status=400)
 
     def delete(self, request, pk):
+        permiso = getattr(request, 'permiso_actual', None)
+        if not (permiso and permiso.puede_editar()):
+            return JsonResponse({'error': 'No tienes permiso para eliminar'}, status=403)
         try:
             contrato = Contrato.objects.get(pk=pk)
             contrato.estado = False

@@ -9,7 +9,7 @@
 {% block content %}
 <section class="card">
   <h2>Tipos de usuario</h2>
-  {% if request.user.is_staff %}
+  {% if user.is_superuser or permiso_actual.puede_editar %}
   <p><button class="btn" id="btn-open-create">Nuevo tipo</button></p>
   {% endif %}
   <table class="table">
@@ -21,7 +21,7 @@
         <td>{{ t.descripcion }}</td>
         <td>{{ t.creado_en}} </td>
         <td class="actions">
-          {% if request.user.is_staff %}
+          {% if user.is_superuser or permiso_actual.puede_editar %}
             <button class="link-view btn-view" data-id="{{ t.id }}">Ver</button>
             <button class="link-edit btn-edit" data-id="{{ t.id }}">Editar</button>
             <button class="link-delete btn-delete" data-id="{{ t.id }}" data-nombre="{{ t.nombre }}">Eliminar</button>

@@ -5,6 +5,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .forms import UserCreateWithProfileForm, UserUpdateWithProfileForm
+from apps.permisos.utils import es_admin_o_staff
 
 from django.contrib import messages 
 from django.contrib.auth.models import User 
@@ -297,24 +298,22 @@ class UsuarioToggleActiveView(LoginRequiredMixin, UserPassesTestMixin, View):
         return redirect('accounts:usuario_list')
 
     def test_func(self):
-        return self.request.user.is_staff
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
     
 # Función para verificar si un usuario es administrador
 def _es_admin(user):
-    if user.is_superuser or user.is_staff:
-        return True
-    try:
-        perfil = user.perfil
-    except Perfil.DoesNotExist:
-        return False
-    if perfil.tipo is None:
-        return False
-    return perfil.tipo.nombre.lower() == 'administrador'
+    return es_admin_o_staff(user)
 
 # ----- Tipos de Usuario -----
 class TipoUsuarioListView(LoginRequiredMixin, ListView):
     model = TipoUsuario
     template_name = 'accounts/tipos/list.html'
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
+        return ctx
 
 class TipoUsuarioCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = TipoUsuario
@@ -323,7 +322,8 @@ class TipoUsuarioCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView)
     success_url = reverse_lazy('accounts:tipousuario_list')
 
     def test_func(self):
-        return self.request.user.is_staff
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -338,7 +338,8 @@ class TipoUsuarioUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
     success_url = reverse_lazy('accounts:tipousuario_list')
 
     def test_func(self):
-        return self.request.user.is_staff
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -352,7 +353,8 @@ class TipoUsuarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     success_url = reverse_lazy('accounts:tipousuario_list')
 
     def test_func(self):
-        return self.request.user.is_staff
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
 
 # ----- Usuarios -----
 class UsuarioListView(LoginRequiredMixin, ListView):
@@ -367,6 +369,7 @@ class UsuarioListView(LoginRequiredMixin, ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['tipos'] = TipoUsuario.objects.all()
         ctx['puede_admin'] = _es_admin(self.request.user)
+        ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
         ctx['especialidades'] = Especialidad.objects.all()
         ctx['turnos'] = Turnos.objects.all()
         ctx['contratos'] = Contrato.objects.filter(estado=True)

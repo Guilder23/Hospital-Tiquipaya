@@ -13,7 +13,9 @@
 
 <section class="card citas-ecografia-lista">
     <h2>Gestión de Citas de Ecografía</h2>
+    {% if user.is_superuser or permiso_actual.puede_editar %}
     <p><button class="btn" id="btn-open-create">Nueva Cita de Ecografía</button></p>
+    {% endif %}
 
     <table class="table citas-ecografia">
         <thead>
@@ -59,16 +61,18 @@
                 </td>
                 <td class="actions">
                     <button class="btn btn-view" data-id="{{ cita.id }}">Ver</button>
-                    {% if cita.estado != 'CANCELADA' %}
-                    <button class="btn btn-edit" data-id="{{ cita.id }}"
-                        data-paciente="{{ cita.paciente.id }}"
-                        data-medico="{{ cita.medico.id }}"
-                        data-fecha="{{ cita.fecha|date:'Y-m-d' }}"
-                        data-hora="{{ cita.hora }}"
-                        data-estado="{{ cita.estado }}"
-                        data-comentario="{{ cita.comentario_medico }}"
-                        data-resultado="{{ cita.resultado_ecografia }}">Editar</button>
-                    <button class="btn btn-delete" data-id="{{ cita.id }}" data-paciente="{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}">Cancelar</button>
+                    {% if user.is_superuser or permiso_actual.puede_editar %}
+                        {% if cita.estado != 'CANCELADA' %}
+                        <button class="btn btn-edit" data-id="{{ cita.id }}"
+                            data-paciente="{{ cita.paciente.id }}"
+                            data-medico="{{ cita.medico.id }}"
+                            data-fecha="{{ cita.fecha|date:'Y-m-d' }}"
+                            data-hora="{{ cita.hora }}"
+                            data-estado="{{ cita.estado }}"
+                            data-comentario="{{ cita.comentario_medico }}"
+                            data-resultado="{{ cita.resultado_ecografia }}">Editar</button>
+                        <button class="btn btn-delete" data-id="{{ cita.id }}" data-paciente="{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}">Cancelar</button>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>

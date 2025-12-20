@@ -2,6 +2,10 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.urls import resolve
 from .models import Permiso, Modulo
+from .utils import es_admin_o_staff, PermisoAdmin
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PermisosMiddleware:
@@ -13,19 +17,21 @@ class PermisosMiddleware:
         '/accounts/logout/',
         '/static/',
         '/media/',
-        '/',
+        # '/' - REMOVIDO porque hace que TODAS las rutas sean públicas
     ]
     
     def __init__(self, get_response):
         self.get_response = get_response
     
     def __call__(self, request):
-        # Permitir rutas públicas
-        if any(request.path.startswith(ruta) for ruta in self.RUTAS_PUBLICAS):
+        # Permitir rutas públicas y la home específicamente
+        if request.path == '/' or any(request.path.startswith(ruta) for ruta in self.RUTAS_PUBLICAS):
             return self.get_response(request)
         
-        # Permitir si es superusuario
-        if request.user.is_authenticated and request.user.is_superuser:
+        # Si es superusuario o admin/staff, crear un permiso virtual que permite editar todo
+        if request.user.is_authenticated and es_admin_o_staff(request.user):
+            request.permiso_actual = PermisoAdmin()
+            logger.info(f"✓ Admin/Staff: {request.user.username} → PermisoAdmin asignado")
             return self.get_response(request)
         
         # Verificar permisos si el usuario está autenticado
@@ -33,6 +39,7 @@ class PermisosMiddleware:
             try:
                 # Obtener tipo de usuario desde el perfil
                 tipo_usuario = request.user.perfil.tipo
+                logger.info(f"🔍 Request: {request.path} | Usuario: {request.user.username} | Tipo: {tipo_usuario}")
                 
                 if not tipo_usuario:
                     if not request.path.startswith('/permisos/'):
@@ -41,33 +48,42 @@ class PermisosMiddleware:
                 
                 # Buscar módulo que coincida con la URL
                 modulo = self.obtener_modulo_por_url(request.path)
+                logger.info(f"  ➜ Módulo encontrado: {modulo.nombre if modulo else 'None'}")
                 
                 if modulo:
                     try:
                         permiso = Permiso.objects.get(tipo_usuario=tipo_usuario, modulo=modulo)
+                        logger.info(f"  ➜ Permiso: {permiso.tipo_permiso}, visible={permiso.visible}")
                         
                         # Verificar si tiene acceso
                         if not permiso.tiene_acceso():
                             messages.error(request, f'No tienes permiso para acceder a {modulo.nombre}')
+                            logger.warning(f"  ❌ Sin acceso a {modulo.nombre}")
                             return redirect('home')
                         
                         # Verificar si es método de modificación y solo tiene vista
                         if request.method in ['POST', 'PUT', 'DELETE', 'PATCH'] and permiso.es_solo_vista():
                             messages.error(request, f'Solo tienes permiso de lectura en {modulo.nombre}')
+                            logger.warning(f"  ❌ Solo lectura en {modulo.nombre}")
                             return redirect('home')
                         
                         # Agregar el permiso al request para uso en templates
                         request.permiso_actual = permiso
+                        logger.info(f"✓ Permiso asignado: {tipo_usuario.nombre} → {modulo.nombre} = {permiso.tipo_permiso}")
                         
                     except Permiso.DoesNotExist:
                         # Si no existe permiso específico, denegar acceso
                         messages.error(request, f'No tienes permiso configurado para acceder a este módulo')
+                        logger.error(f"  ❌ Permiso no existe para {tipo_usuario} → {modulo}")
                         return redirect('home')
+                else:
+                    logger.warning(f"  ⚠️  No se encontró módulo para {request.path}")
                 
             except AttributeError:
                 # Usuario sin perfil
                 if not request.path.startswith('/permisos/'):
                     messages.warning(request, 'No tienes un perfil configurado. Contacta al administrador.')
+                    logger.error(f"  ❌ Usuario sin perfil: {request.user.username}")
                     return redirect('home')
         
         response = self.get_response(request)

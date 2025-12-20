@@ -7,19 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from apps.accounts.models import Perfil, TipoUsuario
 from apps.citas.models import Cita
+from apps.permisos.utils import es_admin_o_staff
 from .models import Paciente
 from datetime import datetime
 
 def _es_admin(user):
-    if user.is_superuser or user.is_staff:
-        return True
-    try:
-        perfil = user.perfil
-    except Perfil.DoesNotExist:
-        return False
-    if perfil.tipo is None:
-        return False
-    return perfil.tipo.nombre.lower() == 'administrador'
+    """Función auxiliar para verificar si es admin o staff"""
+    return es_admin_o_staff(user)
 
 class PacienteBaseForm(forms.ModelForm):
     def clean_tiene_seguro(self):
@@ -76,7 +70,7 @@ class PacienteListView(LoginRequiredMixin, ListView):
     context_object_name = 'pacientes'
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['puede_admin'] = _es_admin(self.request.user)
+        ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
         return ctx
 
 class PacienteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -84,7 +78,10 @@ class PacienteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = 'pacientes/pacientes.html'
     success_url = reverse_lazy('paciente_list')
     def test_func(self):
-        return _es_admin(self.request.user)
+        if es_admin_o_staff(self.request.user):
+            return True
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.activo = True
@@ -100,7 +97,10 @@ class PacienteUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'pacientes/pacientes.html'
     success_url = reverse_lazy('paciente_list')
     def test_func(self):
-        return _es_admin(self.request.user)
+        if es_admin_o_staff(self.request.user):
+            return True
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
     def form_invalid(self, form):
         return JsonResponse(form.errors, status=400)
 
@@ -109,7 +109,10 @@ class PacienteDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'pacientes/confirm_delete.html'
     success_url = reverse_lazy('paciente_list')
     def test_func(self):
-        return _es_admin(self.request.user)
+        if es_admin_o_staff(self.request.user):
+            return True
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.activo = False

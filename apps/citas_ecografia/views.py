@@ -14,6 +14,15 @@ from apps.pacientes.models import Paciente
 from apps.especialidades.models import Especialidad
 from apps.accounts.models import Medico, Ecografo
 from apps.horarios.models import DiasAtencion
+from apps.permisos.utils import es_admin_o_staff
+
+
+def _tiene_permiso_edicion(request):
+    """Verifica si el usuario tiene permisos para editar/crear citas"""
+    if es_admin_o_staff(request.user):
+        return True
+    permiso = getattr(request, 'permiso_actual', None)
+    return permiso and permiso.puede_editar()
 
 
 def _obtener_nombre_dia(fecha):
@@ -72,29 +81,16 @@ def _slots_turno(turno_obj, fecha):
 @login_required
 def citas_ecografia_list(request):
     """Lista todas las citas de ecografía del Personal de Admisión"""
-    # Permitir acceso a superusuario, Admisión y Encargado de Admisión
-    tiene_permiso = (
-        request.user.is_superuser or
-        request.user.groups.filter(name='admision').exists()
-    )
-    if not tiene_permiso:
-        try:
-            _ = request.user.admision
-            tiene_permiso = True
-        except Exception:
-            tiene_permiso = False
-    if not tiene_permiso:
-        try:
-            _ = request.user.encargado_admision
-            tiene_permiso = True
-        except Exception:
-            tiene_permiso = False
-    if not tiene_permiso:
+    # Verificar permisos: superusuario o permiso asignado
+    if not (es_admin_o_staff(request.user) or getattr(request, 'permiso_actual', None)):
         messages.error(request, 'No tienes acceso a esta sección')
         return redirect('home')
+    
+    permiso = getattr(request, 'permiso_actual', None)
     citas = CitaEcografia.objects.all().select_related('paciente', 'especialidad', 'medico')
     ctx = {
         'citas': citas,
+        'permiso_actual': permiso,
     }
     return render(request, 'citas_ecografia/citas_ecografia.html', ctx)
 
@@ -320,19 +316,9 @@ def guardar_resultado_cita(request, cita_id):
 @login_required
 def agendar_cita_ecografia(request):
     """Vista para agendar nueva cita de ecografía"""
-    # Permitir Admisión y Encargado de Admisión
-    try:
-        admision = request.user.admision
-    except Exception:
-        admision = None
-    if not admision:
-        try:
-            encargado = request.user.encargado_admision
-        except Exception:
-            encargado = None
-        if not encargado:
-            messages.error(request, 'No tienes acceso a esta sección')
-            return redirect('home')
+    if not _tiene_permiso_edicion(request):
+        messages.error(request, 'No tienes acceso a esta sección')
+        return redirect('home')
     
     paciente = None
     especialidad = None
@@ -530,24 +516,7 @@ def obtener_horarios_medico(request):
 @require_POST
 def crear_cita_ecografia(request):
     """Crear nueva cita de ecografía"""
-    # Permitir acceso a superusuario, Admisión y Encargado de Admisión
-    tiene_permiso = (
-        request.user.is_superuser or
-        request.user.groups.filter(name='admision').exists()
-    )
-    if not tiene_permiso:
-        try:
-            _ = request.user.admision
-            tiene_permiso = True
-        except Exception:
-            tiene_permiso = False
-    if not tiene_permiso:
-        try:
-            _ = request.user.encargado_admision
-            tiene_permiso = True
-        except Exception:
-            tiene_permiso = False
-    if not tiene_permiso:
+    if not _tiene_permiso_edicion(request):
         return JsonResponse({
             'ok': False,
             'error': 'No tienes acceso'
@@ -607,12 +576,7 @@ def crear_cita_ecografia(request):
 @require_POST
 def editar_cita_ecografia(request, cita_id):
     """Editar cita de ecografía"""
-    if not (
-        request.user.is_superuser or
-        request.user.groups.filter(name='admision').exists() or
-        hasattr(request.user, 'admision') or
-        hasattr(request.user, 'encargado_admision')
-    ):
+    if not _tiene_permiso_edicion(request):
         return JsonResponse({
             'ok': False,
             'error': 'No tienes acceso'
@@ -660,12 +624,7 @@ def editar_cita_ecografia(request, cita_id):
 @require_POST
 def cancelar_cita_ecografia(request, cita_id):
     """Cancelar cita de ecografía"""
-    if not (
-        request.user.is_superuser or
-        request.user.groups.filter(name='admision').exists() or
-        hasattr(request.user, 'admision') or
-        hasattr(request.user, 'encargado_admision')
-    ):
+    if not _tiene_permiso_edicion(request):
         return JsonResponse({
             'ok': False,
             'error': 'No tienes acceso'
@@ -680,7 +639,6 @@ def cancelar_cita_ecografia(request, cita_id):
             'ok': True,
             'mensaje': 'Cita cancelada exitosamente'
         })
-    
     except CitaEcografia.DoesNotExist:
         return JsonResponse({
             'ok': False,

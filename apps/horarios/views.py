@@ -11,19 +11,12 @@ import json
 
 # Asegúrate de que este import sea correcto
 from apps.accounts.models import Perfil 
+from apps.permisos.utils import es_admin_o_staff
 from .models import Turnos
 
 # --- FUNCIÓN DE PERMISOS ---
 def _es_admin(user):
-    if user.is_superuser or user.is_staff:
-        return True
-    try:
-        perfil = user.perfil
-    except Perfil.DoesNotExist:
-        return False
-    if perfil.tipo is None:
-        return False
-    return perfil.tipo.nombre.lower() == 'administrador'
+    return es_admin_o_staff(user)
 
 # --- VISTA PARA LA PLANTILLA (Template View) ---
 class TurnoListView(LoginRequiredMixin, ListView): # Hereda de LoginRequiredMixin
@@ -33,10 +26,10 @@ class TurnoListView(LoginRequiredMixin, ListView): # Hereda de LoginRequiredMixi
     context_object_name = 'lista_turnos'
 
     def get_context_data(self, **kwargs):
-        """Añade la variable puede_admin al contexto para el template."""
+        """Añade la variable permiso_actual al contexto para el template."""
         ctx = super().get_context_data(**kwargs)
         # Inyectamos la variable que usaste en tu template
-        ctx['puede_admin'] = _es_admin(self.request.user) 
+        ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
         return ctx
 
 # --- VISTA PARA LA API (AJAX CRUD) ---
@@ -62,8 +55,9 @@ class TurnoAPIView(View):
 
     # Crear un nuevo turno (C)
     def post(self, request):
-        # Aquí es donde deberías verificar permisos (_es_admin(request.user))
-        # Si no tiene permiso, retornar JsonResponse({'error': 'No autorizado'}, status=403)
+        permiso = getattr(request, 'permiso_actual', None)
+        if not (permiso and permiso.puede_editar()):
+            return JsonResponse({'error': 'No tienes permiso para crear'}, status=403)
         try:
             data = json.loads(request.body)
             if not all(k in data for k in ('nombre', 'hora_ini', 'hora_fin')):
@@ -80,7 +74,9 @@ class TurnoAPIView(View):
 
     # Editar un turno (U) - Usaremos PATCH para actualizar campos específicos
     def patch(self, request, pk):
-        # Verificar permisos
+        permiso = getattr(request, 'permiso_actual', None)
+        if not (permiso and permiso.puede_editar()):
+            return JsonResponse({'error': 'No tienes permiso para editar'}, status=403)
         try:
             turno = Turnos.objects.get(pk=pk)
         except Turnos.DoesNotExist:
@@ -106,6 +102,9 @@ class TurnoAPIView(View):
 
     # Eliminar un turno (D)
     def delete(self, request, pk):
+        permiso = getattr(request, 'permiso_actual', None)
+        if not (permiso and permiso.puede_editar()):
+            return JsonResponse({'error': 'No tienes permiso para eliminar'}, status=403)
         try:
             turno = Turnos.objects.get(pk=pk)
             turno.estado = False  # Lo deshabilita

@@ -5,19 +5,12 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django import forms
 from apps.accounts.models import Perfil, Ecografo
 from apps.especialidades.models import Especialidad
+from apps.permisos.utils import es_admin_o_staff
 from .models import Ecografia
 
 
 def _es_admin(user):
-    if user.is_superuser or user.is_staff:
-        return True
-    try:
-        perfil = user.perfil
-    except Perfil.DoesNotExist:
-        return False
-    if perfil.tipo is None:
-        return False
-    return perfil.tipo.nombre.lower() == 'administrador'
+    return es_admin_o_staff(user)
 
 
 class EcografiaBaseForm(forms.ModelForm):
@@ -43,7 +36,7 @@ class EcografiaListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['puede_admin'] = _es_admin(self.request.user)
+        ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
         ctx['ecografos'] = Ecografo.objects.all()
         ctx['especialidades'] = Especialidad.objects.all()
         return ctx
@@ -88,7 +81,8 @@ class EcografiaDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('ecografia_list')
     
     def test_func(self):
-        return _es_admin(self.request.user)
+        permiso = getattr(self.request, 'permiso_actual', None)
+        return permiso and permiso.puede_editar() if permiso else False
     
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

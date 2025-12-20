@@ -2,17 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Modulo, Permiso
+from .utils import es_admin_o_staff
 from apps.accounts.models import TipoUsuario
 
 
 def es_administrador(user):
-    """Verifica si el usuario es administrador"""
-    if user.is_superuser:
-        return True
-    try:
-        return user.perfil.tipo and user.perfil.tipo.nombre == 'Administrador'
-    except:
-        return False
+    """Verifica si el usuario es administrador o staff"""
+    return es_admin_o_staff(user)
 
 
 @login_required

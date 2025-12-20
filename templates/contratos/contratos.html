@@ -10,7 +10,7 @@
 
 <section class="card contratos-lista">
     <h2>Gestión de Contratos</h2>
-    {% if puede_admin %}
+    {% if user.is_superuser or permiso_actual.puede_editar %}
     <p><button class="btn" id="btn-open-create">Nuevo Contrato</button></p>
     {% endif %}
 
@@ -43,7 +43,7 @@
                 </td>
                 <td class="actions">
                     <button class="btn btn-view" data-id="{{ contrato.id }}" data-estado="{{ contrato.estado }}">Ver</button>
-                    {% if puede_admin %}
+                    {% if user.is_superuser or permiso_actual.puede_editar %}
                     <button class="btn btn-edit"
                         data-id="{{ contrato.id }}"
                         data-nombre="{{ contrato.nombre }}"
