@@ -1,112 +1,196 @@
+/* =========================
+   Tabla de Permisos
+========================= */
 
 .permisos-table {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 10px 30px rgba(30, 64, 175, 0.12);
 }
 
+/* ---------- Encabezado ---------- */
+
 .permisos-table thead {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: #ffffff;
 }
 
 .permisos-table thead th {
-    padding: 15px;
-    font-weight: 600;
+    padding: 16px 14px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     text-align: center;
+    border: none;
 }
 
+/* ---------- Cuerpo ---------- */
+
 .permisos-table tbody td {
-    padding: 12px 15px;
+    padding: 14px 16px;
     vertical-align: middle;
-    border-bottom: 1px solid #e9ecef;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.permisos-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.permisos-table tbody tr {
+    transition: background 0.15s ease;
 }
 
 .permisos-table tbody tr:hover {
-    background-color: #f8f9fa;
+    background: #f1f5f9;
 }
+
+/* ---------- Nombre del módulo ---------- */
 
 .modulo-nombre {
     font-weight: 600;
-    color: #2c3e50;
+    color: #1e293b;
 }
 
-/* Checkboxes y radios personalizados */
+/* =========================
+   Inputs (checkbox / radio)
+========================= */
+
 .form-check-input {
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.35rem;
+    height: 1.35rem;
     cursor: pointer;
+    border-radius: 6px;
+    border: 2px solid #94a3b8;
+    transition: all 0.15s ease;
+}
+
+.form-check-input[type="radio"] {
+    border-radius: 50%;
 }
 
 .form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
+    background-color: #2563eb;
+    border-color: #2563eb;
 }
 
-/* Radios para tipo de permiso */
-.permiso-radio-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
 }
 
-.permiso-radio {
-    cursor: pointer;
-}
+/* =========================
+   Reglas clave
+========================= */
 
-.permiso-label {
-    cursor: pointer;
-    user-select: none;
-    margin: 0;
-}
-
-/* Reglas clave */
 .reglas-box {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-left: 4px solid #667eea;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border-left: 4px solid #2563eb;
+    padding: 20px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.12);
 }
 
 .reglas-box h6 {
-    color: #667eea;
-    font-weight: bold;
-    margin-bottom: 15px;
+    color: #1e40af;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
 }
 
 .reglas-box ul {
+    padding-left: 1.1rem;
     margin-bottom: 0;
 }
 
 .reglas-box li {
     margin-bottom: 8px;
-    color: #2c3e50;
+    color: #1e293b;
+    font-size: 0.9rem;
 }
 
 .reglas-box strong {
-    color: #667eea;
+    color: #1e40af;
 }
 
-.btn-guardar {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    border: none;
-    padding: 12px 40px;
+/* =========================
+   Fila por defecto
+========================= */
+
+.fila-por-defecto {
+    background: linear-gradient(90deg, #e0f2fe, #f0f9ff);
+    border-left: 4px solid #0284c7;
+}
+
+.fila-por-defecto .modulo-nombre {
+    color: #075985;
+}
+
+.fila-por-defecto .badge {
+    font-size: 0.7rem;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+    background-color: #0ea5e9;
+}
+
+/* =========================
+   Botón Guardar
+========================= */
+
+.btn-guardar {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    border: none;
+    padding: 14px 52px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    border-radius: 999px;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+    transition: all 0.2s ease;
 }
 
 .btn-guardar:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(17, 153, 142, 0.4);
+    box-shadow: 0 16px 36px rgba(37, 99, 235, 0.45);
 }
 
-/* Fila por defecto */
-.fila-por-defecto {
-    background-color: #e3f2fd;
-    border-left: 3px solid #2196F3;
-}
+/* =========================
+   Responsive (Mobile)
+========================= */
 
-.fila-por-defecto .badge {
-    font-size: 0.75rem;
+@media (max-width: 768px) {
+    .permisos-table thead {
+        display: none;
+    }
+
+    .permisos-table tbody tr {
+        display: block;
+        margin-bottom: 14px;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(30, 64, 175, 0.12);
+    }
+
+    .permisos-table tbody td {
+        display: block;
+        text-align: right;
+        padding: 10px 14px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .permisos-table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .permisos-table tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+    }
 }
