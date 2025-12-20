@@ -28,7 +28,6 @@ class PermisosMiddleware:
         '/citas/agendar-usuario/',
         '/citas/buscar-paciente/',
         '/citas/confirmar-usuario/',
-        '/citas/agenda/',
     ]
     
     def __init__(self, get_response):
