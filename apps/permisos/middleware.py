@@ -17,6 +17,10 @@ class PermisosMiddleware:
         '/accounts/logout/',
         '/static/',
         '/media/',
+        '/citas/agendar/',
+        '/citas/validar/',
+        '/citas/agenda/',
+        '/citas/confirmar/',
     ]
     
     # Rutas que no requieren validación de permisos (específicas de usuarios autenticados)
