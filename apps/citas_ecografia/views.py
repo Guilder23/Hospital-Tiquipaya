@@ -133,9 +133,8 @@ def mis_citas_ecografia(request):
         # Si es futura
         elif cita.fecha > hoy:
             citas_proximas.append(cita)
-        # Si es pasada pero no fue atendida
-        else:
-            citas_atendidas.append(cita)
+        # Si es pasada pero no fue atendida, va a próximas (no mostrar en atendidas)
+        # Las citas pasadas no atendidas no se mostrarán en ninguna sección
     
     # Ordenar atendidas por fecha descendente (más recientes primero)
     citas_atendidas.sort(key=lambda x: (x.fecha, x.hora), reverse=True)
@@ -266,9 +265,13 @@ def ver_detalle_cita_ecografia(request, cita_id):
         messages.error(request, 'Cita no encontrada')
         return redirect('citas_ecografia:mis_citas')
     
+    from datetime import date
+    es_hoy = cita.fecha == date.today()
+    
     ctx = {
         'cita': cita,
         'ecografo': ecografo,
+        'es_hoy': es_hoy,
     }
     return render(request, 'citas_ecografia/detalle_cita.html', ctx)
 

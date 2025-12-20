@@ -139,14 +139,20 @@
         <!-- Acciones -->
         <div class="seccion-acciones">
             {% if cita.estado != 'REALIZADA' and cita.estado != 'CANCELADA' %}
-                {% if cita.estado_atencion == 'EN_ESPERA' %}
-                <button class="btn btn-primary" data-action="atender-cita" data-cita-id="{{ cita.id }}">
-                    Iniciar Atención
-                </button>
-                {% elif cita.estado_atencion == 'EN_ATENCION' %}
-                <button class="btn btn-success" data-action="abrir-resultado" data-cita-id="{{ cita.id }}">
-                    Finalizar y Registrar Resultado
-                </button>
+                {% if es_hoy %}
+                    {% if cita.estado_atencion == 'EN_ESPERA' %}
+                    <button class="btn btn-primary" data-action="atender-cita" data-cita-id="{{ cita.id }}">
+                        Iniciar Atención
+                    </button>
+                    {% elif cita.estado_atencion == 'EN_ATENCION' %}
+                    <button class="btn btn-success" data-action="abrir-resultado" data-cita-id="{{ cita.id }}">
+                        Finalizar y Registrar Resultado
+                    </button>
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-info" style="margin-top: 20px; padding: 15px; background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 5px; color: #0c5460;">
+                        <i class="fas fa-info-circle"></i> Solo puedes atender citas programadas para el día de hoy.
+                    </div>
                 {% endif %}
             {% endif %}
             
@@ -216,28 +222,35 @@
     });
 
     function marcarEnAtencion(citaId) {
-        if (confirm('¿Iniciar atención de esta cita?')) {
-            const formData = new FormData();
-            formData.append('cita_id', citaId);
+        const formData = new FormData();
+        formData.append('cita_id', citaId);
 
-            fetch('/citas-ecografia/mis-citas/' + citaId + '/atender/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    alert(data.mensaje);
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.error);
+        fetch('/citas-ecografia/mis-citas/' + citaId + '/atender/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.ok) {
+                if (typeof showSuccess === 'function') {
+                    showSuccess(data.mensaje);
                 }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                if (typeof showError === 'function') {
+                    showError('Error: ' + data.error);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof showError === 'function') {
+                showError('Error al iniciar la atención');
+            }
+        });
     }
 
     function abrirFormularioResultado(citaId) {
@@ -264,13 +277,22 @@
         .then(response => response.json())
         .then(data => {
             if (data.ok) {
-                alert(data.mensaje);
-                location.reload();
+                if (typeof showSuccess === 'function') {
+                    showSuccess(data.mensaje);
+                }
+                setTimeout(() => location.reload(), 1000);
             } else {
-                alert('Error: ' + data.error);
+                if (typeof showError === 'function') {
+                    showError('Error: ' + data.error);
+                }
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof showError === 'function') {
+                showError('Error al guardar el resultado');
+            }
+        });
     }
 
     // Cerrar modal al hacer clic fuera
