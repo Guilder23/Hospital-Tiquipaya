@@ -15,7 +15,10 @@
       {% if paciente %}
         <span class="user-info">Paciente: {{ paciente.nombres }} {{ paciente.apellido_paterno }}</span>
         <a href="/citas/mis/" class="btn btn-primary">Mis Citas</a>
-        <a href="/citas/logout/" class="btn btn-secondary">Cerrar sesión</a>
+        <form method="post" action="/citas/logout/" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-secondary">Cerrar sesión</button>
+        </form>
       {% elif request.user.is_authenticated %}
         <span class="user-info">{{ request.user.username }}</span>
         <a href="/citas/mis/" class="btn btn-primary">Mis Citas</a>

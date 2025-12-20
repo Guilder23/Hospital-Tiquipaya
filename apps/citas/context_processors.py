@@ -6,8 +6,12 @@ def paciente(request):
     if pid:
         try:
             obj = Paciente.objects.get(id=pid)
+            print(f"[CONTEXT] Paciente encontrado: {obj.nombres} (ID: {pid})")
         except Paciente.DoesNotExist:
+            print(f"[CONTEXT] Paciente ID {pid} no existe, limpiando sesión")
             request.session.pop('paciente_id', None)
+    else:
+        print("[CONTEXT] No hay paciente_id en sesión")
     return {'paciente': obj}
 
 

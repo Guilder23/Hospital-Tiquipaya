@@ -21,6 +21,7 @@ class PermisosMiddleware:
         '/citas/validar/',
         '/citas/agenda/',
         '/citas/confirmar/',
+        '/citas/logout/',
     ]
     
     # Rutas que no requieren validación de permisos (específicas de usuarios autenticados)
@@ -32,6 +33,13 @@ class PermisosMiddleware:
         '/citas/agendar-usuario/',
         '/citas/buscar-paciente/',
         '/citas/confirmar-usuario/',
+    ]
+    
+    # Rutas para pacientes (requieren sesión de paciente, no autenticación de Django)
+    RUTAS_PACIENTE = [
+        '/citas/mis/',
+        '/citas/editar/',
+        '/citas/cancelar/',
     ]
     
     # Rutas dinámicas de citas (ej: /citas/123/iniciar/)
@@ -47,20 +55,29 @@ class PermisosMiddleware:
         if request.path == '/' or any(request.path.startswith(ruta) for ruta in self.RUTAS_PUBLICAS):
             return self.get_response(request)
         
+        # Rutas para pacientes (requieren sesión de paciente, no autenticación Django)
+        if any(request.path.startswith(ruta) for ruta in self.RUTAS_PACIENTE):
+            # Verificar si tiene sesión de paciente
+            if request.session.get('paciente_id'):
+                return self.get_response(request)
+            else:
+                # Si no tiene sesión de paciente, redirigir a validar
+                return redirect('citas:validar')
+        
         # Rutas dinámicas de citas que requieren autenticación
         if any(request.path.startswith(ruta) for ruta in self.RUTAS_CITAS_DINAMICAS):
             if request.user.is_authenticated:
                 return self.get_response(request)
             else:
-                return redirect('accounts:login')
+                return redirect('home')
         
         # Rutas que no requieren validación de permisos (para usuarios autenticados)
         if any(request.path.startswith(ruta) for ruta in self.RUTAS_SIN_VALIDACION):
             if request.user.is_authenticated:
                 return self.get_response(request)
             else:
-                # Si no está autenticado, redirigir a login
-                return redirect('accounts:login')
+                # Si no está autenticado, redirigir a home
+                return redirect('home')
         
         # Si es superusuario o admin/staff, crear un permiso virtual que permite editar todo
         if request.user.is_authenticated and es_admin_o_staff(request.user):

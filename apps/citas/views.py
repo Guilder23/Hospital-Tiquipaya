@@ -231,9 +231,34 @@ def cancelar_cita(request, cita_id):
     return JsonResponse({'ok': True})
 
 def logout_paciente(request):
-    request.session.pop('paciente_id', None)
-    messages.info(request, 'Sesión de paciente cerrada')
-    return redirect('home')
+    import sys
+    # Limpiar completamente la sesión del paciente
+    print(f"[LOGOUT] Antes - Session keys: {list(request.session.keys())}", flush=True)
+    sys.stdout.flush()
+    
+    if 'paciente_id' in request.session:
+        print(f"[LOGOUT] Eliminando paciente_id: {request.session['paciente_id']}", flush=True)
+        del request.session['paciente_id']
+    
+    # Forzar guardado y flush de sesión
+    request.session.modified = True
+    request.session.save()
+    
+    print(f"[LOGOUT] Después - Session keys: {list(request.session.keys())}", flush=True)
+    sys.stdout.flush()
+    
+    if request.method == 'POST':
+        messages.info(request, 'Sesión de paciente cerrada')
+    
+    response = redirect('home')
+    # Prevenir caché del navegador
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate, private'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    response['Clear-Site-Data'] = '"cache"'
+    print("[LOGOUT] Redirect response creado", flush=True)
+    sys.stdout.flush()
+    return response
 
 def home(request):
     ctx = {}

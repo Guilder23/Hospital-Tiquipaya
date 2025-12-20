@@ -9,7 +9,10 @@
     <a href="/">Inicio</a>
     {% if paciente %}
       <span class="user-info">Paciente: {{ paciente.nombres }} {{ paciente.apellido_paterno }}</span>
-      <a href="/citas/logout/" class="user-info">Cerrar sesión</a>
+      <form method="post" action="/citas/logout/" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="user-info" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;">Cerrar sesión</button>
+      </form>
     {% elif request.user.is_authenticated %}
       <span class="user-info">{{ request.user.username }} {% if request.user.perfil.tipo %}<span class="user-role">({{ request.user.perfil.tipo.nombre }})</span>{% endif %}</span>
       <form class="logout-form" method="post" action="/accounts/logout/">
