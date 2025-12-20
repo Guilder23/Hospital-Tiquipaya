@@ -7,12 +7,14 @@ INSTALLED_APPS = [
     'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
     'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
     'apps.pacientes','apps.especialidades','apps.horarios','apps.citas','apps.accounts','apps.ecografias',
-    'apps.contratos','apps.citas_ecografia'
+    'apps.contratos','apps.citas_ecografia','apps.permisos'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.permisos.middleware.PermisosMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 ROOT_URLCONF = 'hospital_tiquipaya.urls'
@@ -23,7 +25,8 @@ TEMPLATES = [{
     'OPTIONS':{'context_processors':[
         'django.template.context_processors.debug','django.template.context_processors.request',
         'django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages',
-        'apps.citas.context_processors.paciente'
+        'apps.citas.context_processors.paciente',
+        'apps.permisos.context_processors.permisos_usuario'
     ]}
 }]
 WSGI_APPLICATION = 'hospital_tiquipaya.wsgi.application'

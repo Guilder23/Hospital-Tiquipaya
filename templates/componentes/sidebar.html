@@ -5,56 +5,47 @@
       <a class="sidebar-link" href="/citas/mis/">Mis Citas</a>
       <a class="sidebar-link" href="/pacientes/mis-citas-atendidas/"><i class="fas fa-history"></i> Historial</a>
   </aside>
-{% elif request.user.is_authenticated and request.user.medico %}
-  <aside class="sidebar">
-    <div class="sidebar-header">Médico</div>
-      <a class="sidebar-link" href="/citas/medico/hoy/">Mis Citas Hoy</a>
-      <a class="sidebar-link" href="/citas/medico/atendidos/">Pacientes Atendidos</a>
-      <a class="sidebar-link" href="/">Dashboard</a>
-  </aside>
-{% elif request.user.is_authenticated and request.user.ecografo %}
-  <aside class="sidebar">
-    <div class="sidebar-header">Ecógrafo</div>
-      <a class="sidebar-link" href="/citas-ecografia/mis-citas/">Mis Citas de Ecografía</a>
-      <a class="sidebar-link" href="/citas-ecografia/pacientes-atendidos/">Pacientes Atendidos</a>
-      <a class="sidebar-link" href="/">Dashboard</a>
-  </aside>
-{% elif request.user.is_authenticated and request.user.admision %}
-  <aside class="sidebar">
-    <div class="sidebar-header">Admisión</div>
-      <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
-      <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
-  </aside>
-{% elif request.user.is_authenticated and request.user.perfil and request.user.perfil.tipo and request.user.perfil.tipo.nombre|lower == 'admision' %}
-  <aside class="sidebar">
-    <div class="sidebar-header">Admisión</div>
-      <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
-      <a class="sidebar-link" href="/accounts/usuarios/">Gestionar usuarios</a>
-  </aside>
-{% elif request.user.is_authenticated and request.user.encargado_admision %}
-  <aside class="sidebar">
-    <div class="sidebar-header">Menú</div>
-      <a class="sidebar-link" href="/accounts/tipos/">Gestionar tipos de usuario</a>
-      <a class="sidebar-link" href="/accounts/usuarios/">Gestionar usuarios</a>
-      <a class="sidebar-link" href="/especialidades/">Gestionar especialidades</a>
-      <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
-      <a class="sidebar-link" href="/ecografias/">Gestionar ecografías</a>
-      <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
-      <a class="sidebar-link" href="/turnos/">Gestionar turnos</a>
-      <a class="sidebar-link" href="/contratos/">Gestionar contratos</a>
-      <a class="sidebar-link" href="/citas/agendar">Agendar nueva Cita </a>
-  </aside>
 {% elif request.user.is_authenticated %}
+  {# Sidebar dinámico basado en permisos #}
   <aside class="sidebar">
-    <div class="sidebar-header">Menú</div>
-      <a class="sidebar-link" href="/accounts/tipos/">Gestionar tipos de usuario</a>
-      <a class="sidebar-link" href="/accounts/usuarios/">Gestionar usuarios</a>
-      <a class="sidebar-link" href="/especialidades/">Gestionar especialidades</a>
-      <a class="sidebar-link" href="/pacientes/">Gestionar pacientes</a>
-      <a class="sidebar-link" href="/ecografias/">Gestionar ecografías</a>
-      <a class="sidebar-link" href="/citas-ecografia/">Gestionar Citas de Ecografía</a>
-      <a class="sidebar-link" href="/turnos/">Gestionar turnos</a>
-      <a class="sidebar-link" href="/contratos/">Gestionar contratos</a>
+    <div class="sidebar-header">
+      {% if tipo_usuario %}
+        {{ tipo_usuario.nombre }}
+      {% else %}
+        Menú
+      {% endif %}
+    </div>
+
+    {% if tiene_permiso_admin %}
+      {# Solo opciones de administración para Administrador #}
+      <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}">Gestión de permisos</a>
+      <a class="sidebar-link" href="{% url 'accounts:tipousuario_list' %}">Gestionar tipos de usuario</a>
+      <a class="sidebar-link" href="{% url 'accounts:usuario_list' %}">Gestionar usuarios</a>
+      <a class="sidebar-link" href="{% url 'lista_especialidades' %}">Gestionar especialidades</a>
+      <a class="sidebar-link" href="{% url 'paciente_list' %}">Gestionar pacientes</a>
+      <a class="sidebar-link" href="{% url 'ecografia_list' %}">Gestionar ecografías</a>
+      <a class="sidebar-link" href="{% url 'citas_ecografia:list' %}">Gestionar Citas de Ecografía</a>
+      <a class="sidebar-link" href="{% url 'turnos:lista' %}">Gestionar turnos</a>
+      <a class="sidebar-link" href="{% url 'contratos:list' %}">Gestionar contratos</a>
+    {% else %}
+      {% if modulos_sidebar %}
+        {% for item in modulos_sidebar %}
+          <a class="sidebar-link" href="{{ item.url }}">
+            {% if item.icono %}
+              <i class="{{ item.icono }}"></i>
+            {% endif %}
+            {{ item.nombre }}
+            {% if item.es_solo_vista %}
+              <span class="badge-solo-vista" title="Solo Vista">👁️</span>
+            {% endif %}
+          </a>
+        {% endfor %}
+      {% else %}
+        <p style="padding: 10px; color: #999; font-size: 12px;">
+          No tienes rol asignado. Contacta al administrador.
+        </p>
+      {% endif %}
+    {% endif %}
   </aside>
 {% endif %}
 

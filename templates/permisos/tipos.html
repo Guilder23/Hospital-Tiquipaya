@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestión de Permisos{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/permisos/tipos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>Gestión de Permisos</h1>
+        <p class="text-muted">Asignar permisos a tipos de usuario</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Tipo de Usuario</th>
+                        <th>Descripción</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tipo in tipos %}
+                    <tr>
+                        <td><strong>{{ tipo.nombre }}</strong></td>
+                        <td>{{ tipo.descripcion|default:"Sin descripción" }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'permisos:asignar_permisos' tipo.id %}" 
+                               class="btn btn-sm btn-primary">
+                                <i class="fas fa-key"></i> Asignar Permisos
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">
+                            No hay tipos de usuario registrados
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
