@@ -322,6 +322,28 @@
   border-color: var(--estado-inactivo-border);
 }
 
+.estado {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.estado.activo {
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
+}
+
+.estado.inactivo {
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
+}
+
 .btn-view {
   background: var(--color-exito);
   box-shadow: 0 6px 16px var(--color-sombra);
