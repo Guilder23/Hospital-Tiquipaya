@@ -13,6 +13,32 @@
   {% if user.is_superuser or permiso_actual.puede_editar %}
   <p><button class="btn" id="btn-open-create">Nueva Ecografía</button></p>
   {% endif %}
+
+  <!-- Filtros de búsqueda -->
+  <div class="filtros-ecografias">
+    <div class="filtro-busqueda">
+      <input type="text" id="buscar-ecografia" placeholder="Buscar por nombre..." autocomplete="off">
+    </div>
+    <div class="filtros-select">
+      <select id="filtro-especialidad">
+        <option value="">Todas las especialidades</option>
+        {% for esp in especialidades %}
+        <option value="{{ esp.id }}">{{ esp.nombre }}</option>
+        {% endfor %}
+      </select>
+      <select id="filtro-estado">
+        <option value="">Todos los estados</option>
+        <option value="ACTIVA">Activa</option>
+        <option value="INACTIVA">Inactiva</option>
+      </select>
+      <select id="filtro-orden-fecha">
+        <option value="">Orden por fecha</option>
+        <option value="desc">Más recientes</option>
+        <option value="asc">Más antiguos</option>
+      </select>
+    </div>
+  </div>
+
   <table class="table pacientes">
     <thead>
       <tr>
@@ -26,7 +52,7 @@
     </thead>
     <tbody>
       {% for eco in ecografias %}
-      <tr data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" data-nombre="{{ eco.nombre|escapejs }}" data-ecografo_id="{{ eco.ecografo.id }}" data-especialidad_id="{{ eco.especialidad.id }}" data-descripcion="{{ eco.descripcion|escapejs }}" data-estado="{{ eco.estado }}" data-fecha_creacion="{{ eco.fecha_creacion }}">
+      <tr data-id="{{ eco.id }}" data-codigo="{{ eco.codigo }}" data-nombre="{{ eco.nombre|escapejs }}" data-ecografo_id="{{ eco.ecografo.id }}" data-especialidad_id="{{ eco.especialidad.id }}" data-descripcion="{{ eco.descripcion|escapejs }}" data-estado="{{ eco.estado }}" data-fecha_creacion="{{ eco.fecha_creacion|date:'Y-m-d' }}">
         <td><strong>{{ eco.codigo }}</strong></td>
         <td>{{ eco.nombre }}</td>
         <td>{{ eco.ecografo.user.perfil.nombres }} {{ eco.ecografo.user.perfil.apellido_paterno }}</td>
@@ -63,4 +89,5 @@
 <script src="/static/js/ecografias/modals/edit.js"></script>
 <script src="/static/js/ecografias/modals/view.js"></script>
 <script src="/static/js/ecografias/modals/delete.js"></script>
+<script src="/static/js/ecografias/ecografias.js"></script>
 {% endblock %}

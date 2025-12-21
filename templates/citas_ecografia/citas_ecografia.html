@@ -17,6 +17,39 @@
     <p><button class="btn" id="btn-open-create">Nueva Cita de Ecografía</button></p>
     {% endif %}
 
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-citas-ecografia">
+        <div class="filtro-busqueda">
+            <input type="text" id="buscar-cita" placeholder="Buscar por nombre, apellido o CI..." autocomplete="off">
+        </div>
+        <div class="filtros-select">
+            <select id="filtro-especialidad">
+                <option value="">Todas las especialidades</option>
+                {% for esp in especialidades %}
+                <option value="{{ esp.nombre }}">{{ esp.nombre }}</option>
+                {% endfor %}
+            </select>
+            <select id="filtro-estado">
+                <option value="">Todos los estados</option>
+                <option value="PROGRAMADA">Programada</option>
+                <option value="REALIZADA">Realizada</option>
+                <option value="CANCELADA">Cancelada</option>
+                <option value="REPROGRAMADA">Reprogramada</option>
+            </select>
+            <select id="filtro-ecografo">
+                <option value="">Todos los ecógrafos</option>
+                {% for eco in ecografos %}
+                <option value="{{ eco.user.perfil.nombres }} {{ eco.user.perfil.apellido_paterno }}">{{ eco.user.perfil.nombres }} {{ eco.user.perfil.apellido_paterno }}</option>
+                {% endfor %}
+            </select>
+            <select id="filtro-orden-fecha">
+                <option value="">Orden por fecha</option>
+                <option value="desc">Más recientes</option>
+                <option value="asc">Más antiguos</option>
+            </select>
+        </div>
+    </div>
+
     <table class="table citas-ecografia">
         <thead>
             <tr>

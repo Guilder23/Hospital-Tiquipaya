@@ -89,8 +89,12 @@ def citas_ecografia_list(request):
     
     permiso = getattr(request, 'permiso_actual', None)
     citas = CitaEcografia.objects.all().select_related('paciente', 'especialidad', 'medico')
+    especialidades = Especialidad.objects.filter(estado=True)
+    ecografos = Ecografo.objects.all().select_related('user__perfil')
     ctx = {
         'citas': citas,
+        'especialidades': especialidades,
+        'ecografos': ecografos,
         'permiso_actual': permiso,
     }
     return render(request, 'citas_ecografia/citas_ecografia.html', ctx)

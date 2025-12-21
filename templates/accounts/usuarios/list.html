@@ -17,6 +17,29 @@
   </p>
   {% endif %}
 
+  <!-- Buscador y filtros -->
+  <div class="filtros-usuarios">
+    <div class="filtro-busqueda">
+      <input type="text" 
+             id="buscar-usuario" 
+             placeholder="Buscar por nombre, apellidos o CI..." 
+             autocomplete="off">
+    </div>
+    <div class="filtros-select">
+      <select id="filtro-tipo">
+        <option value="">Todos los tipos</option>
+        {% for tipo in tipos %}
+          <option value="{{ tipo.nombre }}">{{ tipo.nombre }}</option>
+        {% endfor %}
+      </select>
+      <select id="filtro-estado">
+        <option value="">Todos los estados</option>
+        <option value="activo">Activos</option>
+        <option value="inactivo">Inactivos</option>
+      </select>
+    </div>
+  </div>
+
   <table class="table">
     <thead>
       <tr>

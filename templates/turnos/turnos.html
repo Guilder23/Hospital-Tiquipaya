@@ -14,6 +14,20 @@
     <p><button class="btn" id="btn-open-create">Nuevo Turno</button></p>
     {% endif %}
 
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-turnos">
+        <div class="filtro-busqueda">
+            <input type="text" id="buscar-turno" placeholder="Buscar por nombre..." autocomplete="off">
+        </div>
+        <div class="filtros-select">
+            <select id="filtro-estado">
+                <option value="">Todos los estados</option>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+        </div>
+    </div>
+
     <table class="table turnos">
         <thead>
             <tr>
@@ -77,4 +91,5 @@
 <script src="/static/js/turnos/modals/create.js"></script>
 <script src="/static/js/turnos/modals/edit.js"></script>
 <script src="/static/js/turnos/modals/delete.js"></script>
+<script src="/static/js/turnos/turnos.js"></script>
 {% endblock %}

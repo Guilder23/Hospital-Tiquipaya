@@ -6,6 +6,84 @@
   font-weight: 800;
 }
 
+/* === FILTROS Y BÚSQUEDA === */
+.filtros-usuarios {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.filtro-busqueda input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.filtro-busqueda input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filtros-select {
+  display: flex;
+  gap: 12px;
+}
+
+.filtros-select select {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+.filtros-select select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* === RESPONSIVE FILTROS === */
+@media (max-width: 768px) {
+  .filtros-usuarios {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .filtros-select {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filtros-select select {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .filtro-busqueda input {
+    font-size: 16px; /* Evita zoom en iOS */
+  }
+
+  .filtros-select select {
+    font-size: 16px; /* Evita zoom en iOS */
+  }
+}
+
 /* === TABLA === */
 .table {
   width: 100%;

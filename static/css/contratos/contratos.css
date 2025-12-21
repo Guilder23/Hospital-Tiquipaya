@@ -1,2 +1,17 @@
 @import url('/static/css/turnos/turnos.css');
 
+/* Sobrescribir estilos para contratos */
+.filtros-contratos {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .filtros-contratos {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -11,6 +11,86 @@ document.addEventListener('DOMContentLoaded', function () {
             .trim();
     };
 
+    // === BUSCADOR Y FILTROS EN TIEMPO REAL ===
+    const inputBuscar = document.getElementById('buscar-usuario');
+    const filtroTipo = document.getElementById('filtro-tipo');
+    const filtroEstado = document.getElementById('filtro-estado');
+    const tablaBody = document.querySelector('.table tbody');
+    const todasLasFilas = Array.from(tablaBody.querySelectorAll('tr'));
+
+    function filtrarTabla() {
+        const textoBusqueda = normalize(inputBuscar.value);
+        const tipoSeleccionado = normalize(filtroTipo.value);
+        const estadoSeleccionado = filtroEstado.value.toLowerCase();
+
+        let filasVisibles = 0;
+
+        todasLasFilas.forEach(fila => {
+            // Obtener datos de la fila
+            const nombres = normalize(fila.getAttribute('data-nombres') || '');
+            const apellidoPaterno = normalize(fila.getAttribute('data-apellido_paterno') || '');
+            const apellidoMaterno = normalize(fila.getAttribute('data-apellido_materno') || '');
+            const ci = normalize(fila.getAttribute('data-ci') || '');
+            const rol = normalize(fila.getAttribute('data-rol') || '');
+            const activo = fila.getAttribute('data-active') === 'true';
+
+            // Concatenar nombre completo para búsqueda
+            const nombreCompleto = `${nombres} ${apellidoPaterno} ${apellidoMaterno}`.trim();
+
+            // Verificar coincidencia con texto de búsqueda
+            const coincideBusqueda = !textoBusqueda || 
+                nombreCompleto.includes(textoBusqueda) || 
+                ci.includes(textoBusqueda);
+
+            // Verificar coincidencia con filtro de tipo
+            const coincideTipo = !tipoSeleccionado || rol.includes(tipoSeleccionado);
+
+            // Verificar coincidencia con filtro de estado
+            let coincideEstado = true;
+            if (estadoSeleccionado === 'activo') {
+                coincideEstado = activo;
+            } else if (estadoSeleccionado === 'inactivo') {
+                coincideEstado = !activo;
+            }
+
+            // Mostrar u ocultar fila
+            if (coincideBusqueda && coincideTipo && coincideEstado) {
+                fila.style.display = '';
+                filasVisibles++;
+            } else {
+                fila.style.display = 'none';
+            }
+        });
+
+        // Mostrar mensaje si no hay resultados
+        const filaVacia = tablaBody.querySelector('.fila-sin-resultados');
+        if (filasVisibles === 0 && todasLasFilas.length > 0) {
+            if (!filaVacia) {
+                const tr = document.createElement('tr');
+                tr.className = 'fila-sin-resultados';
+                tr.innerHTML = '<td colspan="10" style="text-align: center; padding: 20px; color: #64748b;">No se encontraron usuarios que coincidan con los criterios de búsqueda</td>';
+                tablaBody.appendChild(tr);
+            }
+        } else if (filaVacia) {
+            filaVacia.remove();
+        }
+    }
+
+    // Eventos para búsqueda en tiempo real
+    if (inputBuscar) {
+        inputBuscar.addEventListener('input', filtrarTabla);
+    }
+
+    if (filtroTipo) {
+        filtroTipo.addEventListener('change', filtrarTabla);
+    }
+
+    if (filtroEstado) {
+        filtroEstado.addEventListener('change', filtrarTabla);
+    }
+
+    // === FIN BUSCADOR ===
+
     const selectRol = document.getElementById('select-rol');
 
     // Mostrar campos según el rol en el modal CREAR

@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const inputBusqueda = document.getElementById('buscar-ecografia');
-    const selectEspecialidad = document.getElementById('filtro-especialidad');
-    const selectEstado = document.getElementById('filtro-estado');
+    const inputBusqueda = document.getElementById('buscar-tipo');
     const selectOrdenFecha = document.getElementById('filtro-orden-fecha');
-    const tabla = document.querySelector('.table.pacientes tbody');
+    const tabla = document.querySelector('.table tbody');
     
     if (!tabla) return;
     
@@ -20,36 +18,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función principal de filtrado
     function filtrarTabla() {
         const textoBusqueda = normalize(inputBusqueda ? inputBusqueda.value : '');
-        const especialidadSeleccionada = selectEspecialidad ? selectEspecialidad.value : '';
-        const estadoSeleccionado = selectEstado ? selectEstado.value : '';
         const ordenFecha = selectOrdenFecha ? selectOrdenFecha.value : '';
 
         // Filtrar filas
         let filasVisibles = filas.filter(fila => {
             // Saltar fila de "empty"
             if (fila.querySelector('td[colspan]')) return false;
-
+            
             const nombre = normalize(fila.getAttribute('data-nombre') || '');
-            const especialidadId = fila.getAttribute('data-especialidad_id') || '';
-            const estado = fila.getAttribute('data-estado') || '';
+            const descripcion = normalize(fila.getAttribute('data-descripcion') || '');
             
-            // Buscar en nombre
-            const coincideBusqueda = nombre.includes(textoBusqueda);
+            // Buscar en nombre y descripción
+            const coincideBusqueda = nombre.includes(textoBusqueda) || 
+                                     descripcion.includes(textoBusqueda);
             
-            // Filtrar por especialidad
-            const coincideEspecialidad = !especialidadSeleccionada || especialidadId === especialidadSeleccionada;
-            
-            // Filtrar por estado
-            const coincideEstado = !estadoSeleccionado || estado === estadoSeleccionado;
-            
-            return coincideBusqueda && coincideEspecialidad && coincideEstado;
+            return coincideBusqueda;
         });
 
         // Ordenar por fecha si es necesario
         if (ordenFecha) {
             filasVisibles.sort((a, b) => {
-                const fechaA = new Date(a.getAttribute('data-fecha_creacion'));
-                const fechaB = new Date(b.getAttribute('data-fecha_creacion'));
+                const fechaA = new Date(a.getAttribute('data-creado_en'));
+                const fechaB = new Date(b.getAttribute('data-creado_en'));
                 
                 return ordenFecha === 'desc' ? fechaB - fechaA : fechaA - fechaB;
             });
@@ -71,14 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners
     if (inputBusqueda) {
         inputBusqueda.addEventListener('input', filtrarTabla);
-    }
-
-    if (selectEspecialidad) {
-        selectEspecialidad.addEventListener('change', filtrarTabla);
-    }
-
-    if (selectEstado) {
-        selectEstado.addEventListener('change', filtrarTabla);
     }
 
     if (selectOrdenFecha) {

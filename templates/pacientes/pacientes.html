@@ -12,6 +12,31 @@
   {% if user.is_superuser or permiso_actual.puede_editar %}
   <p><button class="btn" id="btn-open-create">Nuevo paciente</button></p>
   {% endif %}
+
+  <!-- Filtros de búsqueda -->
+  <div class="filtros-pacientes">
+    <div class="filtro-busqueda">
+      <input type="text" id="buscar-paciente" placeholder="Buscar por nombre, apellido o CI..." autocomplete="off">
+    </div>
+    <div class="filtros-select">
+      <select id="filtro-seguro">
+        <option value="">Todos los seguros</option>
+        <option value="si">Con seguro</option>
+        <option value="no">Sin seguro</option>
+      </select>
+      <select id="filtro-estado">
+        <option value="">Todos los estados</option>
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+      <select id="filtro-orden-fecha">
+        <option value="">Orden por fecha</option>
+        <option value="desc">Más recientes</option>
+        <option value="asc">Más antiguos</option>
+      </select>
+    </div>
+  </div>
+
   <table class="table pacientes">
     <thead>
       <tr>
@@ -26,7 +51,35 @@
     </thead>
     <tbody>
       {% for p in pacientes %}
-      <tr data-id="{{ p.id }}" data-ci="{{ p.ci }}" data-ci_complemento="{{ p.ci_complemento }}" data-expedido="{{ p.expedido }}" data-nombres="{{ p.nombres }}" data-apellido_paterno="{{ p.apellido_paterno }}" data-apellido_materno="{{ p.apellido_materno }}" data-fecha_nacimiento="{{ p.fecha_nacimiento }}" data-genero="{{ p.genero }}" data-nacionalidad="{{ p.nacionalidad }}" data-telefono_fijo="{{ p.telefono_fijo }}" data-celular="{{ p.celular }}" data-email="{{ p.email }}" data-zona="{{ p.zona }}" data-calle="{{ p.calle }}" data-numero_domicilio="{{ p.numero_domicilio }}" data-direccion="{{ p.direccion }}" data-tiene_seguro="{{ p.tiene_seguro }}" data-numero_seguro="{{ p.numero_seguro }}" data-tipo_seguro="{{ p.tipo_seguro }}" data-emergencia_nombre="{{ p.emergencia_nombre }}" data-emergencia_telefono="{{ p.emergencia_telefono }}" data-emergencia_relacion="{{ p.emergencia_relacion }}" data-numero_boleta_sus="{{ p.numero_boleta_sus }}" data-numero_carnet_historial="{{ p.numero_carnet_historial }}" data-numero_boleta_referencia="{{ p.numero_boleta_referencia }}" data-numero_copias="{{ p.numero_copias }}" data-activo="{{ p.activo }}" data-registrado_en="{{ p.registrado_en }}">
+      <tr data-id="{{ p.id }}" 
+          data-ci="{{ p.ci }}" 
+          data-ci_complemento="{{ p.ci_complemento }}" 
+          data-expedido="{{ p.expedido }}" 
+          data-nombres="{{ p.nombres }}" 
+          data-apellido_paterno="{{ p.apellido_paterno }}" 
+          data-apellido_materno="{{ p.apellido_materno }}" 
+          data-fecha_nacimiento="{{ p.fecha_nacimiento }}" 
+          data-genero="{{ p.genero }}" 
+          data-nacionalidad="{{ p.nacionalidad }}" 
+          data-telefono_fijo="{{ p.telefono_fijo }}" 
+          data-celular="{{ p.celular }}" 
+          data-email="{{ p.email }}" 
+          data-zona="{{ p.zona }}" 
+          data-calle="{{ p.calle }}" 
+          data-numero_domicilio="{{ p.numero_domicilio }}" 
+          data-direccion="{{ p.direccion }}" 
+          data-tiene_seguro="{{ p.tiene_seguro|yesno:'si,no' }}" 
+          data-numero_seguro="{{ p.numero_seguro }}" 
+          data-tipo_seguro="{{ p.tipo_seguro }}" 
+          data-emergencia_nombre="{{ p.emergencia_nombre }}" 
+          data-emergencia_telefono="{{ p.emergencia_telefono }}" 
+          data-emergencia_relacion="{{ p.emergencia_relacion }}" 
+          data-numero_boleta_sus="{{ p.numero_boleta_sus }}" 
+          data-numero_carnet_historial="{{ p.numero_carnet_historial }}" 
+          data-numero_boleta_referencia="{{ p.numero_boleta_referencia }}" 
+          data-numero_copias="{{ p.numero_copias }}" 
+          data-activo="{{ p.activo|yesno:'activo,inactivo' }}" 
+          data-registrado_en="{{ p.registrado_en|date:'Y-m-d' }}">
         <td>{{ p.ci }}</td>
         <td>{{ p.apellido_paterno }} {{ p.apellido_materno }} {{ p.nombres }}</td>
         <td>{{ p.celular }}</td>
@@ -73,4 +126,5 @@
 <script src="/static/js/pacientes/modals/edit.js"></script>
 <script src="/static/js/pacientes/modals/view.js"></script>
 <script src="/static/js/pacientes/modals/delete.js"></script>
+<script src="/static/js/pacientes/pacientes.js"></script>
 {% endblock %}

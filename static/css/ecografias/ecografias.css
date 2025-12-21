@@ -10,6 +10,63 @@
   font-weight: 800;
 }
 
+/* === FILTROS DE BÚSQUEDA === */
+.filtros-ecografias {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.filtro-busqueda input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.filtro-busqueda input:focus {
+  outline: none;
+  border-color: var(--color-boton-principal);
+}
+
+.filtros-select {
+  display: flex;
+  gap: 10px;
+}
+
+.filtros-select select {
+  padding: 10px 15px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.filtros-select select:focus {
+  outline: none;
+  border-color: var(--color-boton-principal);
+}
+
+@media (max-width: 768px) {
+  .filtros-ecografias {
+    grid-template-columns: 1fr;
+  }
+  
+  .filtros-select {
+    flex-direction: column;
+  }
+  
+  .filtros-select select {
+    width: 100%;
+  }
+}
+
 /* === TABLA === */
 .table {
   width: 100%;

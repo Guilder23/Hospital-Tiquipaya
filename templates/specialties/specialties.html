@@ -38,6 +38,27 @@
                     Nueva Especialidad
                 </button>
                 {% endif %}
+            </div>
+
+            <!-- Filtros de búsqueda -->
+            <div class="filtros-especialidades">
+                <div class="filtro-busqueda">
+                    <input type="text" id="buscar-especialidad" placeholder="Buscar por nombre..." autocomplete="off">
+                </div>
+                <div class="filtros-select">
+                    <select id="filtro-estado">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                    <select id="filtro-orden-fecha">
+                        <option value="">Orden por fecha</option>
+                        <option value="desc">Más recientes</option>
+                        <option value="asc">Más antiguos</option>
+                    </select>
+                </div>
+            </div>
+
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
@@ -53,7 +74,9 @@
                     {% for esp in especialidades %}
                     <tr data-id="{{ esp.id }}"
                         data-nombre="{{ esp.nombre }}"
-                        data-descripcion="{{ esp.descripcion }}">
+                        data-descripcion="{{ esp.descripcion }}"
+                        data-estado="{{ esp.estado|yesno:'activo,inactivo' }}"
+                        data-creado_en="{{ esp.created_at|date:'Y-m-d' }}">
                         <td>{{ esp.nombre }}</td>
                         <td>
                             {% if esp.descripcion %}
@@ -118,4 +141,5 @@
 <script src="{% static 'js/specialties/modals/create.js' %}"></script>
 <script src="{% static 'js/specialties/modals/edit.js' %}"></script>
 <script src="{% static 'js/specialties/modals/view.js' %}"></script>
+<script src="{% static 'js/specialties/filtros.js' %}"></script>
 {% endblock %}

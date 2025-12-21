@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const inputBusqueda = document.getElementById('buscar-turno');
+    const inputBusqueda = document.getElementById('buscar-contrato');
     const selectEstado = document.getElementById('filtro-estado');
-    const tabla = document.querySelector('.table.turnos tbody');
+    const tabla = document.querySelector('.table.contratos tbody');
     
     if (!tabla) return;
     

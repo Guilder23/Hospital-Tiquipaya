@@ -14,6 +14,20 @@
     <p><button class="btn" id="btn-open-create">Nuevo Contrato</button></p>
     {% endif %}
 
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-contratos">
+        <div class="filtro-busqueda">
+            <input type="text" id="buscar-contrato" placeholder="Buscar por nombre..." autocomplete="off">
+        </div>
+        <div class="filtros-select">
+            <select id="filtro-estado">
+                <option value="">Todos los estados</option>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+        </div>
+    </div>
+
     <table class="table contratos">
         <thead>
             <tr>
@@ -72,5 +86,6 @@
 <script src="/static/js/contratos/modals/create.js"></script>
 <script src="/static/js/contratos/modals/edit.js"></script>
 <script src="/static/js/contratos/modals/delete.js"></script>
+<script src="/static/js/contratos/contratos.js"></script>
 {% endblock %}
 
