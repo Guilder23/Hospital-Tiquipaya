@@ -2,6 +2,71 @@
 {% block extra_css %}
 <link rel="stylesheet" href="/static/css/citas/mis.css">
 <style>
+/* ===============================
+   FILTROS DE BÚSQUEDA – CITAS
+   =============================== */
+
+.filtros-citas {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1.2fr 3fr;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ===============================
+   INPUT DE BÚSQUEDA
+   =============================== */
+
+.filtro-busqueda {
+  width: 100%;
+}
+
+.filtro-busqueda input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.filtro-busqueda input:focus {
+  outline: none;
+  border-color: #1e5a7d;
+  box-shadow: 0 0 0 3px rgba(30, 90, 125, 0.15);
+}
+
+/* ===============================
+   SELECTS DE FILTRO
+   =============================== */
+
+.filtros-select {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.filtros-select select {
+  padding: 10px 14px;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filtros-select select:focus {
+  outline: none;
+  border-color: #1e5a7d;
+  box-shadow: 0 0 0 3px rgba(30, 90, 125, 0.15);
+}
+
+/* ===============================
+   BOTÓN PDF (AZUL)
+   =============================== */
+
 .btn-pdf {
   display: inline-flex;
   align-items: center;
@@ -36,16 +101,77 @@
   font-size: 14px;
 }
 
+/* ===============================
+   ACCIONES EN TABLA
+   =============================== */
+
+.table .btn-pdf {
+  margin-left: 4px;
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (max-width: 768px) {
+  .filtros-citas {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-select {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 </style>
 {% endblock %}
 {% block content %}
 <section class="card">
-  <h2>Mis Citas</h2>
+  <h2>Historial de Mis Citas</h2>
+  
+  <!-- Filtros de búsqueda -->
+  <div class="filtros-citas">
+    <div class="filtro-busqueda">
+      <input type="text" id="buscar-cita" placeholder="Buscar por médico..." autocomplete="off">
+    </div>
+    <div class="filtros-select">
+      <select id="filtro-especialidad">
+        <option value="">Todas las especialidades</option>
+        {% for esp in especialidades %}
+        <option value="{{ esp.nombre }}">{{ esp.nombre }}</option>
+        {% endfor %}
+      </select>
+      <select id="filtro-estado">
+        <option value="">Todos los estados</option>
+        <option value="PROGRAMADA">Programada</option>
+        <option value="REPROGRAMADA">Reprogramada</option>
+        <option value="CANCELADA">Cancelada</option>
+      </select>
+      <select id="filtro-atencion">
+        <option value="">Todas las atenciones</option>
+        <option value="EN_ESPERA">En Espera</option>
+        <option value="EN_ATENCION">En Atención</option>
+        <option value="ATENDIDO">Atendido</option>
+      </select>
+      <select id="filtro-ecografia">
+        <option value="">Todas las ecografías</option>
+        <option value="si">Sí</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+  </div>
+  
   <table class="table">
     <thead><tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Especialidad</th><th>Estado</th><th>Atención</th><th>Ecografía</th><th>Acciones</th></tr></thead>
     <tbody>
       {% for c in citas %}
-      <tr data-id="{{ c.id }}">
+      <tr data-id="{{ c.id }}" 
+          data-medico="{{ c.medico.user.perfil.nombres }} {{ c.medico.user.perfil.apellido_paterno }}" 
+          data-especialidad="{{ c.especialidad.nombre }}" 
+          data-estado="{{ c.estado }}" 
+          data-atencion="{{ c.estado_atencion }}" 
+          data-ecografia="{% if c.requiere_ecografia %}si{% else %}no{% endif %}">
         <td>{{ c.fecha|date:'d/m/Y' }}</td>
         <td>{{ c.hora|date:'H:i' }}</td>
         <td>{{ c.medico.user.perfil.nombres }} {{ c.medico.user.perfil.apellido_paterno }}</td>
@@ -98,6 +224,96 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded',function(){
+  // Función de filtrado en tiempo real
+  function initializeFiltros() {
+    const buscarInput = document.getElementById('buscar-cita');
+    const filtroEspecialidad = document.getElementById('filtro-especialidad');
+    const filtroEstado = document.getElementById('filtro-estado');
+    const filtroAtencion = document.getElementById('filtro-atencion');
+    const filtroEcografia = document.getElementById('filtro-ecografia');
+    const tabla = document.querySelector('.table tbody');
+    
+    if (!tabla) return;
+    
+    function normalize(str) {
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+    
+    function aplicarFiltros() {
+      const busqueda = normalize(buscarInput.value);
+      const especialidadSeleccionada = filtroEspecialidad.value;
+      const estadoSeleccionado = filtroEstado.value;
+      const atencionSeleccionada = filtroAtencion.value;
+      const ecografiaSeleccionada = filtroEcografia.value;
+      
+      const filas = tabla.querySelectorAll('tr[data-id]');
+      let visibleCount = 0;
+      
+      filas.forEach(fila => {
+        const medico = normalize(fila.getAttribute('data-medico') || '');
+        const especialidad = fila.getAttribute('data-especialidad') || '';
+        const estado = fila.getAttribute('data-estado') || '';
+        const atencion = fila.getAttribute('data-atencion') || '';
+        const ecografia = fila.getAttribute('data-ecografia') || '';
+        
+        let mostrar = true;
+        
+        // Filtro de búsqueda
+        if (busqueda && !medico.includes(busqueda)) {
+          mostrar = false;
+        }
+        
+        // Filtro de especialidad
+        if (especialidadSeleccionada && especialidad !== especialidadSeleccionada) {
+          mostrar = false;
+        }
+        
+        // Filtro de estado
+        if (estadoSeleccionado && estado !== estadoSeleccionado) {
+          mostrar = false;
+        }
+        
+        // Filtro de atención
+        if (atencionSeleccionada && atencion !== atencionSeleccionada) {
+          mostrar = false;
+        }
+        
+        // Filtro de ecografía
+        if (ecografiaSeleccionada && ecografia !== ecografiaSeleccionada) {
+          mostrar = false;
+        }
+        
+        fila.style.display = mostrar ? '' : 'none';
+        if (mostrar) visibleCount++;
+      });
+      
+      // Mensaje si no hay resultados
+      let noResultados = tabla.querySelector('.no-resultados');
+      if (visibleCount === 0) {
+        if (!noResultados) {
+          noResultados = document.createElement('tr');
+          noResultados.className = 'no-resultados';
+          noResultados.innerHTML = '<td colspan="8" style="text-align:center; padding: 20px; color: #999;">No se encontraron citas con los filtros aplicados</td>';
+          tabla.appendChild(noResultados);
+        }
+      } else {
+        if (noResultados) {
+          noResultados.remove();
+        }
+      }
+    }
+    
+    // Event listeners
+    if (buscarInput) buscarInput.addEventListener('input', aplicarFiltros);
+    if (filtroEspecialidad) filtroEspecialidad.addEventListener('change', aplicarFiltros);
+    if (filtroEstado) filtroEstado.addEventListener('change', aplicarFiltros);
+    if (filtroAtencion) filtroAtencion.addEventListener('change', aplicarFiltros);
+    if (filtroEcografia) filtroEcografia.addEventListener('change', aplicarFiltros);
+  }
+  
+  initializeFiltros();
+  
+  // Modal de cancelación
   var modalCancel=document.getElementById('modal-cancelar');
   var cancelNo=document.getElementById('cancel-no');
   var cancelYes=document.getElementById('cancel-yes');

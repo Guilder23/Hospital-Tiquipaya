@@ -216,8 +216,9 @@ def mis_citas(request):
     pid = request.session.get('paciente_id')
     if not pid:
         return redirect('citas:agendar')
-    qs = Cita.objects.filter(paciente_id=pid).order_by('-fecha', 'hora')
-    return render(request, 'citas/mis.html', {'citas': qs})
+    qs = Cita.objects.filter(paciente_id=pid).select_related('medico__user__perfil', 'especialidad').order_by('-fecha', 'hora')
+    especialidades = Especialidad.objects.all().order_by('nombre')
+    return render(request, 'citas/mis.html', {'citas': qs, 'especialidades': especialidades})
 
 @require_POST
 def editar_cita(request, cita_id):
