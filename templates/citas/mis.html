@@ -1,5 +1,43 @@
 {% extends "base.html" %}
-{% block extra_css %}<link rel="stylesheet" href="/static/css/citas/mis.css">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/citas/mis.css">
+<style>
+.btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #1e5a7d 0%, #154360 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(30, 90, 125, 0.25);
+}
+
+.btn-pdf:hover {
+  background: linear-gradient(135deg, #154360 0%, #0b2f4a 100%);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(30, 90, 125, 0.35);
+  text-decoration: none;
+}
+
+.btn-pdf:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(30, 90, 125, 0.25);
+}
+
+.btn-pdf i {
+  font-size: 14px;
+}
+
+</style>
+{% endblock %}
 {% block content %}
 <section class="card">
   <h2>Mis Citas</h2>
@@ -45,7 +83,9 @@
         </td>
         <td>
           <form method="post" action="/citas/{{ c.id }}/cancelar/" class="cancel-form" style="display:inline">{% csrf_token %}<button type="button" class="btn btn-danger btn-cancel" {% if c.estado == 'CANCELADA' or c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Cancelar</button></form>
-          <button class="btn btn-primary btn-reprogramar" data-id="{{ c.id }}" {% if c.estado_atencion == 'ATENDIDO' %}disabled{% endif %}>Editar horario</button>
+          {% if c.estado == 'PROGRAMADA' or c.estado == 'REPROGRAMADA' %}
+          <a href="{% url 'citas:generar_pdf' c.id %}" class="btn btn-pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+          {% endif %}
         </td>
       </tr>
       {% empty %}
@@ -53,65 +93,17 @@
       {% endfor %}
     </tbody>
   </table>
-
-  <div class="modal" id="modal-reprogramar" aria-hidden="true">
-    <div class="modal-box" style="width:420px">
-      <h3>Editar Horario</h3>
-      <div class="modal-field"><label>Nueva hora</label>
-        <select id="rep-hora">
-          <option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option>
-          <option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option>
-          <option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option>
-          <option value="16:00">16:00</option><option value="16:30">16:30</option><option value="17:00">17:00</option><option value="17:30">17:30</option>
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal-cancel" id="rep-cancel">Cancelar</button>
-        <button class="btn-modal-ok" id="rep-ok">Guardar</button>
-      </div>
-      <p id="rep-error" style="color:#b91c1c; display:none"></p>
-    </div>
-  </div>
-
-  <div class="modal" id="modal-cancelar" aria-hidden="true">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-box" style="max-width:420px">
-      <h3>Cancelar cita</h3>
-      <p>¿Está seguro de que desea cancelar esta cita?</p>
-      <div class="modal-actions">
-        <button class="btn-modal-cancel" id="cancel-no">No, mantener</button>
-        <button class="btn-modal-ok" id="cancel-yes">Sí, cancelar</button>
-      </div>
-      <p id="cancel-error" style="display:none"></p>
-    </div>
-  </div>
-
 </section>
 {% endblock %}
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  var modal=document.getElementById('modal-reprogramar');
-  var repError=document.getElementById('rep-error');
-  var repHora=document.getElementById('rep-hora');
-  var repCancel=document.getElementById('rep-cancel');
-  var repOk=document.getElementById('rep-ok');
-  var currentId=null;
-  function open(m){ m.classList.add('is-open'); m.setAttribute('aria-hidden','false'); }
-  function close(m){ m.classList.remove('is-open'); m.setAttribute('aria-hidden','true'); }
-  document.querySelectorAll('.btn-reprogramar').forEach(function(b){ b.addEventListener('click',function(){ currentId=b.getAttribute('data-id'); open(modal); }); });
-  if(repCancel){ repCancel.addEventListener('click',function(){ close(modal); }); }
-  function getCookie(name){ var v=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v? v.pop():''; }
-  if(repOk){ repOk.addEventListener('click',function(){ repError.style.display='none'; repError.textContent=''; var fd=new URLSearchParams(); fd.append('hora',repHora.value); fetch('/citas/'+currentId+'/editar/',{ method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':getCookie('csrftoken') }, body:fd.toString() })
-      .then(function(r){ if(r.ok) return r.json(); return r.text().then(function(t){ throw new Error(t||'Error'); }); })
-      .then(function(){ close(modal); window.location.reload(); })
-      .catch(function(e){ repError.textContent='No se pudo editar: '+(e.message||'Error'); repError.style.display='block'; }); }); }
-
   var modalCancel=document.getElementById('modal-cancelar');
   var cancelNo=document.getElementById('cancel-no');
   var cancelYes=document.getElementById('cancel-yes');
   var cancelError=document.getElementById('cancel-error');
   var currentCancelForm=null;
+  function getCookie(name){ var v=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v? v.pop():''; }
   function openCancel(){ modalCancel.classList.add('is-open'); modalCancel.setAttribute('aria-hidden','false'); }
   function closeCancel(){ modalCancel.classList.remove('is-open'); modalCancel.setAttribute('aria-hidden','true'); }
   document.querySelectorAll('.btn-cancel').forEach(function(b){ b.addEventListener('click', function(){ cancelError.style.display='none'; cancelError.textContent=''; currentCancelForm=b.closest('form'); openCancel(); }); });

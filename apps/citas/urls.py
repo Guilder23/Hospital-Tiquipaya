@@ -12,6 +12,7 @@ urlpatterns = [
     path('mis/', views.mis_citas, name='mis'),
     path('<int:cita_id>/editar/', views.editar_cita, name='editar'),
     path('<int:cita_id>/cancelar/', views.cancelar_cita, name='cancelar'),
+    path('<int:cita_id>/pdf/', views.generar_pdf_cita, name='generar_pdf'),
     path('logout/', views.logout_paciente, name='logout'),
     
     # URLs para médicos

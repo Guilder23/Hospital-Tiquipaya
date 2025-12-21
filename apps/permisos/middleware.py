@@ -40,6 +40,7 @@ class PermisosMiddleware:
         '/citas/mis/',
         '/citas/editar/',
         '/citas/cancelar/',
+        '/citas/',  # Para rutas dinámicas como /citas/123/pdf/
     ]
     
     # Rutas dinámicas de citas (ej: /citas/123/iniciar/)
