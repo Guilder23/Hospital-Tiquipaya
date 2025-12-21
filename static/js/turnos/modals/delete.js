@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const title = document.getElementById('modal-title-estado');
             const accion = document.getElementById('accion-text');
 
-            if (estado === "true") {
+            // Normalizar estado a minúsculas para comparación correcta
+            if (estado.toLowerCase() === "true") {
                 title.textContent = "Deshabilitar Turno";
                 accion.textContent = "deshabilitar";
                 btnConfirmDelete.textContent = "Deshabilitar";
@@ -48,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let method, body;
 
-        if (estadoActual === "true") {
+        // Normalizar estado a minúsculas para comparación correcta
+        if (estadoActual.toLowerCase() === "true") {
             // DESHABILITAR
             method = "PATCH";
             body = JSON.stringify({ estado: false });
