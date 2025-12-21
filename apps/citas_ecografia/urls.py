@@ -19,4 +19,5 @@ urlpatterns = [
     path('crear/', views.crear_cita_ecografia, name='crear'),
     path('<int:cita_id>/editar/', views.editar_cita_ecografia, name='editar'),
     path('<int:cita_id>/cancelar/', views.cancelar_cita_ecografia, name='cancelar'),
+    path('<int:cita_id>/pdf/', views.generar_pdf_cita, name='generar_pdf'),
 ]

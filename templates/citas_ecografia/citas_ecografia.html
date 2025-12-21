@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/static/css/citas_ecografia/modals/edit.css">
 <link rel="stylesheet" href="/static/css/citas_ecografia/modals/view.css">
 <link rel="stylesheet" href="/static/css/citas_ecografia/modals/delete.css">
+<link rel="stylesheet" href="/static/css/citas_ecografia/btn-pdf.css">
 {% endblock %}
 
 {% block content %}
@@ -105,6 +106,12 @@
                             data-comentario="{{ cita.comentario_medico }}"
                             data-resultado="{{ cita.resultado_ecografia }}">Editar</button>
                         <button class="btn btn-delete" data-id="{{ cita.id }}" data-paciente="{{ cita.paciente.nombres }} {{ cita.paciente.apellido_paterno }}">Cancelar</button>
+                        {% endif %}
+                        
+                        {% if cita.estado == 'PROGRAMADA' or cita.estado == 'REPROGRAMADA' %}
+                            <a href="{% url 'citas_ecografia:generar_pdf' cita.id %}" class="btn btn-pdf" target="_blank" title="Descargar comprobante PDF">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </a>
                         {% endif %}
                     {% endif %}
                 </td>

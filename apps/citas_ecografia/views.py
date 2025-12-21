@@ -1,12 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import uuid
+
+# Importacioines para generar PDF
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from io import BytesIO
 
 from apps.citas_ecografia.models import CitaEcografia
 from apps.citas.models import Cita
@@ -663,3 +672,199 @@ def cancelar_cita_ecografia(request, cita_id):
             'ok': False,
             'error': str(e)
         }, status=500)
+
+# generar_pdf  de cita para ecografia
+def generar_pdf_cita(request, cita_id):
+    """Genera un comprobante PDF profesional para la cita de ecografía"""
+    cita = get_object_or_404(CitaEcografia, id=cita_id)
+
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        topMargin=0.4*inch,
+        bottomMargin=0.4*inch,
+        leftMargin=0.4*inch,
+        rightMargin=0.4*inch
+    )
+
+    elementos = []
+    styles = getSampleStyleSheet()
+
+    titulo_style = ParagraphStyle(
+        'TituloHospital',
+        parent=styles['Heading1'],
+        fontSize=17,
+        textColor=colors.HexColor('#1e5a7d'),
+        alignment=TA_CENTER,
+        spaceAfter=4,
+        fontName='Helvetica-Bold'
+    )
+
+    subtitulo_style = ParagraphStyle(
+        'Subtitulo',
+        parent=styles['Normal'],
+        fontSize=10,
+        textColor=colors.HexColor('#34495e'),
+        alignment=TA_CENTER,
+        spaceAfter=12
+    )
+
+    seccion_style = ParagraphStyle(
+        'Seccion',
+        parent=styles['Heading2'],
+        fontSize=12,
+        textColor=colors.HexColor('#2c3e50'),
+        spaceAfter=6,
+        spaceBefore=6,
+        fontName='Helvetica-Bold'
+    )
+
+    elementos.append(Paragraph('<b>HOSPITAL TIQUIPAYA</b>', titulo_style))
+    elementos.append(Paragraph('Comprobante de Cita - Servicio de Ecografía', subtitulo_style))
+
+    line_table = Table([['']], colWidths=[7.2*inch])
+    line_table.setStyle(TableStyle([
+        ('LINEABOVE', (0, 0), (-1, 0), 2, colors.HexColor('#1e5a7d')),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+    ]))
+    elementos.append(line_table)
+
+    elementos.append(Paragraph('<b>INFORMACIÓN DE LA CITA</b>', seccion_style))
+
+    datos_principales = [
+        ['Número de Cita:', f'EC-{cita.id:06d}'],
+        ['Fecha de Emisión:', date.today().strftime('%d/%m/%Y')],
+        ['Estado:', cita.estado],
+    ]
+
+    tabla_principales = Table(datos_principales, colWidths=[2.4*inch, 4.6*inch])
+    tabla_principales.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ecf0f1')),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#bdc3c7')),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+    ]))
+    elementos.append(tabla_principales)
+    elementos.append(Spacer(1, 0.1*inch))
+
+    elementos.append(Paragraph('<b>DATOS DEL PACIENTE</b>', seccion_style))
+
+    datos_paciente = [
+        ['Nombre Completo:', f'{cita.paciente.nombres} {cita.paciente.apellido_paterno} {cita.paciente.apellido_materno}'],
+        ['CI:', cita.paciente.ci or 'No registrado'],
+        ['Fecha de Nacimiento:', cita.paciente.fecha_nacimiento.strftime('%d/%m/%Y') if cita.paciente.fecha_nacimiento else 'No registrada'],
+        ['Teléfono:', cita.paciente.celular or 'No registrado'],
+    ]
+
+    tabla_paciente = Table(datos_paciente, colWidths=[2.4*inch, 4.6*inch])
+    tabla_paciente.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#e8f5e9')),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#a5d6a7')),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+    ]))
+    elementos.append(tabla_paciente)
+    elementos.append(Spacer(1, 0.1*inch))
+
+    elementos.append(Paragraph('<b>DETALLES DE LA CITA</b>', seccion_style))
+
+    datos_medicos = [
+        ['Especialidad:', cita.especialidad.nombre],
+        ['Ecógrafo:', f'{cita.medico.user.perfil.nombres} {cita.medico.user.perfil.apellido_paterno}'],
+        ['Consultorio:', cita.medico.consultorio or 'No asignado'],
+        ['Fecha de Cita:', cita.fecha.strftime('%d/%m/%Y')],
+        ['Hora de Cita:', cita.hora.strftime('%H:%M')],
+    ]
+
+    tabla_medica = Table(datos_medicos, colWidths=[2.4*inch, 4.6*inch])
+    tabla_medica.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#e3f2fd')),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#90caf9')),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+    ]))
+    elementos.append(tabla_medica)
+    elementos.append(Spacer(1, 0.1*inch))
+
+    if cita.cita_consulta and cita.cita_consulta.medico:
+        elementos.append(Paragraph('<b>INFORMACIÓN ADICIONAL</b>', seccion_style))
+
+        medico_solicitante = cita.cita_consulta.medico
+        datos_adicionales = [
+            ['Médico Solicitante:', f'Dr(a). {medico_solicitante.user.perfil.nombres} {medico_solicitante.user.perfil.apellido_paterno}']
+        ]
+
+        if cita.comentario_medico:
+            datos_adicionales.append(['Comentario Médico:', cita.comentario_medico])
+
+        tabla_adicional = Table(datos_adicionales, colWidths=[2.4*inch, 4.6*inch])
+        tabla_adicional.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#fff9c4')),
+            ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#fff59d')),
+            ('LEFTPADDING', (0, 0), (-1, -1), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ]))
+        elementos.append(tabla_adicional)
+        elementos.append(Spacer(1, 0.1*inch))
+
+    instrucciones_style = ParagraphStyle(
+        'Instrucciones',
+        parent=styles['Normal'],
+        fontSize=9,
+        leading=12,
+        textColor=colors.HexColor('#e74c3c'),
+        leftIndent=10,
+        rightIndent=10,
+        spaceBefore=6,
+        spaceAfter=6
+    )
+
+    instrucciones = Paragraph(
+        '<b>INSTRUCCIONES IMPORTANTES:</b><br/>'
+        '• Presentarse 15 minutos antes de la hora programada<br/>'
+        '• Traer carnet de identidad original<br/>'
+        '• Si tiene seguro médico, traer la documentación correspondiente<br/>'
+        '• En caso de no poder asistir, cancelar con 24 horas de anticipación',
+        instrucciones_style
+    )
+    elementos.append(instrucciones)
+
+    footer_style = ParagraphStyle(
+        'Footer',
+        parent=styles['Normal'],
+        fontSize=8,
+        textColor=colors.HexColor('#7f8c8d'),
+        alignment=TA_CENTER,
+        spaceBefore=10
+    )
+
+    footer = Paragraph(
+        'Hospital Tiquipaya - Servicio de Ecografía<br/>'
+        'Este documento es un comprobante de cita médica<br/>'
+        f'Generado el {date.today().strftime("%d/%m/%Y")}',
+        footer_style
+    )
+    elementos.append(footer)
+
+    doc.build(elementos)
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="cita_ecografia_{cita.id}_{cita.paciente.ci}.pdf"'
+    response.write(pdf)
+
+    return response
