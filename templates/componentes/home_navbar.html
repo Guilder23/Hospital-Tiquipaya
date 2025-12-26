@@ -23,31 +23,9 @@
       {% if request.user.is_authenticated %}
         <span class="navbar-user"><i class="fas fa-user"></i> {{ request.user.username }}</span>
         
-        {% if request.user.is_superuser %}
-          <a href="{% url 'dashboard:dashboard' %}" class="btn-panel">
-            <i class="fas fa-cog"></i> Panel
-          </a>
-        {% elif request.user.perfil and request.user.perfil.tipo %}
-          {% if request.user.perfil.tipo.nombre == 'Administrador' %}
-            <a href="{% url 'dashboard:dashboard' %}" class="btn-panel">
-              <i class="fas fa-cog"></i> Panel
-            </a>
-          {% elif request.user.perfil.tipo.nombre == 'Medico' %}
-            <a href="{% url 'citas:citas_hoy' %}" class="btn-panel">
-              <i class="fas fa-calendar-check"></i> Mis Citas
-            </a>
-          {% elif request.user.perfil.tipo.nombre == 'Admision' or request.user.perfil.tipo.nombre == 'Encargado_Admision' %}
-            <a href="{% url 'citas:agendar_usuario' %}" class="btn-panel">
-              <i class="fas fa-calendar-plus"></i> Agendar
-            </a>
-          {% elif request.user.perfil.tipo.nombre == 'Ecografo' or request.user.perfil.tipo.nombre == 'Ecógrafo' %}
-            <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn-panel">
-              <i class="fas fa-heartbeat"></i> Mis Citas
-            </a>
-          {% endif %}
-        {% elif request.user.is_staff %}
-          <a href="{% url 'dashboard:dashboard' %}" class="btn-panel">
-            <i class="fas fa-cog"></i> Panel
+        {% if primer_modulo_url %}
+          <a href="{{ primer_modulo_url }}" class="btn-panel">
+            <i class="fas fa-th-large"></i> Panel
           </a>
         {% endif %}
         
@@ -81,31 +59,9 @@
     {% if request.user.is_authenticated %}
       <span class="navbar-user"><i class="fas fa-user"></i> {{ request.user.username }}</span>
       
-      {% if request.user.is_superuser %}
-        <a href="{% url 'dashboard:dashboard' %}" class="btn-panel">
-          <i class="fas fa-cog"></i> Panel
-        </a>
-      {% elif request.user.perfil and request.user.perfil.tipo %}
-        {% if request.user.perfil.tipo.nombre == 'Administrador' %}
-          <a href="{% url 'dashboard:dashboard' %}" class="btn-panel">
-            <i class="fas fa-cog"></i> Panel
-          </a>
-        {% elif request.user.perfil.tipo.nombre == 'Medico' %}
-          <a href="{% url 'citas:citas_hoy' %}" class="btn-panel">
-            <i class="fas fa-calendar-check"></i> Mis Citas
-          </a>
-        {% elif request.user.perfil.tipo.nombre == 'Admision' or request.user.perfil.tipo.nombre == 'Encargado_Admision' %}
-          <a href="{% url 'citas:agendar_usuario' %}" class="btn-panel">
-            <i class="fas fa-calendar-plus"></i> Agendar
-          </a>
-        {% elif request.user.perfil.tipo.nombre == 'Ecografo' or request.user.perfil.tipo.nombre == 'Ecógrafo' %}
-          <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn-panel">
-            <i class="fas fa-heartbeat"></i> Mis Citas
-          </a>
-        {% endif %}
-      {% elif request.user.is_staff %}
-        <a href="{% url 'dashboard:dashboard' %}" class="btn-panel">
-          <i class="fas fa-cog"></i> Panel
+      {% if primer_modulo_url %}
+        <a href="{{ primer_modulo_url }}" class="btn-panel">
+          <i class="fas fa-th-large"></i> Panel
         </a>
       {% endif %}
       

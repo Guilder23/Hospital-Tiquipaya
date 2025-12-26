@@ -66,6 +66,29 @@ def _slots_turno(turno_obj):
     
     return slots
 
+
+@login_required
+def citas_index(request):
+    """Vista principal del módulo de citas - muestra lista de citas según permisos"""
+    user = request.user
+    
+    # Get citas based on user role
+    if user.is_superuser or user.is_staff:
+        # Admin sees all citas
+        citas = Cita.objects.all().order_by('-fecha', '-hora')[:50]
+    else:
+        # Regular users see citas they created or are assigned to
+        citas = Cita.objects.filter(
+            fecha__gte=date.today()
+        ).order_by('fecha', 'hora')[:50]
+    
+    context = {
+        'citas': citas,
+        'titulo': 'Gestión de Citas Médicas'
+    }
+    return render(request, 'citas/citas_index.html', context)
+
+
 @require_POST
 def validar_paciente(request):
     ci = request.POST.get('ci', '').strip()

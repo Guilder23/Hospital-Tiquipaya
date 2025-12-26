@@ -7,6 +7,7 @@ def permisos_usuario(request):
         'modulos_sidebar': [],
         'tipo_usuario': None,
         'tiene_permiso_admin': False,
+        'primer_modulo_url': None,
     }
     
     if request.user.is_authenticated:
@@ -14,7 +15,7 @@ def permisos_usuario(request):
         if request.user.is_superuser:
             context['tiene_permiso_admin'] = True
             modulos = Modulo.objects.filter(activo=True).order_by('orden')
-            context['modulos_sidebar'] = [
+            modulos_list = [
                 {
                     'nombre': m.nombre,
                     'url': m.url,
@@ -24,6 +25,8 @@ def permisos_usuario(request):
                 }
                 for m in modulos
             ]
+            context['modulos_sidebar'] = modulos_list
+            context['primer_modulo_url'] = '/dashboard/'
             return context
         
         try:
@@ -78,6 +81,10 @@ def permisos_usuario(request):
             # Ordenar por orden del módulo
             modulos_ordenados = sorted(modulos_dict.values(), key=lambda x: x['nombre'])
             context['modulos_sidebar'] = modulos_ordenados
+            
+            # Set first module URL for navbar
+            if modulos_ordenados:
+                context['primer_modulo_url'] = modulos_ordenados[0]['url']
             
             # Verificar si tiene permiso para gestionar permisos (tipo Administrador)
             if tipo_usuario.nombre == 'Administrador':

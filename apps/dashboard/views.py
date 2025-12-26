@@ -20,12 +20,55 @@ logger = logging.getLogger(__name__)
 @login_required
 def dashboard(request):
     """Vista principal del dashboard"""
-    # Verificar si es admin
-    if not request.user.is_staff:
-        return render(request, 'dashboard/no_acceso.html')
-    
+    user = request.user
     context = {}
-    return render(request, 'dashboard/dashboard.html', context)
+    
+    # Superusers have full access
+    if user.is_superuser:
+        return render(request, 'dashboard/dashboard.html', context)
+    
+    # Check if user has a role assigned
+    try:
+        if hasattr(user, 'perfil') and user.perfil and user.perfil.tipo:
+            # User has a role - check if they have any visible modules
+            from apps.permisos.models import Permiso, Modulo
+            tipo_usuario = user.perfil.tipo
+            
+            # Check for visible permissions
+            permisos_visibles = Permiso.objects.filter(
+                tipo_usuario=tipo_usuario,
+                visible=True,
+                modulo__activo=True
+            ).exclude(tipo_permiso='sin_acceso').exists()
+            
+            # Check for default modules
+            modulos_por_defecto = tipo_usuario.modulos_por_defecto.filter(activo=True).exists()
+            
+            if permisos_visibles or modulos_por_defecto:
+                # User has permissions - show dashboard
+                return render(request, 'dashboard/dashboard.html', context)
+            else:
+                # User has role but no permissions assigned
+                context['mensaje'] = 'No tienes módulos asignados en el sistema. Contacta al administrador para que te asigne permisos.'
+                context['tipo_mensaje'] = 'info'
+                return render(request, 'dashboard/sin_permisos.html', context)
+        else:
+            # User has no role assigned
+            context['mensaje'] = 'No tienes un rol asignado en el sistema. Contacta al administrador para que te asigne un rol.'
+            context['tipo_mensaje'] = 'info'
+            return render(request, 'dashboard/sin_permisos.html', context)
+    except AttributeError:
+        # User has no perfil
+        context['mensaje'] = 'Tu cuenta no tiene un perfil configurado. Contacta al administrador.'
+        context['tipo_mensaje'] = 'info'
+        return render(request, 'dashboard/sin_permisos.html', context)
+    
+    # Staff users (fallback)
+    if user.is_staff:
+        return render(request, 'dashboard/dashboard.html', context)
+    
+    # No access
+    return render(request, 'dashboard/no_acceso.html')
 
 
 @login_required

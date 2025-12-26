@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Acceso Denegado{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/no_acceso.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="access-denied-container">
@@ -12,63 +17,4 @@
         <a href="{% url 'home' %}" class="btn-home">Volver al Inicio</a>
     </div>
 </div>
-
-<style>
-.access-denied-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    padding: 2rem;
-}
-
-.access-denied-card {
-    background: white;
-    border-radius: 12px;
-    padding: 3rem;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-}
-
-.denied-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-}
-
-.access-denied-card h1 {
-    color: #ef4444;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-}
-
-.access-denied-card p {
-    color: #64748b;
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-}
-
-.subtitle {
-    font-size: 0.9rem;
-    color: #94a3b8;
-    margin-bottom: 2rem !important;
-}
-
-.btn-home {
-    display: inline-block;
-    background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-home:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
-}
-</style>
 {% endblock %}

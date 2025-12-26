@@ -19,30 +19,18 @@ class CustomLoginView(LoginView):
         if user.is_superuser:
             return reverse('dashboard:dashboard')
         
-        # Check user role from perfil
+        # Check if user has a role assigned
         try:
             if hasattr(user, 'perfil') and user.perfil and user.perfil.tipo:
-                tipo_nombre = user.perfil.tipo.nombre.lower().strip()
+                # Get the first available module for this user
+                from apps.permisos.utils import obtener_primer_modulo_usuario
+                primer_modulo_url = obtener_primer_modulo_usuario(user)
                 
-                # Administrador -> Dashboard
-                if tipo_nombre == 'administrador':
+                if primer_modulo_url:
+                    return primer_modulo_url
+                else:
+                    # No modules available - go to dashboard which will show message
                     return reverse('dashboard:dashboard')
-                
-                # Medico -> Citas del día
-                elif tipo_nombre == 'medico':
-                    return reverse('citas:citas_hoy')
-                
-                # Admision -> Agendar citas para usuarios
-                elif tipo_nombre == 'admision':
-                    return reverse('citas:agendar_usuario')
-                
-                # Encargado Admision -> Agendar citas para usuarios
-                elif tipo_nombre == 'encargado_admision':
-                    return reverse('citas:agendar_usuario')
-                
-                # Ecografo -> Citas de ecografía
-                elif tipo_nombre in ['ecografo', 'ecógrafo']:
-                    return reverse('citas_ecografia:mis_citas')
         except AttributeError:
             pass
         
@@ -50,7 +38,7 @@ class CustomLoginView(LoginView):
         if user.is_staff:
             return reverse('dashboard:dashboard')
         
-        # Regular users go to home
+        # Regular users without role go to home
         return reverse('home')
 
 from django.contrib import messages 

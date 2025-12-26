@@ -1,0 +1,84 @@
+.sin-permisos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+    padding: 2rem;
+}
+
+.sin-permisos-card {
+    background: white;
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+.info-icon {
+    font-size: 4rem;
+    color: #3b82f6;
+    margin-bottom: 1.5rem;
+}
+
+.sin-permisos-card h1 {
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.sin-permisos-card p {
+    color: #64748b;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    color: white;
+}
+
+.btn-home i {
+    font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+    .sin-permisos-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .info-icon {
+        font-size: 3rem;
+    }
+    
+    .sin-permisos-card h1 {
+        font-size: 1.5rem;
+    }
+}

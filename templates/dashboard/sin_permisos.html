@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sin Permisos{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/sin_permisos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="sin-permisos-container">
+    <div class="sin-permisos-card">
+        <div class="info-icon"><i class="fas fa-info-circle"></i></div>
+        <h1>Información</h1>
+        <p>{{ mensaje }}</p>
+        <div class="actions">
+            <a href="{% url 'home' %}" class="btn-home">
+                <i class="fas fa-home"></i> Ir al Inicio
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
