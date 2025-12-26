@@ -1122,7 +1122,7 @@ body:has(.home-page) .content {
   gap: 1rem;
 }
 
-.btn-call {
+.btn-login {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1134,10 +1134,18 @@ body:has(.home-page) .content {
   font-weight: 600;
   text-decoration: none;
   transition: var(--ht-transition);
+  cursor: pointer;
 }
 
-.btn-call:hover {
+.btn-login:hover {
   background: rgba(8, 145, 178, 0.1);
+  color: var(--ht-primary);
+}
+
+.navbar-user {
+  color: var(--ht-text-main);
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .btn-reserve {

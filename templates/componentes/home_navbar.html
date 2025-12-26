@@ -1,0 +1,38 @@
+{% load static %}
+<!-- HOME NAVBAR -->
+<nav class="home-navbar">
+  <div class="navbar-container">
+    <a href="/" class="navbar-brand">
+      <div class="navbar-logo">
+        <i class="fas fa-hospital-alt"></i>
+      </div>
+      <div class="navbar-brand-text">
+        <span class="navbar-brand-title">TIQUIPAYA</span>
+        <span class="navbar-brand-subtitle">Hospital Municipal</span>
+      </div>
+    </a>
+
+    <ul class="ht-nav-menu">
+      <li><a href="#" class="ht-nav-link active">Inicio</a></li>
+      <li><a href="#filosofia" class="ht-nav-link">Nosotros</a></li>
+      <li><a href="#especialistas" class="ht-nav-link">Especialistas</a></li>
+      <li><a href="#directiva" class="ht-nav-link">Directiva</a></li>
+    </ul>
+
+    <div class="navbar-actions">
+      {% if request.user.is_authenticated %}
+        <span class="navbar-user">{{ request.user.username }}</span>
+        <a href="/citas/agendar/" class="btn-reserve">Reservar</a>
+      {% else %}
+        <a href="#" onclick="toggleLoginModal(); return false;" class="btn-login">
+          <i class="fas fa-sign-in-alt"></i> Ingresar
+        </a>
+        <a href="/citas/agendar/" class="btn-reserve">Reservar</a>
+      {% endif %}
+    </div>
+
+    <button class="navbar-toggle" id="navbarToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</nav>

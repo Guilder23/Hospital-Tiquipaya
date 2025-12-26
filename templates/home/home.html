@@ -58,37 +58,7 @@
 
 <div class="home-page">
 
-<!-- NAVBAR -->
-<nav class="home-navbar">
-  <div class="navbar-container">
-    <a href="/" class="navbar-brand">
-      <div class="navbar-logo">
-        <i class="fas fa-hospital-alt"></i>
-      </div>
-      <div class="navbar-brand-text">
-        <span class="navbar-brand-title">TIQUIPAYA</span>
-        <span class="navbar-brand-subtitle">Hospital Municipal</span>
-      </div>
-    </a>
-
-    <ul class="ht-nav-menu">
-      <li><a href="#" class="ht-nav-link active">Inicio</a></li>
-      <li><a href="#filosofia" class="ht-nav-link">Nosotros</a></li>
-      <li><a href="#especialistas" class="ht-nav-link">Especialistas</a></li>
-      <li><a href="#directiva" class="ht-nav-link">Directiva</a></li>
-    </ul>
-
-    <div class="navbar-actions">
-      <a href="/citas/agendar/" class="btn-reserve">
-        Reservar
-      </a>
-    </div>
-
-    <button class="navbar-toggle" id="navbarToggle">
-      <i class="fas fa-bars"></i>
-    </button>
-  </div>
-</nav>
+{% include 'componentes/home_navbar.html' %}
 
 <!-- HERO SECTION -->
 <section class="hero">
@@ -109,7 +79,7 @@
         <a href="/citas/agendar/" class="btn btn-primary">
           <i class="fas fa-calendar-check"></i> Agendar Cita
         </a>
-        <a href="/accounts/login/" class="btn btn-outline">
+        <a href="#" onclick="toggleLoginModal(); return false;" class="btn btn-outline">
           <i class="fas fa-sign-in-alt"></i> Ingresar
         </a>
       </div>
@@ -341,68 +311,7 @@
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="home-footer">
-  <div class="footer-container">
-    <div class="footer-grid">
-      <div class="footer-section">
-        <div class="footer-brand">
-          <div class="footer-logo">
-            <i class="fas fa-hospital-alt"></i>
-          </div>
-          <h4>Hospital Tiquipaya</h4>
-        </div>
-        <p>La institución de salud líder en Tiquipaya, combinando tradición médica con futuro tecnológico.</p>
-      </div>
-
-      <div class="footer-section">
-        <h6>Accesos</h6>
-        <ul class="footer-links">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#especialistas">Especialistas</a></li>
-          <li><a href="#directiva">Directiva</a></li>
-          <li><a href="/citas/agendar/">Agendar Cita</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h6>Contacto</h6>
-        <div class="footer-contact-item">
-          <i class="fas fa-phone"></i>
-          <span>(+591) 79878030</span>
-        </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-clock"></i>
-          <span>Lun-Sab, 8am-6pm</span>
-        </div>
-        <div class="footer-contact-item">
-          <i class="fas fa-envelope"></i>
-          <span>info@hospitaltiquipaya.gob.bo</span>
-        </div>
-      </div>
-
-      <div class="footer-section">
-        <h6>Ubicación</h6>
-        <div class="footer-location">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>Tiquipaya, Cochabamba, Bolivia</span>
-        </div>
-        <a href="https://www.google.com/maps/place/Hospital+de+Tiquipaya+Materno+infantil./@-17.337055,-66.2202389,17z/data=!3m1!4b1!4m6!3m5!1s0x93e3753ea316d933:0xc10bf6f1ec6ad168!8m2!3d-17.3370601!4d-66.217664!16s%2Fg%2F1pv5x5y_w?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-map">
-          <i class="fas fa-map-marked-alt"></i> Ver en Mapa
-        </a>
-        <div class="footer-social">
-          <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <small>© 2025 Hospital Municipal Tiquipaya.</small>
-    </div>
-  </div>
-</footer>
+{% include 'componentes/home_footer.html' %}
 
 <!-- CHATBOT FAB -->
 <button class="ai-fab" onclick="toggleChat()">
