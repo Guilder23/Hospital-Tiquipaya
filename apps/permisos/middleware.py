@@ -40,12 +40,6 @@ class PermisosMiddleware:
         '/citas/mis/',
         '/citas/editar/',
         '/citas/cancelar/',
-        '/citas/',  # Para rutas dinámicas como /citas/123/pdf/
-    ]
-    
-    # Rutas dinámicas de citas (ej: /citas/123/iniciar/)
-    RUTAS_CITAS_DINAMICAS = [
-        '/citas/',  # Esto cubrirá /citas/{id}/iniciar/, /citas/{id}/finalizar/, etc.
     ]
     
     def __init__(self, get_response):
@@ -56,28 +50,33 @@ class PermisosMiddleware:
         if request.path == '/' or any(request.path.startswith(ruta) for ruta in self.RUTAS_PUBLICAS):
             return self.get_response(request)
         
+        # IMPORTANTE: Verificar rutas específicas ANTES que las genéricas
+        # Rutas que no requieren validación de permisos (para usuarios autenticados)
+        if any(request.path.startswith(ruta) for ruta in self.RUTAS_SIN_VALIDACION):
+            if request.user.is_authenticated:
+                return self.get_response(request)
+            else:
+                # Si no está autenticado, redirigir a login
+                messages.warning(request, 'Debes iniciar sesión para acceder a esta sección')
+                return redirect('login')
+        
+        # Rutas dinámicas de citas que requieren autenticación (ej: /citas/123/iniciar/)
+        # Verificar si es una ruta dinámica con ID (contiene dígitos)
+        if request.path.startswith('/citas/') and any(char.isdigit() for char in request.path):
+            if request.user.is_authenticated:
+                return self.get_response(request)
+            else:
+                messages.warning(request, 'Debes iniciar sesión para acceder')
+                return redirect('login')
+        
         # Rutas para pacientes (requieren sesión de paciente, no autenticación Django)
         if any(request.path.startswith(ruta) for ruta in self.RUTAS_PACIENTE):
             # Verificar si tiene sesión de paciente
             if request.session.get('paciente_id'):
                 return self.get_response(request)
             else:
-                # Si no tiene sesión de paciente, redirigir a validar
-                return redirect('citas:validar')
-        
-        # Rutas dinámicas de citas que requieren autenticación
-        if any(request.path.startswith(ruta) for ruta in self.RUTAS_CITAS_DINAMICAS):
-            if request.user.is_authenticated:
-                return self.get_response(request)
-            else:
-                return redirect('home')
-        
-        # Rutas que no requieren validación de permisos (para usuarios autenticados)
-        if any(request.path.startswith(ruta) for ruta in self.RUTAS_SIN_VALIDACION):
-            if request.user.is_authenticated:
-                return self.get_response(request)
-            else:
-                # Si no está autenticado, redirigir a home
+                # Si no tiene sesión de paciente, redirigir a la página principal
+                messages.info(request, 'Debes validar tus datos como paciente primero')
                 return redirect('home')
         
         # Si es superusuario o admin/staff, crear un permiso virtual que permite editar todo
