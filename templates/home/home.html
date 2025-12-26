@@ -2,6 +2,7 @@
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/home/home.css">
+<link rel="stylesheet" href="/static/css/chatbot.css">
 <style>
   /* Hide base template components on home page */
   body { padding-top: 0 !important; }
@@ -310,56 +311,10 @@
 
 {% include 'componentes/home_footer.html' %}
 
-<!-- CHATBOT FAB -->
-<button class="ai-fab" onclick="toggleChat()">
-  <i class="fas fa-robot"></i>
-</button>
-
-<!-- CHAT CONTAINER -->
-<div class="chat-container" id="chatWindow">
-  <div class="chat-header">
-    <div class="chat-header-info">
-      <div class="chat-header-icon">
-        <i class="fas fa-heartbeat"></i>
-      </div>
-      <div>
-        <h6>Tiquipaya AI</h6>
-        <div class="online-status">
-          <span class="online-dot"></span>
-          <span>En línea ahora</span>
-        </div>
-      </div>
-    </div>
-    <button class="chat-close-btn" onclick="toggleChat()">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-  
-  <div class="chat-messages" id="chatBody">
-    <div class="msg-bubble msg-bot">
-      ¡Hola! 👋 Soy el asistente virtual del Hospital Tiquipaya. <br><br>
-      Puedo ayudarte a agendar citas, encontrar especialistas o responder tus dudas. ¿En qué te ayudo hoy?
-    </div>
-  </div>
-  
-  <div class="quick-actions">
-    <span class="quick-pill" onclick="quickAsk('Cardiología')">Cardiología</span>
-    <span class="quick-pill" onclick="quickAsk('Quiero una cita')">Reservar Cita</span>
-    <span class="quick-pill" onclick="quickAsk('Horarios')">Horarios</span>
-    <span class="quick-pill" onclick="quickAsk('Emergencias')">Emergencias</span>
-  </div>
-
-  <div class="chat-input-area">
-    <input type="text" id="chatInput" placeholder="Escribe tu consulta..." onkeypress="if(event.key === 'Enter') handleChat()">
-    <button class="chat-send-btn" onclick="handleChat()">
-      <i class="fas fa-paper-plane"></i>
-    </button>
-  </div>
-</div>
-
 </div>
 
 {% endblock %}
 {% block extra_js %}
 <script src="/static/js/home/home.js"></script>
+<script src="/static/js/chatbot.js"></script>
 {% endblock %}
