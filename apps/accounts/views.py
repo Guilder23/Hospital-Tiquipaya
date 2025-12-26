@@ -14,17 +14,41 @@ class CustomLoginView(LoginView):
     
     def get_success_url(self):
         user = self.request.user
-        # Superusers and admins go to dashboard
-        if user.is_superuser or user.is_staff:
+        
+        # Superusers always go to dashboard
+        if user.is_superuser:
             return reverse('dashboard:dashboard')
         
-        # Check if user has admin role
+        # Check user role from perfil
         try:
-            if user.perfil and user.perfil.tipo:
-                if user.perfil.tipo.nombre == 'Administrador':
+            if hasattr(user, 'perfil') and user.perfil and user.perfil.tipo:
+                tipo_nombre = user.perfil.tipo.nombre.lower().strip()
+                
+                # Administrador -> Dashboard
+                if tipo_nombre == 'administrador':
                     return reverse('dashboard:dashboard')
+                
+                # Medico -> Citas del día
+                elif tipo_nombre == 'medico':
+                    return reverse('citas:citas_hoy')
+                
+                # Admision -> Agendar citas para usuarios
+                elif tipo_nombre == 'admision':
+                    return reverse('citas:agendar_usuario')
+                
+                # Encargado Admision -> Agendar citas para usuarios
+                elif tipo_nombre == 'encargado_admision':
+                    return reverse('citas:agendar_usuario')
+                
+                # Ecografo -> Citas de ecografía
+                elif tipo_nombre in ['ecografo', 'ecógrafo']:
+                    return reverse('citas_ecografia:mis_citas')
         except AttributeError:
             pass
+        
+        # Staff without specific role go to dashboard
+        if user.is_staff:
+            return reverse('dashboard:dashboard')
         
         # Regular users go to home
         return reverse('home')
