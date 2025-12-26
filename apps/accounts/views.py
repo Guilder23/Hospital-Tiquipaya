@@ -1,11 +1,33 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import login, get_user_model
-from django.urls import reverse_lazy
+from django.contrib.auth import login, authenticate, get_user_model
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .forms import UserCreateWithProfileForm, UserUpdateWithProfileForm
 from apps.permisos.utils import es_admin_o_staff
+
+
+class CustomLoginView(LoginView):
+    """Custom login view that redirects based on user role"""
+    
+    def get_success_url(self):
+        user = self.request.user
+        # Superusers and admins go to dashboard
+        if user.is_superuser or user.is_staff:
+            return reverse('dashboard:dashboard')
+        
+        # Check if user has admin role
+        try:
+            if user.perfil and user.perfil.tipo:
+                if user.perfil.tipo.nombre == 'Administrador':
+                    return reverse('dashboard:dashboard')
+        except AttributeError:
+            pass
+        
+        # Regular users go to home
+        return reverse('home')
 
 from django.contrib import messages 
 from django.contrib.auth.models import User 
