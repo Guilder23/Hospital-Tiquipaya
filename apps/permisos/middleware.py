@@ -38,8 +38,6 @@ class PermisosMiddleware:
     # Rutas para pacientes (requieren sesión de paciente, no autenticación de Django)
     RUTAS_PACIENTE = [
         '/citas/mis/',
-        '/citas/editar/',
-        '/citas/cancelar/',
     ]
     
     def __init__(self, get_response):
@@ -60,22 +58,33 @@ class PermisosMiddleware:
                 messages.warning(request, 'Debes iniciar sesión para acceder a esta sección')
                 return redirect('login')
         
-        # Rutas dinámicas de citas que requieren autenticación (ej: /citas/123/iniciar/)
-        # Verificar si es una ruta dinámica con ID (contiene dígitos)
+        # Rutas dinámicas de citas (verificar primero si es ruta de paciente o de médico)
         if request.path.startswith('/citas/') and any(char.isdigit() for char in request.path):
-            if request.user.is_authenticated:
+            # Verificar si es una ruta de paciente (cancelar, editar, pdf, orden)
+            if any(segment in request.path for segment in ['/cancelar/', '/editar/', '/pdf/', '/orden/']):
+                # Permitir si tiene sesión de paciente o está autenticado
+                if request.session.get('paciente_id') or request.user.is_authenticated:
+                    return self.get_response(request)
+                else:
+                    messages.info(request, 'Debes validar tus datos como paciente primero')
+                    return redirect('home')
+            # Si no es ruta de paciente, requiere autenticación Django (médicos)
+            elif request.user.is_authenticated:
                 return self.get_response(request)
             else:
                 messages.warning(request, 'Debes iniciar sesión para acceder')
                 return redirect('login')
         
-        # Rutas para pacientes (requieren sesión de paciente, no autenticación Django)
+        # Rutas para pacientes (mis citas, etc - rutas sin ID)
         if any(request.path.startswith(ruta) for ruta in self.RUTAS_PACIENTE):
             # Verificar si tiene sesión de paciente
             if request.session.get('paciente_id'):
                 return self.get_response(request)
+            # Si está autenticado como usuario del sistema, también permitir
+            elif request.user.is_authenticated:
+                return self.get_response(request)
             else:
-                # Si no tiene sesión de paciente, redirigir a la página principal
+                # Si no tiene sesión de paciente ni está autenticado, redirigir a home
                 messages.info(request, 'Debes validar tus datos como paciente primero')
                 return redirect('home')
         

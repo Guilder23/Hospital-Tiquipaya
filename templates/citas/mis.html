@@ -220,6 +220,21 @@
     </tbody>
   </table>
 </section>
+
+<!-- Modal de confirmación para cancelar -->
+<div id="modal-cancelar" class="modal" aria-hidden="true" role="dialog">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-box">
+    <h3>Confirmar Cancelación</h3>
+    <p>¿Estás seguro de que deseas cancelar esta cita?</p>
+    <div id="cancel-error" style="display:none; color:#dc3545; margin:10px 0; padding:10px; background:#fee; border-radius:4px;"></div>
+    <div class="modal-actions">
+      <button type="button" id="cancel-no" class="btn btn-secondary">No</button>
+      <button type="button" id="cancel-yes" class="btn btn-danger">Sí, Cancelar</button>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 {% block extra_js %}
 <script>
@@ -320,22 +335,75 @@ document.addEventListener('DOMContentLoaded',function(){
   var cancelError=document.getElementById('cancel-error');
   var currentCancelForm=null;
   function getCookie(name){ var v=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v? v.pop():''; }
-  function openCancel(){ modalCancel.classList.add('is-open'); modalCancel.setAttribute('aria-hidden','false'); }
-  function closeCancel(){ modalCancel.classList.remove('is-open'); modalCancel.setAttribute('aria-hidden','true'); }
-  document.querySelectorAll('.btn-cancel').forEach(function(b){ b.addEventListener('click', function(){ cancelError.style.display='none'; cancelError.textContent=''; currentCancelForm=b.closest('form'); openCancel(); }); });
-  if(cancelNo){ cancelNo.addEventListener('click', function(){ closeCancel(); }); }
-  document.querySelectorAll('#modal-cancelar [data-close]').forEach(function(el){ el.addEventListener('click', function(){ closeCancel(); }); });
-  if(cancelYes){ cancelYes.addEventListener('click', function(){
-    if(!currentCancelForm) return;
-    cancelYes.disabled = true;
-    cancelError.style.display='none'; cancelError.textContent='';
-    var url = currentCancelForm.getAttribute('action');
-    fetch(url, { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':getCookie('csrftoken') }, body:'' })
-      .then(function(r){ if(r.ok) return r.json(); return r.text().then(function(t){ throw new Error(t||'Error'); }); })
-      .then(function(){ closeCancel(); if(window.showToast) window.showToast('Cita cancelada','success'); window.location.reload(); })
-      .catch(function(e){ cancelError.textContent='No se pudo cancelar: '+(e.message||'Error'); cancelError.style.display='block'; })
-      .finally(function(){ cancelYes.disabled = false; });
-  }); }
+  function openCancel(){ 
+    if(modalCancel) {
+      modalCancel.classList.add('is-open'); 
+      modalCancel.setAttribute('aria-hidden','false'); 
+    }
+  }
+  function closeCancel(){ 
+    if(modalCancel) {
+      modalCancel.classList.remove('is-open'); 
+      modalCancel.setAttribute('aria-hidden','true');
+    }
+  }
+  
+  document.querySelectorAll('.btn-cancel').forEach(function(b){ 
+    b.addEventListener('click', function(){ 
+      if(cancelError) {
+        cancelError.style.display='none'; 
+        cancelError.textContent='';
+      }
+      currentCancelForm=b.closest('form'); 
+      openCancel(); 
+    }); 
+  });
+  
+  if(cancelNo){ 
+    cancelNo.addEventListener('click', function(){ closeCancel(); }); 
+  }
+  
+  document.querySelectorAll('#modal-cancelar [data-close]').forEach(function(el){ 
+    el.addEventListener('click', function(){ closeCancel(); }); 
+  });
+  
+  if(cancelYes){ 
+    cancelYes.addEventListener('click', function(){
+      if(!currentCancelForm) return;
+      cancelYes.disabled = true;
+      if(cancelError) {
+        cancelError.style.display='none'; 
+        cancelError.textContent='';
+      }
+      var url = currentCancelForm.getAttribute('action');
+      fetch(url, { 
+        method:'POST', 
+        headers:{ 
+          'Content-Type':'application/x-www-form-urlencoded',
+          'X-CSRFToken':getCookie('csrftoken') 
+        }, 
+        body:'' 
+      })
+      .then(function(r){ 
+        if(r.ok) return r.json(); 
+        return r.text().then(function(t){ throw new Error(t||'Error'); }); 
+      })
+      .then(function(){ 
+        closeCancel(); 
+        if(window.showToast) window.showToast('Cita cancelada','success'); 
+        window.location.reload(); 
+      })
+      .catch(function(e){ 
+        if(cancelError) {
+          cancelError.textContent='No se pudo cancelar: '+(e.message||'Error'); 
+          cancelError.style.display='block';
+        }
+      })
+      .finally(function(){ 
+        cancelYes.disabled = false; 
+      });
+    }); 
+  }
 });
 </script>
 {% endblock %}
