@@ -1,174 +1,329 @@
 {% extends "base.html" %}
 {% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/home/home.css">
-<link rel="stylesheet" href="/static/css/chatbot.css">
+<style>
+  /* Hide base template components on home page */
+  body { padding-top: 0 !important; }
+  .site-header { display: none !important; }
+  .sidebar { display: none !important; }
+  .site-footer { display: none !important; }
+  .layout { margin-left: 0 !important; }
+  .content { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+  
+  /* Custom nav menu styles - avoiding Bootstrap conflicts */
+  .ht-nav-menu {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 2rem !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .ht-nav-menu li {
+    display: inline-block !important;
+    list-style: none !important;
+  }
+  .ht-nav-link {
+    color: #1e293b !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    padding: 8px 0 !important;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .ht-nav-link:hover {
+    color: #0891b2 !important;
+  }
+  .ht-nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background: #0891b2;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  .ht-nav-link:hover::after,
+  .ht-nav-link.active::after {
+    width: 80%;
+  }
+</style>
 {% endblock %}
 {% block content %}
 
+<div class="home-page">
+
+<!-- NAVBAR -->
+<nav class="home-navbar">
+  <div class="navbar-container">
+    <a href="/" class="navbar-brand">
+      <div class="navbar-logo">
+        <i class="fas fa-hospital-alt"></i>
+      </div>
+      <div class="navbar-brand-text">
+        <span class="navbar-brand-title">TIQUIPAYA</span>
+        <span class="navbar-brand-subtitle">Hospital Municipal</span>
+      </div>
+    </a>
+
+    <ul class="ht-nav-menu">
+      <li><a href="#" class="ht-nav-link active">Inicio</a></li>
+      <li><a href="#filosofia" class="ht-nav-link">Nosotros</a></li>
+      <li><a href="#especialistas" class="ht-nav-link">Especialistas</a></li>
+      <li><a href="#directiva" class="ht-nav-link">Directiva</a></li>
+    </ul>
+
+    <div class="navbar-actions">
+      <a href="/citas/agendar/" class="btn-reserve">
+        Reservar
+      </a>
+    </div>
+
+    <button class="navbar-toggle" id="navbarToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</nav>
+
 <!-- HERO SECTION -->
 <section class="hero">
-  <div class="hero-content">
-    <h1 class="hero-title animate-title">Hospital Tiquipaya</h1>
-    <p class="hero-subtitle animate-subtitle">Tu salud es nuestra prioridad</p>
-    <div class="hero-buttons">
-      <a href="/citas/agendar/" class="btn btn-secondary">Agendar Cita</a>
-      {% if paciente %}
-        <span class="user-info">Paciente: {{ paciente.nombres }} {{ paciente.apellido_paterno }}</span>
-        <a href="/citas/mis/" class="btn btn-primary">Mis Citas</a>
-        <form method="post" action="/citas/logout/" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-secondary">Cerrar sesión</button>
-        </form>
-      {% elif request.user.is_authenticated %}
-        <span class="user-info">{{ request.user.username }}</span>
-        <a href="/citas/mis/" class="btn btn-primary">Mis Citas</a>
-      {% else %}
-        <a href="/accounts/login/" class="btn btn-primary">Iniciar Sesión</a>
-        <a href="/accounts/register/" class="btn btn-secondary">Registrarse</a>
-      {% endif %}
-    </div>
-  </div>
-  <div class="hero-background">
-    <div class="floating-shape shape-1"></div>
-    <div class="floating-shape shape-2"></div>
-    <div class="floating-shape shape-3"></div>
-  </div>
-</section>
+  <div class="hero-container">
+    <div class="hero-content fade-in-up">
+      <div class="hero-badge">
+        <i class="fas fa-hospital"></i> Medicina Integrada
+      </div>
+      <h1 class="hero-title">
+        Tu Salud Evoluciona con <br>
+        <span class="highlight">Tecnología Humana</span>
+      </h1>
+      <p class="hero-subtitle">
+        El Hospital Tiquipaya combina la experiencia de los mejores especialistas de Cochabamba con tecnología de vanguardia para tu bienestar.
+      </p>
+      
+      <div class="hero-buttons">
+        <a href="/citas/agendar/" class="btn btn-primary">
+          <i class="fas fa-calendar-check"></i> Agendar Cita
+        </a>
+        <a href="/accounts/login/" class="btn btn-outline">
+          <i class="fas fa-sign-in-alt"></i> Ingresar
+        </a>
+      </div>
 
-<!-- ESTADÍSTICAS -->
-<section class="stats-section">
-  <div class="stats-container">
-    <div class="stat-card animate-stat" data-target="150">
-      <div class="stat-icon">👨‍⚕️</div>
-      <div class="stat-number">150+</div>
-      <div class="stat-label">Médicos Especializados</div>
-    </div>
-    <div class="stat-card animate-stat" data-target="25">
-      <div class="stat-icon"><i class="fas fa-hospital-user"></i></div>
-      <div class="stat-number">25+</div>
-      <div class="stat-label">Especialidades</div>
-    </div>
-    <div class="stat-card animate-stat" data-target="50000">
-      <div class="stat-icon">❤️</div>
-      <div class="stat-number">50K+</div>
-      <div class="stat-label">Pacientes Atendidos</div>
-    </div>
-    <div class="stat-card animate-stat" data-target="24">
-      <div class="stat-icon">⏰</div>
-      <div class="stat-number">24/7</div>
-      <div class="stat-label">Atención Disponible</div>
-    </div>
-  </div>
-</section>
-
-<!-- CARACTERÍSTICAS PRINCIPALES -->
-<section class="features-section">
-  <h2 class="section-title">Nuestros Servicios</h2>
-  <div class="features-grid">
-    <div class="feature-card hover-lift">
-      <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
-      <h3>Agendar Citas</h3>
-      <p>Reserva tu cita de forma fácil y rápida con nuestros especialistas disponibles.</p>
-    </div>
-    <div class="feature-card hover-lift">
-      <div class="feature-icon">🏨</div>
-      <h3>Hospitalización</h3>
-      <p>Comodidad y seguridad en nuestras salas equipadas con tecnología de punta.</p>
-    </div>
-    <div class="feature-card hover-lift">
-      <div class="feature-icon">🔬</div>
-      <h3>Laboratorio</h3>
-      <p>Análisis clínicos con equipamiento moderno y resultados precisos.</p>
-    </div>
-    <div class="feature-card hover-lift">
-      <div class="feature-icon">🚑</div>
-      <h3>Emergencias</h3>
-      <p>Servicio de urgencias 24/7 con equipo médico siempre listo.</p>
-    </div>
-    <div class="feature-card hover-lift">
-      <div class="feature-icon">💊</div>
-      <h3>Farmacia</h3>
-      <p>Medicamentos y tratamientos prescritos por nuestros especialistas.</p>
-    </div>
-    <div class="feature-card hover-lift">
-      <div class="feature-icon">🩺</div>
-      <h3>Consulta Médica</h3>
-      <p>Atención personalizada de médicos expertos en diversas especialidades.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ESPECIALIDADES DESTACADAS -->
-<section class="specialties-section">
-  <h2 class="section-title">Especialidades Destacadas</h2>
-  <div class="specialties-grid">
-    <div class="specialty-card">
-      <div class="specialty-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-      <h3>Cardiología</h3>
-      <p>Cuidado integral del corazón y sistema cardiovascular</p>
-    </div>
-    <div class="specialty-card">
-      <div class="specialty-color" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-      <h3>Pediatría</h3>
-      <p>Medicina especializada para niños y adolescentes</p>
-    </div>
-    <div class="specialty-card">
-      <div class="specialty-color" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-      <h3>Neurología</h3>
-      <p>Tratamiento de enfermedades del sistema nervioso</p>
-    </div>
-    <div class="specialty-card">
-      <div class="specialty-color" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);"></div>
-      <h3>Oftalmología</h3>
-      <p>Cuidado y cirugía de la visión</p>
-    </div>
-    <div class="specialty-card">
-      <div class="specialty-color" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
-      <h3>Oncología</h3>
-      <p>Diagnóstico y tratamiento del cáncer</p>
-    </div>
-    <div class="specialty-card">
-      <div class="specialty-color" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);"></div>
-      <h3>Cirugía General</h3>
-      <p>Procedimientos quirúrgicos generales y especializados</p>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIOS -->
-<section class="testimonials-section">
-  <h2 class="section-title">Lo que Dicen Nuestros Pacientes</h2>
-  <div class="testimonials-container">
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Excelente atención médica. El personal es muy profesional y amable. Me siento seguro en manos del Hospital Tiquipaya."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">JM</div>
-        <div>
-          <div class="author-name">Juan Martínez</div>
-          <div class="author-role">Paciente</div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-number count-up" data-target="24">0+</div>
+          <div class="hero-stat-label">Horas Atención</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number count-up" data-target="50">0+</div>
+          <div class="hero-stat-label">Especialistas</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-number count-up" data-target="100">0%</div>
+          <div class="hero-stat-label">Calidad</div>
         </div>
       </div>
     </div>
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"La tecnología utilizada en los tratamientos es de última generación. Recomiendo ampliamente este hospital."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">MC</div>
+    
+    <div class="hero-image-container">
+      <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="hero-image" alt="Hospital Tiquipaya">
+      
+      <div class="float-card float-card-1">
+        <div class="float-card-icon green">
+          <i class="fas fa-heartbeat"></i>
+        </div>
         <div>
-          <div class="author-name">María Condori</div>
-          <div class="author-role">Paciente</div>
+          <h6>Cardiología</h6>
+          <small>Top en Cochabamba</small>
+        </div>
+      </div>
+      
+      <div class="float-card float-card-2">
+        <div class="float-card-icon blue">
+          <i class="fas fa-brain"></i>
+        </div>
+        <div>
+          <h6>Neurología</h6>
+          <small>Diagnóstico Preciso</small>
         </div>
       </div>
     </div>
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"El proceso de agendar citas es muy simple y rápido. Excelente experiencia en general."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">CP</div>
-        <div>
-          <div class="author-name">Carlos Pérez</div>
-          <div class="author-role">Paciente</div>
+  </div>
+</section>
+
+<!-- FILOSOFÍA / IDENTIDAD -->
+<section id="filosofia" class="philosophy-section">
+  <div class="philosophy-container">
+    <div class="philosophy-header">
+      <span class="section-badge">Nuestra Esencia</span>
+      <h2 class="section-title">Filosofía <span class="highlight">Tiquipaya</span></h2>
+    </div>
+
+    <div class="philosophy-grid">
+      <div class="philosophy-card">
+        <div class="philosophy-icon blue">
+          <i class="fas fa-hand-holding-heart"></i>
+        </div>
+        <h3>Misión</h3>
+        <p>Somos un hospital público comprometido con brindar atención en salud de forma especializada con <strong>calidad y calidez</strong> a nuestra comunidad.</p>
+      </div>
+
+      <div class="philosophy-card">
+        <div class="philosophy-icon cyan">
+          <i class="fas fa-eye"></i>
+        </div>
+        <h3>Visión</h3>
+        <p>Ser el mejor hospital público de <strong>Tiquipaya y Cochabamba</strong>, referente en innovación, atención al paciente y cuidado integral.</p>
+      </div>
+
+      <div class="philosophy-card values">
+        <div class="philosophy-icon white">
+          <i class="fas fa-gem"></i>
+        </div>
+        <h3>Valores</h3>
+        <p>Los pilares que guían cada diagnóstico:</p>
+        <div class="value-badges">
+          <span class="value-badge">Respeto</span>
+          <span class="value-badge">Transparencia</span>
+          <span class="value-badge">Innovación</span>
+          <span class="value-badge">Responsabilidad</span>
+          <span class="value-badge">Ética</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="services-section">
+  <div class="services-container">
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-laptop-medical"></i>
+        </div>
+        <h4>Reserva Digital</h4>
+        <p>Agenda tu cita desde cualquier lugar. Sistema integrado con recordatorios automáticos.</p>
+        <a href="/citas/agendar/" class="service-link">Agendar ahora <i class="fas fa-arrow-right"></i></a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <h4>Staff Médico</h4>
+        <p>Conoce a nuestro equipo de profesionales altamente calificados y sus especialidades.</p>
+        <a href="#especialistas" class="service-link">Ver equipo <i class="fas fa-arrow-right"></i></a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <h4>Dirección Ejecutiva</h4>
+        <p>Liderazgo comprometido con la salud pública y la gestión eficiente de recursos.</p>
+        <a href="#directiva" class="service-link">Conocer más <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALISTAS -->
+<section id="especialistas" class="specialists-section">
+  <div class="specialists-container">
+    <div class="specialists-header">
+      <div class="specialists-header-left">
+        <span class="section-badge">Equipo Médico</span>
+        <h2 class="section-title">Especialistas de <span class="highlight">Primer Nivel</span></h2>
+        <p class="section-subtitle">Tecnología avanzada en manos de expertos certificados.</p>
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-nav-btn" id="prevSpecialist"><i class="fas fa-arrow-left"></i></button>
+        <button class="carousel-nav-btn" id="nextSpecialist"><i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="specialists-grid" id="specialistsGrid">
+      <div class="specialist-card">
+        <div class="specialist-image">
+          <img src="http://hospitalviedma.org/doctors/Dr%20Tapia.webp" alt="Dr. Carlos Mendoza">
+        </div>
+        <div class="specialist-info">
+          <span class="specialist-specialty">Cirugía General</span>
+          <h5>Dr. Carlos Mendoza</h5>
+          <p>Experto en técnicas mínimamente invasivas.</p>
+        </div>
+      </div>
+
+      <div class="specialist-card">
+        <div class="specialist-image">
+          <img src="http://hospitalviedma.org/doctors/Aviles.webp" alt="Dra. María Fernández">
+        </div>
+        <div class="specialist-info">
+          <span class="specialist-specialty">Pediatría</span>
+          <h5>Dra. María Fernández</h5>
+          <p>Especialista en salud infantil y neonatal.</p>
+        </div>
+      </div>
+
+      <div class="specialist-card">
+        <div class="specialist-image">
+          <img src="http://hospitalviedma.org/doctors/Drrr.webp" alt="Dr. Roberto Vargas">
+        </div>
+        <div class="specialist-info">
+          <span class="specialist-specialty">Cardiología</span>
+          <h5>Dr. Roberto Vargas</h5>
+          <p>Experto en diagnóstico cardiovascular.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTIVA -->
+<section id="directiva" class="directiva-section">
+  <div class="directiva-container">
+    <div class="directiva-header">
+      <h2 class="section-title">Dirección Ejecutiva</h2>
+      <p class="section-subtitle">Liderazgo y compromiso en la gestión hospitalaria.</p>
+    </div>
+
+    <div class="directiva-grid">
+      <div class="directiva-card">
+        <div class="directiva-image">
+          <div class="directiva-avatar">DA</div>
+        </div>
+        <div class="directiva-info">
+          <h5>Dra. Ana Directora</h5>
+          <p class="directiva-role">Directora General</p>
+          <p>Más de 20 años de experiencia en gestión hospitalaria.</p>
+        </div>
+      </div>
+
+      <div class="directiva-card">
+        <div class="directiva-image">
+          <img src="http://hospitalviedma.org/doctors/willy%20huarachi.webp" alt="Lic. Luis Admin">
+        </div>
+        <div class="directiva-info">
+          <h5>Lic. Luis Administrador</h5>
+          <p class="directiva-role">Subdirector Adm. Financiero</p>
+          <p>Experto en administración y finanzas de salud.</p>
+        </div>
+      </div>
+
+      <div class="directiva-card">
+        <div class="directiva-image">
+          <img src="http://hospitalviedma.org/doctors/jaqueline%20terrazas.webp" alt="Lic. Patricia RRHH">
+        </div>
+        <div class="directiva-info">
+          <h5>Lic. Patricia Recursos</h5>
+          <p class="directiva-role">Jefatura de Personal</p>
+          <p>Especialista en gestión del talento humano.</p>
         </div>
       </div>
     </div>
@@ -177,19 +332,128 @@
 
 <!-- CTA FINAL -->
 <section class="cta-section">
-  <div class="cta-content">
+  <div class="cta-container">
     <h2>¿Listo para agendar tu cita?</h2>
     <p>Obtén la atención médica que mereces de nuestros especialistas</p>
-    {% if not request.user.is_authenticated %}
-      <a href="/accounts/register/" class="btn btn-primary btn-large">Registrarse Ahora</a>
-    {% else %}
-      <a href="/citas/agendar/" class="btn btn-primary btn-large">Agendar Cita</a>
-    {% endif %}
+    <a href="/citas/agendar/" class="btn btn-primary btn-large">
+      <i class="fas fa-calendar-check"></i> Agendar Cita Ahora
+    </a>
   </div>
 </section>
+
+<!-- FOOTER -->
+<footer class="home-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-hospital-alt"></i>
+          </div>
+          <h4>Hospital Tiquipaya</h4>
+        </div>
+        <p>La institución de salud líder en Tiquipaya, combinando tradición médica con futuro tecnológico.</p>
+      </div>
+
+      <div class="footer-section">
+        <h6>Accesos</h6>
+        <ul class="footer-links">
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#especialistas">Especialistas</a></li>
+          <li><a href="#directiva">Directiva</a></li>
+          <li><a href="/citas/agendar/">Agendar Cita</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h6>Contacto</h6>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone"></i>
+          <span>(+591) 79878030</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-clock"></i>
+          <span>Lun-Sab, 8am-6pm</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>info@hospitaltiquipaya.gob.bo</span>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h6>Ubicación</h6>
+        <div class="footer-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Tiquipaya, Cochabamba, Bolivia</span>
+        </div>
+        <a href="https://www.google.com/maps/place/Hospital+de+Tiquipaya+Materno+infantil./@-17.337055,-66.2202389,17z/data=!3m1!4b1!4m6!3m5!1s0x93e3753ea316d933:0xc10bf6f1ec6ad168!8m2!3d-17.3370601!4d-66.217664!16s%2Fg%2F1pv5x5y_w?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-map">
+          <i class="fas fa-map-marked-alt"></i> Ver en Mapa
+        </a>
+        <div class="footer-social">
+          <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <small>© 2025 Hospital Municipal Tiquipaya.</small>
+    </div>
+  </div>
+</footer>
+
+<!-- CHATBOT FAB -->
+<button class="ai-fab" onclick="toggleChat()">
+  <i class="fas fa-robot"></i>
+</button>
+
+<!-- CHAT CONTAINER -->
+<div class="chat-container" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-header-icon">
+        <i class="fas fa-heartbeat"></i>
+      </div>
+      <div>
+        <h6>Tiquipaya AI</h6>
+        <div class="online-status">
+          <span class="online-dot"></span>
+          <span>En línea ahora</span>
+        </div>
+      </div>
+    </div>
+    <button class="chat-close-btn" onclick="toggleChat()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  
+  <div class="chat-messages" id="chatBody">
+    <div class="msg-bubble msg-bot">
+      ¡Hola! 👋 Soy el asistente virtual del Hospital Tiquipaya. <br><br>
+      Puedo ayudarte a agendar citas, encontrar especialistas o responder tus dudas. ¿En qué te ayudo hoy?
+    </div>
+  </div>
+  
+  <div class="quick-actions">
+    <span class="quick-pill" onclick="quickAsk('Cardiología')">Cardiología</span>
+    <span class="quick-pill" onclick="quickAsk('Quiero una cita')">Reservar Cita</span>
+    <span class="quick-pill" onclick="quickAsk('Horarios')">Horarios</span>
+    <span class="quick-pill" onclick="quickAsk('Emergencias')">Emergencias</span>
+  </div>
+
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="Escribe tu consulta..." onkeypress="if(event.key === 'Enter') handleChat()">
+    <button class="chat-send-btn" onclick="handleChat()">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+
+</div>
 
 {% endblock %}
 {% block extra_js %}
 <script src="/static/js/home/home.js"></script>
-<script src="/static/js/chatbot.js"></script>
 {% endblock %}
