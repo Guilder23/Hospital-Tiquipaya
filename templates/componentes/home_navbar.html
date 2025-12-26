@@ -23,6 +23,12 @@
       {% if request.user.is_authenticated %}
         <span class="navbar-user"><i class="fas fa-user"></i> {{ request.user.username }}</span>
         
+        {% if request.user.is_staff or request.user.is_superuser %}
+        <a href="/dashboard/" class="btn-panel">
+          <i class="fas fa-cog"></i> Panel
+        </a>
+        {% endif %}
+        
         <form method="post" action="/accounts/logout/" style="display:inline;">
           {% csrf_token %}
           <button type="submit" class="btn-logout">
@@ -41,3 +47,32 @@
     </button>
   </div>
 </nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" class="ht-nav-link active">Inicio</a>
+  <a href="#filosofia" class="ht-nav-link">Nosotros</a>
+  <a href="#especialistas" class="ht-nav-link">Especialistas</a>
+  <a href="#directiva" class="ht-nav-link">Directiva</a>
+  
+  <div class="mobile-actions">
+    {% if request.user.is_authenticated %}
+      <span class="navbar-user"><i class="fas fa-user"></i> {{ request.user.username }}</span>
+      {% if request.user.is_staff or request.user.is_superuser %}
+      <a href="/dashboard/" class="btn-panel">
+        <i class="fas fa-cog"></i> Panel
+      </a>
+      {% endif %}
+      <form method="post" action="/accounts/logout/">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">
+          <i class="fas fa-sign-out-alt"></i> Salir
+        </button>
+      </form>
+    {% else %}
+      <a href="#" onclick="toggleLoginModal(); return false;" class="btn-login">
+        <i class="fas fa-sign-in-alt"></i> Ingresar
+      </a>
+    {% endif %}
+  </div>
+</div>

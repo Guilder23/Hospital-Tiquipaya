@@ -2,58 +2,9 @@
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/home/home.css">
+<link rel="stylesheet" href="/static/css/componentes/home_navbar.css">
+<link rel="stylesheet" href="/static/css/componentes/home_footer.css">
 <link rel="stylesheet" href="/static/css/chatbot.css">
-<style>
-  /* Hide base template components on home page */
-  body { padding-top: 0 !important; }
-  .site-header { display: none !important; }
-  .sidebar { display: none !important; }
-  .site-footer { display: none !important; }
-  .layout { margin-left: 0 !important; }
-  .content { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
-  
-  /* Custom nav menu styles - avoiding Bootstrap conflicts */
-  .ht-nav-menu {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 2rem !important;
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  .ht-nav-menu li {
-    display: inline-block !important;
-    list-style: none !important;
-  }
-  .ht-nav-link {
-    color: #1e293b !important;
-    text-decoration: none !important;
-    font-weight: 500 !important;
-    font-size: 0.95rem !important;
-    padding: 8px 0 !important;
-    position: relative;
-    transition: color 0.3s ease;
-  }
-  .ht-nav-link:hover {
-    color: #0891b2 !important;
-  }
-  .ht-nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 50%;
-    background: #0891b2;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-  }
-  .ht-nav-link:hover::after,
-  .ht-nav-link.active::after {
-    width: 80%;
-  }
-</style>
 {% endblock %}
 {% block content %}
 
@@ -316,5 +267,7 @@
 {% endblock %}
 {% block extra_js %}
 <script src="/static/js/home/home.js"></script>
+<script src="/static/js/componentes/home_navbar.js"></script>
+<script src="/static/js/componentes/home_footer.js"></script>
 <script src="/static/js/chatbot.js"></script>
 {% endblock %}
