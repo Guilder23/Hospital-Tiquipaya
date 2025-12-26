@@ -21,13 +21,18 @@
 
     <div class="navbar-actions">
       {% if request.user.is_authenticated %}
-        <span class="navbar-user">{{ request.user.username }}</span>
-        <a href="/citas/agendar/" class="btn-reserve">Reservar</a>
+        <span class="navbar-user"><i class="fas fa-user"></i> {{ request.user.username }}</span>
+        
+        <form method="post" action="/accounts/logout/" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-logout">
+            <i class="fas fa-sign-out-alt"></i> Salir
+          </button>
+        </form>
       {% else %}
         <a href="#" onclick="toggleLoginModal(); return false;" class="btn-login">
           <i class="fas fa-sign-in-alt"></i> Ingresar
         </a>
-        <a href="/citas/agendar/" class="btn-reserve">Reservar</a>
       {% endif %}
     </div>
 
