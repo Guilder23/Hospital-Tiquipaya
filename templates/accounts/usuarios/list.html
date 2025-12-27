@@ -9,11 +9,11 @@
 {% block content %}
 
 <section class="card usuarios-lista">
-  <h2>Usuarios</h2>
+  <h2>Gestionar Usuarios</h2>
 
   {% if user.is_superuser or permiso_actual.puede_editar %}
   <p>
-    <button class="btn" id="btn-open-create">Nuevo usuario</button>
+    <button class="btn btn-create" id="btn-open-create">Nuevo usuario</button>
   </p>
   {% endif %}
 
@@ -126,7 +126,7 @@
         </td>
         <td>{{ p.ci }}</td>
         <td>{{ p.correo }}</td>
-        <td>{{ p.fecha_nacimiento }}</td>
+        <td>{{ p.fecha_nacimiento|date:"j M Y" }}</td>
         <td>{{ p.sexo }}</td>
         <td>{{ p.celular }}</td>
         <td>
