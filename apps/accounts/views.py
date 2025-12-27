@@ -77,111 +77,118 @@ def crear_usuario(request):
         if tipo_rol:
             tipo_obj = TipoUsuario.objects.filter(nombre__iexact=tipo_rol).first()
 
-    perfil = Perfil.objects.create(
-        user=user,
-        nombres=request.POST.get("nombres"),
-        apellido_paterno=request.POST.get("apellido_paterno"),
-        apellido_materno=request.POST.get("apellido_materno") or None,
-        fecha_nacimiento=request.POST.get("fecha_nacimiento"),
-        sexo=request.POST.get("sexo"),
-        direccion=request.POST.get("direccion"),
-        ci=request.POST.get("ci"),
-        complemento_ci=request.POST.get("complemento_ci"),
-        expedido=request.POST.get("expedido") or "CB",
-        telefono=request.POST.get("telefono") or None,
-        celular=request.POST.get("celular") or None,
-        correo=request.POST.get("correo") or None,
-        tipo=tipo_obj,
-        contrato_id=request.POST.get("contrato") or None
-    )
-
-    turnos_seleccionados = request.POST.getlist("turnos")
-    # ================================
-    # 4. DETECTAR ROL NORMALIZADO
-    # ================================
-    rol_norm = (tipo_obj.nombre if tipo_obj else (tipo_rol or "")).strip().lower()
-
-    # ================================
-    # MÉDICO → CREAR DÍAS
-    # ================================
-    if "medico" in rol_norm:
-        dias = DiasAtencion.objects.create(
-            lunes=bool(request.POST.get("lunes")),
-            martes=bool(request.POST.get("martes")),
-            miercoles=bool(request.POST.get("miercoles")),
-            jueves=bool(request.POST.get("jueves")),
-            viernes=bool(request.POST.get("viernes")),
-            sabado=bool(request.POST.get("sabado")),
-            domingo=bool(request.POST.get("domingo")),
-        )
-
-        medico = Medico.objects.create(
+        perfil = Perfil.objects.create(
             user=user,
-            especialidad_id=request.POST.get("especialidad") or None,
-            nro_matricula=request.POST.get("nro_matricula") or "",
-            consultorio=request.POST.get("consultorio") or "",
-            dias_atencion=dias,
+            nombres=request.POST.get("nombres"),
+            apellido_paterno=request.POST.get("apellido_paterno"),
+            apellido_materno=request.POST.get("apellido_materno") or None,
+            fecha_nacimiento=request.POST.get("fecha_nacimiento"),
+            sexo=request.POST.get("sexo"),
+            direccion=request.POST.get("direccion"),
+            ci=request.POST.get("ci"),
+            complemento_ci=request.POST.get("complemento_ci"),
+            expedido=request.POST.get("expedido") or "CB",
+            telefono=request.POST.get("telefono") or None,
+            celular=request.POST.get("celular") or None,
+            correo=request.POST.get("correo") or None,
+            tipo=tipo_obj,
+            contrato_id=request.POST.get("contrato") or None
         )
 
-        medico.turnos.set(turnos_seleccionados)
-        messages.success(request, "Usuario creado correctamente.")
-        return redirect("accounts:usuario_list")
+        turnos_seleccionados = request.POST.getlist("turnos")
+        # ================================
+        # 4. DETECTAR ROL NORMALIZADO
+        # ================================
+        rol_norm = (tipo_obj.nombre if tipo_obj else (tipo_rol or "")).strip().lower()
 
-    # ================================
-    # ADMISIÓN
-    # ================================
-    elif "admision" in rol_norm and "encargado" not in rol_norm:
-        adm = Admision.objects.create(
-            user=user,
-            ventanilla=request.POST.get("ventanilla") or "",
-        )
+        # ================================
+        # MÉDICO → CREAR DÍAS
+        # ================================
+        if "medico" in rol_norm:
+            dias = DiasAtencion.objects.create(
+                lunes=bool(request.POST.get("lunes")),
+                martes=bool(request.POST.get("martes")),
+                miercoles=bool(request.POST.get("miercoles")),
+                jueves=bool(request.POST.get("jueves")),
+                viernes=bool(request.POST.get("viernes")),
+                sabado=bool(request.POST.get("sabado")),
+                domingo=bool(request.POST.get("domingo")),
+            )
 
-        adm.turnos.set(turnos_seleccionados)
-        messages.success(request, "Usuario creado correctamente.")
-        return redirect("accounts:usuario_list")
+            medico = Medico.objects.create(
+                user=user,
+                especialidad_id=request.POST.get("especialidad") or None,
+                nro_matricula=request.POST.get("nro_matricula") or "",
+                consultorio=request.POST.get("consultorio") or "",
+                dias_atencion=dias,
+            )
 
-    # ================================
-    # ENCARGADO DE ADMISIÓN
-    # ================================
-    elif "encargado" in rol_norm and "admision" in rol_norm:
-        enc = EncargadoAdmision.objects.create(
-            user=user,
-            ventanilla=request.POST.get("ventanilla") or "",
-        )
+            medico.turnos.set(turnos_seleccionados)
+            messages.success(request, "Usuario creado correctamente.")
+            return redirect("accounts:usuario_list")
 
-        enc.turnos.set(turnos_seleccionados)
-        messages.success(request, "Usuario creado correctamente.")
-        return redirect("accounts:usuario_list")
+        # ================================
+        # ADMISIÓN
+        # ================================
+        elif "admision" in rol_norm and "encargado" not in rol_norm:
+            adm = Admision.objects.create(
+                user=user,
+                ventanilla=request.POST.get("ventanilla") or "",
+            )
 
-    # ================================
-    # ECÓGRAFO
-    # ================================
-    elif "ecografo" in rol_norm or "ecógrafo" in rol_norm:
-        dias = DiasAtencion.objects.create(
-            lunes=bool(request.POST.get("lunes")),
-            martes=bool(request.POST.get("martes")),
-            miercoles=bool(request.POST.get("miercoles")),
-            jueves=bool(request.POST.get("jueves")),
-            viernes=bool(request.POST.get("viernes")),
-            sabado=bool(request.POST.get("sabado")),
-            domingo=bool(request.POST.get("domingo")),
-        )
+            adm.turnos.set(turnos_seleccionados)
+            messages.success(request, "Usuario creado correctamente.")
+            return redirect("accounts:usuario_list")
 
-        ecografo = Ecografo.objects.create(
-            user=user,
-            nro_matricula=request.POST.get("nro_matricula") or "",
-            consultorio=request.POST.get("consultorio") or "",
-            dias_atencion=dias,
-        )
+        # ================================
+        # ENCARGADO DE ADMISIÓN
+        # ================================
+        elif "encargado" in rol_norm and "admision" in rol_norm:
+            enc = EncargadoAdmision.objects.create(
+                user=user,
+                ventanilla=request.POST.get("ventanilla") or "",
+            )
 
-        ecografo.turnos.set(turnos_seleccionados)
-        
-        # Asignar ecografías seleccionadas
-        ecografias_ids = request.POST.getlist("ecografias")
-        ecografo.ecografias.set(ecografias_ids)
+            enc.turnos.set(turnos_seleccionados)
+            messages.success(request, "Usuario creado correctamente.")
+            return redirect("accounts:usuario_list")
 
-        messages.success(request, "Usuario creado correctamente.")
-        return redirect("accounts:usuario_list")
+        # ================================
+        # ECÓGRAFO
+        # ================================
+        elif "ecografo" in rol_norm or "ecógrafo" in rol_norm:
+            dias = DiasAtencion.objects.create(
+                lunes=bool(request.POST.get("lunes")),
+                martes=bool(request.POST.get("martes")),
+                miercoles=bool(request.POST.get("miercoles")),
+                jueves=bool(request.POST.get("jueves")),
+                viernes=bool(request.POST.get("viernes")),
+                sabado=bool(request.POST.get("sabado")),
+                domingo=bool(request.POST.get("domingo")),
+            )
+
+            ecografo = Ecografo.objects.create(
+                user=user,
+                nro_matricula=request.POST.get("nro_matricula") or "",
+                consultorio=request.POST.get("consultorio") or "",
+                dias_atencion=dias,
+            )
+
+            ecografo.turnos.set(turnos_seleccionados)
+            
+            # Asignar ecografías seleccionadas
+            ecografias_ids = request.POST.getlist("ecografias")
+            ecografo.ecografias.set(ecografias_ids)
+
+            messages.success(request, "Usuario creado correctamente.")
+            return redirect("accounts:usuario_list")
+
+        # ================================
+        # OTROS ROLES (sin campos específicos)
+        # ================================
+        else:
+            messages.success(request, "Usuario creado correctamente.")
+            return redirect("accounts:usuario_list")
 
     # GET
     return render(request, "accounts/usuarios/modals/crear.html", {

@@ -222,8 +222,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #0f4c75;
-  color: #fff;
+  background: var(--color-boton-principal);
+  color: #fff !important;
   padding: 8px 14px;
   border-radius: 10px;
   border: none;
@@ -235,11 +235,15 @@
 }
 
 .btn:hover {
+  background: var(--color-boton-principal-hover) !important;
+  color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-boton-principal);
 }
 
 .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: #fff !important;
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
 }

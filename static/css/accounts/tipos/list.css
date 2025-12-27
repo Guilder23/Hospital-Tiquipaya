@@ -5,10 +5,11 @@
 
 /* ======= TITULO ======= */
 .card h2 {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: var(--color-texto);
   margin-bottom: 1rem;
   text-align: left;
+  font-weight: 800;
 }
 
 /* ======= FILTROS DE BÚSQUEDA ======= */

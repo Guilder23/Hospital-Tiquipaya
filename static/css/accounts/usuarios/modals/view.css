@@ -1,6 +1,6 @@
-/* Overrides específicos del modal VER sobre el diseño base de usuario-crear */
-#modal-ver-usuario .modal-panel { border-top: 4px solid #0ea5e9; position: relative !important; z-index: 2 !important; }
-#modal-ver-usuario h3 { color: #0ea5e9; }
+/* Overrides específicos del modal VER - color verde */
+#modal-ver-usuario .modal-panel { border-top: 4px solid var(--color-exito); position: relative !important; z-index: 2 !important; }
+#modal-ver-usuario h3 { color: var(--color-exito); }
 #modal-ver-usuario .modal-backdrop { z-index: 1 !important; }
 
 #modal-ver-usuario .modal-close {
@@ -13,7 +13,21 @@
 }
 
 #modal-ver-usuario .modal-close:hover {
-    color: #0ea5e9;
+    color: var(--color-exito);
+}
+
+/* Botón cerrar verde */
+#modal-ver-usuario .btn-secondary {
+    background: var(--color-exito) !important;
+    color: #fff !important;
+}
+#modal-ver-usuario .btn-secondary:hover {
+    background: var(--color-exito-hover) !important;
+    box-shadow: 0 4px 12px var(--sombra-exito);
+}
+#modal-ver-usuario .btn-secondary:active {
+    background: var(--color-exito-active) !important;
+    box-shadow: 0 2px 6px var(--sombra-exito-active);
 }
 
 /* === Contenido === */
