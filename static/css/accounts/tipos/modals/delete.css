@@ -154,6 +154,44 @@
 }
 
 @keyframes showModal { to { transform: translateY(0); } }
+
+/* Advertencia de usuarios asociados */
+.tipos-eliminar .usuarios-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #92400e;
+}
+
+.tipos-eliminar .usuarios-warning i {
+  font-size: 1.5rem;
+  color: #f59e0b;
+}
+
+.tipos-eliminar .usuarios-warning span {
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Botón deshabilitado */
+.tipos-eliminar .btn-disabled {
+  background: #9ca3af !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.tipos-eliminar .btn-disabled:hover {
+  background: #9ca3af !important;
+  transform: none !important;
+}
+
 @media (max-width: 600px) {
   .tipos-eliminar .modal-panel {
     max-width: 90%;

@@ -9,11 +9,15 @@
       {% csrf_token %}
       <div class="form-row">
         <label for="crear-nombre">Nombre *</label>
-        <input id="crear-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo">
+        <input id="crear-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo" maxlength="50">
+        <small class="char-count"><span id="crear-nombre-count">0</span>/50 caracteres</small>
+        <span class="field-error" id="crear-nombre-error"></span>
       </div>
       <div class="form-row">
         <label for="crear-descripcion">Descripción</label>
-        <textarea id="crear-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)"></textarea>
+        <textarea id="crear-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)" maxlength="200"></textarea>
+        <small class="char-count"><span id="crear-descripcion-count">0</span>/200 caracteres</small>
+        <span class="field-error" id="crear-descripcion-error"></span>
       </div>
       <div class="modal-actions">
         <button class="btn-secondary" type="button" data-close>Cancelar</button>

@@ -4,6 +4,60 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeButtons = modal?.querySelectorAll('[data-close]');
   const editButtons = document.querySelectorAll('.btn-edit');
   
+  // Elementos para validación
+  const nombreInput = document.getElementById('editar-nombre');
+  const descripcionInput = document.getElementById('editar-descripcion');
+  const nombreCount = document.getElementById('editar-nombre-count');
+  const descripcionCount = document.getElementById('editar-descripcion-count');
+  const nombreError = document.getElementById('editar-nombre-error');
+  const descripcionError = document.getElementById('editar-descripcion-error');
+  
+  function updateCharCount(input, countElement, maxLength) {
+    if (!input || !countElement) return;
+    const length = input.value.length;
+    countElement.textContent = length;
+    
+    if (length >= maxLength) {
+      countElement.parentElement.classList.add('limit-reached');
+    } else {
+      countElement.parentElement.classList.remove('limit-reached');
+    }
+  }
+  
+  function validateForm() {
+    let isValid = true;
+    
+    if (nombreInput) {
+      const nombre = nombreInput.value.trim();
+      if (nombre.length === 0) {
+        nombreError.textContent = 'El nombre es obligatorio';
+        nombreInput.classList.add('input-error');
+        isValid = false;
+      } else if (nombre.length > 50) {
+        nombreError.textContent = 'El nombre no puede exceder 50 caracteres';
+        nombreInput.classList.add('input-error');
+        isValid = false;
+      } else {
+        nombreError.textContent = '';
+        nombreInput.classList.remove('input-error');
+      }
+    }
+    
+    if (descripcionInput) {
+      const desc = descripcionInput.value;
+      if (desc.length > 200) {
+        descripcionError.textContent = 'La descripción no puede exceder 200 caracteres';
+        descripcionInput.classList.add('input-error');
+        isValid = false;
+      } else {
+        descripcionError.textContent = '';
+        descripcionInput.classList.remove('input-error');
+      }
+    }
+    
+    return isValid;
+  }
+  
   function openModal(id) {
     if (!modal || !form) return;
     
@@ -15,20 +69,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const nombre = row.getAttribute('data-nombre') || '';
     const descripcion = row.getAttribute('data-descripcion') || '';
     
-    const inputNombre = form.querySelector('[name="nombre"]');
-    const inputDescripcion = form.querySelector('[name="descripcion"]');
+    if (nombreInput) {
+      nombreInput.value = nombre;
+      updateCharCount(nombreInput, nombreCount, 50);
+    }
+    if (descripcionInput) {
+      descripcionInput.value = descripcion;
+      updateCharCount(descripcionInput, descripcionCount, 200);
+    }
     
-    if (inputNombre) inputNombre.value = nombre;
-    if (inputDescripcion) inputDescripcion.value = descripcion;
+    // Limpiar errores
+    if (nombreError) nombreError.textContent = '';
+    if (descripcionError) descripcionError.textContent = '';
+    nombreInput?.classList.remove('input-error');
+    descripcionInput?.classList.remove('input-error');
     
     modal.setAttribute('aria-hidden', 'false');
-    setTimeout(() => inputNombre?.focus(), 100);
+    setTimeout(() => nombreInput?.focus(), 100);
   }
   
   function closeModal() {
     if (!modal) return;
     modal.setAttribute('aria-hidden', 'true');
   }
+  
+  // Event listeners para contadores
+  nombreInput?.addEventListener('input', () => updateCharCount(nombreInput, nombreCount, 50));
+  descripcionInput?.addEventListener('input', () => updateCharCount(descripcionInput, descripcionCount, 200));
+  
+  // Validación al enviar
+  form?.addEventListener('submit', function(e) {
+    if (!validateForm()) {
+      e.preventDefault();
+    }
+  });
   
   // Event listeners para botones editar
   editButtons.forEach(btn => {

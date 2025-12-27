@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (
     crear_usuario, editar_usuario, TipoUsuarioListView, TipoUsuarioCreateView, TipoUsuarioUpdateView, TipoUsuarioDeleteView,
-    UsuarioListView, UsuarioDetailView, UsuarioCreateView, UsuarioUpdateView, UsuarioDeleteView, UsuarioToggleActiveView
+    UsuarioListView, UsuarioDetailView, UsuarioCreateView, UsuarioUpdateView, UsuarioDeleteView, UsuarioToggleActiveView,
+    verificar_tipo_usuario
 )
 
 app_name = "accounts"
@@ -14,6 +15,7 @@ urlpatterns = [
     path('tipos/nuevo/', TipoUsuarioCreateView.as_view(), name='tipousuario_create'),
     path('tipos/<int:pk>/editar/', TipoUsuarioUpdateView.as_view(), name='tipousuario_update'),
     path('tipos/<int:pk>/eliminar/', TipoUsuarioDeleteView.as_view(), name='tipousuario_delete'),
+    path('tipos/<int:pk>/verificar/', verificar_tipo_usuario, name='tipousuario_verificar'),
 
     # Usuarios
     path('usuarios/', UsuarioListView.as_view(), name='usuario_list'),

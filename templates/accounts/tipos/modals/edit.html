@@ -9,11 +9,15 @@
       {% csrf_token %}
       <div class="form-row">
         <label for="editar-nombre">Nombre *</label>
-        <input id="editar-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo">
+        <input id="editar-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo" maxlength="50">
+        <small class="char-count"><span id="editar-nombre-count">0</span>/50 caracteres</small>
+        <span class="field-error" id="editar-nombre-error"></span>
       </div>
       <div class="form-row">
         <label for="editar-descripcion">Descripción</label>
-        <textarea id="editar-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)"></textarea>
+        <textarea id="editar-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)" maxlength="200"></textarea>
+        <small class="char-count"><span id="editar-descripcion-count">0</span>/200 caracteres</small>
+        <span class="field-error" id="editar-descripcion-error"></span>
       </div>
       <div class="modal-actions">
         <button class="btn-secondary" type="button" data-close>Cancelar</button>

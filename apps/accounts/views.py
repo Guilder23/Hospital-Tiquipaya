@@ -61,7 +61,7 @@ def crear_usuario(request):
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "El nombre de usuario ya existe.")
-            return redirect("usuario_list")
+            return redirect("accounts:usuario_list")
 
         user = User.objects.create_user(
             username=username,
@@ -403,12 +403,40 @@ class TipoUsuarioDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         permiso = getattr(self.request, 'permiso_actual', None)
         return permiso and permiso.puede_editar() if permiso else False
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        """Validar antes de eliminar - sobrescribir post() para Django 4.0+"""
         obj = self.get_object()
         nombre = obj.nombre
-        response = super().delete(request, *args, **kwargs)
+        usuarios_count = Perfil.objects.filter(tipo=obj).count()
+        
+        if usuarios_count > 0:
+            messages.error(
+                request, 
+                f'No se puede eliminar el rol "{nombre}" porque tiene {usuarios_count} usuario(s) asignado(s).'
+            )
+            return redirect('accounts:tipousuario_list')
+        
         messages.success(request, f'Tipo de usuario "{nombre}" eliminado correctamente.')
-        return response
+        return super().post(request, *args, **kwargs)
+
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
+@login_required
+def verificar_tipo_usuario(request, pk):
+    """API para verificar si un tipo de usuario puede ser eliminado"""
+    try:
+        tipo = TipoUsuario.objects.get(pk=pk)
+        usuarios_count = Perfil.objects.filter(tipo=tipo).count()
+        
+        return JsonResponse({
+            'puede_eliminar': usuarios_count == 0,
+            'usuarios_count': usuarios_count,
+            'nombre': tipo.nombre
+        })
+    except TipoUsuario.DoesNotExist:
+        return JsonResponse({'error': 'Tipo de usuario no encontrado'}, status=404)
 
 # ----- Usuarios -----
 class UsuarioListView(LoginRequiredMixin, ListView):

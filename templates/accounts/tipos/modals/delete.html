@@ -9,11 +9,15 @@
       {% csrf_token %}
       <div class="modal-content-danger">
         <p id="delete-tipo-text"></p>
-        <p class="warning-text">Esta acción no se puede deshacer.</p>
+        <p class="warning-text" id="delete-warning-text">Esta acción no se puede deshacer.</p>
+        <div id="delete-usuarios-warning" class="usuarios-warning" style="display:none;">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span id="delete-usuarios-count"></span>
+        </div>
       </div>
       <div class="modal-actions">
         <button class="btn-secondary" type="button" data-close>Cancelar</button>
-        <button class="btn-danger" type="submit">Eliminar</button>
+        <button class="btn-danger" type="submit" id="btn-confirmar-eliminar">Eliminar</button>
       </div>
     </form>
   </div>

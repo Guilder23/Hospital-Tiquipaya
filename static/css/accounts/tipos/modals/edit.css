@@ -150,3 +150,35 @@
     transform: translateY(0);
   }
 }
+
+/* Contador de caracteres */
+.tipos-editar .char-count {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--color-texto-secundario);
+  margin-top: 4px;
+}
+
+.tipos-editar .char-count.limit-reached {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Errores de campo */
+.tipos-editar .field-error {
+  display: block;
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  min-height: 1.2em;
+}
+
+.tipos-editar .input-error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.tipos-editar .input-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
