@@ -16,11 +16,7 @@
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
 }
 
-/* Botón Guardar amarillo */
-#modal-editar-usuario .btn {
-  background: var(--color-advertencia) !important;
-  color: #fff !important;
-}
+
 
 #modal-editar-usuario .btn:hover {
   background: var(--color-advertencia-hover) !important;
@@ -35,4 +31,9 @@
 /* Sección de campos condicionales */
 #modal-editar-usuario .campos-condicionales {
   margin-top: 10px;
+}
+/* Botón Guardar amarillo */
+#modal-editar-usuario .btn {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
 }
