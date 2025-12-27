@@ -147,32 +147,36 @@
 
 /* === BADGES === */
 .citas-ecografia .badge {
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-block;
+  padding: 6px 10px;
   border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid;
 }
 
 .badge-programada {
-  background: var(--color-informacion);
-  color: #fff;
+  background: rgba(14, 165, 233, 0.1);
+  color: #0ea5e9;
+  border-color: #0ea5e9;
 }
 
 .badge-realizada {
-  background: var(--color-exito);
-  color: #fff;
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
 }
 
 .badge-cancelada {
-  background: var(--color-error);
-  color: #fff;
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
 }
 
 .badge-reprogramada {
-  background: var(--color-advertencia);
-  color: #fff;
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+  border-color: #f59e0b;
 }
 
 /* === BOTONES DE ACCIÓN === */
