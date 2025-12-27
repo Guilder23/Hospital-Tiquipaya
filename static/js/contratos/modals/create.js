@@ -22,10 +22,25 @@ document.addEventListener('DOMContentLoaded', function() {
   if (formCreate) {
     formCreate.addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      const errorDiv = document.getElementById('create-error-message');
+      errorDiv.style.display = 'none';
+      errorDiv.textContent = '';
+      
+      const fechaInicio = formCreate['fecha_inicio'].value;
+      const fechaFin = formCreate['fecha_fin'].value;
+      
+      // Validación: fecha inicio no puede ser mayor que fecha fin (pueden ser iguales)
+      if (fechaInicio > fechaFin) {
+        errorDiv.textContent = 'La fecha de inicio no puede ser mayor que la fecha de fin';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      
       const data = {
         nombre: formCreate['nombre'].value,
-        fecha_inicio: formCreate['fecha_inicio'].value,
-        fecha_fin: formCreate['fecha_fin'].value,
+        fecha_inicio: fechaInicio,
+        fecha_fin: fechaFin,
       };
 
       const response = await fetch(apiUrl, {
@@ -40,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         closeModal(mCreate);
         window.location.reload();
+      } else {
+        const errorData = await response.json();
+        errorDiv.textContent = 'Error al crear el contrato: ' + (errorData.error || 'Error desconocido');
+        errorDiv.style.display = 'block';
       }
     });
   }

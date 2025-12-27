@@ -9,13 +9,13 @@
       {% csrf_token %}
       <div class="form-row">
         <label for="crear-nombre">Nombre *</label>
-        <input id="crear-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre de la especialidad" maxlength="30">
-        <small class="char-limit">Máximo 30 caracteres</small>
+        <input id="crear-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre de la especialidad" maxlength="30" minlength="3" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos">
+        <small class="char-limit">Mínimo 3 caracteres. Máximo 30</small>
       </div>
       <div class="form-row">
         <label for="crear-descripcion">Descripción</label>
-        <textarea id="crear-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)" maxlength="100"></textarea>
-        <small class="char-limit">Máximo 100 caracteres</small>
+        <textarea id="crear-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)" maxlength="100" minlength="10" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]+" title="Mínimo 10 caracteres alfanuméricos"></textarea>
+        <small class="char-limit">Mínimo 10 caracteres. Máximo 100</small>
       </div>
       <div class="modal-actions">
         <button class="btn-secondary" type="button" data-close>Cancelar</button>

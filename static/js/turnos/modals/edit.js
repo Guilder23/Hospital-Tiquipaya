@@ -43,12 +43,25 @@ document.addEventListener('DOMContentLoaded', function() {
         formEdit.addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            const errorDiv = document.getElementById('edit-turno-error-message');
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+
             const id = document.getElementById('edit-id').value;
+            const horaIni = formEdit['hora_ini'].value;
+            const horaFin = formEdit['hora_fin'].value;
+            
+            // Validación: hora inicio debe ser menor que hora fin
+            if (horaIni >= horaFin) {
+                errorDiv.textContent = 'La hora de inicio debe ser menor que la hora de fin';
+                errorDiv.style.display = 'block';
+                return;
+            }
 
             const data = {
                 nombre: formEdit['nombre'].value,
-                hora_ini: formEdit['hora_ini'].value,
-                hora_fin: formEdit['hora_fin'].value,
+                hora_ini: horaIni,
+                hora_fin: horaFin,
                 estado: formEdit['estado'].value === "true"
             };
 
@@ -66,7 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.reload();
             } else {
                 const errorData = await response.json();
-                console.error('Error al actualizar el turno:', errorData);
+                errorDiv.textContent = 'Error al actualizar el turno: ' + (errorData.error || 'Error desconocido');
+                errorDiv.style.display = 'block';
             }
         });
     }

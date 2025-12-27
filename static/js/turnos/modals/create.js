@@ -25,10 +25,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (formCreate) {
         formCreate.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const errorDiv = document.getElementById('create-turno-error-message');
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            
+            const horaIni = formCreate['hora_ini'].value;
+            const horaFin = formCreate['hora_fin'].value;
+            
+            // Validación: hora inicio debe ser menor que hora fin
+            if (horaIni >= horaFin) {
+                errorDiv.textContent = 'La hora de inicio debe ser menor que la hora de fin';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
             const data = {
                 nombre: formCreate['nombre'].value,
-                hora_ini: formCreate['hora_ini'].value,
-                hora_fin: formCreate['hora_fin'].value,
+                hora_ini: horaIni,
+                hora_fin: horaFin,
             };
 
             const response = await fetch(apiUrl, {
@@ -45,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.reload(); 
             } else {
                 const errorData = await response.json();
+                errorDiv.textContent = 'Error al crear el turno: ' + (errorData.error || 'Error desconocido');
+                errorDiv.style.display = 'block';
             }
         });
     }

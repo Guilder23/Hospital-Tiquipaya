@@ -76,6 +76,11 @@
   flex-direction: column;
 }
 
+.turnos-crear .form-row.full-width {
+  grid-column: 1 / -1;
+  margin-bottom: 14px;
+}
+
 .turnos-crear .form-row label {
   font-size: 14px;
   font-weight: 500;

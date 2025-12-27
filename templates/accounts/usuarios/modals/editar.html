@@ -9,12 +9,12 @@
       <div class="section">
         <h4>Datos del usuario</h4>
         <div class="form-grid">
-          <div class="form-row"><label>Nombres</label><input name="nombres" required></div>
-          <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required></div>
-          <div class="form-row"><label>Apellido materno</label><input name="apellido_materno"></div>
-          <div class="form-row"><label>Usuario</label><input name="username" required></div>
-          <div class="form-row"><label>Correo</label><input name="correo"></div>
-          <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required></div>
+          <div class="form-row"><label>Nombres</label><input name="nombres" required minlength="3" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos"></div>
+          <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required minlength="3" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos"></div>
+          <div class="form-row"><label>Apellido materno</label><input name="apellido_materno" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]*" title="Solo caracteres alfabéticos"></div>
+          <div class="form-row"><label>Usuario</label><input name="username" required minlength="3" maxlength="150" pattern="[A-Za-z0-9_]+" title="Solo letras, números y guión bajo"></div>
+          <div class="form-row"><label>Correo</label><input name="correo" type="email" maxlength="150" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com"></div>
+          <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required max="{{ fecha_maxima }}" title="Debe tener al menos 18 años"></div>
           <div class="form-row"><label>Sexo</label>
             <select name="sexo">
               <option value="M">Masculino</option>
@@ -22,8 +22,8 @@
               <option value="O">Otro</option>
             </select>
           </div>
-          <div class="form-row"><label>CI</label><input name="ci"></div>
-          <div class="form-row"><label>Complemento</label><input name="complemento_ci"></div>
+          <div class="form-row"><label>CI</label><input name="ci" type="text" pattern="[0-9]{7,8}" maxlength="8" title="7 u 8 dígitos numéricos" placeholder="Ej: 1234567"></div>
+          <div class="form-row"><label>Complemento</label><input name="complemento_ci" minlength="2" maxlength="4" pattern="[A-Za-z0-9]{2,4}" title="2 a 4 caracteres alfanuméricos" placeholder="Ej: 1A"></div>
           <div class="form-row"><label>Expedido</label>
             <select name="expedido">
               <option value="BN">BN</option>
@@ -37,9 +37,9 @@
               <option value="TJ">TJ</option>
             </select>
           </div>
-          <div class="form-row"><label>Teléfono</label><input name="telefono"></div>
-          <div class="form-row"><label>Celular</label><input name="celular"></div>
-          <div class="form-row"><label>Dirección</label><input name="direccion"></div>
+          <div class="form-row"><label>Teléfono</label><input name="telefono" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 44512345"></div>
+          <div class="form-row"><label>Celular</label><input name="celular" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567"></div>
+          <div class="form-row"><label>Dirección</label><input name="direccion" minlength="3" maxlength="255" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres alfanuméricos"></div>
           <div class="form-row"><label>Contrato</label>
             <select name="contrato">
               <option value="">Sin contrato</option>
@@ -48,7 +48,14 @@
               {% endfor %}
             </select>
           </div>
-          <div class="form-row"><label>Rol</label><input name="tipo" readonly></div>
+          <div class="form-row"><label>Rol</label>
+            <select name="tipo" id="edit-select-rol">
+              <option value="">Sin rol</option>
+              {% for t in tipos %}
+                <option value="{{ t.nombre|lower }}">{{ t.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
           <div class="form-row"><label>Estado</label>
             <select name="is_active">
               <option value="true">Activo</option>

@@ -330,5 +330,61 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // ========== LISTENER PARA CAMBIO DE ROL ==========
+    const selectRolEdit = form.querySelector('#edit-select-rol');
+    
+    if (selectRolEdit) {
+        console.log('✓ Select rol encontrado en editar');
+        
+        // Función para actualizar campos según rol seleccionado
+        function actualizarCamposEditar() {
+            const rolSeleccionado = (selectRolEdit.value || "")
+                .trim()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+            
+            console.log('→ Rol seleccionado en editar:', rolSeleccionado);
+            
+            // Ocultar todos los bloques
+            const bloques = ['edit-campos-medico','edit-campos-admision','edit-campos-encargado-admision','edit-campos-ecografo'];
+            bloques.forEach(id => {
+                const bloque = document.getElementById(id);
+                if (bloque) {
+                    bloque.style.display = 'none';
+                }
+            });
+            
+            // Mostrar según el rol
+            if (rolSeleccionado === 'medico') {
+                console.log('→ Mostrando campos MEDICO');
+                const box = document.getElementById('edit-campos-medico');
+                if (box) box.style.display = 'block';
+            } 
+            else if (rolSeleccionado === 'admision') {
+                console.log('→ Mostrando campos ADMISION');
+                const box = document.getElementById('edit-campos-admision');
+                if (box) box.style.display = 'block';
+            } 
+            else if (rolSeleccionado.includes('encargado') && rolSeleccionado.includes('admision')) {
+                console.log('→ Mostrando campos ENCARGADO ADMISION');
+                const box = document.getElementById('edit-campos-encargado-admision');
+                if (box) box.style.display = 'block';
+            } 
+            else if (rolSeleccionado === 'ecografo') {
+                console.log('→ Mostrando campos ECOGRAFO');
+                const box = document.getElementById('edit-campos-ecografo');
+                if (box) box.style.display = 'block';
+            }
+            else {
+                console.log('→ Rol sin campos condicionales:', rolSeleccionado);
+            }
+        }
+        
+        // Ejecutar cuando cambia el select
+        selectRolEdit.addEventListener('change', actualizarCamposEditar);
+    } else {
+        console.warn('✗ No se encontró #edit-select-rol');
+    }
 
 });

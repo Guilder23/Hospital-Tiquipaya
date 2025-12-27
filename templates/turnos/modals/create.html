@@ -5,11 +5,13 @@
         <form id="form-create-turno" method="POST">
             {% csrf_token %}
             <div class="section">
+                <div id="create-turno-error-message" style="display: none; padding: 10px; margin-bottom: 12px; background-color: #fee; border-left: 4px solid #e53e3e; border-radius: 4px; color: #c53030; font-size: 0.9rem;"></div>
+                <div class="form-row full-width">
+                    <label for="create-nombre">Nombre del Turno</label>
+                    <input type="text" id="create-nombre" name="nombre" required minlength="3" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Máximo 30 caracteres. Solo caracteres alfabéticos">
+                    <small style="display:block; margin-top: 4px; color: #666; font-size: 0.8rem;">Mínimo 3 caracteres. Máximo 30</small>
+                </div>
                 <div class="form-grid">
-                    <div class="form-row">
-                        <label for="create-nombre">Nombre del Turno</label>
-                        <input type="text" id="create-nombre" name="nombre" required>
-                    </div>
                     <div class="form-row">
                         <label for="create-hora_ini">Hora de Inicio</label>
                         <input type="time" id="create-hora_ini" name="hora_ini" required>
@@ -19,6 +21,7 @@
                         <input type="time" id="create-hora_fin" name="hora_fin" required>
                     </div>
                 </div>
+                <small class="form-hint" style="display:block; margin-top: 8px; color: #666; font-size: 0.85rem;">La hora de inicio debe ser menor que la hora de fin</small>
             </div>
             <div class="modal-actions">
                 <button class="btn-secondary" type="button" data-close>Cancelar</button>

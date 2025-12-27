@@ -4,18 +4,21 @@
     <h3>Nuevo Contrato</h3>
     <form id="form-create-contrato">
       {% csrf_token %}
+      <div id="create-error-message" style="display: none; padding: 10px; margin-bottom: 12px; background-color: #fee; border-left: 4px solid #e53e3e; border-radius: 4px; color: #c53030; font-size: 0.9rem;"></div>
       <div class="form-row">
         <label>Nombre</label>
-        <input name="nombre" required>
+        <input name="nombre" required minlength="3" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Máximo 30 caracteres. Solo caracteres alfabéticos">
+        <small style="display:block; margin-top: 4px; color: #666; font-size: 0.8rem;">Mínimo 3 caracteres. Máximo 30</small>
       </div>
       <div class="form-row">
         <label>Fecha inicio</label>
-        <input type="date" name="fecha_inicio" required>
+        <input id="create-fecha_inicio" type="date" name="fecha_inicio" required>
       </div>
       <div class="form-row">
         <label>Fecha fin</label>
-        <input type="date" name="fecha_fin" required>
+        <input id="create-fecha_fin" type="date" name="fecha_fin" required>
       </div>
+      <small style="display:block; margin-top: 4px; margin-bottom: 8px; color: #666; font-size: 0.85rem;">La fecha de inicio no puede ser mayor que la fecha de fin</small>
       <div class="modal-actions">
         <button class="btn-secondary" type="button" data-close>Cancelar</button>
         <button class="btn" type="submit">Guardar</button>

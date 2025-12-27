@@ -24,37 +24,37 @@
                 <div class="form-grid">
                     <div class="form-row">
                         <label>Nombres</label>
-                        <input name="nombres" required>
+                        <input name="nombres" required minlength="3" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos">
                     </div>
 
                     <div class="form-row">
                         <label>Apellido paterno</label>
-                        <input name="apellido_paterno" required>
+                        <input name="apellido_paterno" required minlength="3" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos">
                     </div>
 
                     <div class="form-row">
                         <label>Apellido materno</label>
-                        <input name="apellido_materno">
+                        <input name="apellido_materno" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]*" title="Solo caracteres alfabéticos">
                     </div>
 
                     <div class="form-row">
                         <label>Usuario (username)</label>
-                        <input name="username" required placeholder="Nombre de usuario">
+                        <input name="username" required minlength="3" maxlength="150" pattern="[A-Za-z0-9_]+" placeholder="Nombre de usuario" title="Solo letras, números y guión bajo">
                     </div>
 
                     <div class="form-row">
                         <label>Contraseña</label>
-                        <input name="password" type="password" required placeholder="Contraseña">
+                        <input name="password" type="password" required minlength="8" maxlength="128" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}" placeholder="Contraseña" title="Mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número">
                     </div>
 
                     <div class="form-row">
                         <label>CI</label>
-                        <input name="ci">
+                        <input name="ci" type="text" pattern="[0-9]{7,8}" maxlength="8" title="7 u 8 dígitos numéricos" placeholder="Ej: 1234567">
                     </div>
 
                     <div class="form-row">
                         <label>CI complemento</label>
-                        <input name="complemento_ci">
+                        <input name="complemento_ci" minlength="2" maxlength="4" pattern="[A-Za-z0-9]{2,4}" title="2 a 4 caracteres alfanuméricos" placeholder="Ej: 1A">
                     </div>
 
                     <div class="form-row">
@@ -74,7 +74,7 @@
 
                     <div class="form-row">
                         <label>Fecha de Nacimiento</label>
-                        <input type="date" name="fecha_nacimiento" required>
+                        <input type="date" name="fecha_nacimiento" required max="{{ fecha_maxima }}" title="Debe tener al menos 18 años">
                     </div>
 
                     <div class="form-row">
@@ -88,22 +88,22 @@
 
                     <div class="form-row">
                         <label>Telefono fijo</label>
-                        <input name="telefono">
+                        <input name="telefono" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 44512345">
                     </div>
 
                     <div class="form-row">
                         <label>Celular</label>
-                        <input name="celular">
+                        <input name="celular" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567">
                     </div>
 
                     <div class="form-row">
                         <label>Dirección</label>
-                        <input name="direccion">
+                        <input name="direccion" minlength="3" maxlength="255" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres alfanuméricos">
                     </div>
 
                     <div class="form-row">
                         <label>Correo Electronico</label>
-                        <input name="correo">
+                        <input name="correo" type="email" maxlength="150" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com">
                     </div>
                 </div>
             </div>
