@@ -1,80 +1,10 @@
-/* Modal Ver Especialidad - VERDE */
-.especialidades-ver .modal-panel {
-  background: var(--color-fondo-modal);
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border-top: 4px solid var(--color-exito);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  transform: translateY(-20px);
-  animation: showModal 0.35s ease forwards;
-  overflow-y: auto;
-  position: relative;
-  z-index: 1;
-}
-
-.especialidades-ver .modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.especialidades-ver .modal-panel h3 {
-  text-align: center;
-  color: var(--color-exito);
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: 0;
-}
-
-.especialidades-ver .modal-form {
-  padding: 1.5rem;
-  flex: 1;
-}
-
-.especialidades-ver .form-row {
-  margin-bottom: 10px;
-}
-
-.especialidades-ver .form-row label {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 600;
-  color: var(--color-texto);
-  font-size: 0.9rem;
-}
-
-.especialidades-ver .view-field {
-  padding: 0.75rem;
-  background: var(--color-fondo-input);
-  border: 1px solid var(--color-borde-input);
-  border-radius: 10px;
-  color: var(--color-texto);
-  min-height: 38px;
-  display: flex;
-  align-items: center;
-  font-size: 0.95rem;
-  word-break: break-word;
-}
-
-.especialidades-ver .modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 12px;
-}
-
+/* === Modal Ver Especialidad === */
 .especialidades-ver {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-overlay-modal);
   padding: 20px;
   z-index: 2000;
   opacity: 0;
@@ -95,53 +25,118 @@
   background: var(--color-overlay-modal);
 }
 
-.especialidades-ver .modal-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  color: #fff;
-  cursor: pointer;
-  padding: 0;
-  width: 36px;
-  height: 36px;
+.especialidades-ver .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-exito);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModalEspVer 0.35s ease forwards;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.especialidades-ver .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
+.especialidades-ver .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes showModalEspVer {
+  to { transform: translateY(0); }
+}
+
+/* Header */
+.especialidades-ver .modal-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  margin-bottom: 18px;
 }
 
-.especialidades-ver .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
+.especialidades-ver h3 {
+  text-align: center;
+  color: var(--color-exito);
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.especialidades-ver .modal-close-btn {
+  display: none;
+}
+
+/* Contenido */
+.especialidades-ver .modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.especialidades-ver .form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.especialidades-ver .form-row label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--color-texto-secundario);
+}
+
+.especialidades-ver .view-field {
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  font-size: 14px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+/* Botones */
+.especialidades-ver .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .especialidades-ver .btn-secondary {
-  background-color: var(--color-boton-cancelar);
-  color: var(--color-texto) !important;
+  background: var(--color-boton-secundario) !important;
+  color: #fff !important;
   border: none;
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-secundaria);
 }
 
 .especialidades-ver .btn-secondary:hover {
-  background-color: var(--color-boton-cancelar-hover);
+  background: var(--color-boton-secundario-hover) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px var(--sombra-secundaria);
+  transform: translateY(-2px);
 }
 
 .especialidades-ver .btn-secondary:active {
-  background-color: var(--color-boton-cancelar-active);
+  background: var(--color-boton-secundario-active) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 6px var(--sombra-secundaria-active);
+  transform: translateY(0);
 }
 
-@keyframes showModal { 
-  to { transform: translateY(0); } 
-}
-
-@media (max-width: 600px) {
+/* Responsive */
+@media (max-width: 550px) {
   .especialidades-ver .modal-panel {
-    max-width: 90%;
+    max-width: 95%;
+    padding: 16px 20px;
   }
 }

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnConfirmBlock = document.getElementById("btn-block-confirm");
 
   // Cuando se haga click en un botón de bloqueo de la tabla
-  document.querySelectorAll(".btn-block").forEach(btn => {
+  document.querySelectorAll(".btn-delete").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const url = btn.dataset.url;
       if (!btnConfirmBlock) return;

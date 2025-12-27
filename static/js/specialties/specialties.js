@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalBlock = document.getElementById("modal-confirm-block");
     const btnConfirmBlock = document.getElementById("btn-block-confirm");
 
-    document.querySelectorAll(".btn-block").forEach(btn => {
+    document.querySelectorAll(".btn-delete").forEach(btn => {
         btn.addEventListener("click", () => {
             btnConfirmBlock.href = btn.dataset.url;
             modalBlock.classList.add("is-open");

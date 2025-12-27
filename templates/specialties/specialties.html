@@ -12,55 +12,35 @@
 
 {% block content %}
 
-<div class="container mt-4">
+<section class="card especialidades-lista">
+    <h2>Especialidades</h2>
 
-    <!-- <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Lista de Especialidades</h2> -->
+    {% if user.is_superuser or permiso_actual.puede_editar %}
+    <p>
+        <button class="btn" id="btn-open-create">Nueva Especialidad</button>
+    </p>
+    {% endif %}
 
-        <!-- Botón abrir modal custom -->
-        <!-- <button class="btn btn-primary" id="btn-open-create">
-            Nueva Especialidad
-        </button>
-    </div> -->
+    <!-- Filtros de búsqueda -->
+    <div class="filtros-especialidades">
+        <div class="filtro-busqueda">
+            <input type="text" id="buscar-especialidad" placeholder="Buscar por nombre..." autocomplete="off">
+        </div>
+        <div class="filtros-select">
+            <select id="filtro-estado">
+                <option value="">Todos los estados</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+            <select id="filtro-orden-fecha">
+                <option value="">Orden por fecha</option>
+                <option value="desc">Más recientes</option>
+                <option value="asc">Más antiguos</option>
+            </select>
+        </div>
+    </div>
 
-    <!-- {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
-        {% endfor %}
-    {% endif %} -->
-
-    <div class="card shadow-sm">
-            <div class="d-flex flex-column align-items-start mb-3">
-                <h2>Lista de Especialidades</h2>
-                <!-- Botón abrir modal custom -->
-                {% if user.is_superuser or permiso_actual.puede_editar %}
-                <button class="btn btn-primary" id="btn-open-create">
-                    Nueva Especialidad
-                </button>
-                {% endif %}
-            </div>
-
-            <!-- Filtros de búsqueda -->
-            <div class="filtros-especialidades">
-                <div class="filtro-busqueda">
-                    <input type="text" id="buscar-especialidad" placeholder="Buscar por nombre..." autocomplete="off">
-                </div>
-                <div class="filtros-select">
-                    <select id="filtro-estado">
-                        <option value="">Todos los estados</option>
-                        <option value="activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
-                    </select>
-                    <select id="filtro-orden-fecha">
-                        <option value="">Orden por fecha</option>
-                        <option value="desc">Más recientes</option>
-                        <option value="asc">Más antiguos</option>
-                    </select>
-                </div>
-            </div>
-
-        <div class="card-body">
-            <table class="table table-hover">
+    <table class="table especialidades">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -93,19 +73,14 @@
                                 <span class="badge badge-inactivo">Inactivo</span>
                             {% endif %}
                         </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm btn-view">Ver</button>
+                        <td class="actions">
+                            <button class="btn btn-view">Ver</button>
                             {% if user.is_superuser or permiso_actual.puede_editar %}
-                            <button class="btn btn-warning btn-sm btn-edit">Editar</button>
-
+                            <button class="btn btn-edit">Editar</button>
                             {% if esp.estado %}
-                                <button class="btn btn-danger btn-sm btn-block" data-url="{% url 'desactivar_especialidad' esp.id %}">
-                                    Desactivar
-                                </button>
+                                <button class="btn btn-delete" data-url="{% url 'desactivar_especialidad' esp.id %}">Desactivar</button>
                             {% else %}
-                                <a href="{% url 'activar_especialidad' esp.id %}" class="btn btn-success btn-sm">
-                                    Activar
-                                </a>
+                                <a href="{% url 'activar_especialidad' esp.id %}" class="btn btn-activate">Activar</a>
                             {% endif %}
                             {% endif %}
                         </td>
@@ -116,16 +91,8 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-            </table>
-        </div>
-        <!-- mensajes -->
-    <!-- {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} mt-3">{{ message }}</div>
-        {% endfor %}
-    {% endif %} -->
-    </div>
-</div>
+    </table>
+</section>
 
 <!-- Incluye modales PERO SIN BOOTSTRAP -->
 {% include "./modals/create.html" %}

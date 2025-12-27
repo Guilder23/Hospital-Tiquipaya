@@ -1,10 +1,17 @@
-/* ===== CONTENEDOR Y TITULO ===== */
-.container h2 {
-    font-weight: 700;
-    color: var(--color-texto);
+/* === CONTENEDOR PRINCIPAL === */
+.especialidades-lista {
+  padding: 16px;
+  overflow-x: auto;
 }
 
-/* ===== FILTROS DE BÚSQUEDA ===== */
+.especialidades-lista h2 {
+  font-size: 1.8rem;
+  color: var(--color-texto);
+  margin: 0 0 18px;
+  font-weight: 800;
+}
+
+/* === FILTROS DE BÚSQUEDA === */
 .filtros-especialidades {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -13,7 +20,7 @@
   align-items: center;
 }
 
-.filtro-busqueda input {
+.filtros-especialidades .filtro-busqueda input {
   width: 100%;
   padding: 10px 15px;
   border: 1px solid var(--color-borde-input);
@@ -22,17 +29,17 @@
   transition: border-color 0.3s ease;
 }
 
-.filtro-busqueda input:focus {
+.filtros-especialidades .filtro-busqueda input:focus {
   outline: none;
   border-color: var(--color-boton-principal);
 }
 
-.filtros-select {
+.filtros-especialidades .filtros-select {
   display: flex;
   gap: 10px;
 }
 
-.filtros-select select {
+.filtros-especialidades .filtros-select select {
   padding: 10px 15px;
   border: 1px solid var(--color-borde-input);
   border-radius: 8px;
@@ -42,7 +49,7 @@
   transition: border-color 0.3s ease;
 }
 
-.filtros-select select:focus {
+.filtros-especialidades .filtros-select select:focus {
   outline: none;
   border-color: var(--color-boton-principal);
 }
@@ -52,243 +59,234 @@
     grid-template-columns: 1fr;
   }
   
-  .filtros-select {
+  .filtros-especialidades .filtros-select {
     flex-direction: column;
   }
   
-  .filtros-select select {
+  .filtros-especialidades .filtros-select select {
     width: 100%;
   }
 }
 
-/* ===== CARD ===== */
-.card {
-    border-radius: 12px;
-    border: none;
+/* === BOTÓN NUEVO === */
+.especialidades-lista .btn {
+  display: inline-block;
+  padding: .65rem 1.2rem;
+  background: var(--color-boton-principal) !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.card-body {
-    padding: 1.5rem !important;
+.especialidades-lista .btn:hover {
+  background: var(--color-boton-principal-hover) !important;
+  color: white !important;
+  box-shadow: 0 3px 10px var(--color-sombra-hover);
+  transform: translateY(-2px);
 }
 
-/* ===== TABLA ===== */
-.table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 14px;
-    background: var(--color-tabla-row-bg);
-    border: 1px solid var(--color-tabla-border);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px var(--color-tabla-shadow);
+.especialidades-lista .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: white !important;
+  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
 }
 
-.table thead th {
-    background: var(--color-tabla-header-bg);
-    color: var(--color-tabla-header-text);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: .75rem;
-    letter-spacing: .06em;
-    padding: 12px;
-    border-bottom: 1px solid var(--color-tabla-border);
+/* === TABLA === */
+.table.especialidades {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 14px;
+  background: var(--color-tabla-row-bg);
+  border: 1px solid var(--color-tabla-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px var(--color-tabla-shadow);
 }
 
-.table tbody td {
-    padding: 12px;
-    border-top: 1px solid var(--color-tabla-border);
-    color: var(--color-texto);
-    font-size: .95rem;
+.table.especialidades thead th {
+  background: var(--color-tabla-header-bg);
+  color: var(--color-tabla-header-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-tabla-border);
 }
 
-.table tbody tr:nth-child(odd) { background: var(--color-tabla-row-bg); }
-.table tbody tr:hover { background: var(--color-tabla-row-hover-bg); transition: background .18s ease; }
+.table.especialidades tbody td {
+  padding: 12px;
+  border-top: 1px solid var(--color-tabla-border);
+  color: var(--color-texto);
+  font-size: .95rem;
+}
 
-/* ===== BADGES ===== */
+.table.especialidades tbody tr:nth-child(odd) {
+  background: var(--color-tabla-row-bg);
+}
+
+.table.especialidades tbody tr:hover {
+  background: var(--color-tabla-row-hover-bg);
+  transition: background .18s ease;
+}
+
+/* === ACCIONES === */
+.especialidades-lista .actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* === BOTONES DE ACCIÓN === */
+.especialidades-lista .btn-view {
+  background: var(--color-exito) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.especialidades-lista .btn-view:hover {
+  background: var(--color-exito-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.especialidades-lista .btn-view:active {
+  background: var(--color-exito-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
+}
+
+.especialidades-lista .btn-edit {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.especialidades-lista .btn-edit:hover {
+  background: var(--color-advertencia-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-advertencia);
+}
+
+.especialidades-lista .btn-edit:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
+}
+
+.especialidades-lista .btn-delete {
+  background: var(--color-error) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.especialidades-lista .btn-delete:hover {
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.especialidades-lista .btn-delete:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
+}
+
+.especialidades-lista .btn-activate {
+  background: var(--color-exito) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+  text-decoration: none;
+}
+
+.especialidades-lista .btn-activate:hover {
+  background: var(--color-exito-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.especialidades-lista .btn-activate:active {
+  background: var(--color-exito-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
+}
+
+/* === BADGES === */
 .badge {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 999px;
   font-size: .8rem;
   font-weight: 700;
   border: 1px solid;
 }
 
-.badge.bg-success,
 .badge-activo {
-    background-color: var(--estado-activo-bg) !important;
-    color: var(--estado-activo-text) !important;
-    border-color: var(--estado-activo-border) !important;
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    border-radius: 999px;
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
 }
 
-.badge.bg-danger,
 .badge-inactivo {
-    background-color: var(--estado-inactivo-bg) !important;
-    color: var(--estado-inactivo-text) !important;
-    border-color: var(--estado-inactivo-border) !important;
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    border-radius: 999px;
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
 }
 
-/* ===== BOTONES DENTRO DE LA TABLA ===== */
-.table .btn-sm {
-    padding: 8px 12px;
-    font-size: 0.92rem;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: transform .15s ease, box-shadow .15s ease;
-    box-shadow: 0 6px 16px var(--color-sombra);
-}
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .table.especialidades th,
+  .table.especialidades td {
+    padding: .7rem;
+    font-size: .85rem;
+  }
 
-.btn-warning {
-    background: var(--color-advertencia) !important;
-    color: #fff !important;
-    text-decoration: none !important;
-}
+  .especialidades-lista .btn-view,
+  .especialidades-lista .btn-edit,
+  .especialidades-lista .btn-delete,
+  .especialidades-lista .btn-activate {
+    padding: .35rem .6rem;
+    font-size: .8rem;
+  }
 
-.btn-warning:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px var(--sombra-advertencia) !important;
-    text-decoration: none !important;
-    color: #fff !important;
-}
-
-.btn-warning:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 4px 12px var(--sombra-advertencia-active) !important;
-}
-
-.btn-view {
-    background: var(--color-exito) !important;
-    color: #fff !important;
-    text-decoration: none !important;
-}
-
-.btn-view:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px var(--sombra-exito) !important;
-    text-decoration: none !important;
-    color: #fff !important;
-}
-
-.btn-view:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 4px 12px var(--sombra-exito-active) !important;
-}
-
-.btn-danger {
-    background: var(--color-error) !important;
-    color: #fff !important;
-    text-decoration: none !important;
-}
-
-.btn-danger:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px var(--sombra-error) !important;
-    text-decoration: none !important;
-    color: #fff !important;
-}
-
-.btn-danger:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 4px 12px var(--sombra-error-active) !important;
-}
-
-.btn-success {
-    background: var(--color-exito) !important;
-    color: #fff !important;
-    text-decoration: none !important;
-}
-
-.btn-success:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px var(--sombra-exito) !important;
-    text-decoration: none !important;
-    color: #fff !important;
-}
-
-.btn-success:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 4px 12px var(--sombra-exito-active) !important;
-}
-
-.btn-primary {
-    background: var(--color-boton-principal) !important;
-    color: #fff !important;
-    text-decoration: none !important;
-} 
-
-.btn-primary:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px var(--sombra-boton-principal) !important;
-    text-decoration: none !important;
-    color: #fff !important;
-}
-
-.table td .btn {
-    margin-right: 4px;
-}
-
-.table td .btn:last-child {
-    margin-right: 0;
-}
-
-/* Asegura que los <a> dentro de la tabla se vean como botones */
-.table a.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none !important;
-    color: white !important;
-    font-weight: 600;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 0.92rem;
-    box-shadow: 0 6px 16px var(--color-sombra);
-}
-
-.table a.btn:hover {
-    text-decoration: none !important;
-    transform: translateY(-2px);
-    color: #fff !important;
-}
-
-/* ===== BOTÓN PRINCIPAL "NUEVA ESPECIALIDAD" ===== */
-.btn-primary {
-    background-color: var(--color-boton-principal);
-    color: #fff;
-    font-weight: 600;
-    padding: 10px 18px;
-    font-size: 1rem;
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 4px 6px var(--color-sombra);
-    display: inline-flex;
-    text-decoration: none !important;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-primary:hover {
-    filter: brightness(0.9);
-    box-shadow: 0 6px 10px var(--color-sombra-hover);
-    text-decoration: none !important;
-    transform: translateY(-1px);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(15, 76, 117, 0.4);
-}
-
-.btn-primary i {
-    font-size: 1.1rem;
+  .especialidades-lista .btn {
+    padding: .6rem 1rem;
+    font-size: .9rem;
+  }
 }

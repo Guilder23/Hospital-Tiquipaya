@@ -1,75 +1,10 @@
-/* Modal Desactivar Especialidad - ROJO */
-.especialidades-eliminar .modal-panel {
-  background: var(--color-fondo-modal);
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border-top: 4px solid var(--color-error);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  transform: translateY(-20px);
-  animation: showModal 0.35s ease forwards;
-  overflow-y: auto;
-  position: relative;
-  z-index: 1;
-}
-
-.especialidades-eliminar .modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.especialidades-eliminar .modal-panel h3 {
-  text-align: center;
-  color: var(--color-error);
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: 0;
-}
-
-.especialidades-eliminar .modal-content-danger {
-  padding: 1.5rem 0;
-  border-left: 4px solid var(--color-error);
-  padding-left: 1rem;
-}
-
-.especialidades-eliminar .modal-content-danger p {
-  margin: 0;
-  color: var(--color-texto);
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.especialidades-eliminar .modal-content-danger #block-message {
-  margin-bottom: 0.8rem;
-  color: var(--color-error);
-  font-weight: 700;
-}
-
-.especialidades-eliminar .warning-text {
-  color: var(--color-advertencia) !important;
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-}
-
-.especialidades-eliminar .modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 12px;
-}
-
+/* === Modal Desactivar Especialidad === */
 .especialidades-eliminar {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-overlay-modal);
   padding: 20px;
   z-index: 2000;
   opacity: 0;
@@ -90,80 +25,144 @@
   background: var(--color-overlay-modal);
 }
 
-.especialidades-eliminar .modal-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  color: #fff;
-  cursor: pointer;
-  padding: 0;
-  width: 36px;
-  height: 36px;
+.especialidades-eliminar .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 420px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border-top: 4px solid var(--color-error);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: showModalEspEliminar 0.25s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes showModalEspEliminar {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.especialidades-eliminar .modal-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  margin-bottom: 15px;
 }
 
-.especialidades-eliminar .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-.especialidades-eliminar .btn-secondary {
-  background-color: var(--color-boton-cancelar);
-  color: var(--color-texto) !important;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 0.95rem;
+.especialidades-eliminar h3 {
+  color: var(--color-error);
+  font-size: 1.15rem;
+  margin: 0;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  text-align: center;
 }
 
-.especialidades-eliminar .btn-secondary:hover {
-  background-color: var(--color-boton-cancelar-hover);
+.especialidades-eliminar .modal-close-btn {
+  display: none;
 }
 
-.especialidades-eliminar .btn-secondary:active {
-  background-color: var(--color-boton-cancelar-active);
+/* Contenido */
+.especialidades-eliminar .modal-content-danger {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.especialidades-eliminar .modal-content-danger p {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  color: var(--color-texto);
+  line-height: 1.5;
+}
+
+.especialidades-eliminar #block-message {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.especialidades-eliminar .warning-text {
+  color: var(--color-advertencia) !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+
+/* Botones */
+.especialidades-eliminar .modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
 }
 
 .especialidades-eliminar .btn-danger {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-error);
-  color: white !important;
-  font-weight: 600;
+  background: var(--color-error) !important;
+  color: #fff !important;
   border: none;
-  border-radius: 10px;
-  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px var(--sombra-error);
   font-size: 0.95rem;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .especialidades-eliminar .btn-danger:hover {
-  background: var(--color-error-hover);
-  box-shadow: 0 4px 12px var(--sombra-error);
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--sombra-error);
 }
 
 .especialidades-eliminar .btn-danger:active {
-  background: var(--color-error-active);
-  box-shadow: 0 2px 6px var(--sombra-error-active);
+  background: var(--color-error-active) !important;
+  color: #fff !important;
   transform: translateY(0);
+  box-shadow: 0 2px 8px var(--sombra-error-active);
 }
 
-@keyframes showModal { 
-  to { transform: translateY(0); } 
+.especialidades-eliminar .btn-secondary {
+  background: var(--color-boton-cancelar) !important;
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
 }
 
-@media (max-width: 600px) {
+.especialidades-eliminar .btn-secondary:hover {
+  background: var(--color-boton-cancelar-hover) !important;
+  color: var(--color-texto) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.especialidades-eliminar .btn-secondary:active {
+  background: var(--color-boton-cancelar-active) !important;
+  color: var(--color-texto) !important;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
   .especialidades-eliminar .modal-panel {
-    max-width: 90%;
+    max-width: 95%;
+    padding: 16px 20px;
   }
 }
