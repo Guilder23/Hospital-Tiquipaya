@@ -144,6 +144,53 @@
   transform: scale(1.1);
 }
 
+/* Botones del modal editar */
+.tipos-editar .btn {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--sombra-advertencia);
+}
+
+.tipos-editar .btn:hover {
+  background: var(--color-advertencia-hover) !important;
+  box-shadow: 0 4px 12px var(--sombra-advertencia);
+  transform: translateY(-2px);
+}
+
+.tipos-editar .btn:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 6px var(--sombra-advertencia-active);
+  transform: translateY(0);
+}
+
+.tipos-editar .btn-secondary {
+  background-color: var(--color-boton-cancelar);
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tipos-editar .btn-secondary:hover {
+  background-color: var(--color-boton-cancelar-hover);
+}
+
+.tipos-editar .btn-secondary:active {
+  background-color: var(--color-boton-cancelar-active);
+}
+
 /* Animación */
 @keyframes showModal {
   to {
