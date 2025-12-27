@@ -1,30 +1,93 @@
-/* Modal Eliminar Tipo */
-.tipos-eliminar .modal-panel { background: var(--color-fondo-modal); width: 100%; max-width: 500px; max-height: 90vh; padding: 16px 20px; border-radius: 12px; border-top: 4px solid var(--color-error); box-shadow: 0 8px 25px rgba(0,0,0,0.25); transform: translateY(-20px); animation: showModal 0.35s ease forwards; overflow-y: auto; position: relative; z-index: 1; }
+/* === Modal Eliminar Tipo === */
+.tipos-eliminar {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+}
 
-.tipos-eliminar .modal-header { display:flex; align-items:center; justify-content:center; margin-bottom: 10px; }
+.tipos-eliminar[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
 
-.tipos-eliminar .modal-panel h3 { text-align:center; color: var(--color-error); font-size: 22px; font-weight: bold; margin-bottom: 20px; margin-top: 0;  }
+.tipos-eliminar .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background: var(--color-overlay-modal);
+}
 
+.tipos-eliminar .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 420px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border-top: 4px solid var(--color-error);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: showModalTipoEliminar 0.25s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes showModalTipoEliminar {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.tipos-eliminar .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.tipos-eliminar h3 {
+  color: var(--color-error);
+  font-size: 1.15rem;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.tipos-eliminar .modal-close-btn {
+  display: none;
+}
+
+/* Contenido */
 .tipos-eliminar .modal-form {
-  padding: 1.5rem;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .tipos-eliminar .modal-content-danger {
-  padding: 1.5rem 0;
-  border-left: 4px solid var(--color-error);
-  padding-left: 1rem;
+  padding: 1rem 0;
+  text-align: center;
 }
 
 .tipos-eliminar .modal-content-danger p {
-  margin: 0;
-  color: var(--color-texto);
-  font-weight: 500;
   font-size: 0.95rem;
+  margin-bottom: 12px;
+  color: var(--color-texto);
+  line-height: 1.5;
 }
 
-.tipos-eliminar .modal-content-danger #delete-tipo-text {
-  margin-bottom: 0.8rem;
+.tipos-eliminar #delete-tipo-text {
   color: var(--color-error);
   font-weight: 700;
 }
@@ -35,130 +98,11 @@
   font-weight: 600 !important;
 }
 
-.tipos-eliminar .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:12px }
-
-.tipos-eliminar { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--color-overlay-modal); padding: 20px; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.25s; }
-
-.tipos-eliminar[aria-hidden="false"] { opacity: 1; visibility: visible; }
-
-.tipos-eliminar .modal-backdrop {
-  position: absolute;
-  inset: 0;
-  cursor: pointer;
-  z-index: 0;
-  background: var(--color-overlay-modal);
-}
-
-/* Botón cerrar */
-.tipos-eliminar .modal-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  color: #fff;
-  cursor: pointer;
-  padding: 0;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.tipos-eliminar .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-/* Botones de acciones */
-.tipos-eliminar .btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-boton-principal);
-  color: white !important;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px var(--sombra-boton-principal);
-  font-size: 0.95rem;
-}
-
-.tipos-eliminar .btn:hover {
-  background: var(--color-boton-principal-hover);
-  box-shadow: 0 4px 12px var(--sombra-boton-principal);
-  transform: translateY(-2px);
-}
-
-.tipos-eliminar .btn:active {
-  background: var(--color-boton-principal-active);
-  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
-  transform: translateY(0);
-}
-
-.tipos-eliminar .btn-secondary {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-boton-secundario);
-  color: white !important;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px var(--sombra-secundaria);
-  font-size: 0.95rem;
-}
-
-.tipos-eliminar .btn-secondary:hover {
-  background: var(--color-boton-secundario-hover);
-  box-shadow: 0 4px 12px var(--sombra-secundaria);
-  transform: translateY(-2px);
-}
-
-.tipos-eliminar .btn-secondary:active {
-  background: var(--color-boton-secundario-active);
-  box-shadow: 0 2px 6px var(--sombra-secundaria-active);
-  transform: translateY(0);
-}
-
-.tipos-eliminar .btn-danger {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-error);
-  color: white !important;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px var(--sombra-error);
-  font-size: 0.95rem;
-}
-
-.tipos-eliminar .btn-danger:hover {
-  background: var(--color-error-hover);
-  box-shadow: 0 4px 12px var(--sombra-error);
-  transform: translateY(-2px);
-}
-
-.tipos-eliminar .btn-danger:active {
-  background: var(--color-error-active);
-  box-shadow: 0 2px 6px var(--sombra-error-active);
-  transform: translateY(0);
-}
-
-@keyframes showModal { to { transform: translateY(0); } }
-
 /* Advertencia de usuarios asociados */
 .tipos-eliminar .usuarios-warning {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.8rem;
   background: #fef3c7;
   border: 1px solid #f59e0b;
@@ -179,6 +123,68 @@
   line-height: 1.4;
 }
 
+/* Botones */
+.tipos-eliminar .modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.tipos-eliminar .btn-danger {
+  background: var(--color-error) !important;
+  color: #fff !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
+}
+
+.tipos-eliminar .btn-danger:hover {
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--sombra-error);
+}
+
+.tipos-eliminar .btn-danger:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--sombra-error-active);
+}
+
+.tipos-eliminar .btn-secondary {
+  background: var(--color-boton-cancelar) !important;
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
+}
+
+.tipos-eliminar .btn-secondary:hover {
+  background: var(--color-boton-cancelar-hover) !important;
+  color: var(--color-texto) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.tipos-eliminar .btn-secondary:active {
+  background: var(--color-boton-cancelar-active) !important;
+  color: var(--color-texto) !important;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}
+
 /* Botón deshabilitado */
 .tipos-eliminar .btn-disabled {
   background: #9ca3af !important;
@@ -192,16 +198,10 @@
   transform: none !important;
 }
 
-@media (max-width: 600px) {
+/* Responsive */
+@media (max-width: 480px) {
   .tipos-eliminar .modal-panel {
-    max-width: 90%;
-  }
-  
-  .tipos-eliminar .modal-header {
-    padding: 1.2rem;
-  }
-  
-  .tipos-eliminar .modal-form {
-    padding: 1.2rem;
+    max-width: 95%;
+    padding: 16px 20px;
   }
 }

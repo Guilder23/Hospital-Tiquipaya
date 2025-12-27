@@ -1,155 +1,269 @@
 /* === Modal Crear Usuario === */
 .modal.usuario-crear {
-    position: fixed;
-    inset: 0;
-    display: none !important;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--color-overlay-modal);
-    z-index: 2000;
-    backdrop-filter: none !important;
-    filter: none !important;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
 }
 
 .modal.usuario-crear[aria-hidden="false"] {
-    display: flex !important;
+  opacity: 1;
+  visibility: visible;
 }
 
-#modal-crear-usuario .modal-panel {
-    position: relative !important;
-    z-index: 2 !important;
+.modal.usuario-crear .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background: var(--color-overlay-modal);
 }
 
 .modal.usuario-crear .modal-panel {
-    width: 100%;
-    max-width: 750px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding-right: 15px;
-    background: #fff;
-    padding: 25px 30px;
-    border-radius: 12px;
-    border-top: 4px solid var(--color-informacion);
-    transform: translateY(-20px);
-    animation: showModal 0.35s ease forwards;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    backdrop-filter: none !important;
-    filter: none !important;
-    background: var(--color-fondo-modal) !important;
-    position: relative !important;
-    z-index: 2 !important;
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-informacion);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModalUsuario 0.35s ease forwards;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
-/* Animación */
-@keyframes showModal {
-    to { transform: translateY(0); }
-}
-
-/* Scroll invisible */
 .modal.usuario-crear .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
 .modal.usuario-crear .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
 
+@keyframes showModalUsuario {
+  to { transform: translateY(0); }
+}
+
+/* Título */
 .modal.usuario-crear h3 {
-    text-align: center;
-    color: var(--color-informacion);
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  text-align: center;
+  color: var(--color-informacion);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 18px;
+  margin-top: 0;
 }
 
-/* === Secciones === */
-.section { 
-    margin-bottom: 20px; 
-    border-bottom: 1px solid #e2e8f0; 
-    padding-bottom: 15px; 
-}
-.section:last-child { border-bottom: none; padding-bottom: 0; }
-.section h4 { 
-    font-size: 16px; 
-    font-weight: 600; 
-    margin-bottom: 12px; 
-    color: #1e293b; 
+/* Secciones */
+.modal.usuario-crear .section {
+  margin-bottom: 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-tabla-border);
 }
 
-/* === Grid del formulario === */
-.form-grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 16px 20px; 
-}
-.form-row { display: flex; flex-direction: column; }
-.form-row-full { grid-column: span 2; }
-
-/* === Inputs === */
-label { 
-    font-size: 14px; 
-    font-weight: 500; 
-    margin-bottom: 4px; 
-    color: #1e293b; 
-}
-input, select { 
-    padding: 10px 12px; 
-    border-radius: 8px; 
-    border: 1px solid #cfd4da; 
-    outline: none; 
-    font-size: 14px; 
-    transition: 0.25s; 
-}
-input:focus, select:focus { 
-    border-color: var(--color-informacion); 
-    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25); 
+.modal.usuario-crear .section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-/* === Botones === */
-.modal-actions { 
-    display: flex; 
-    justify-content: flex-end; 
-    gap: 12px; 
-    margin-top: 10px; 
+.modal.usuario-crear .section h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-texto);
 }
 
-/* Botón principal del modal crear - color azul oscuro */
+/* Grid */
+.modal.usuario-crear .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 18px;
+}
+
+.modal.usuario-crear .form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal.usuario-crear .form-row-full {
+  grid-column: span 2;
+}
+
+.modal.usuario-crear .form-row label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--color-texto);
+}
+
+/* Inputs */
+.modal.usuario-crear input,
+.modal.usuario-crear select,
+.modal.usuario-crear textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-borde-input);
+  outline: none;
+  font-size: 14px;
+  background: var(--color-fondo-input);
+  font-family: inherit;
+  transition: 0.25s;
+}
+
+.modal.usuario-crear input:focus,
+.modal.usuario-crear select:focus,
+.modal.usuario-crear textarea:focus {
+  border-color: var(--color-informacion);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+}
+
+/* Campos de solo lectura */
+.modal.usuario-crear .form-row > div {
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  font-size: 14px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+/* Checkboxes */
+.modal.usuario-crear input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+/* Botones */
+.modal.usuario-crear .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
 .modal.usuario-crear .btn {
-    background: var(--color-boton-principal) !important;
-    color: #fff !important;
-}
-.modal.usuario-crear .btn:hover { 
-    background: var(--color-boton-principal-hover) !important; 
-    box-shadow: 0 6px 16px var(--sombra-boton-principal); 
-}
-.modal.usuario-crear .btn:active { 
-    background: var(--color-boton-principal-active) !important; 
-    box-shadow: 0 2px 8px var(--sombra-boton-principal-active); 
-}
-
-.modal.usuario-crear .btn-secondary { 
-    background: #e5e7eb !important; 
-    color: #1e293b !important; 
-    border: none; 
-    padding: 10px 18px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    transition: all .2s ease; 
-    box-shadow: 0 2px 8px var(--sombra-neutral-06); 
-}
-.modal.usuario-crear .btn-secondary:hover { 
-    background: #d1d5db !important; 
-    color: #1e293b !important;
-    box-shadow: 0 4px 12px var(--sombra-neutral-10); 
-}
-.modal.usuario-crear .btn-secondary:active { 
-    background: #bdc3c7 !important; 
-    color: #1e293b !important;
-    box-shadow: 0 2px 6px var(--sombra-neutral-10); 
+  background: var(--color-boton-principal) !important;
+  color: #fff !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
 }
 
-/* === Backdrop === */
-#modal-crear-usuario .modal-backdrop,
-.modal.usuario-crear .modal-backdrop {
-    backdrop-filter: none !important;
-    filter: none !important;
-    background: var(--color-overlay-modal) !important;
-    z-index: 1 !important; /* Para que no lo tape otro backdrop */
-    position: absolute !important;
+.modal.usuario-crear .btn:hover {
+  background: var(--color-boton-principal-hover) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px var(--sombra-boton-principal);
+  transform: translateY(-2px);
+}
+
+.modal.usuario-crear .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px var(--sombra-boton-principal-active);
+  transform: translateY(0);
+}
+
+.modal.usuario-crear .btn-secondary {
+  background: var(--color-boton-cancelar) !important;
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
+}
+
+.modal.usuario-crear .btn-secondary:hover {
+  background: var(--color-boton-cancelar-hover) !important;
+  color: var(--color-texto) !important;
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.modal.usuario-crear .btn-secondary:active {
+  background: var(--color-boton-cancelar-active) !important;
+  color: var(--color-texto) !important;
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}
+
+/* === CAMPOS CONDICIONALES POR ROL === */
+.modal.usuario-crear .campos-condicionales {
+  margin-top: 10px;
+  padding: 16px;
+  background: var(--color-fondo-card);
+  border-radius: 10px;
+  border: 1px solid var(--color-tabla-border);
+}
+
+.modal.usuario-crear .campos-condicionales h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-texto);
+  margin: 16px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-tabla-border);
+}
+
+.modal.usuario-crear .campos-condicionales h4:first-child {
+  margin-top: 0;
+}
+
+/* Checkboxes con labels */
+.modal.usuario-crear .campos-condicionales > label {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  margin: 4px 6px 4px 0;
+  background: var(--color-fondo-input);
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--color-texto);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal.usuario-crear .campos-condicionales > label:hover {
+  background: var(--color-tabla-row-hover-bg);
+  border-color: var(--color-boton-principal);
+}
+
+.modal.usuario-crear .campos-condicionales > label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  accent-color: var(--color-boton-principal);
+}
+
+/* Días de atención en una línea */
+.modal.usuario-crear .campos-condicionales > label + label {
+  margin-left: 0;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .modal.usuario-crear .modal-panel {
+    max-width: 95%;
+    padding: 16px 20px;
+  }
+  
+  .modal.usuario-crear .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal.usuario-crear .form-row-full {
+    grid-column: span 1;
+  }
 }

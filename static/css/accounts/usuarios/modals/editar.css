@@ -1,37 +1,38 @@
-/* Overrides específicos del modal EDITAR - color amarillo */
-#modal-editar-usuario .modal-panel { border-top: 4px solid var(--color-advertencia); position: relative !important; z-index: 2 !important; }
-#modal-editar-usuario h3 { color: var(--color-advertencia); }
-#modal-editar-usuario .modal-backdrop { z-index: 1 !important; }
+/* === Modal Editar Usuario === */
+/* Override del color del borde y título */
+#modal-editar-usuario .modal-panel {
+  border-top: 4px solid var(--color-advertencia);
+}
+
+#modal-editar-usuario h3 {
+  color: var(--color-advertencia);
+}
 
 /* Focus amarillo en inputs */
 #modal-editar-usuario input:focus,
-#modal-editar-usuario select:focus {
-    border-color: var(--color-advertencia) !important;
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25) !important;
+#modal-editar-usuario select:focus,
+#modal-editar-usuario textarea:focus {
+  border-color: var(--color-advertencia);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
 }
 
 /* Botón Guardar amarillo */
 #modal-editar-usuario .btn {
-    background: var(--color-advertencia) !important;
-    color: #fff !important;
-}
-#modal-editar-usuario .btn:hover {
-    background: var(--color-advertencia-hover) !important;
-    box-shadow: 0 6px 16px var(--sombra-advertencia);
-}
-#modal-editar-usuario .btn:active {
-    background: var(--color-advertencia-active) !important;
-    box-shadow: 0 2px 8px var(--sombra-advertencia-active);
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
 }
 
-/* Botón Cancelar */
-#modal-editar-usuario .btn-secondary {
-    background: var(--color-boton-cancelar) !important;
-    color: var(--color-texto) !important;
+#modal-editar-usuario .btn:hover {
+  background: var(--color-advertencia-hover) !important;
+  box-shadow: 0 6px 16px var(--sombra-advertencia);
 }
-#modal-editar-usuario .btn-secondary:hover {
-    background: var(--color-boton-cancelar-hover) !important;
+
+#modal-editar-usuario .btn:active {
+  background: var(--color-advertencia-active) !important;
+  box-shadow: 0 2px 8px var(--sombra-advertencia-active);
 }
-#modal-editar-usuario .btn-secondary:active {
-    background: var(--color-boton-cancelar-active) !important;
+
+/* Sección de campos condicionales */
+#modal-editar-usuario .campos-condicionales {
+  margin-top: 10px;
 }

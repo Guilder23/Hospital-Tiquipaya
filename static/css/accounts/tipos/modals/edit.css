@@ -1,15 +1,10 @@
-/* ===========================
-      MODAL EDITAR TIPO
-   =========================== */
-
-/* Overlay del modal */
+/* === Modal Editar Tipo === */
 .tipos-editar {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-overlay-modal);
   padding: 20px;
   z-index: 2000;
   opacity: 0;
@@ -22,7 +17,6 @@
   visibility: visible;
 }
 
-/* Backdrop clickeable */
 .tipos-editar .modal-backdrop {
   position: absolute;
   inset: 0;
@@ -31,21 +25,27 @@
   background: var(--color-overlay-modal);
 }
 
-/* Panel principal */
 .tipos-editar .modal-panel {
   background: var(--color-fondo-modal);
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border-radius: 12px;
   border-top: 4px solid var(--color-advertencia);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
   transform: translateY(-20px);
-  animation: showModal 0.35s ease forwards;
+  animation: showModalTipoEditar 0.35s ease forwards;
   overflow-y: auto;
   position: relative;
   z-index: 1;
+}
+
+.tipos-editar .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
+.tipos-editar .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes showModalTipoEditar {
+  to { transform: translateY(0); }
 }
 
 /* Header */
@@ -53,149 +53,61 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
 }
 
-.tipos-editar .modal-panel h3 {
+.tipos-editar h3 {
   text-align: center;
   color: var(--color-advertencia);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: 0;
+  margin: 0;
+}
+
+.tipos-editar .modal-close-btn {
+  display: none;
 }
 
 /* Formulario */
 .tipos-editar .modal-form {
-  padding: 1.5rem;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .tipos-editar .form-row {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .tipos-editar .form-row label {
-  display: block;
-  margin-bottom: 4px;
+  font-size: 14px;
   font-weight: 600;
+  margin-bottom: 6px;
   color: var(--color-texto);
-  font-size: 0.9rem;
 }
 
-/* Inputs y Textareas */
-.tipos-editar .form-row input,
-.tipos-editar .form-row textarea {
-  width: 100%;
-  padding: 8px 10px;
-  border: 2px solid var(--color-borde-input);
+.tipos-editar input,
+.tipos-editar textarea {
+  padding: 10px 12px;
   border-radius: 8px;
-  background: var(--color-fondo-input);
-  color: var(--color-texto);
-  font-family: inherit;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.tipos-editar .form-row textarea {
-  resize: vertical;
-  min-height: 70px;
-  font-size: 0.9rem;
-}
-
-/* ==============
-     FOCUS AMARILLO
-   ============== */
-
-.tipos-editar .form-row input:focus,
-.tipos-editar .form-row textarea:focus {
-  border-color: var(--color-advertencia); /* Amarillo */
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.35);
+  border: 1px solid var(--color-borde-input);
   outline: none;
+  font-size: 14px;
+  background: var(--color-fondo-input);
+  font-family: inherit;
+  transition: 0.25s;
 }
 
-/* Acciones */
-.tipos-editar .modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 12px;
+.tipos-editar textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
-/* Botón cerrar */
-.tipos-editar .modal-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  color: #fff;
-  cursor: pointer;
-  padding: 0;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.tipos-editar .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-/* Botones del modal editar */
-.tipos-editar .btn {
-  background: var(--color-advertencia) !important;
-  color: #fff !important;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px var(--sombra-advertencia);
-}
-
-.tipos-editar .btn:hover {
-  background: var(--color-advertencia-hover) !important;
-  box-shadow: 0 4px 12px var(--sombra-advertencia);
-  transform: translateY(-2px);
-}
-
-.tipos-editar .btn:active {
-  background: var(--color-advertencia-active) !important;
-  color: #fff !important;
-  box-shadow: 0 2px 6px var(--sombra-advertencia-active);
-  transform: translateY(0);
-}
-
-.tipos-editar .btn-secondary {
-  background-color: var(--color-boton-cancelar);
-  color: var(--color-texto) !important;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.tipos-editar .btn-secondary:hover {
-  background-color: var(--color-boton-cancelar-hover);
-}
-
-.tipos-editar .btn-secondary:active {
-  background-color: var(--color-boton-cancelar-active);
-}
-
-/* Animación */
-@keyframes showModal {
-  to {
-    transform: translateY(0);
-  }
+.tipos-editar input:focus,
+.tipos-editar textarea:focus {
+  border-color: var(--color-advertencia);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
 }
 
 /* Contador de caracteres */
@@ -208,24 +120,90 @@
 }
 
 .tipos-editar .char-count.limit-reached {
-  color: #ef4444;
+  color: var(--color-error);
   font-weight: 600;
 }
 
-/* Errores de campo */
+/* Errores */
 .tipos-editar .field-error {
   display: block;
-  color: #ef4444;
+  color: var(--color-error);
   font-size: 0.8rem;
   margin-top: 4px;
   min-height: 1.2em;
 }
 
 .tipos-editar .input-error {
-  border-color: #ef4444 !important;
+  border-color: var(--color-error) !important;
   background-color: #fef2f2 !important;
 }
 
 .tipos-editar .input-error:focus {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Botones */
+.tipos-editar .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tipos-editar .btn {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 4px 12px var(--sombra-neutral-06);
+}
+
+.tipos-editar .btn:hover {
+  background: var(--color-advertencia-hover) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px var(--sombra-advertencia);
+  transform: translateY(-2px);
+}
+
+.tipos-editar .btn:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px var(--sombra-advertencia-active);
+  transform: translateY(0);
+}
+
+.tipos-editar .btn-secondary {
+  background: var(--color-boton-cancelar) !important;
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
+}
+
+.tipos-editar .btn-secondary:hover {
+  background: var(--color-boton-cancelar-hover) !important;
+  color: var(--color-texto) !important;
+  box-shadow: 0 4px 12px var(--sombra-neutral-10);
+}
+
+.tipos-editar .btn-secondary:active {
+  background: var(--color-boton-cancelar-active) !important;
+  color: var(--color-texto) !important;
+  box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}
+
+/* Responsive */
+@media (max-width: 550px) {
+  .tipos-editar .modal-panel {
+    max-width: 95%;
+    padding: 16px 20px;
+  }
 }
