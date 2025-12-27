@@ -277,6 +277,8 @@ body {
 }
 
 .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: #fff !important;
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
 }
