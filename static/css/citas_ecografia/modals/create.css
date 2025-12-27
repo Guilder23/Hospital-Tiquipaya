@@ -68,6 +68,26 @@
   padding-bottom: 0;
 }
 
+/* Espacio entre secciones dentro de un paso */
+.step > .form-group,
+.step > .alert,
+.step > #step-3a,
+.step > #step-3b {
+  margin-bottom: 20px;
+}
+
+/* Contenedor de botones al final de cada paso */
+.step > .btn,
+.step > button {
+  margin-top: 20px;
+  margin-right: 12px;
+}
+
+.step > .btn:last-child,
+.step > button:last-child {
+  margin-right: 0;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -182,14 +202,28 @@ textarea.form-control {
 }
 
 /* === CALENDARIO === */
-.calendario-container {
-  margin-bottom: 16px;
+.calendario-wrapper {
+  width: 100%;
+}
+
+.calendario-wrapper > label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+#calendario-container {
+  width: 100%;
+}
+
+#calendario-container .calendario-container {
+  width: 100%;
 }
 
 .calendario-mes {
-  margin-bottom: 24px;
-  padding-bottom: 20px;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
   border-bottom: 3px solid var(--color-boton-principal);
+  width: 100%;
 }
 
 .calendario-mes:last-child {
@@ -200,33 +234,36 @@ textarea.form-control {
 .calendario-mes-titulo {
   font-weight: 700;
   color: var(--color-boton-principal);
-  margin-bottom: 14px;
-  font-size: 1.1rem;
+  margin-bottom: 16px;
+  font-size: 1.15rem;
   text-transform: capitalize;
+  text-align: center;
 }
 
 .calendario-header {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 12px;
   font-weight: 700;
   text-align: center;
   color: var(--color-boton-principal);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--color-tabla-border);
+  width: 100%;
 }
 
 .calendario-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
 .fecha-btn {
-  padding: 10px;
+  padding: 10px 6px;
   text-align: center;
   border: 2px solid var(--color-exito);
   border-radius: 8px;
@@ -236,7 +273,7 @@ textarea.form-control {
   transition: all 0.2s ease;
   font-size: 0.9rem;
   font-weight: 600;
-  min-height: 50px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -284,8 +321,10 @@ textarea.form-control {
 .horarios-legend {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 0 14px;
+  gap: 10px;
+  margin: 0 0 20px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .legend-label {
@@ -319,9 +358,10 @@ textarea.form-control {
 
 .horarios-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 10px;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+  justify-content: center;
 }
 
 .horario-btn {
@@ -402,12 +442,18 @@ textarea.form-control {
 
 /* === BOTONES === */
 #modal-create .btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 0.95rem;
   transition: all 0.2s ease;
   border: none;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#modal-create .btn:last-child {
+  margin-right: 0;
 }
 
 #modal-create .btn-primary,

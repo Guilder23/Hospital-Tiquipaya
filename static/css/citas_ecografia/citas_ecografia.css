@@ -347,3 +347,17 @@
     margin-right: 0;
   }
 }
+
+/* === FIX BACKDROP SIDEBAR === */
+/* El sidebar tiene z-index: 1100, Bootstrap backdrop por defecto es 1050 */
+/* Necesitamos que el backdrop tenga mayor z-index para cubrir el sidebar */
+.modal-backdrop.show {
+  z-index: 1150 !important;
+}
+
+#modal-create.show,
+#modal-view.show,
+#modal-edit.show,
+#modal-delete.show {
+  z-index: 1200 !important;
+}

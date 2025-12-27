@@ -18,7 +18,6 @@ function getCookie(name) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const btnOpenCreate = document.getElementById('btn-open-create');
     const btnSearch = document.getElementById('btn-search');
     const btnBackSearch = document.getElementById('btn-back-search');
     const btnBackPatient = document.getElementById('btn-back-patient');
@@ -26,16 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnConfirm = document.getElementById('btn-confirm');
     const selectDoctor = document.getElementById('select-doctor');
     const searchInput = document.getElementById('search-input');
-    const modalCreate = new bootstrap.Modal(document.getElementById('modal-create'));
-
-    // Abrir modal
-    if (btnOpenCreate) {
-        btnOpenCreate.addEventListener('click', () => {
-            citaEcografiaData = {};
-            resetCreateForm();
-            modalCreate.show();
-        });
-    }
 
     // Buscar paciente
     if (btnSearch) {

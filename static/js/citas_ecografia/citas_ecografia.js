@@ -12,7 +12,9 @@ function initializeButtons() {
     if (btnOpenCreate) {
         btnOpenCreate.addEventListener('click', function() {
             resetCreateForm();
-            new bootstrap.Modal(document.getElementById('modal-create')).show();
+            const modalEl = document.getElementById('modal-create');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
         });
     }
 }

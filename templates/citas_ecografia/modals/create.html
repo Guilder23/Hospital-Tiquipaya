@@ -29,7 +29,9 @@
                         <p><strong>Ecografía Asignada:</strong> <span id="patient-ecografia"></span></p>
                         <p><strong>Comentario Médico:</strong> <span id="patient-comment"></span></p>
                     </div>
-                    <button type="button" class="btn btn-secondary" id="btn-back-search">Atrás</button>
+                    <div style="margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary" id="btn-back-search">Atrás</button>
+                    </div>
                 </div>
 
                 <!-- Paso 3: Seleccionar Ecógrafo y Fecha -->
@@ -54,15 +56,17 @@
                         </div>
                         
                         <!-- Calendario de días disponibles -->
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 calendario-wrapper">
                             <label>Fechas Disponibles:</label>
-                            <div id="calendario-container" class="calendario-grid">
+                            <div id="calendario-container">
                                 <!-- Calendario generado por JS -->
                             </div>
                         </div>
                     </div>
                     
-                    <button type="button" class="btn btn-secondary" id="btn-back-patient">Atrás</button>
+                    <div style="margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary" id="btn-back-patient">Atrás</button>
+                    </div>
                 </div>
 
                 <!-- Paso 4: Seleccionar Hora -->
@@ -78,11 +82,13 @@
                     </div>
                     <input type="hidden" id="selected-hour">
                     <input type="hidden" id="selected-date">
-                    <button type="button" class="btn btn-secondary" id="btn-back-doctor">Atrás</button>
+                    <div style="margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary" id="btn-back-doctor">Atrás</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="modal-footer">
+            <div class="modal-footer" style="display: flex; justify-content: space-between; gap: 10px;">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary d-none" id="btn-confirm">Agendar Cita</button>
             </div>
