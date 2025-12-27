@@ -152,7 +152,8 @@
 .btn-secondary:active {
   background-color: var(--color-boton-cancelar-active);
 }
-.btn{
+/* Estilos específicos del botón en modal crear */
+.tipos-crear .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background: var(--color-boton-principal);
@@ -166,13 +167,14 @@
   box-shadow: 0 2px 8px var(--sombra-boton-principal);
   font-size: 0.95rem;
 }
-.btn:hover {
+.tipos-crear .btn:hover {
   background: var(--color-boton-principal-hover);
   box-shadow: 0 4px 12px var(--sombra-boton-principal);
   transform: translateY(-2px);
 }
-.btn:active {
-  background: var(--color-boton-principal-active);
+.tipos-crear .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: white !important;
   box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
   transform: translateY(0);
 }
