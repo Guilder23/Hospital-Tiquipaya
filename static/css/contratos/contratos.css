@@ -1,6 +1,17 @@
-@import url('/static/css/turnos/turnos.css');
+/* === CONTENEDOR PRINCIPAL === */
+.contratos-lista {
+  padding: 16px;
+  overflow-x: auto;
+}
 
-/* Sobrescribir estilos para contratos */
+.contratos-lista h2 {
+  font-size: 1.8rem;
+  color: var(--color-texto);
+  margin: 0 0 18px;
+  font-weight: 800;
+}
+
+/* === FILTROS DE BÚSQUEDA === */
 .filtros-contratos {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -9,9 +20,246 @@
   align-items: center;
 }
 
+.filtros-contratos .filtro-busqueda input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.filtros-contratos .filtro-busqueda input:focus {
+  outline: none;
+  border-color: var(--color-boton-principal);
+}
+
+.filtros-contratos .filtros-select {
+  display: flex;
+  gap: 10px;
+}
+
+.filtros-contratos .filtros-select select {
+  padding: 10px 15px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.filtros-contratos .filtros-select select:focus {
+  outline: none;
+  border-color: var(--color-boton-principal);
+}
+
 @media (max-width: 768px) {
   .filtros-contratos {
     grid-template-columns: 1fr;
   }
+  
+  .filtros-contratos .filtros-select {
+    flex-direction: column;
+  }
+  
+  .filtros-contratos .filtros-select select {
+    width: 100%;
+  }
 }
 
+/* === BOTÓN NUEVO CONTRATO === */
+.contratos-lista .btn {
+  display: inline-block;
+  padding: .65rem 1.2rem;
+  background: var(--color-boton-principal) !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.contratos-lista .btn:hover {
+  background: var(--color-boton-principal-hover) !important;
+  color: white !important;
+  box-shadow: 0 3px 10px var(--color-sombra-hover);
+  transform: translateY(-2px);
+}
+
+.contratos-lista .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: white !important;
+  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
+}
+
+/* === TABLA === */
+.table.contratos {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 14px;
+  background: var(--color-tabla-row-bg);
+  border: 1px solid var(--color-tabla-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px var(--color-tabla-shadow);
+}
+
+.table.contratos thead th {
+  background: var(--color-tabla-header-bg);
+  color: var(--color-tabla-header-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-tabla-border);
+}
+
+.table.contratos tbody td {
+  padding: 12px;
+  border-top: 1px solid var(--color-tabla-border);
+  color: var(--color-texto);
+  font-size: .95rem;
+}
+
+.table.contratos tbody tr:nth-child(odd) {
+  background: var(--color-tabla-row-bg);
+}
+
+.table.contratos tbody tr:hover {
+  background: var(--color-tabla-row-hover-bg);
+  transition: background .18s ease;
+}
+
+/* === ACCIONES === */
+.contratos-lista .actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* === BOTONES DE ACCIÓN === */
+.contratos-lista .btn-view {
+  background: var(--color-exito) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.contratos-lista .btn-view:hover {
+  background: var(--color-exito-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.contratos-lista .btn-view:active {
+  background: var(--color-exito-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
+}
+
+.contratos-lista .btn-edit {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.contratos-lista .btn-edit:hover {
+  background: var(--color-advertencia-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-advertencia);
+}
+
+.contratos-lista .btn-edit:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
+}
+
+.contratos-lista .btn-delete {
+  background: var(--color-error) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.contratos-lista .btn-delete:hover {
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.contratos-lista .btn-delete:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
+}
+
+/* === BADGES === */
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.badge-activo {
+  background: var(--estado-activo-bg);
+  color: var(--estado-activo-text);
+  border-color: var(--estado-activo-border);
+}
+
+.badge-inactivo {
+  background: var(--estado-inactivo-bg);
+  color: var(--estado-inactivo-text);
+  border-color: var(--estado-inactivo-border);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .table.contratos th,
+  .table.contratos td {
+    padding: .7rem;
+    font-size: .85rem;
+  }
+
+  .contratos-lista .btn-view,
+  .contratos-lista .btn-edit,
+  .contratos-lista .btn-delete {
+    padding: .35rem .6rem;
+    font-size: .8rem;
+  }
+
+  .contratos-lista .btn {
+    padding: .6rem 1rem;
+    font-size: .9rem;
+  }
+}

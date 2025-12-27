@@ -217,12 +217,12 @@
   margin-top: 18px;
 }
 
-/* === BOTONES GENERALES (Reestructurado para ser la base) === */
-.btn {
+/* === BOTONES ESPECÍFICOS PARA USUARIOS === */
+.usuarios-lista .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-boton-principal);
+  background: var(--color-boton-principal) !important;
   color: #fff !important;
   padding: 8px 14px;
   border-radius: 10px;
@@ -234,14 +234,14 @@
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.btn:hover {
+.usuarios-lista .btn:hover {
   background: var(--color-boton-principal-hover) !important;
   color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-boton-principal);
 }
 
-.btn:active {
+.usuarios-lista .btn:active {
   background: var(--color-boton-principal-active) !important;
   color: #fff !important;
   transform: translateY(0);
@@ -348,52 +348,65 @@
   border-color: var(--estado-inactivo-border);
 }
 
-.btn-view {
-  background: var(--color-exito);
+.usuarios-lista .btn-view {
+  background: var(--color-exito) !important;
+  color: #fff !important;
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.btn-view:hover {
-  background: var(--color-exito-hover);
+.usuarios-lista .btn-view:hover {
+  background: var(--color-exito-hover) !important;
+  color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-exito);
 }
 
-.btn-view:active {
+.usuarios-lista .btn-view:active {
+  background: var(--color-exito-active) !important;
+  color: #fff !important;
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-exito-active);
 }
 
-.btn-edit {
-  background: var(--color-advertencia);
-  color: #fff;
+.usuarios-lista .btn-edit {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.btn-edit:hover {
+.usuarios-lista .btn-edit:hover {
+  background: var(--color-advertencia-hover) !important;
+  color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-advertencia);
 }
 
-.btn-edit:active {
+.usuarios-lista .btn-edit:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-advertencia-active);
 }
 
-.btn-toggle {
-  background: var(--color-error);
+.usuarios-lista .btn-toggle {
+  background: var(--color-error) !important;
+  color: #fff !important;
   box-shadow: 0 6px 16px var(--color-sombra);
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.btn-toggle:hover {
+.usuarios-lista .btn-toggle:hover {
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--sombra-error);
 }
 
-.btn-toggle:active {
+.usuarios-lista .btn-toggle:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
   transform: translateY(0);
   box-shadow: 0 4px 12px var(--sombra-error-active);
 }

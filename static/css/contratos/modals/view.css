@@ -1,97 +1,128 @@
-/* Estilos para modal ver contrato */
+/* === Modal Ver Contrato === */
 #modal-ver-contrato {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--color-overlay-modal);
-    z-index: 2000;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
 }
 
 #modal-ver-contrato[aria-hidden="false"] {
-    display: flex !important;
-}
-
-#modal-ver-contrato .modal-panel {
-    width: 100%;
-    max-width: 480px;
-    max-height: 70vh;
-    overflow-y: auto;
-    background: #fff;
-    padding: 16px 20px;
-    border-radius: 12px;
-    border-top: 4px solid #3b82f6;
-    transform: translateY(-20px);
-    animation: showModal 0.35s ease forwards;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-}
-
-@keyframes showModal {
-  to { transform: translateY(0); }
-}
-
-#modal-ver-contrato .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
-#modal-ver-contrato .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
-
-#modal-ver-contrato h3 {
-  text-align: center;
-  color: #3b82f6;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 14px;
-}
-
-#modal-ver-contrato .form-row { 
-    display: flex; 
-    flex-direction: column; 
-    margin-bottom: 10px;
-}
-
-#modal-ver-contrato label { 
-    font-size: 13px; 
-    font-weight: 500; 
-    margin-bottom: 3px; 
-    color: #1e293b; 
-}
-
-#modal-ver-contrato .form-row div {
-    padding: 8px 10px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #f9fafb;
-    color: #1e293b;
-    font-size: 13px;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-}
-
-#modal-ver-contrato .modal-actions { 
-    display: flex; 
-    justify-content: flex-end; 
-    gap: 10px; 
-    margin-top: 12px; 
-}
-
-#modal-ver-contrato .btn-secondary { 
-    background: #e5e7eb; 
-    color: #1e293b; 
-    border: none; 
-    padding: 8px 16px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    transition: all .2s ease; 
-}
-
-#modal-ver-contrato .btn-secondary:hover { 
-    background: #d1d5db; 
+  opacity: 1;
+  visibility: visible;
 }
 
 #modal-ver-contrato .modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: var(--color-overlay-modal);
-    backdrop-filter: blur(3px);
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background: var(--color-overlay-modal);
+}
+
+#modal-ver-contrato .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 450px;
+  max-height: 90vh;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-exito);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModalVerContrato 0.35s ease forwards;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Scroll oculto */
+#modal-ver-contrato .modal-panel::-webkit-scrollbar { width: 0; background: transparent; }
+#modal-ver-contrato .modal-panel { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes showModalVerContrato {
+  to { transform: translateY(0); }
+}
+
+/* Título */
+#modal-ver-contrato h3 {
+  text-align: center;
+  color: var(--color-exito);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+
+/* Campos */
+#modal-ver-contrato .form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+#modal-ver-contrato .form-row label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-texto-secundario);
+}
+
+#modal-ver-contrato .form-row div {
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 8px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  font-size: 14px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+/* Botones */
+#modal-ver-contrato .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+#modal-ver-contrato .btn-secondary {
+  background: var(--color-boton-secundario) !important;
+  color: #fff !important;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px var(--sombra-secundaria);
+}
+
+#modal-ver-contrato .btn-secondary:hover {
+  background: var(--color-boton-secundario-hover) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px var(--sombra-secundaria);
+  transform: translateY(-2px);
+}
+
+#modal-ver-contrato .btn-secondary:active {
+  background: var(--color-boton-secundario-active) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 6px var(--sombra-secundaria-active);
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  #modal-ver-contrato .modal-panel {
+    max-width: 95%;
+    padding: 16px 20px;
+  }
 }

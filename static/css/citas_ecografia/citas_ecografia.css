@@ -1,32 +1,81 @@
-/* Estilos principales para citas de ecografía */
-
-.citas-ecografia-lista h2 {
-    color: #333;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+/* === SECCIÓN CITAS ECOGRAFÍA === */
+.citas-ecografia-lista {
+  background: var(--color-fondo-card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px var(--color-tabla-shadow);
+  border: 1px solid var(--color-tabla-border);
 }
 
-/* === FILTROS DE BÚSQUEDA === */
+.citas-ecografia-lista h2 {
+  color: var(--color-texto);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* === BOTÓN NUEVA CITA === */
+.citas-ecografia-lista p {
+  margin-bottom: 20px;
+}
+
+.btn#btn-open-create {
+  background: var(--color-boton-principal) !important;
+  color: #fff !important;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px var(--sombra-boton-principal);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn#btn-open-create:hover {
+  background: var(--color-boton-principal-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--sombra-boton-principal);
+}
+
+.btn#btn-open-create:active {
+  background: var(--color-boton-principal-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--sombra-boton-principal-active);
+}
+
+/* === FILTROS === */
 .filtros-citas-ecografia {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 24px;
   align-items: center;
 }
 
 .filtro-busqueda input {
   width: 100%;
-  padding: 10px 15px;
+  padding: 12px 16px;
   border: 1px solid var(--color-borde-input);
   border-radius: 8px;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
+  font-size: 0.95rem;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  transition: all 0.2s ease;
 }
 
 .filtro-busqueda input:focus {
   outline: none;
   border-color: var(--color-boton-principal);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+}
+
+.filtro-busqueda input::placeholder {
+  color: var(--color-texto-secundario);
 }
 
 .filtros-select {
@@ -35,207 +84,266 @@
 }
 
 .filtros-select select {
-  padding: 10px 15px;
+  padding: 12px 16px;
   border: 1px solid var(--color-borde-input);
   border-radius: 8px;
-  font-size: 14px;
-  background: white;
+  font-size: 0.9rem;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
   cursor: pointer;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .filtros-select select:focus {
   outline: none;
   border-color: var(--color-boton-principal);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
-@media (max-width: 768px) {
-  .filtros-citas-ecografia {
-    grid-template-columns: 1fr;
-  }
-  
-  .filtros-select {
-    flex-direction: column;
-  }
-  
-  .filtros-select select {
-    width: 100%;
-  }
+/* === TABLA === */
+.table.citas-ecografia {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--color-tabla-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px var(--color-tabla-shadow);
+  background: var(--color-tabla-row-bg);
 }
 
-.btn#btn-open-create {
-    background-color:var(--color-boton-principal);
-    border-color: var(--color-boton-principal);
-    color: white;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.btn#btn-open-create:hover {
-    background-color:var(--color-boton-principal-hover);
-    border-color: var(--color-boton-principal-hover);
-    transform: translateY(-2px);
-}
-.btn#btn-open-create:active {
-    background-color:var(--color-boton-principal-active);
-    border-color: var(--color-boton-principal-active);
-    transform: translateY(0);
-}
-
-.citas-ecografia {
-    border-collapse: collapse;
-}
-.table.citas-ecografia{
-    border: 1px solid var(--color-tabla-border);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 .citas-ecografia thead th {
-    background-color: var(--color-tabla-header-bg);
-    color: var(--color-tabla-header-text);
-    font-weight: 600;
-    border-bottom: 2px solid var(--color-tabla-header-border);
-    padding: 1rem;
-    border-right: 1px solid var(--color-tabla-header-border);
-    text-align: left;
+  background: var(--color-tabla-header-bg);
+  color: var(--color-tabla-header-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  padding: 0.7rem;
+  border-bottom: 1px solid var(--color-tabla-border);
+  text-align: left;
 }
 
 .citas-ecografia tbody tr {
-    border-bottom: 1px solid #dee2e6;
-    transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--color-tabla-border);
+  transition: background 0.18s ease;
+}
+
+.citas-ecografia tbody tr:nth-child(odd) {
+  background: var(--color-tabla-row-bg);
 }
 
 .citas-ecografia tbody tr:hover {
-    background-color: #f9f9f9;
+  background: var(--color-tabla-row-hover-bg);
 }
 
 .citas-ecografia tbody td {
-    padding: 1rem;
-    vertical-align: middle;
+  padding: 0.7rem;
+  vertical-align: middle;
+  color: var(--color-texto);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--color-tabla-border);
 }
 
+/* === BADGES === */
 .citas-ecografia .badge {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
-    font-weight: 500;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .badge-programada {
-    background-color: #007bff;
-    color: white;
+  background: var(--color-informacion);
+  color: #fff;
 }
 
 .badge-realizada {
-    background-color: #28a745;
-    color: white;
+  background: var(--color-exito);
+  color: #fff;
 }
 
 .badge-cancelada {
-    background-color: #dc3545;
-    color: white;
+  background: var(--color-error);
+  color: #fff;
 }
 
 .badge-reprogramada {
-    background-color: #ffc107;
-    color: #333;
+  background: var(--color-advertencia);
+  color: #fff;
 }
 
+/* === BOTONES DE ACCIÓN === */
 .citas-ecografia .actions {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .citas-ecografia .btn {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
-    margin-right: 0.25rem;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  border: none;
+  display: inline-block;
+  text-decoration: none;
+  box-shadow: 0 6px 16px var(--color-sombra);
 }
 
 .citas-ecografia .btn-view {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
-    color: white;
+  background: var(--color-exito) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px var(--color-sombra);
 }
 
 .citas-ecografia .btn-view:hover {
-    background-color: #138496;
-    border-color: #117a8b;
+  background: var(--color-exito-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
+}
+
+.citas-ecografia .btn-view:active {
+  background: var(--color-exito-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
 }
 
 .citas-ecografia .btn-edit {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #333;
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px var(--color-sombra);
 }
 
 .citas-ecografia .btn-edit:hover {
-    background-color: #e0a800;
-    border-color: #d39e00;
+  background: var(--color-advertencia-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-advertencia);
+}
+
+.citas-ecografia .btn-edit:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
 }
 
 .citas-ecografia .btn-delete {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
+  background: var(--color-error) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px var(--color-sombra);
 }
 
 .citas-ecografia .btn-delete:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
 }
 
-/* Estilos para el botón de PDF */
-.btn-pdf {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background: linear-gradient(135deg, #1e5a7d 0%, #1b4f72 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(30, 90, 125, 0.25);
+.citas-ecografia .btn-delete:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
 }
 
-.btn-pdf:hover {
-    background: linear-gradient(135deg, #1b4f72 0%, #154360 100%);
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(30, 90, 125, 0.35);
-    text-decoration: none;
+/* === BOTÓN PDF === */
+.btn.btn-pdf {
+  display: inline-block;
+  padding: 0.6rem 0.9rem;
+  background: linear-gradient(135deg, #1e5a7d 0%, #1b4f72 100%);
+  color: white !important;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(30, 90, 125, 0.3);
 }
 
-.btn-pdf:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(30, 90, 125, 0.25);
+.btn.btn-pdf:hover {
+  background: linear-gradient(135deg, #1b4f72 0%, #154360 100%);
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(30, 90, 125, 0.4);
+  text-decoration: none;
 }
 
-.btn-pdf i {
-    font-size: 14px;
+.btn.btn-pdf:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(30, 90, 125, 0.3);
 }
 
-/* Ajuste para que el botón se vea bien junto a otros botones de acción */
-.table .btn-pdf {
-    margin: 0 2px;
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .citas-ecografia-lista {
+    padding: 16px;
+  }
+
+  .citas-ecografia-lista h2 {
+    font-size: 1.5rem;
+  }
+
+  .filtros-citas-ecografia {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-select {
+    flex-direction: column;
+  }
+
+  .filtros-select select {
+    width: 100%;
+  }
+
+  .citas-ecografia thead {
+    display: none;
+  }
+
+  .citas-ecografia tbody tr {
+    display: block;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px var(--color-sombra);
+  }
+
+  .citas-ecografia tbody td {
+    display: block;
+    text-align: right;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-tabla-border);
+  }
+
+  .citas-ecografia tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .citas-ecografia tbody td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: 700;
+    color: var(--color-texto-secundario);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+
+  .citas-ecografia .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .citas-ecografia .btn {
+    margin-right: 0;
+  }
 }
-
-
-
-.card {
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
-    padding: 2rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-/* Z-index para modales de ecografía por encima del sidebar */
-.modal-backdrop { position: fixed; inset: 0; z-index: 1900; }
-.modal { z-index: 1920; }

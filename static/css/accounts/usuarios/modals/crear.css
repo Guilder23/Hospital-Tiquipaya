@@ -123,9 +123,9 @@ input:focus, select:focus {
     box-shadow: 0 2px 8px var(--sombra-boton-principal-active); 
 }
 
-.modal-actions .btn-secondary { 
-    background: #e5e7eb; 
-    color: #1e293b; 
+.modal.usuario-crear .btn-secondary { 
+    background: #e5e7eb !important; 
+    color: #1e293b !important; 
     border: none; 
     padding: 10px 18px; 
     border-radius: 8px; 
@@ -133,12 +133,14 @@ input:focus, select:focus {
     transition: all .2s ease; 
     box-shadow: 0 2px 8px var(--sombra-neutral-06); 
 }
-.modal-actions .btn-secondary:hover { 
-    background: #d1d5db; 
+.modal.usuario-crear .btn-secondary:hover { 
+    background: #d1d5db !important; 
+    color: #1e293b !important;
     box-shadow: 0 4px 12px var(--sombra-neutral-10); 
 }
-.modal-actions .btn-secondary:active { 
-    background: #bdc3c7; 
+.modal.usuario-crear .btn-secondary:active { 
+    background: #bdc3c7 !important; 
+    color: #1e293b !important;
     box-shadow: 0 2px 6px var(--sombra-neutral-10); 
 }
 

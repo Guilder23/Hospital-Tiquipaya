@@ -1,11 +1,12 @@
 /* === CONTENEDOR PRINCIPAL === */
 .turnos-lista {
   padding: 16px;
+  overflow-x: auto;
 }
 
 .turnos-lista h2 {
   font-size: 1.8rem;
-  color: #0f172a;
+  color: var(--color-texto);
   margin: 0 0 18px;
   font-weight: 800;
 }
@@ -19,7 +20,7 @@
   align-items: center;
 }
 
-.filtro-busqueda input {
+.filtros-turnos .filtro-busqueda input {
   width: 100%;
   padding: 10px 15px;
   border: 1px solid var(--color-borde-input);
@@ -28,17 +29,17 @@
   transition: border-color 0.3s ease;
 }
 
-.filtro-busqueda input:focus {
+.filtros-turnos .filtro-busqueda input:focus {
   outline: none;
   border-color: var(--color-boton-principal);
 }
 
-.filtros-select {
+.filtros-turnos .filtros-select {
   display: flex;
   gap: 10px;
 }
 
-.filtros-select select {
+.filtros-turnos .filtros-select select {
   padding: 10px 15px;
   border: 1px solid var(--color-borde-input);
   border-radius: 8px;
@@ -48,7 +49,7 @@
   transition: border-color 0.3s ease;
 }
 
-.filtros-select select:focus {
+.filtros-turnos .filtros-select select:focus {
   outline: none;
   border-color: var(--color-boton-principal);
 }
@@ -58,17 +59,45 @@
     grid-template-columns: 1fr;
   }
   
-  .filtros-select {
+  .filtros-turnos .filtros-select {
     flex-direction: column;
   }
   
-  .filtros-select select {
+  .filtros-turnos .filtros-select select {
     width: 100%;
   }
 }
 
+/* === BOTÓN NUEVO TURNO === */
+.turnos-lista .btn {
+  display: inline-block;
+  padding: .65rem 1.2rem;
+  background: var(--color-boton-principal) !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.turnos-lista .btn:hover {
+  background: var(--color-boton-principal-hover) !important;
+  color: white !important;
+  box-shadow: 0 3px 10px var(--color-sombra-hover);
+  transform: translateY(-2px);
+}
+
+.turnos-lista .btn:active {
+  background: var(--color-boton-principal-active) !important;
+  color: white !important;
+  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
+}
+
 /* === TABLA === */
-.table {
+.table.turnos {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -80,7 +109,7 @@
   box-shadow: 0 8px 24px var(--color-tabla-shadow);
 }
 
-.table thead th {
+.table.turnos thead th {
   background: var(--color-tabla-header-bg);
   color: var(--color-tabla-header-text);
   font-weight: 700;
@@ -91,181 +120,108 @@
   border-bottom: 1px solid var(--color-tabla-border);
 }
 
-.table tbody td {
+.table.turnos tbody td {
   padding: 12px;
   border-top: 1px solid var(--color-tabla-border);
   color: var(--color-texto);
   font-size: .95rem;
 }
 
-.table tbody tr:nth-child(odd) {
+.table.turnos tbody tr:nth-child(odd) {
   background: var(--color-tabla-row-bg);
 }
 
-.table tbody tr:hover {
+.table.turnos tbody tr:hover {
   background: var(--color-tabla-row-hover-bg);
   transition: background .18s ease;
 }
 
-/* === BOTONES MODERNOS === */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-boton-principal);
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: .92rem;
-  box-shadow: 0 6px 16px var(--color-sombra);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--sombra-boton-principal);
-}
-
-.btn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
-}
-
-/* Secundario */
-.btn-secondary {
-  background: var(--color-fondo-card);
-  color: var(--color-texto);
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--color-borde-card);
-  font-weight: 600;
-  box-shadow: 0 4px 12px var(--sombra-neutral-06);
-  transition: background .15s ease, box-shadow .15s ease;
-}
-
-.btn-secondary:hover {
-  background: #f1f5f9;
-  box-shadow: 0 6px 16px var(--sombra-secundaria);
-}
-
-.btn-secondary:active {
-  background: #e2e8f0;
-  box-shadow: 0 2px 8px var(--sombra-secundaria-active);
-}
-
-/* Peligro */
-.btn-danger {
-  background: var(--color-error);
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  border: none;
-  box-shadow: 0 6px 16px var(--color-sombra);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.btn-danger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--sombra-error);
-}
-
-.btn-danger:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 12px var(--sombra-error-active);
-}
-
-.actions {
+/* === ACCIONES === */
+.turnos-lista .actions {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
   align-items: center;
+  white-space: nowrap;
 }
 
-/* === MODALES === */
-.modal {
-  position: fixed;
-  inset: 0;
-  display: none;
-  animation: fadeIn .25s ease;
-}
-
-.modal[aria-hidden="false"] {
-  display: block;
-}
-
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: transparent;
-  z-index: -1;
-}
-
-.modal-panel {
-  position: relative;
-  margin: 4% auto;
-  background: var(--color-fondo-modal);
-  border-radius: 16px;
-  padding: 22px;
-  max-width: 900px;
-  border: 1px solid var(--color-borde-modal);
-  box-shadow: 0 10px 40px var(--sombra-neutral-25);
-  animation: popUp .25s ease;
-}
-
-/* Animaciones */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes popUp {
-  from { transform: scale(.96); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* === FORMULARIOS === */
-.form-row {
-  margin-bottom: 14px;
-}
-
-.form-row label {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--color-texto-secundario);
-  font-size: .9rem;
+/* === BOTONES DE ACCIÓN === */
+.turnos-lista .btn-view {
+  background: var(--color-exito) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
   font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
 }
 
-.form-row input, 
-.form-row select {
-  width: 100%;
-  padding: .65rem;
-  border: 1px solid var(--color-borde-input);
-  border-radius: 12px;
-  background: var(--color-fondo-input);
-  color: var(--color-texto);
-  transition: border .2s ease, box-shadow .2s ease;
+.turnos-lista .btn-view:hover {
+  background: var(--color-exito-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-exito);
 }
 
-.form-row input:focus,
-.form-row select:focus {
-  outline: none;
-  border-color: var(--color-borde-input-focus);
-  box-shadow: 0 0 0 3px rgba(27,143,130,.25);
+.turnos-lista .btn-view:active {
+  background: var(--color-exito-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-exito-active);
 }
 
-/* === ACCIONES DEL MODAL === */
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 18px;
+.turnos-lista .btn-edit {
+  background: var(--color-advertencia) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
 }
 
+.turnos-lista .btn-edit:hover {
+  background: var(--color-advertencia-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-advertencia);
+}
+
+.turnos-lista .btn-edit:active {
+  background: var(--color-advertencia-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
+}
+
+.turnos-lista .btn-delete {
+  background: var(--color-error) !important;
+  color: #fff !important;
+  padding: .6rem .9rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 16px var(--color-sombra);
+  transition: all .2s ease;
+}
+
+.turnos-lista .btn-delete:hover {
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--sombra-error);
+}
+
+.turnos-lista .btn-delete:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
+  transform: translateY(0);
+  box-shadow: 0 4px 12px var(--sombra-error-active);
+}
+
+/* === BADGES === */
 .badge {
   display: inline-block;
   padding: 6px 10px;
@@ -273,18 +229,6 @@
   font-size: .8rem;
   font-weight: 700;
   border: 1px solid;
-}
-
-.badge-success {
-  background: var(--badge-success-bg);
-  color: var(--badge-success-text);
-  border-color: var(--badge-success-border);
-}
-
-.badge-muted {
-  background: var(--badge-muted-bg);
-  color: var(--badge-muted-text);
-  border-color: var(--badge-muted-border);
 }
 
 .badge-activo {
@@ -298,53 +242,24 @@
   color: var(--estado-inactivo-text);
   border-color: var(--estado-inactivo-border);
 }
-.btn-view {
-  background: var(--color-exito);
-  color: #fff;
-  box-shadow: 0 6px 16px var(--color-sombra);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
 
-.btn-view:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--sombra-exito);
-}
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .table.turnos th,
+  .table.turnos td {
+    padding: .7rem;
+    font-size: .85rem;
+  }
 
-.btn-view:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 12px var(--sombra-exito-active);
-}
+  .turnos-lista .btn-view,
+  .turnos-lista .btn-edit,
+  .turnos-lista .btn-delete {
+    padding: .35rem .6rem;
+    font-size: .8rem;
+  }
 
-.btn-edit {
-  background: var(--color-advertencia);
-  color: #fff;
-  box-shadow: 0 6px 16px var(--color-sombra);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.btn-edit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--sombra-advertencia);
-}
-
-.btn-edit:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 12px var(--sombra-advertencia-active);
-}
-
-.btn-delete {
-  background: var(--color-error);
-  color: #fff;
-  box-shadow: 0 6px 16px var(--color-sombra);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.btn-delete:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px var(--sombra-error);
-}
-
-.btn-delete:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 12px var(--sombra-error-active);
+  .turnos-lista .btn {
+    padding: .6rem 1rem;
+    font-size: .9rem;
+  }
 }

@@ -1,36 +1,45 @@
-/* ===== OVERLAY ===== */
-.pacientes-eliminar[aria-hidden="false"] {
-  display: flex !important;
-}
-
+/* === Modal Eliminar/Desactivar Ecografía === */
 .pacientes-eliminar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--color-overlay-modal);
-  display: none;
+  inset: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  padding: 15px;
+  background: var(--color-overlay-modal);
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
 }
 
-/* ===== PANEL ===== */
+.pacientes-eliminar[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pacientes-eliminar .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background: var(--color-overlay-modal);
+}
+
 .pacientes-eliminar .modal-panel {
+  background: var(--color-fondo-modal);
   width: 100%;
   max-width: 420px;
-  background: var(--color-fondo-modal);
+  padding: 20px 24px;
   border-radius: 14px;
   border-top: 4px solid var(--color-error);
-  padding: 20px 24px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-  animation: modalFade 0.25s ease-out;
+  animation: modalFadeEcografia 0.25s ease-out;
+  position: relative;
+  z-index: 1;
 }
 
-/* Animación suave */
-@keyframes modalFade {
+@keyframes modalFadeEcografia {
   from {
     opacity: 0;
     transform: translateY(-15px);
@@ -41,71 +50,92 @@
   }
 }
 
-/* ===== TITULO ===== */
-.pacientes-eliminar .modal-panel h3 {
+/* Título */
+.pacientes-eliminar h3 {
   color: var(--color-error);
   font-size: 1.2rem;
   margin: 0 0 15px;
   font-weight: 600;
 }
 
-/* ===== TEXTO ===== */
+/* Texto */
 .pacientes-eliminar p {
   font-size: 0.95rem;
-  margin-bottom: 20px;
-  color: #444;
+  margin-bottom: 15px;
+  color: var(--color-texto-secundario);
+  line-height: 1.5;
 }
 
-/* ===== ACCIONES ===== */
+/* Acciones */
 .pacientes-eliminar .modal-actions {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
 }
 
-/* ===== BOTÓN ELIMINAR ===== */
-.pacientes-eliminar .btn-danger {
-  background: var(--color-error);
+/* Botón Eliminar/Desactivar */
+.pacientes-eliminar .btn-danger,
+.pacientes-eliminar .btn.btn-danger {
+  background: var(--color-error) !important;
+  color: #fff !important;
   border: none;
   padding: 8px 16px;
-  color: #fff;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.95rem;
+  font-weight: 600;
   transition: all .2s ease;
   box-shadow: 0 4px 12px var(--sombra-neutral-06);
 }
 
-.pacientes-eliminar .btn-danger:hover {
-  filter: brightness(0.9);
+.pacientes-eliminar .btn-danger:hover,
+.pacientes-eliminar .btn.btn-danger:hover {
+  background: var(--color-error-hover) !important;
+  color: #fff !important;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px var(--sombra-error);
 }
 
-.pacientes-eliminar .btn-danger:active {
+.pacientes-eliminar .btn-danger:active,
+.pacientes-eliminar .btn.btn-danger:active {
+  background: var(--color-error-active) !important;
+  color: #fff !important;
   transform: translateY(0);
   box-shadow: 0 2px 8px var(--sombra-error-active);
 }
 
-/* ===== BOTÓN CERRAR ===== */
+/* Botón Cerrar/Cancelar */
 .pacientes-eliminar .btn-secondary {
-  background: var(--color-fondo-informacion);
+  background: var(--color-boton-cancelar) !important;
+  color: var(--color-texto) !important;
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.95rem;
+  font-weight: 600;
   transition: all .2s ease;
   box-shadow: 0 2px 8px var(--sombra-neutral-06);
 }
 
 .pacientes-eliminar .btn-secondary:hover {
-  filter: brightness(0.95);
+  background: var(--color-boton-cancelar-hover) !important;
+  color: var(--color-texto) !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--sombra-neutral-10);
 }
 
 .pacientes-eliminar .btn-secondary:active {
+  background: var(--color-boton-cancelar-active) !important;
+  color: var(--color-texto) !important;
   transform: translateY(0);
   box-shadow: 0 2px 6px var(--sombra-neutral-10);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .pacientes-eliminar .modal-panel {
+    max-width: 95%;
+    padding: 16px 20px;
+  }
 }
