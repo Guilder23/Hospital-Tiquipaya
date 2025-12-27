@@ -1,7 +1,7 @@
 .site-header {
   background: var(--color-header-pagina);
   color: #fff;
-  padding: 1rem 2rem;
+  padding: 0.6rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,19 +10,19 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 2px 8px var(--sombra-neutral-15);
+  box-shadow: 0 2px 6px var(--sombra-neutral-15);
 }
-.site-header-left { display: flex; align-items: center; gap: 0.75rem; }
-.site-header h1 { font-size: 1.6rem; font-weight: 600; }
-.site-header nav { display: flex; align-items: center; gap: 1.5rem; }
-.site-header nav a { color: #fff; text-decoration: none; font-weight: 600; padding: 0.6rem 1rem; border-radius: 8px; transition: all .2s ease; font-size: .95rem; }
+.site-header-left { display: flex; align-items: center; gap: 0.5rem; }
+.site-header h1 { font-size: 1.25rem; font-weight: 600; }
+.site-header nav { display: flex; align-items: center; gap: 1rem; }
+.site-header nav a { color: #fff; text-decoration: none; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 6px; transition: all .2s ease; font-size: .8rem; }
 .site-header nav a:hover { background: rgba(255, 255, 255, 0.1); color: #fff; transform: translateY(-1px); }
-.user-info { color: #fff; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
-.user-role { color: #d1e8ff; font-size: 0.9rem; }
+.user-info { color: #fff; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; }
+.user-role { color: #d1e8ff; font-size: 0.75rem; }
 .logout-form { margin: 0; }
-.logout-form button { padding: 0.6rem 1.2rem; background: var(--color-error); border: none; border-radius: 8px; color: #fff; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; font-weight: 600; font-size: .95rem; box-shadow: 0 4px 12px var(--sombra-neutral-06); }
-.logout-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--sombra-error); }
-.logout-form button:active { transform: translateY(0); box-shadow: 0 4px 12px var(--sombra-error-active); }
+.logout-form button { padding: 0.4rem 0.9rem; background: var(--color-error); border: none; border-radius: 6px; color: #fff; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; font-weight: 600; font-size: .8rem; box-shadow: 0 4px 10px var(--sombra-neutral-06); }
+.logout-form button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px var(--sombra-error); }
+.logout-form button:active { transform: translateY(0); box-shadow: 0 3px 10px var(--sombra-error-active); }
 
 .sidebar-toggle { display: none; background: transparent; border: none; color: #fff; font-size: 1.4rem; padding: 0.4rem; border-radius: 8px; }
 .sidebar-toggle:focus { outline: none; }
@@ -32,7 +32,7 @@
 @media (max-width: 992px) {
   .sidebar-toggle { display: inline-flex; align-items: center; justify-content: center; }
   .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
-  .site-header nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: var(--color-header-pagina); padding: 12px; flex-direction: column; gap: 0.75rem; box-shadow: 0 2px 8px var(--sombra-neutral-15); }
+  .site-header nav { display: none; position: fixed; top: 50px; left: 0; right: 0; background: var(--color-header-pagina); padding: 10px; flex-direction: column; gap: 0.5rem; box-shadow: 0 2px 6px var(--sombra-neutral-15); }
   .site-header nav a { display: block; }
   body.nav-open .site-header nav { display: flex; }
   .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 950; }
