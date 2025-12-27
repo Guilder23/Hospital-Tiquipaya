@@ -1,13 +1,17 @@
-<div class="modal modal-confirm-block" id="modal-confirm-block">
-  <div class="modal-overlay" data-close></div>
-
-  <div class="modal-box modal-confirm-block-box">
-    <h3>Confirmar Bloqueo</h3>
-    <p id="block-message">¿Seguro que deseas desactivar esta especialidad?</p>
-
+<div class="especialidades-eliminar" id="modal-confirm-block" aria-hidden="true" role="dialog" aria-labelledby="modal-desactivar-titulo">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3 id="modal-desactivar-titulo">Desactivar Especialidad</h3>
+      <button class="modal-close-btn" type="button" data-close aria-label="Cerrar modal">×</button>
+    </div>
+    <div class="modal-content-danger">
+      <p id="block-message">¿Confirmas desactivar esta especialidad?</p>
+      <p class="warning-text">Esta acción no se puede deshacer.</p>
+    </div>
     <div class="modal-actions">
-        <button class="btn-modal-cancel btn-cancel-block">Cancelar</button>
-        <a id="btn-block-confirm" class="btn-modal-primary">Sí, desactivar</a>
+      <button class="btn-secondary" type="button" data-close>Cancelar</button>
+      <a id="btn-block-confirm" class="btn-danger">Sí, desactivar</a>
     </div>
   </div>
 </div>

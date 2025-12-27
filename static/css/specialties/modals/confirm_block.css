@@ -1,13 +1,169 @@
-/* MODAL CONFIRMAR BLOQUEO */
-
-.modal-confirm-block-box h3 {
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: var(--color-texto);
+/* Modal Desactivar Especialidad - ROJO */
+.especialidades-eliminar .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-error);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModal 0.35s ease forwards;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
-.modal-confirm-block-box p {
-    font-size: 0.95rem;
-    color: var(--color-texto);
-    margin-bottom: 18px;
+.especialidades-eliminar .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.especialidades-eliminar .modal-panel h3 {
+  text-align: center;
+  color: var(--color-error);
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.especialidades-eliminar .modal-content-danger {
+  padding: 1.5rem 0;
+  border-left: 4px solid var(--color-error);
+  padding-left: 1rem;
+}
+
+.especialidades-eliminar .modal-content-danger p {
+  margin: 0;
+  color: var(--color-texto);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.especialidades-eliminar .modal-content-danger #block-message {
+  margin-bottom: 0.8rem;
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.especialidades-eliminar .warning-text {
+  color: var(--color-advertencia) !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+
+.especialidades-eliminar .modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.especialidades-eliminar {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay-modal);
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+}
+
+.especialidades-eliminar[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.especialidades-eliminar .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background: var(--color-overlay-modal);
+}
+
+.especialidades-eliminar .modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.especialidades-eliminar .modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.especialidades-eliminar .btn-secondary {
+  background-color: var(--color-boton-cancelar);
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.especialidades-eliminar .btn-secondary:hover {
+  background-color: var(--color-boton-cancelar-hover);
+}
+
+.especialidades-eliminar .btn-secondary:active {
+  background-color: var(--color-boton-cancelar-active);
+}
+
+.especialidades-eliminar .btn-danger {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-error);
+  color: white !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--sombra-error);
+  font-size: 0.95rem;
+}
+
+.especialidades-eliminar .btn-danger:hover {
+  background: var(--color-error-hover);
+  box-shadow: 0 4px 12px var(--sombra-error);
+  transform: translateY(-2px);
+}
+
+.especialidades-eliminar .btn-danger:active {
+  background: var(--color-error-active);
+  box-shadow: 0 2px 6px var(--sombra-error-active);
+  transform: translateY(0);
+}
+
+@keyframes showModal { 
+  to { transform: translateY(0); } 
+}
+
+@media (max-width: 600px) {
+  .especialidades-eliminar .modal-panel {
+    max-width: 90%;
+  }
 }

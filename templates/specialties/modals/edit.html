@@ -1,25 +1,25 @@
-<div class="modal modal-edit" id="modal-edit" aria-hidden="true">
-  <div class="modal-overlay" data-close></div>
-
-  <div class="modal-box modal-edit-box">
-    <h3>Editar Especialidad</h3>
-
-    <form method="POST" id="form-edit">
+<div class="especialidades-editar" id="modal-edit" aria-hidden="true" role="dialog" aria-labelledby="modal-editar-titulo">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3 id="modal-editar-titulo">Editar Especialidad</h3>
+      <button class="modal-close-btn" type="button" data-close aria-label="Cerrar modal">×</button>
+    </div>
+    <form method="POST" id="form-edit" class="modal-form">
       {% csrf_token %}
-
-      <div class="modal-field">
-        <label>Nombre</label>
-        <input type="text" name="nombre" required />
+      <div class="form-row">
+        <label for="editar-nombre">Nombre *</label>
+        <input id="editar-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre de la especialidad" maxlength="30">
+        <small class="char-limit">Máximo 30 caracteres</small>
       </div>
-
-      <div class="modal-field">
-        <label>Descripción</label>
-        <textarea name="descripcion"></textarea>
+      <div class="form-row">
+        <label for="editar-descripcion">Descripción</label>
+        <textarea id="editar-descripcion" name="descripcion" placeholder="Ingrese una descripción (opcional)" maxlength="100"></textarea>
+        <small class="char-limit">Máximo 100 caracteres</small>
       </div>
-
       <div class="modal-actions">
-        <button type="submit" class="btn-modal-primary">Guardar</button>
-        <button type="button" class="btn-modal-cancel btn-close-modal">Cancelar</button>
+        <button class="btn-secondary" type="button" data-close>Cancelar</button>
+        <button class="btn" type="submit">Guardar</button>
       </div>
     </form>
   </div>

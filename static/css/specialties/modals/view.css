@@ -1,16 +1,147 @@
-/* MODAL VER ESPECIALIDAD */
-
-.modal-view-box h3 {
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: var(--color-texto);
+/* Modal Ver Especialidad - VERDE */
+.especialidades-ver .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border-top: 4px solid var(--color-exito);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModal 0.35s ease forwards;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
-.modal-view-box p {
-    background: var(--color-fondo-input);
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--color-borde-input);
-    font-size: 0.95rem;
-    color: var(--color-texto);
+.especialidades-ver .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.especialidades-ver .modal-panel h3 {
+  text-align: center;
+  color: var(--color-exito);
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.especialidades-ver .modal-form {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.especialidades-ver .form-row {
+  margin-bottom: 10px;
+}
+
+.especialidades-ver .form-row label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: var(--color-texto);
+  font-size: 0.9rem;
+}
+
+.especialidades-ver .view-field {
+  padding: 0.75rem;
+  background: var(--color-fondo-input);
+  border: 1px solid var(--color-borde-input);
+  border-radius: 10px;
+  color: var(--color-texto);
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.especialidades-ver .modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.especialidades-ver {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay-modal);
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+}
+
+.especialidades-ver[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.especialidades-ver .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background: var(--color-overlay-modal);
+}
+
+.especialidades-ver .modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.especialidades-ver .modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.especialidades-ver .btn-secondary {
+  background-color: var(--color-boton-cancelar);
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.especialidades-ver .btn-secondary:hover {
+  background-color: var(--color-boton-cancelar-hover);
+}
+
+.especialidades-ver .btn-secondary:active {
+  background-color: var(--color-boton-cancelar-active);
+}
+
+@keyframes showModal { 
+  to { transform: translateY(0); } 
+}
+
+@media (max-width: 600px) {
+  .especialidades-ver .modal-panel {
+    max-width: 90%;
+  }
 }
