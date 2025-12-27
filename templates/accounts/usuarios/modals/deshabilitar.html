@@ -1,7 +1,7 @@
 <div id="modal-desactivar-usuario" class="modal usuario-crear" aria-hidden="true">
   <div class="modal-backdrop" data-close="modal-desactivar-usuario"></div>
   <div class="modal-panel">
-    <h3 id="titulo-modal-usuario">Eliminar Usuario</h3>
+    <h3 id="titulo-modal-usuario">Desactivar Usuario</h3>
     <form id="form-desactivar-usuario" method="post">
       {% csrf_token %}
       <div class="section">
@@ -13,7 +13,7 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" data-close="modal-desactivar-usuario">Cancelar</button>
-        <button type="submit" id="btn-submit-modal" class="btn btn-danger">Eliminar</button>
+        <button type="submit" id="btn-submit-modal" class="btn btn-danger">Desactivar</button>
       </div>
     </form>
   </div>

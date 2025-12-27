@@ -125,7 +125,7 @@ function buscarPaciente() {
                 btnNext.type = 'button';
                 btnNext.className = 'btn btn-primary ms-2';
                 btnNext.id = 'btn-next-patient';
-                btnNext.textContent = 'Seleccionar Fecha y Médico';
+                btnNext.textContent = 'Seleccionar Fecha y Ecografo';
                 btnNext.onclick = function() {
                     showStep(3);
                     cargarMedicosEspecialidad();

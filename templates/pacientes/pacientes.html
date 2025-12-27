@@ -102,7 +102,7 @@
           <button class="btn btn-view" data-id="{{ p.id }}">Ver</button>
           {% if user.is_superuser or permiso_actual.puede_editar %}
           <button class="btn btn-edit" data-id="{{ p.id }}">Editar</button>
-          <button class="btn btn-delete" data-id="{{ p.id }}" data-ci="{{ p.ci }}">Eliminar</button>
+          <button class="btn btn-delete" data-id="{{ p.id }}" data-ci="{{ p.ci }}">Desactivar</button>
           {% endif %}
         </td>
       </tr>
