@@ -1,17 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
     const modalView = document.getElementById("modal-view");
-    const closeBtn = modalView.querySelector(".btn-close-view");
 
     document.querySelectorAll(".btn-view").forEach(btn => {
         btn.addEventListener("click", () => {
             const tr = btn.closest("tr");
 
             document.getElementById("view-nombre").textContent = tr.dataset.nombre;
-            document.getElementById("view-descripcion").textContent = tr.dataset.descripcion;
+            document.getElementById("view-descripcion").textContent = tr.dataset.descripcion || "Sin descripción";
 
-            modalView.classList.add("is-open");
+            modalView.setAttribute("aria-hidden", "false");
         });
     });
 
-    closeBtn.addEventListener("click", () => modalView.classList.remove("is-open"));
+    // Cerrar con botón X y backdrop
+    modalView.querySelectorAll("[data-close]").forEach(el => {
+        el.addEventListener("click", () => {
+            modalView.setAttribute("aria-hidden", "true");
+        });
+    });
 });

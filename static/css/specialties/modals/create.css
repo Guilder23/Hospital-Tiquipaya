@@ -1,7 +1,195 @@
-/* MODAL CREAR ESPECIALIDAD */
+/* Modal Crear Especialidad - AZUL */
+.especialidades-crear .modal-panel {
+  background: var(--color-fondo-modal);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transform: translateY(-20px);
+  animation: showModal 0.35s ease forwards;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
 
-.modal-create-box h3 {
-    font-weight: 700;
-    margin-bottom: 14px;
-    color: var(--color-texto);
+.especialidades-crear .modal-header {
+  color: var(--color-informacion);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.especialidades-crear .modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+.especialidades-crear .modal-form {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.especialidades-crear .form-row {
+  margin-bottom: 10px;
+}
+
+.especialidades-crear .form-row label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: var(--color-texto);
+  font-size: 0.9rem;
+}
+
+.especialidades-crear .form-row input,
+.especialidades-crear .form-row textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 2px solid var(--color-borde-input);
+  border-radius: 8px;
+  background: var(--color-fondo-input);
+  color: var(--color-texto);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.especialidades-crear .form-row input:focus,
+.especialidades-crear .form-row textarea:focus {
+  outline: none;
+  border-color: var(--color-borde-input-focus);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(27, 143, 130, 0.1);
+}
+
+.especialidades-crear .form-row textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-size: 0.9rem;
+}
+
+.especialidades-crear .char-limit {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--color-texto-secundario, #6b7280);
+  margin-top: 4px;
+}
+
+.especialidades-crear .modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
+
+.especialidades-crear {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay-modal);
+  padding: 20px;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s;
+}
+
+.especialidades-crear[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.especialidades-crear .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 0;
+  background-color: var(--color-overlay-modal);
+}
+
+.especialidades-crear .modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.especialidades-crear .modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.especialidades-crear .btn-secondary {
+  background-color: var(--color-boton-cancelar);
+  color: var(--color-texto) !important;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.especialidades-crear .btn-secondary:hover {
+  background-color: var(--color-boton-cancelar-hover);
+}
+
+.especialidades-crear .btn-secondary:active {
+  background-color: var(--color-boton-cancelar-active);
+}
+
+.especialidades-crear .btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-boton-principal);
+  color: white !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px var(--sombra-boton-principal);
+  font-size: 0.95rem;
+}
+
+.especialidades-crear .btn:hover {
+  background: var(--color-boton-principal-hover);
+  box-shadow: 0 4px 12px var(--sombra-boton-principal);
+  transform: translateY(-2px);
+}
+
+.especialidades-crear .btn:active {
+  background: var(--color-boton-principal-active);
+  box-shadow: 0 2px 6px var(--sombra-boton-principal-active);
+  transform: translateY(0);
+}
+
+@keyframes showModal { 
+  to { transform: translateY(0); } 
+}
+
+@media (max-width: 600px) {
+  .especialidades-crear .modal-panel {
+    max-width: 90%;
+  }
 }
