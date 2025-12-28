@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded',function(){
     }
 
     // Validar números de documentos médicos (solo números)
-    var numerosDocumentos = form.querySelectorAll('[name="numero_seguro"], [name="numero_boleta_sus"], [name="numero_carnet_historial"], [name="numero_boleta_referencia"], [name="numero_copias"]');
+    var numerosDocumentos = form.querySelectorAll('[name="numero_seguro"], [name="numero_boleta_sus"], [name="numero_carnet_historial"]');
     numerosDocumentos.forEach(function(input) {
       input.addEventListener('input', function() {
         var regex = /[^0-9]/g;
@@ -114,6 +114,32 @@ document.addEventListener('DOMContentLoaded',function(){
         }
       });
     });
+
+    // Validar boleta de referencia (letras y números)
+    var boletaReferencia = form.querySelector('[name="numero_boleta_referencia"]');
+    if(boletaReferencia){
+      boletaReferencia.addEventListener('input', function() {
+        var regex = /[^A-Za-z0-9]/g;
+        if (regex.test(this.value)) {
+          this.value = this.value.replace(regex, '');
+        }
+      });
+    }
+
+    // Validar número de copias (máximo 2 dígitos)
+    var numeroCopias = form.querySelector('[name="numero_copias"]');
+    if(numeroCopias){
+      numeroCopias.addEventListener('input', function() {
+        var regex = /[^0-9]/g;
+        if (regex.test(this.value)) {
+          this.value = this.value.replace(regex, '');
+        }
+        // Limitar a 2 dígitos
+        if (this.value.length > 2) {
+          this.value = this.value.slice(0, 2);
+        }
+      });
+    }
   }
   document.querySelectorAll('.btn-edit').forEach(function(btn){
     btn.addEventListener('click',function(){
