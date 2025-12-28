@@ -88,6 +88,14 @@ function buscarPaciente() {
     document.getElementById('calendario-container').innerHTML = '';
     document.getElementById('step-3b').classList.add('d-none');
     document.getElementById('btn-confirm').classList.add('d-none');
+    
+    // Limpiar lista de ecografías y ocultar info seleccionada
+    document.getElementById('ecografias-list').innerHTML = '';
+    document.getElementById('ecografia-seleccionada-info').classList.add('d-none');
+    
+    // Remover botón de siguiente si existe
+    const btnNextExistente = document.getElementById('btn-next-patient');
+    if (btnNextExistente) btnNextExistente.remove();
 
     fetch('/citas-ecografia/buscar-paciente/', {
         method: 'POST',
@@ -106,43 +114,94 @@ function buscarPaciente() {
 
         citaEcografiaData.paciente = data.paciente;
         citaEcografiaData.paciente_id = data.paciente.id;
+        citaEcografiaData.ecografias_disponibles = data.ecografias_disponibles || [];
 
         document.getElementById('patient-names').textContent = `${data.paciente.nombres} ${data.paciente.apellido_paterno}`;
         document.getElementById('patient-ci').textContent = data.paciente.ci;
-        document.getElementById('patient-specialty').textContent = data.especialidad_nombre || '-';
-        document.getElementById('patient-ecografia').textContent = data.ecografia_asignada || '-';
-        document.getElementById('patient-comment').textContent = data.comentario_medico || '-';
-
-        // Guardar médicos disponibles en el objeto global
-        citaEcografiaData.medicos_disponibles = data.medicos_disponibles || [];
 
         showStep(2);
 
-        // Mostrar botón para avanzar a selección de fecha/médico solo si está habilitado
-        if (data.habilitado) {
-            if (!document.getElementById('btn-next-patient')) {
-                const btnNext = document.createElement('button');
-                btnNext.type = 'button';
-                btnNext.className = 'btn btn-primary ms-2';
-                btnNext.id = 'btn-next-patient';
-                btnNext.textContent = 'Seleccionar Fecha y Ecografo';
-                btnNext.onclick = function() {
-                    showStep(3);
-                    cargarMedicosEspecialidad();
-                };
-                document.getElementById('step-2').appendChild(btnNext);
-            }
+        // Mostrar lista de ecografías disponibles
+        if (data.habilitado && data.ecografias_disponibles && data.ecografias_disponibles.length > 0) {
+            renderizarListaEcografias(data.ecografias_disponibles);
         } else {
-            if (document.getElementById('btn-next-patient')) {
-                document.getElementById('btn-next-patient').remove();
-            }
-            showAlert('create-alert', 'Este paciente no tiene habilitada la ecografía', 'warning');
+            document.getElementById('ecografias-list').innerHTML = '<p class="text-warning">Este paciente no tiene ecografías pendientes de agendar.</p>';
+            showAlert('create-alert', 'Este paciente no tiene ecografías habilitadas pendientes', 'warning');
         }
     })
     .catch(error => {
         console.error('Error:', error);
         showAlert('create-alert', 'Error al buscar el paciente', 'danger');
     });
+}
+
+function renderizarListaEcografias(ecografias) {
+    const container = document.getElementById('ecografias-list');
+    container.innerHTML = '';
+    
+    ecografias.forEach((eco, index) => {
+        const card = document.createElement('div');
+        card.className = 'ecografia-card';
+        card.dataset.index = index;
+        card.dataset.citaId = eco.cita_id;
+        
+        card.innerHTML = `
+            <div class="ecografia-card-content">
+                <div class="ecografia-card-header">
+                    <span class="ecografia-numero">#${index + 1}</span>
+                    <span class="ecografia-nombre">${eco.ecografia_nombre || 'Sin nombre'}</span>
+                </div>
+                <div class="ecografia-card-body">
+                    <p><strong>Especialidad:</strong> ${eco.especialidad_nombre || '-'}</p>
+                    <p><strong>Comentario Médico:</strong> ${eco.comentario_medico || '-'}</p>
+                    ${eco.medico_solicitante ? `<p><strong>Solicitado por:</strong> ${eco.medico_solicitante}</p>` : ''}
+                    ${eco.fecha_solicitud ? `<p><strong>Fecha solicitud:</strong> ${eco.fecha_solicitud}</p>` : ''}
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary btn-seleccionar-eco">Seleccionar</button>
+        `;
+        
+        // Evento para seleccionar esta ecografía
+        card.querySelector('.btn-seleccionar-eco').addEventListener('click', () => {
+            seleccionarEcografia(eco, index);
+        });
+        
+        container.appendChild(card);
+    });
+}
+
+function seleccionarEcografia(ecografia, index) {
+    // Guardar ecografía seleccionada
+    citaEcografiaData.ecografia_seleccionada = ecografia;
+    citaEcografiaData.cita_consulta_id = ecografia.cita_id;
+    citaEcografiaData.medicos_disponibles = ecografia.ecografos_disponibles || [];
+    
+    // Marcar visualmente la ecografía seleccionada
+    document.querySelectorAll('.ecografia-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    document.querySelector(`.ecografia-card[data-index="${index}"]`).classList.add('selected');
+    
+    // Mostrar información de la ecografía seleccionada
+    document.getElementById('patient-specialty').textContent = ecografia.especialidad_nombre || '-';
+    document.getElementById('patient-ecografia').textContent = ecografia.ecografia_nombre || '-';
+    document.getElementById('patient-comment').textContent = ecografia.comentario_medico || '-';
+    document.getElementById('ecografia-seleccionada-info').classList.remove('d-none');
+    
+    // Crear o mostrar botón para continuar
+    let btnNext = document.getElementById('btn-next-patient');
+    if (!btnNext) {
+        btnNext = document.createElement('button');
+        btnNext.type = 'button';
+        btnNext.className = 'btn btn-primary ms-2';
+        btnNext.id = 'btn-next-patient';
+        btnNext.textContent = 'Seleccionar Fecha y Ecógrafo';
+        btnNext.onclick = function() {
+            showStep(3);
+            cargarMedicosEspecialidad();
+        };
+        document.getElementById('step-2').querySelector('div[style]').appendChild(btnNext);
+    }
 }
 
 function cargarMedicosEspecialidad() {
@@ -267,6 +326,11 @@ function agendarCita() {
     formData.append('ecografo_id', citaEcografiaData.ecografo_id);
     formData.append('fecha', citaEcografiaData.fecha);
     formData.append('hora', hora);
+    
+    // Enviar el ID de la cita de consulta específica seleccionada
+    if (citaEcografiaData.cita_consulta_id) {
+        formData.append('cita_consulta_id', citaEcografiaData.cita_consulta_id);
+    }
 
     fetch('/citas-ecografia/crear/', {
         method: 'POST',
@@ -321,6 +385,18 @@ function resetCreateForm() {
     document.getElementById('step-3b').classList.add('d-none');
     document.getElementById('btn-confirm').classList.add('d-none');
     document.getElementById('create-alert').classList.add('d-none');
+    
+    // Limpiar campos de ecografías
+    document.getElementById('ecografias-list').innerHTML = '';
+    document.getElementById('ecografia-seleccionada-info').classList.add('d-none');
+    
+    // Remover botón de siguiente si existe
+    const btnNext = document.getElementById('btn-next-patient');
+    if (btnNext) btnNext.remove();
+    
+    // Limpiar datos globales
+    citaEcografiaData = {};
+    
     showStep(1);
 }
 

@@ -19,16 +19,29 @@
                     <button type="button" class="btn btn-primary" id="btn-search">Buscar</button>
                 </div>
 
-                <!-- Paso 2: Seleccionar Paciente -->
+                <!-- Paso 2: Seleccionar Paciente y Ecografía -->
                 <div class="step d-none" id="step-2">
-                    <h6 data-step="2">Paso 2: Paciente Seleccionado</h6>
-                    <div class="patient-info">
+                    <h6 data-step="2">Paso 2: Seleccionar Ecografía</h6>
+                    <div class="patient-info-header">
                         <p><strong>Nombre:</strong> <span id="patient-names"></span></p>
                         <p><strong>CI:</strong> <span id="patient-ci"></span></p>
+                    </div>
+                    
+                    <!-- Lista de ecografías disponibles -->
+                    <div id="ecografias-list-container" class="ecografias-list">
+                        <p class="ecografias-list-title"><strong>Ecografías pendientes de agendar:</strong></p>
+                        <div id="ecografias-list">
+                            <!-- Se llenará dinámicamente con JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Información de ecografía seleccionada -->
+                    <div id="ecografia-seleccionada-info" class="d-none ecografia-selected-info">
                         <p><strong>Especialidad Solicitada:</strong> <span id="patient-specialty"></span></p>
                         <p><strong>Ecografía Asignada:</strong> <span id="patient-ecografia"></span></p>
                         <p><strong>Comentario Médico:</strong> <span id="patient-comment"></span></p>
                     </div>
+                    
                     <div style="margin-top: 20px;">
                         <button type="button" class="btn btn-secondary" id="btn-back-search">Atrás</button>
                     </div>

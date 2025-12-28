@@ -399,21 +399,13 @@ def agendar_cita_ecografia(request):
 @login_required
 @require_POST
 def buscar_paciente_ecografia(request):
-    """API para buscar paciente por CI o nombre"""
+    """API para buscar paciente por CI y obtener TODAS las ecografías habilitadas pendientes"""
     import json
     try:
         data = json.loads(request.body)
         term = data.get('search', '').strip()
     except Exception:
         return JsonResponse({'ok': False, 'error': 'Formato de datos inválido'}, status=400)
-
-    paciente = None
-    habilitado = False
-    especialidad_id = None
-    especialidad_nombre = None
-    comentario_medico = None
-    medicos_disponibles = []
-    ecografia_asignada = None
 
     if not term or not term.isdigit():
         return JsonResponse({'ok': False, 'error': 'Debes ingresar el CI del paciente'}, status=400)
@@ -423,31 +415,58 @@ def buscar_paciente_ecografia(request):
     except Paciente.DoesNotExist:
         return JsonResponse({'ok': False, 'error': 'Paciente no encontrado'}, status=404)
 
-    cita_consulta = Cita.objects.filter(
+    # Obtener TODAS las citas con ecografía habilitada para este paciente
+    citas_con_ecografia = Cita.objects.filter(
         paciente=paciente,
-        requiere_ecografia=True
-    ).first()
+        requiere_ecografia=True,
+        ecografia__isnull=False
+    ).select_related('ecografia', 'ecografia__especialidad', 'medico__user__perfil')
 
-    if cita_consulta:
-        habilitado = True
-        especialidad_id = cita_consulta.ecografia.especialidad.id if cita_consulta.ecografia else None
-        especialidad_nombre = cita_consulta.ecografia.especialidad.nombre if cita_consulta.ecografia else None
-        comentario_medico = cita_consulta.comentario_ecografia
-        ecografia_asignada = cita_consulta.ecografia.nombre if cita_consulta.ecografia else None
+    # Obtener IDs de citas que YA tienen una CitaEcografia programada o realizada
+    citas_ya_agendadas = CitaEcografia.objects.filter(
+        paciente=paciente,
+        cita_consulta__isnull=False,
+        estado__in=['PROGRAMADA', 'REALIZADA', 'REPROGRAMADA']
+    ).values_list('cita_consulta_id', flat=True)
+
+    # Filtrar las citas que aún no tienen cita de ecografía agendada
+    ecografias_disponibles = []
+    for cita in citas_con_ecografia:
+        # Si esta cita ya tiene una cita de ecografía agendada, no mostrarla
+        if cita.id in citas_ya_agendadas:
+            continue
         
-        # Obtener ecógrafos que tienen asignada esta ecografía específica
-        if cita_consulta.ecografia:
-            ecografos = cita_consulta.ecografia.ecografos.all()
-            # Si no hay ecógrafos asignados a esta ecografía, buscar ecógrafos de esa especialidad
-            if not ecografos.exists():
-                ecografos = Ecografo.objects.filter(
-                    ecografias__especialidad=cita_consulta.ecografia.especialidad
+        # Obtener ecógrafos disponibles para esta ecografía
+        ecografos = []
+        if cita.ecografia:
+            ecografos_qs = cita.ecografia.ecografos.all()
+            if not ecografos_qs.exists():
+                ecografos_qs = Ecografo.objects.filter(
+                    ecografias__especialidad=cita.ecografia.especialidad
                 ).distinct()
             
-            medicos_disponibles = [
+            ecografos = [
                 {'id': e.id, 'nombre': f"{e.user.perfil.nombres} {e.user.perfil.apellido_paterno}"}
-                for e in ecografos
+                for e in ecografos_qs
             ]
+        
+        # Obtener nombre del médico que solicitó la ecografía
+        medico_solicitante = ''
+        if cita.medico and hasattr(cita.medico, 'user') and hasattr(cita.medico.user, 'perfil'):
+            perfil = cita.medico.user.perfil
+            medico_solicitante = f"{perfil.nombres} {perfil.apellido_paterno}"
+        
+        ecografias_disponibles.append({
+            'cita_id': cita.id,
+            'especialidad_id': cita.ecografia.especialidad.id if cita.ecografia else None,
+            'especialidad_nombre': cita.ecografia.especialidad.nombre if cita.ecografia else None,
+            'ecografia_id': cita.ecografia.id if cita.ecografia else None,
+            'ecografia_nombre': cita.ecografia.nombre if cita.ecografia else None,
+            'comentario_medico': cita.comentario_ecografia or '',
+            'medico_solicitante': medico_solicitante,
+            'fecha_solicitud': cita.fecha.strftime('%d/%m/%Y') if cita.fecha else '',
+            'ecografos_disponibles': ecografos
+        })
 
     return JsonResponse({
         'ok': True,
@@ -458,12 +477,9 @@ def buscar_paciente_ecografia(request):
             'ci': paciente.ci,
             'edad': paciente.get_edad() if paciente.get_edad() else 'N/A'
         },
-        'habilitado': habilitado,
-        'especialidad_id': especialidad_id,
-        'especialidad_nombre': especialidad_nombre,
-        'comentario_medico': comentario_medico,
-        'ecografia_asignada': ecografia_asignada,
-        'medicos_disponibles': medicos_disponibles
+        'habilitado': len(ecografias_disponibles) > 0,
+        'ecografias_disponibles': ecografias_disponibles,
+        'total_ecografias': len(ecografias_disponibles)
     })
 
 
@@ -659,22 +675,39 @@ def crear_cita_ecografia(request):
         ecografo_id = request.POST.get('ecografo_id')
         fecha_str = request.POST.get('fecha')
         hora_str = request.POST.get('hora')
+        cita_consulta_id = request.POST.get('cita_consulta_id')
         
         paciente = Paciente.objects.get(id=paciente_id)
         ecografo = Ecografo.objects.get(id=ecografo_id)
         fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
         hora = datetime.strptime(hora_str, '%H:%M').time()
         
-        # Obtener cita consulta para especialidad y comentario
-        cita_consulta = Cita.objects.filter(
-            paciente=paciente,
-            requiere_ecografia=True
-        ).first()
+        # Obtener la cita de consulta específica que se seleccionó
+        if cita_consulta_id:
+            cita_consulta = Cita.objects.get(id=cita_consulta_id, paciente=paciente)
+        else:
+            # Fallback: buscar primera cita con ecografía habilitada (compatibilidad)
+            cita_consulta = Cita.objects.filter(
+                paciente=paciente,
+                requiere_ecografia=True
+            ).first()
         
         if not cita_consulta:
             return JsonResponse({
                 'ok': False,
                 'error': 'Paciente no está habilitado para ecografía'
+            }, status=400)
+        
+        # Verificar que esta cita no tenga ya una cita de ecografía agendada
+        cita_existente = CitaEcografia.objects.filter(
+            cita_consulta=cita_consulta,
+            estado__in=['PROGRAMADA', 'REALIZADA', 'REPROGRAMADA']
+        ).exists()
+        
+        if cita_existente:
+            return JsonResponse({
+                'ok': False,
+                'error': 'Esta ecografía ya tiene una cita agendada'
             }, status=400)
         
         # Generar código único
