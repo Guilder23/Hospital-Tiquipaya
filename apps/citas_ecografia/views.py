@@ -531,6 +531,121 @@ def obtener_horarios_medico(request):
 
 @login_required
 @require_POST
+def obtener_horarios_ecografo(request):
+    """API para obtener horarios disponibles de un ecógrafo para una fecha específica"""
+    ecografo_id = request.POST.get('ecografo_id')
+    fecha_str = request.POST.get('fecha')
+    
+    if not ecografo_id or not fecha_str:
+        return JsonResponse({
+            'ok': False,
+            'error': 'Ecógrafo y fecha son requeridos'
+        }, status=400)
+    
+    try:
+        ecografo = Ecografo.objects.get(id=ecografo_id)
+        fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+    except (Ecografo.DoesNotExist, ValueError):
+        return JsonResponse({
+            'ok': False,
+            'error': 'Ecógrafo o fecha inválidos'
+        }, status=400)
+    
+    # Obtener turnos del ecógrafo
+    turnos = ecografo.turnos.filter(estado=True).order_by('hora_ini')
+    
+    # Obtener horas ocupadas
+    citas_ocupadas = set(
+        CitaEcografia.objects.filter(
+            medico=ecografo,
+            fecha=fecha
+        ).exclude(
+            estado='CANCELADA'
+        ).values_list('hora', flat=True)
+    )
+    
+    horarios_disponibles = []
+    horarios_ocupados = []
+    total_slots = 0
+    slots_ocupados = 0
+    
+    for turno in turnos:
+        slots = _slots_turno(turno, fecha)
+        total_slots += len(slots)
+        
+        for slot in slots:
+            hora_str = slot.strftime('%H:%M')
+            if slot in citas_ocupadas:
+                horarios_ocupados.append(hora_str)
+                slots_ocupados += 1
+            else:
+                horarios_disponibles.append(hora_str)
+    
+    # Determinar si el día está completamente ocupado
+    dia_completamente_ocupado = total_slots > 0 and slots_ocupados == total_slots
+    
+    return JsonResponse({
+        'ok': True,
+        'fecha': fecha_str,
+        'horarios_disponibles': horarios_disponibles,
+        'horarios_ocupados': horarios_ocupados,
+        'total_slots': total_slots,
+        'slots_ocupados': slots_ocupados,
+        'dia_completamente_ocupado': dia_completamente_ocupado
+    })
+
+
+@login_required
+def verificar_dias_ocupados_ecografo(request, ecografo_id):
+    """API para verificar qué días están completamente ocupados para un ecógrafo"""
+    try:
+        ecografo = Ecografo.objects.get(id=ecografo_id)
+    except Ecografo.DoesNotExist:
+        return JsonResponse({
+            'ok': False,
+            'error': 'Ecógrafo no encontrado'
+        }, status=404)
+    
+    # Obtener rango de fechas (próximos 60 días)
+    fecha_inicio = date.today()
+    fecha_fin = fecha_inicio + timedelta(days=60)
+    
+    dias_ocupados = []
+    
+    fecha_actual = fecha_inicio
+    while fecha_actual <= fecha_fin:
+        # Verificar si el ecógrafo trabaja este día
+        if _medico_trabaja_en_dia(ecografo, fecha_actual):
+            # Obtener turnos y slots del día
+            turnos = ecografo.turnos.filter(estado=True)
+            total_slots = 0
+            
+            for turno in turnos:
+                slots = _slots_turno(turno, fecha_actual)
+                total_slots += len(slots)
+            
+            # Contar citas ocupadas
+            citas_ocupadas = CitaEcografia.objects.filter(
+                medico=ecografo,
+                fecha=fecha_actual
+            ).exclude(
+                estado='CANCELADA'
+            ).count()
+            
+            # Si está completamente ocupado
+            if total_slots > 0 and citas_ocupadas >= total_slots:
+                dias_ocupados.append(fecha_actual.strftime('%Y-%m-%d'))
+        
+        fecha_actual += timedelta(days=1)
+    
+    return JsonResponse({
+        'ok': True,
+        'dias_ocupados': dias_ocupados
+    })
+
+
+@login_required
+@require_POST
 def crear_cita_ecografia(request):
     """Crear nueva cita de ecografía"""
     if not _tiene_permiso_edicion(request):

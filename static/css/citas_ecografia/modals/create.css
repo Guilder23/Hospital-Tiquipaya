@@ -317,6 +317,24 @@ textarea.form-control {
   transform: none;
 }
 
+/* Día completamente ocupado - estilo rojo */
+.fecha-btn.dia-ocupado {
+  background: var(--color-error-bg) !important;
+  color: var(--color-error) !important;
+  border-color: var(--color-error) !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+}
+
+.fecha-btn.dia-ocupado:hover {
+  background: var(--color-error-bg) !important;
+  color: var(--color-error) !important;
+  border-color: var(--color-error) !important;
+  transform: none;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+}
+
 /* === HORARIOS === */
 .horarios-legend {
   display: flex;

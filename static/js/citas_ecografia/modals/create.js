@@ -373,11 +373,14 @@ function seleccionarEcografo() {
             Días: ${data.dias_trabajo.join(', ')}
         `;
         
-        // Generar calendario
-        generarCalendario(data);
-        
-        // Mostrar sección 3b
-        document.getElementById('step-3b').classList.remove('d-none');
+        // Cargar días ocupados primero
+        cargarDiasOcupados(ecoId).then(() => {
+            // Generar calendario
+            generarCalendario(data);
+            
+            // Mostrar sección 3b
+            document.getElementById('step-3b').classList.remove('d-none');
+        });
     })
     .catch(error => {
         console.error('Error:', error);
@@ -468,8 +471,16 @@ function generarCalendario(ecografo) {
                 const hoy = new Date();
                 hoy.setHours(0, 0, 0, 0);
                 
+                const fechaStr = fecha.toISOString().split('T')[0];
+                const esDiaOcupado = citaEcografiaData.diasOcupados && citaEcografiaData.diasOcupados.includes(fechaStr);
+                
                 if (!estaEnRango || !esHabilitado || fecha < hoy) {
                     btn.disabled = true;
+                } else if (esDiaOcupado) {
+                    // Día completamente ocupado - botón rojo
+                    btn.classList.add('dia-ocupado');
+                    btn.disabled = true;
+                    btn.title = 'Día completamente ocupado';
                 } else {
                     btn.addEventListener('click', () => seleccionarFecha(btn));
                 }
@@ -512,63 +523,68 @@ function seleccionarFecha(btn) {
 }
 
 function cargarHorariosDelDia(fecha) {
-    // Obtener turnos del ecógrafo para ese día
-    const ecografo = citaEcografiaData.ecografo;
+    const ecografoId = citaEcografiaData.ecografo_id;
     
-    // Los turnos del ecógrafo son los mismos para todos sus días de atención
-    const turnosDelDia = ecografo.turnos;
-    
-    if (!turnosDelDia || turnosDelDia.length === 0) {
-        showAlert('create-alert', 'No hay turnos disponibles para este ecógrafo', 'warning');
-        return;
-    }
-    
-    // Mostrar paso 4
-    showStep(4);
-    
-    // Generar horarios
-    generarHorarios(turnosDelDia, fecha);
+    // Llamar a la nueva API para obtener horarios ocupados
+    fetch('/citas-ecografia/obtener-horarios-ecografo/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: `ecografo_id=${ecografoId}&fecha=${fecha}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.ok) {
+            showAlert('create-alert', data.error || 'Error al cargar horarios', 'danger');
+            return;
+        }
+        
+        // Mostrar paso 4
+        showStep(4);
+        
+        // Generar horarios con información de ocupados
+        generarHorariosConOcupados(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('create-alert', 'Error al cargar horarios del día', 'danger');
+    });
 }
 
-function generarHorarios(turnos, fecha) {
+function generarHorariosConOcupados(data) {
     const container = document.getElementById('horarios-container');
     container.innerHTML = '';
     
-    if (!turnos || turnos.length === 0) {
-        container.innerHTML = '<p class="text-warning">No hay turnos disponibles</p>';
+    const horariosDisponibles = data.horarios_disponibles || [];
+    const horariosOcupados = data.horarios_ocupados || [];
+    const todosLosHorarios = [...horariosDisponibles, ...horariosOcupados].sort();
+    
+    if (todosLosHorarios.length === 0) {
+        container.innerHTML = '<p class="text-warning">No hay horarios disponibles</p>';
         return;
     }
     
-    turnos.forEach(turno => {
-        const horaInicio = turno.hora_ini;
-        const horaFin = turno.hora_fin;
+    todosLosHorarios.forEach(hora => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = hora;
+        btn.dataset.hora = hora;
         
-        // Convertir strings HH:MM a minutos
-        const [hiHora, hiMin] = horaInicio.split(':');
-        const [hfHora, hfMin] = horaFin.split(':');
-        
-        let minutoInicio = parseInt(hiHora) * 60 + parseInt(hiMin);
-        let minutoFin = parseInt(hfHora) * 60 + parseInt(hfMin);
-        
-        // Generar slots de 30 minutos
-        while (minutoInicio < minutoFin) {
-            const horas = Math.floor(minutoInicio / 60);
-            const minutos = minutoInicio % 60;
-            const horaSlot = `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
-            
-            const btn = document.createElement('button');
-            btn.type = 'button';
+        if (horariosOcupados.includes(hora)) {
+            // Hora ocupada - botón rojo y deshabilitado
+            btn.className = 'horario-btn horario-busy';
+            btn.disabled = true;
+            btn.title = 'Horario ocupado';
+        } else {
+            // Hora disponible - botón verde
             btn.className = 'horario-btn horario-free';
-            btn.textContent = horaSlot;
-            btn.dataset.hora = horaSlot;
-            btn.dataset.turnoId = turno.id;
-            btn.addEventListener('click', () => seleccionarHora(btn, fecha, horaSlot));
-            
-            container.appendChild(btn);
-            
-            // Incrementar 30 minutos
-            minutoInicio += 30;
+            btn.addEventListener('click', () => seleccionarHora(btn, data.fecha, hora));
+            btn.title = 'Horario disponible';
         }
+        
+        container.appendChild(btn);
     });
 }
 
@@ -589,4 +605,27 @@ function seleccionarHora(btn, fecha, horaSlot) {
     
     // Mostrar botón de confirmación
     document.getElementById('btn-confirm').classList.remove('d-none');
+}
+
+function cargarDiasOcupados(ecografoId) {
+    return fetch(`/citas-ecografia/verificar-dias-ocupados/${ecografoId}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            citaEcografiaData.diasOcupados = data.dias_ocupados || [];
+        } else {
+            console.error('Error al cargar días ocupados:', data.error);
+            citaEcografiaData.diasOcupados = [];
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar días ocupados:', error);
+        citaEcografiaData.diasOcupados = [];
+    });
 }
