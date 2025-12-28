@@ -9,7 +9,7 @@
       {% csrf_token %}
       <div class="form-row">
         <label for="crear-nombre">Nombre *</label>
-        <input id="crear-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo" maxlength="50" minlength="3" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos">
+        <input id="crear-nombre" name="nombre" type="text" required placeholder="Ingrese el nombre del tipo" maxlength="50" minlength="3" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 y maximo 50 letras. Solo caracteres alfabéticos">
         <small class="char-count"><span id="crear-nombre-count">0</span>/50 caracteres</small>
         <span class="field-error" id="crear-nombre-error"></span>
       </div>
