@@ -60,8 +60,34 @@ class Cita(models.Model):
         """Calcula la duración de la atención en minutos"""
         if self.tiempo_inicio_atencion and self.tiempo_fin_atencion:
             diferencia = self.tiempo_fin_atencion - self.tiempo_inicio_atencion
-            minutos = int(diferencia.total_seconds() / 60)
-            return minutos
+            total_segundos = int(diferencia.total_seconds())
+            minutos = total_segundos // 60
+            # Retornar al menos 1 si hay algún segundo transcurrido
+            if minutos == 0 and total_segundos > 0:
+                return 1  # Mínimo 1 minuto si hubo tiempo transcurrido
+            return minutos if minutos > 0 else None
+        return None
+    
+    def get_duracion_formateada(self):
+        """Retorna la duración en formato legible (ej: '5 min' o '1h 30min')"""
+        if self.tiempo_inicio_atencion and self.tiempo_fin_atencion:
+            diferencia = self.tiempo_fin_atencion - self.tiempo_inicio_atencion
+            total_segundos = int(diferencia.total_seconds())
+            
+            if total_segundos < 60:
+                return f"{total_segundos} seg"
+            
+            minutos = total_segundos // 60
+            segundos = total_segundos % 60
+            
+            if minutos < 60:
+                if segundos > 0:
+                    return f"{minutos}:{segundos:02d} min"
+                return f"{minutos} min"
+            
+            horas = minutos // 60
+            mins_restantes = minutos % 60
+            return f"{horas}h {mins_restantes}min"
         return None
     
     def save(self, *args, **kwargs):

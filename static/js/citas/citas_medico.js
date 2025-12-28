@@ -90,6 +90,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Contador de caracteres en tiempo real para el comentario
+    const comentarioTextarea = document.getElementById('ecoComentario');
+    const contadorComentario = document.getElementById('contadorComentario');
+    
+    if (comentarioTextarea && contadorComentario) {
+        comentarioTextarea.addEventListener('input', function() {
+            const length = this.value.length;
+            contadorComentario.textContent = `${length} / 250 caracteres (mínimo 20 si selecciona "Sí")`;
+            
+            // Actualizar clase según validez
+            contadorComentario.classList.remove('valido', 'invalido');
+            if (length >= 20 && length <= 250) {
+                contadorComentario.classList.add('valido');
+            } else if (length > 0 && length < 20) {
+                contadorComentario.classList.add('invalido');
+            }
+        });
+    }
+
     // Actualizar hora con milisegundos en tiempo real cada 100ms
     tiempoRealInterval = setInterval(actualizarTiempoReal, 100);
 });
@@ -128,48 +147,48 @@ function procesar_ecografia(citaId, habilitar) {
     const formData = new FormData();
     formData.append('habilitar', habilitar);
     
-    // Si se habilita, obtener datos del formulario
+    const ecografiaSelect = document.getElementById('ecoEcografia');
+    const comentarioTextarea = document.getElementById('ecoComentario');
+    
+    // Si se habilita ecografía (Sí), validar campos obligatorios
     if (habilitar === 'si') {
-        const ecografiaSelect = document.getElementById('ecoEcografia');
-        const comentarioTextarea = document.getElementById('ecoComentario');
-        
-        console.log('Elementos encontrados:', {
-            ecografiaSelect: !!ecografiaSelect,
-            comentarioTextarea: !!comentarioTextarea
-        });
-        
         if (!ecografiaSelect || !comentarioTextarea) {
             showAlert('danger', 'Error: No se encontraron los campos del formulario');
-            console.error('No se encontraron los elementos del formulario');
             return;
         }
         
         const ecografiaId = ecografiaSelect.value;
-        const comentario = comentarioTextarea.value;
+        const comentario = comentarioTextarea.value.trim();
         
-        console.log('Valores capturados del formulario:', {
-            ecografiaId: ecografiaId,
-            comentario: comentario,
-            ecografiaIdType: typeof ecografiaId,
-            comentarioType: typeof comentario
-        });
-        
+        // Validar que se haya seleccionado una ecografía
         if (!ecografiaId || ecografiaId === '') {
-            showAlert('danger', 'Por favor selecciona una ecografía');
+            showAlert('danger', 'Debe seleccionar una ecografía a realizar');
+            ecografiaSelect.focus();
             return;
         }
         
-        if (!comentario || !comentario.trim()) {
-            showAlert('danger', 'Por favor ingresa un comentario');
+        // Validar longitud del comentario (mínimo 20, máximo 250)
+        if (comentario.length < 20) {
+            showAlert('danger', 'El comentario debe tener al menos 20 caracteres');
+            comentarioTextarea.focus();
+            return;
+        }
+        
+        if (comentario.length > 250) {
+            showAlert('danger', 'El comentario no puede exceder 250 caracteres');
+            comentarioTextarea.focus();
             return;
         }
         
         formData.append('ecografia', ecografiaId);
         formData.append('comentario', comentario);
-        
-        console.log('FormData preparado:');
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}: ${value}`);
+    } else {
+        // Si es "No", los campos son opcionales pero se envían si tienen valor
+        if (ecografiaSelect && ecografiaSelect.value) {
+            formData.append('ecografia', ecografiaSelect.value);
+        }
+        if (comentarioTextarea && comentarioTextarea.value.trim()) {
+            formData.append('comentario', comentarioTextarea.value.trim());
         }
     }
 

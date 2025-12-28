@@ -42,7 +42,7 @@
           <td><code>{{ cita.paciente.ci }}</code></td>
           <td>{{ cita.paciente.celular|default:"N/A" }}</td>
           <td>
-            <span class="badge badge-info">{{ cita.duracion_atencion_minutos|default:"—" }} min</span>
+            <span class="badge badge-info">{{ cita.get_duracion_formateada|default:"—" }}</span>
           </td>
           <td>
             {% if cita.requiere_ecografia %}

@@ -444,7 +444,12 @@ def procesar_ecografia(request, cita_id):
         if cita.estado_atencion == 'EN_ATENCION':
             cita.estado_atencion = 'ATENDIDO'
             cita.tiempo_fin_atencion = timezone.now()
+            
+            # Debug: verificar tiempos
+            print(f"DEBUG procesar_ecografia: tiempo_inicio={cita.tiempo_inicio_atencion}, tiempo_fin={cita.tiempo_fin_atencion}")
+            
             cita.duracion_atencion_minutos = cita.calcular_duracion()
+            print(f"DEBUG procesar_ecografia: duracion_calculada={cita.duracion_atencion_minutos}")
         
         # Actualizar el campo de ecografía y datos relacionados
         cita.requiere_ecografia = habilitar
