@@ -214,6 +214,11 @@
 
 .btn-view:hover {
     background: #38a169;
+    color: white;
+}
+
+.btn-view:active {
+    color: white;
 }
 
 /* Empty State */

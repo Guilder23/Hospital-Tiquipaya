@@ -240,7 +240,12 @@
 
 .btn-view:hover {
     background-color: var(--color-principal);
+    color: white;
     transform: translateY(-1px);
+}
+
+.btn-view:active {
+    color: white;
 }
 
 /* ESTADO BADGE */

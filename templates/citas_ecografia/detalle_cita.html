@@ -10,7 +10,10 @@
 {% csrf_token %}
 <div class="detalle-container">
     <!-- Botón Volver -->
-    <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn-volver">Volver a Mis Citas</a>
+    <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn-volver">
+        <span>←</span>
+        Volver a Mis Citas
+    </a>
 
     <!-- Card Detalle -->
     <div class="card detalle-card">
@@ -156,7 +159,8 @@
                 {% endif %}
             {% endif %}
             
-            <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn btn-secondary">
+            <a href="{% url 'citas_ecografia:mis_citas' %}" class="btn btn-secondary btn-volver-final" >
+                <span>←</span>
                 Volver a Mis Citas
             </a>
         </div>
@@ -175,7 +179,10 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="resultado">Resultado de la Ecografía:</label>
-                    <textarea id="resultado" name="resultado_ecografia" rows="6" required></textarea>
+                    <textarea id="resultado" name="resultado_ecografia" rows="6" required minlength="20" maxlength="250"></textarea>
+                    <small id="contador-caracteres" style="display: block; margin-top: 0.5rem; color: #666; font-size: 0.85rem;">
+                        0 / 250 caracteres (mínimo 20)
+                    </small>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-success">Guardar Resultado</button>
@@ -217,6 +224,25 @@
             formResultado.addEventListener('submit', function(e) {
                 e.preventDefault();
                 guardarResultado();
+            });
+        }
+        
+        // Contador de caracteres en tiempo real
+        const textareaResultado = document.getElementById('resultado');
+        const contadorCaracteres = document.getElementById('contador-caracteres');
+        
+        if (textareaResultado && contadorCaracteres) {
+            textareaResultado.addEventListener('input', function() {
+                const length = this.value.length;
+                contadorCaracteres.textContent = `${length} / 250 caracteres (mínimo 20)`;
+                
+                if (length < 20) {
+                    contadorCaracteres.style.color = '#dc2626'; // Rojo
+                } else if (length > 250) {
+                    contadorCaracteres.style.color = '#dc2626'; // Rojo
+                } else {
+                    contadorCaracteres.style.color = '#16a34a'; // Verde
+                }
             });
         }
     });
@@ -264,8 +290,29 @@
     }
 
     function guardarResultado() {
+        const resultado = document.getElementById('resultado').value.trim();
+        
+        // Validar longitud
+        if (resultado.length < 20) {
+            if (typeof showError === 'function') {
+                showError('El resultado debe tener al menos 20 caracteres');
+            } else {
+                alert('El resultado debe tener al menos 20 caracteres');
+            }
+            return;
+        }
+        
+        if (resultado.length > 250) {
+            if (typeof showError === 'function') {
+                showError('El resultado no puede exceder 250 caracteres');
+            } else {
+                alert('El resultado no puede exceder 250 caracteres');
+            }
+            return;
+        }
+        
         const formData = new FormData();
-        formData.append('resultado_ecografia', document.getElementById('resultado').value);
+        formData.append('resultado_ecografia', resultado);
 
         fetch('/citas-ecografia/mis-citas/' + citaIdActual + '/guardar-resultado/', {
             method: 'POST',

@@ -7,18 +7,30 @@
 }
 
 .btn-volver {
-    display: inline-block;
-    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
     background-color: var(--color-boton-principal);
     color: white;
     text-decoration: none;
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
     margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn-volver:hover {
     background-color: var(--color-boton-principal-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-volver:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .detalle-card {
@@ -156,10 +168,10 @@
 }
 
 .btn {
-    padding: 0.7rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border: none;
     border-radius: 0.4rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -174,6 +186,11 @@
 
 .btn-primary:hover {
     background-color: var(--color-boton-principal-hover);
+    color: white;
+}
+
+.btn-primary:active {
+    color: white;
 }
 
 .btn-success {
@@ -183,6 +200,11 @@
 
 .btn-success:hover {
     background-color: var(--color-boton-secundario-hover);
+    color: white;
+}
+
+.btn-success:active {
+    color: white;
 }
 
 .btn-secondary {
@@ -192,6 +214,22 @@
 
 .btn-secondary:hover {
     background-color: var(--color-principal);
+    color: white;
+}
+
+.btn-volver-final {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    min-width: auto !important;
+    width: auto !important;
+}
+
+.btn-volver-final span {
+    font-size: 0.95rem !important;
 }
 
 /* MODAL */
