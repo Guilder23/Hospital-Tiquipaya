@@ -23,19 +23,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Validar fechas: fecha inicio no puede ser mayor que fecha fin (en tiempo real)
+  // Validar fechas: fecha fin debe ser al menos 1 día después de fecha inicio
   const fechaInicioInput = document.getElementById('edit-fecha_inicio');
   const fechaFinInput = document.getElementById('edit-fecha_fin');
   
   function validarFechasContratoEdit() {
     if(fechaInicioInput && fechaFinInput) {
-      // Si hay fecha inicio, la fecha fin no puede ser menor
+      // Si hay fecha inicio, la fecha fin debe ser al menos 1 día después
       if(fechaInicioInput.value) {
-        fechaFinInput.setAttribute('min', fechaInicioInput.value);
+        const fechaInicio = new Date(fechaInicioInput.value);
+        fechaInicio.setDate(fechaInicio.getDate() + 1);
+        const minFechaFin = fechaInicio.toISOString().split('T')[0];
+        fechaFinInput.setAttribute('min', minFechaFin);
       }
-      // Si hay fecha fin, la fecha inicio no puede ser mayor
+      // Si hay fecha fin, la fecha inicio no puede ser mayor o igual
       if(fechaFinInput.value) {
-        fechaInicioInput.setAttribute('max', fechaFinInput.value);
+        const fechaFin = new Date(fechaFinInput.value);
+        fechaFin.setDate(fechaFin.getDate() - 1);
+        const maxFechaInicio = fechaFin.toISOString().split('T')[0];
+        fechaInicioInput.setAttribute('max', maxFechaInicio);
       }
     }
   }

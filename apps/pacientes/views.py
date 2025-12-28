@@ -46,6 +46,12 @@ class PacienteCreateForm(PacienteBaseForm):
             'emergencia_nombre','emergencia_telefono','emergencia_relacion',
             'numero_boleta_sus','numero_carnet_historial','numero_boleta_referencia','numero_copias',
         ]
+    
+    def clean_ci(self):
+        ci = self.cleaned_data.get('ci')
+        if ci and Paciente.objects.filter(ci=ci).exists():
+            raise forms.ValidationError('Ya existe un paciente registrado con este número de CI.')
+        return ci
 
 class PacienteUpdateForm(PacienteBaseForm):
     numero_copias = forms.IntegerField(required=False, initial=0)
@@ -64,6 +70,17 @@ class PacienteUpdateForm(PacienteBaseForm):
             'numero_boleta_sus','numero_carnet_historial','numero_boleta_referencia','numero_copias',
             'activo'
         ]
+    
+    def clean_ci(self):
+        ci = self.cleaned_data.get('ci')
+        if ci:
+            # Excluir el paciente actual de la búsqueda
+            pacientes_con_ci = Paciente.objects.filter(ci=ci)
+            if self.instance and self.instance.pk:
+                pacientes_con_ci = pacientes_con_ci.exclude(pk=self.instance.pk)
+            if pacientes_con_ci.exists():
+                raise forms.ValidationError('Ya existe otro paciente registrado con este número de CI.')
+        return ci
 
 class PacienteListView(LoginRequiredMixin, ListView):
     model = Paciente

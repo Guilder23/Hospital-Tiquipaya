@@ -14,7 +14,7 @@
           <div class="form-row"><label>Apellido materno</label><input name="apellido_materno" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]*" title="Máximo 30 caracteres. Solo caracteres alfabéticos"></div>
           <div class="form-row"><label>Usuario</label><input name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_]+" title="Máximo 30 caracteres. Solo letras, números y guión bajo"></div>
           <div class="form-row"><label>Correo</label><input name="correo" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Máximo 50 caracteres. Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com"></div>
-          <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required max="{{ fecha_maxima }}" title="Debe tener al menos 18 años"></div>
+          <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required max="{{ fecha_maxima }}" title="Mayor a 18 años y menor a 86 años"></div>
           <div class="form-row"><label>Sexo</label>
             <select name="sexo">
               <option value="M">Masculino</option>

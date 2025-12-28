@@ -10,7 +10,7 @@
         <h4>Información de la Ecografía</h4>
         <div class="form-grid">
           <div class="form-row"><label>Código</label><input id="edit-codigo" type="text" readonly pattern="[A-Za-z0-9]+" title="Caracteres alfanuméricos"></div>
-          <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input id="edit-nombre" type="text" name="nombre" required minlength="3" title="Mínimo 3 caracteres"></div>
+          <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input id="edit-nombre" type="text" name="nombre" required minlength="3" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 y maximo 30 caracteres"></div>
           <div class="form-row"><label>Ecógrafo</label>
             <select id="edit-ecografo" name="ecografo" required>
               <option value="">-- Seleccionar ecógrafo --</option>
@@ -27,7 +27,7 @@
               {% endfor %}
             </select>
           </div>
-          <div class="form-row form-row-full"><label>Descripción de la Orden</label><textarea id="edit-descripcion" name="descripcion" rows="4" minlength="10" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]+" title="Mínimo 10 caracteres alfabéticos"></textarea></div>
+          <div class="form-row form-row-full"><label>Descripción de la Orden</label><textarea id="edit-descripcion" name="descripcion" rows="4" minlength="10" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]+" title="Mínimo 10 y maximo 100 caracteres alfabéticos"></textarea></div>
           <div class="form-row"><label>Estado</label>
             <select id="edit-estado" name="estado" required>
               <option value="ACTIVA">Activa</option>

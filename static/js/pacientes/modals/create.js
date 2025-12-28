@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded',function(){
       });
     });
 
-    // Validar campos alfanuméricos (zona, calle, número)
-    var camposAlfanumericos = form.querySelectorAll('[name="zona"], [name="calle"], [name="numero_domicilio"]');
+    // Validar zona y calle (alfanuméricos)
+    var camposAlfanumericos = form.querySelectorAll('[name="zona"], [name="calle"]');
     camposAlfanumericos.forEach(function(input) {
       input.addEventListener('input', function() {
         var regex = /[^A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s]/g;
@@ -81,6 +81,20 @@ document.addEventListener('DOMContentLoaded',function(){
         }
       });
     });
+
+    // Validar número de domicilio (solo números, 2-6 dígitos)
+    var numeroDomicilioInput = form.querySelector('[name="numero_domicilio"]');
+    if(numeroDomicilioInput){
+      numeroDomicilioInput.addEventListener('input', function() {
+        var regex = /[^0-9]/g;
+        if (regex.test(this.value)) {
+          this.value = this.value.replace(regex, '');
+        }
+        if (this.value.length > 6) {
+          this.value = this.value.slice(0, 6);
+        }
+      });
+    }
 
     // Validar dirección (alfanuméricos + puntuación)
     var direccionInput = form.querySelector('[name="direccion"]');

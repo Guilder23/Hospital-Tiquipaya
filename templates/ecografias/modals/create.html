@@ -9,7 +9,7 @@
       <div class="section">
         <h4>Información de la Ecografía</h4>
         <div class="form-grid">
-          <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input type="text" name="nombre" required minlength="3" maxlength="149" title="Mínimo 3 caracteres" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ">   </div>
+          <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input type="text" name="nombre" required minlength="3" maxlength="30" title="Mínimo 3 caracteres" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ">   </div>
           <div class="form-row"><label>Ecógrafo</label>
             <select name="ecografo" required>
               <option value="">-- Seleccionar ecógrafo --</option>
@@ -26,7 +26,7 @@
               {% endfor %}
             </select>
           </div>
-          <div class="form-row form-row-full"><label>Descripción de la Orden</label><textarea name="descripcion" rows="4" minlength="10" maxlength="250" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]+" title="Mínimo 10 caracteres alfabéticos"></textarea></div>
+          <div class="form-row form-row-full"><label>Descripción de la Orden</label><textarea name="descripcion" rows="4" minlength="10" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]+" title="Mínimo 10 caracteres alfabéticos"></textarea></div>
         </div>
       </div>
 
