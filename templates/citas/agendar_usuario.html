@@ -83,122 +83,115 @@
     background-color: #616161;
   }
 
-  /* Modal de éxito */
-  .modal-success {
-    display: none;
+  /* Toast notification - Esquina inferior derecha */
+  .toast-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 20px;
+    right: 20px;
     z-index: 9999;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-success.active {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
   }
 
-  .modal-success-content {
+  .toast {
     background: white;
-    border-radius: 12px;
-    padding: 30px;
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-width: 350px;
     max-width: 450px;
-    width: 90%;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    animation: slideDown 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transform: translateX(500px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: all;
+    border-left: 4px solid #22c55e;
   }
 
-  @keyframes slideDown {
-    from {
-      transform: translateY(-50px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  .toast.show {
+    transform: translateX(0);
+    opacity: 1;
   }
 
-  .modal-success-icon {
-    width: 70px;
-    height: 70px;
+  .toast.hide {
+    transform: translateX(500px);
+    opacity: 0;
+  }
+
+  .toast-icon {
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, #22c55e, #16a34a);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 40px;
-    color: white;
-    animation: scaleIn 0.4s ease 0.2s both;
-  }
-
-  @keyframes scaleIn {
-    from {
-      transform: scale(0);
-    }
-    to {
-      transform: scale(1);
-    }
-  }
-
-  .modal-success-title {
     font-size: 24px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .toast-content {
+    flex: 1;
+    padding-top: 2px;
+  }
+
+  .toast-title {
+    font-size: 16px;
     font-weight: 700;
     color: #16a34a;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 
-  .modal-success-message {
-    font-size: 16px;
-    color: #4b5563;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .modal-success-details {
-    background: #f0fdf4;
-    border: 2px solid #bbf7d0;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 24px;
-    text-align: left;
-  }
-
-  .modal-success-details p {
-    margin: 8px 0;
+  .toast-message {
     font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .toast-details {
+    background: #f0fdf4;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  .toast-details p {
+    margin: 4px 0;
     color: #374151;
   }
 
-  .modal-success-details strong {
+  .toast-details strong {
     color: #16a34a;
     font-weight: 600;
   }
 
-  .modal-success-button {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    color: white;
+  .toast-close {
+    background: none;
     border: none;
-    padding: 12px 32px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    color: #9ca3af;
+    font-size: 20px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+    flex-shrink: 0;
   }
 
-  .modal-success-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
-  }
-
-  .modal-success-button:active {
-    transform: translateY(0);
+  .toast-close:hover {
+    background: #f3f4f6;
+    color: #4b5563;
   }
 </style>
 {% endblock %}
@@ -267,18 +260,8 @@
     </div>
   </div>
 
-  <!-- Modal de éxito -->
-  <div class="modal-success" id="modal-success">
-    <div class="modal-success-content">
-      <div class="modal-success-icon">✓</div>
-      <h3 class="modal-success-title">¡Cita Agendada Exitosamente!</h3>
-      <p class="modal-success-message" id="success-message"></p>
-      <div class="modal-success-details" id="success-details">
-        <!-- Se llenará dinámicamente -->
-      </div>
-      <button class="modal-success-button" id="btn-success-ok">Aceptar</button>
-    </div>
-  </div>
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
 
 </section>
 {% endblock %}
@@ -488,27 +471,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // Cerrar modal de confirmación
         modalConfirm.setAttribute('aria-hidden', 'true');
         
-        // Mostrar modal de éxito
-        const modalSuccess = document.getElementById('modal-success');
-        const successMessage = document.getElementById('success-message');
-        const successDetails = document.getElementById('success-details');
-        
-        successMessage.textContent = data.mensaje;
-        successDetails.innerHTML = `
-          <p><strong>Código de cita:</strong> ${data.codigo}</p>
-          <p><strong>Paciente:</strong> ${pacienteSeleccionado.nombres} ${pacienteSeleccionado.apellido}</p>
-          <p><strong>Médico:</strong> ${slotSeleccionado.nombreMedico}</p>
-          <p><strong>Fecha:</strong> ${slotSeleccionado.fecha}</p>
-          <p><strong>Hora:</strong> ${slotSeleccionado.hora}</p>
-        `;
-        
-        modalSuccess.classList.add('active');
+        // Mostrar toast de éxito
+        showSuccessToast({
+          title: '¡Cita agendada exitosamente!',
+          message: data.mensaje,
+          details: {
+            codigo: data.codigo,
+            paciente: `${pacienteSeleccionado.nombres} ${pacienteSeleccionado.apellido}`,
+            medico: slotSeleccionado.nombreMedico,
+            fecha: slotSeleccionado.fecha,
+            hora: slotSeleccionado.hora
+          }
+        });
         
         // Limpiar datos
         pacienteSeleccionado = null;
         slotSeleccionado = null;
         inputBuscar.value = '';
         pacienteDiv.classList.remove('active');
+        
+        // Recargar después de 5 segundos
+        setTimeout(() => {
+          location.reload();
+        }, 5000);
       } else {
         confError.textContent = data.error || 'Error desconocido';
         confError.style.display = 'block';
@@ -520,15 +505,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // ===== CERRAR MODAL DE ÉXITO =====
-  const btnSuccessOk = document.getElementById('btn-success-ok');
-  const modalSuccess = document.getElementById('modal-success');
-  
-  if (btnSuccessOk) {
-    btnSuccessOk.addEventListener('click', function() {
-      modalSuccess.classList.remove('active');
-      location.reload();
-    });
+  // ===== FUNCIÓN PARA MOSTRAR TOAST =====
+  function showSuccessToast(options) {
+    const container = document.getElementById('toast-container');
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    
+    toast.innerHTML = `
+      <div class="toast-icon">✓</div>
+      <div class="toast-content">
+        <div class="toast-title">${options.title}</div>
+        <div class="toast-message">${options.message}</div>
+        ${options.details ? `
+          <div class="toast-details">
+            <p><strong>Código:</strong> ${options.details.codigo}</p>
+            <p><strong>Paciente:</strong> ${options.details.paciente}</p>
+            <p><strong>Médico:</strong> ${options.details.medico}</p>
+            <p><strong>Fecha:</strong> ${options.details.fecha}</p>
+            <p><strong>Hora:</strong> ${options.details.hora}</p>
+          </div>
+        ` : ''}
+      </div>
+      <button class="toast-close" onclick="this.parentElement.classList.add('hide')">×</button>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Mostrar con animación
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 100);
+    
+    // Auto-ocultar después de 5 segundos
+    setTimeout(() => {
+      toast.classList.add('hide');
+      setTimeout(() => {
+        toast.remove();
+      }, 400);
+    }, 5000);
   }
 });
 </script>
