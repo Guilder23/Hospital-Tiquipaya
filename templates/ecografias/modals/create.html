@@ -10,14 +10,6 @@
         <h4>Información de la Ecografía</h4>
         <div class="form-grid">
           <div class="form-row form-row-full"><label>Nombre de la Ecografía</label><input type="text" name="nombre" required minlength="3" maxlength="30" title="Mínimo 3 caracteres" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ">   </div>
-          <div class="form-row"><label>Ecógrafo</label>
-            <select name="ecografo" required>
-              <option value="">-- Seleccionar ecógrafo --</option>
-              {% for ecografo in ecografos %}
-              <option value="{{ ecografo.id }}">{{ ecografo.user.perfil.nombres }} {{ ecografo.user.perfil.apellido_paterno }}</option>
-              {% endfor %}
-            </select>
-          </div>
           <div class="form-row"><label>Especialidad de Ecografía</label>
             <select name="especialidad" required>
               <option value="">-- Seleccionar especialidad --</option>

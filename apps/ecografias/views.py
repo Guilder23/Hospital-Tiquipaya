@@ -17,7 +17,7 @@ def _es_admin(user):
 class EcografiaBaseForm(forms.ModelForm):
     class Meta:
         model = Ecografia
-        fields = ['nombre', 'ecografo', 'especialidad', 'descripcion']
+        fields = ['nombre', 'especialidad', 'descripcion']
 
 
 class EcografiaCreateForm(EcografiaBaseForm):
@@ -27,7 +27,7 @@ class EcografiaCreateForm(EcografiaBaseForm):
 class EcografiaUpdateForm(forms.ModelForm):
     class Meta:
         model = Ecografia
-        fields = ['nombre', 'ecografo', 'especialidad', 'descripcion', 'estado']
+        fields = ['nombre', 'especialidad', 'descripcion', 'estado']
 
 
 class EcografiaListView(LoginRequiredMixin, ListView):
