@@ -93,8 +93,17 @@ document.addEventListener('DOMContentLoaded', function() {
     modal.setAttribute('aria-hidden', 'true');
   }
   
+  // Validación en tiempo real para solo permitir letras
+  nombreInput?.addEventListener('input', function(e) {
+    // Permitir solo letras (incluyendo acentos y ñ), espacios
+    const regex = /[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g;
+    if (regex.test(this.value)) {
+      this.value = this.value.replace(regex, '');
+    }
+    updateCharCount(nombreInput, nombreCount, 50);
+  });
+  
   // Event listeners para contadores
-  nombreInput?.addEventListener('input', () => updateCharCount(nombreInput, nombreCount, 50));
   descripcionInput?.addEventListener('input', () => updateCharCount(descripcionInput, descripcionCount, 200));
   
   // Validación al enviar
