@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameInput = form.querySelector('[name="username"]');
     if (usernameInput) {
         usernameInput.addEventListener('input', function() {
-            const regex = /[^A-Za-z0-9_]/g;
+            ///[^A-Za-z0-9_]/
+            const regex = /[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g;
             if (regex.test(this.value)) {
                 this.value = this.value.replace(regex, '');
             }
