@@ -21,6 +21,35 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('click', () => closeModal(mCreate))
     );
 
+    // ========== VALIDACIONES EN TIEMPO REAL ==========
+    // Validar nombre: solo caracteres alfabéticos
+    const nombreInput = document.getElementById('create-nombre');
+    if(nombreInput){
+        nombreInput.addEventListener('input', function() {
+            const regex = /[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g;
+            if (regex.test(this.value)) {
+                this.value = this.value.replace(regex, '');
+            }
+        });
+    }
+
+    // Validar horas: hora inicio no puede ser >= hora fin (en tiempo real)
+    const horaIniInput = document.getElementById('create-hora_ini');
+    const horaFinInput = document.getElementById('create-hora_fin');
+    
+    function validarHorasTurnoCreate() {
+        if(horaIniInput && horaFinInput && horaIniInput.value && horaFinInput.value) {
+            if(horaIniInput.value >= horaFinInput.value) {
+                horaFinInput.setCustomValidity('La hora de fin debe ser mayor que la hora de inicio');
+            } else {
+                horaFinInput.setCustomValidity('');
+            }
+        }
+    }
+    
+    if(horaIniInput) horaIniInput.addEventListener('change', validarHorasTurnoCreate);
+    if(horaFinInput) horaFinInput.addEventListener('change', validarHorasTurnoCreate);
+
     // Manejar el submit del formulario
     if (formCreate) {
         formCreate.addEventListener('submit', async function(e) {

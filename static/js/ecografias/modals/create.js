@@ -7,6 +7,32 @@ document.addEventListener('DOMContentLoaded',function(){
   function close(m){ if(!m) return; m.style.display='none'; m.setAttribute('aria-hidden','true'); }
   document.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',function(){if(mCreate)close(mCreate)})});
   if(btnOpenCreate){btnOpenCreate.addEventListener('click',function(){open(mCreate)})}
+  
+  // ========== VALIDACIONES EN TIEMPO REAL ==========
+  if(form){
+    // Validar nombre: caracteres alfanuméricos y espacios
+    var nombreInput = form.querySelector('[name="nombre"]');
+    if(nombreInput){
+      nombreInput.addEventListener('input', function() {
+        var regex = /[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g;
+        if (regex.test(this.value)) {
+          this.value = this.value.replace(regex, '');
+        }
+      });
+    }
+
+    // Validar descripción: alfanuméricos y puntuación básica
+    var descripcionInput = form.querySelector('[name="descripcion"]');
+    if(descripcionInput){
+      descripcionInput.addEventListener('input', function() {
+        var regex = /[^A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]/g;
+        if (regex.test(this.value)) {
+          this.value = this.value.replace(regex, '');
+        }
+      });
+    }
+  }
+  
   if(form){
     form.addEventListener('submit',function(e){
       e.preventDefault();

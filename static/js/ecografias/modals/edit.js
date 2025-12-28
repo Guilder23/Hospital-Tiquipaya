@@ -14,6 +14,27 @@ document.addEventListener('DOMContentLoaded',function(){
   function close(m){ if(!m) return; m.style.display='none'; m.setAttribute('aria-hidden','true'); }
   document.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',function(){if(mEdit)close(mEdit)})});
   
+  // ========== VALIDACIONES EN TIEMPO REAL ==========
+  // Validar nombre: caracteres alfanuméricos y espacios
+  if(nombreInput){
+    nombreInput.addEventListener('input', function() {
+      var regex = /[^A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s]/g;
+      if (regex.test(this.value)) {
+        this.value = this.value.replace(regex, '');
+      }
+    });
+  }
+
+  // Validar descripción: alfanuméricos y puntuación básica
+  if(descripcionInput){
+    descripcionInput.addEventListener('input', function() {
+      var regex = /[^A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s.,;:¿?¡!()-]/g;
+      if (regex.test(this.value)) {
+        this.value = this.value.replace(regex, '');
+      }
+    });
+  }
+  
   document.querySelectorAll('.btn-edit').forEach(function(btn){
     btn.addEventListener('click',function(){
       var row=this.closest('tr');

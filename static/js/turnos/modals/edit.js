@@ -17,6 +17,35 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('click', () => closeModal(mEdit))
     );
 
+    // ========== VALIDACIONES EN TIEMPO REAL ==========
+    // Validar nombre: solo caracteres alfabéticos
+    const nombreInput = document.getElementById('edit-nombre');
+    if(nombreInput){
+        nombreInput.addEventListener('input', function() {
+            const regex = /[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g;
+            if (regex.test(this.value)) {
+                this.value = this.value.replace(regex, '');
+            }
+        });
+    }
+
+    // Validar horas: hora inicio no puede ser >= hora fin (en tiempo real)
+    const horaIniInput = document.getElementById('edit-hora_ini');
+    const horaFinInput = document.getElementById('edit-hora_fin');
+    
+    function validarHorasTurnoEdit() {
+        if(horaIniInput && horaFinInput && horaIniInput.value && horaFinInput.value) {
+            if(horaIniInput.value >= horaFinInput.value) {
+                horaFinInput.setCustomValidity('La hora de fin debe ser mayor que la hora de inicio');
+            } else {
+                horaFinInput.setCustomValidity('');
+            }
+        }
+    }
+    
+    if(horaIniInput) horaIniInput.addEventListener('change', validarHorasTurnoEdit);
+    if(horaFinInput) horaFinInput.addEventListener('change', validarHorasTurnoEdit);
+
     // --- ABRIR MODAL Y CARGAR DATOS ---
     document.querySelectorAll('.btn-edit').forEach(btn => {
         btn.addEventListener('click', function() {
