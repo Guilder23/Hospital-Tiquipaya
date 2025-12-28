@@ -54,8 +54,8 @@
   position: absolute;
   bottom: 85px;
   right: 0;
-  width: 380px;
-  height: 600px;
+  width: 340px;
+  height: 480px;
   border-radius: 18px;
   background: var(--blue-glass);
   backdrop-filter: blur(18px);
