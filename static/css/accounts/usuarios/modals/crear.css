@@ -252,6 +252,45 @@
   margin-left: 0;
 }
 
+/* Campo de contraseña con botón */
+.modal.usuario-crear .password-field {
+  position: relative;
+}
+
+.modal.usuario-crear .password-field input {
+  padding-right: 55px;
+}
+
+.modal.usuario-crear .password-toggle-btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: var(--color-fondo-input);
+  border: none;
+  border-left: 1px solid var(--color-borde-input);
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--color-texto);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  border-radius: 0 7px 7px 0;
+  outline: none;
+  height: 42px;
+}
+
+.modal.usuario-crear .password-toggle-btn:hover {
+  background: var(--color-tabla-row-hover-bg);
+  color: var(--color-boton-principal);
+}
+
+.modal.usuario-crear .password-toggle-btn:active {
+  background: var(--color-borde-input);
+  transform: scale(0.95);
+}
+
 /* Responsive */
 @media (max-width: 700px) {
   .modal.usuario-crear .modal-panel {

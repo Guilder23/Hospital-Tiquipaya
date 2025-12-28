@@ -9,20 +9,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ========== VALIDACIONES EN TIEMPO REAL ==========
     
-    // Calcular fecha mínima (18 años atrás)
+    // Calcular fecha mínima (18 años atrás) y máxima (85 años atrás)
     function calcularFechaMaxima() {
         const hoy = new Date();
         hoy.setFullYear(hoy.getFullYear() - 18);
         return hoy.toISOString().split('T')[0];
     }
     
-    // Establecer fecha máxima en el input de fecha de nacimiento
+    function calcularFechaMinima() {
+        const hoy = new Date();
+        hoy.setFullYear(hoy.getFullYear() - 85);
+        return hoy.toISOString().split('T')[0];
+    }
+    
+    // Establecer fecha máxima y mínima en el input de fecha de nacimiento
     const fechaNacInput = form.querySelector('[name="fecha_nacimiento"]');
     if (fechaNacInput) {
         fechaNacInput.setAttribute('max', calcularFechaMaxima());
+        fechaNacInput.setAttribute('min', calcularFechaMinima());
     }
     
-    // Validar campos de texto alfabéticos (nombres y apellidos)
+    // Validar campos de texto alfabéticos (nombres y apellidos) - máximo 30 caracteres
     const camposAlfabeticos = form.querySelectorAll('[name="nombres"], [name="apellido_paterno"], [name="apellido_materno"]');
     camposAlfabeticos.forEach(input => {
         input.addEventListener('input', function() {
@@ -30,17 +37,39 @@ document.addEventListener("DOMContentLoaded", function () {
             if (regex.test(this.value)) {
                 this.value = this.value.replace(regex, '');
             }
+            if (this.value.length > 30) {
+                this.value = this.value.slice(0, 30);
+            }
         });
     });
     
-    // Validar username (solo letras, números y guión bajo)
+    // Validar username (solo letras, números y guión bajo, máximo 2 números, máximo 30 caracteres)
     const usernameInput = form.querySelector('[name="username"]');
     if (usernameInput) {
         usernameInput.addEventListener('input', function() {
-            ///[^A-Za-z0-9_]/
-            const regex = /[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g;
+            // Bloquear caracteres no permitidos
+            const regex = /[^A-Za-z0-9_]/g;
             if (regex.test(this.value)) {
                 this.value = this.value.replace(regex, '');
+            }
+            
+            // Limitar a máximo 30 caracteres
+            if (this.value.length > 30) {
+                this.value = this.value.slice(0, 30);
+            }
+            
+            // Contar números y limitar a máximo 2
+            const numeros = this.value.match(/[0-9]/g) || [];
+            if (numeros.length > 2) {
+                // Eliminar números extras del final
+                let contador = 0;
+                this.value = this.value.split('').filter(char => {
+                    if (/[0-9]/.test(char)) {
+                        contador++;
+                        return contador <= 2;
+                    }
+                    return true;
+                }).join('');
             }
         });
     }
@@ -87,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     
-    // Validar dirección (alfanuméricos y caracteres permitidos)
+    // Validar dirección (alfanuméricos y caracteres permitidos, máximo 50 caracteres)
     const direccionInput = form.querySelector('[name="direccion"]');
     if (direccionInput) {
         direccionInput.addEventListener('input', function() {
@@ -95,16 +124,46 @@ document.addEventListener("DOMContentLoaded", function () {
             if (regex.test(this.value)) {
                 this.value = this.value.replace(regex, '');
             }
+            if (this.value.length > 50) {
+                this.value = this.value.slice(0, 50);
+            }
         });
     }
     
-    // Validar matrícula (alfanumérico)
+    // Validar correo (máximo 50 caracteres)
+    const correoInput = form.querySelector('[name="correo"]');
+    if (correoInput) {
+        correoInput.addEventListener('input', function() {
+            if (this.value.length > 50) {
+                this.value = this.value.slice(0, 50);
+            }
+        });
+    }
+    
+    // Validar matrícula (solo números, mínimo 4, máximo 15 dígitos)
     const matriculaInputs = form.querySelectorAll('[name="nro_matricula"], [name="matricula"]');
     matriculaInputs.forEach(input => {
         input.addEventListener('input', function() {
-            const regex = /[^A-Za-z0-9-]/g;
+            const regex = /[^0-9]/g;
             if (regex.test(this.value)) {
                 this.value = this.value.replace(regex, '');
+            }
+            if (this.value.length > 15) {
+                this.value = this.value.slice(0, 15);
+            }
+        });
+    });
+    
+    // Validar consultorio y ventanilla (solo números, máximo 2 dígitos)
+    const consultoriosInputs = form.querySelectorAll('[name="consultorio"], [name="ventanilla"], [name="consultorio_medico"], [name="enc-ventanilla"]');
+    consultoriosInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const regex = /[^0-9]/g;
+            if (regex.test(this.value)) {
+                this.value = this.value.replace(regex, '');
+            }
+            if (this.value.length > 2) {
+                this.value = this.value.slice(0, 2);
             }
         });
     });

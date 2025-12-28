@@ -9,11 +9,11 @@
       <div class="section">
         <h4>Datos del usuario</h4>
         <div class="form-grid">
-          <div class="form-row"><label>Nombres</label><input name="nombres" required minlength="3" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos"></div>
-          <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required minlength="3" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Solo caracteres alfabéticos"></div>
-          <div class="form-row"><label>Apellido materno</label><input name="apellido_materno" maxlength="100" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]*" title="Solo caracteres alfabéticos"></div>
-          <div class="form-row"><label>Usuario</label><input name="username" required minlength="3" maxlength="150" pattern="[A-Za-z0-9_]+" title="Solo letras, números y guión bajo"></div>
-          <div class="form-row"><label>Correo</label><input name="correo" type="email" maxlength="150" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com"></div>
+          <div class="form-row"><label>Nombres</label><input name="nombres" required minlength="3" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Máximo 30 caracteres. Solo caracteres alfabéticos"></div>
+          <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required minlength="3" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Máximo 30 caracteres. Solo caracteres alfabéticos"></div>
+          <div class="form-row"><label>Apellido materno</label><input name="apellido_materno" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]*" title="Máximo 30 caracteres. Solo caracteres alfabéticos"></div>
+          <div class="form-row"><label>Usuario</label><input name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_]+" title="Máximo 30 caracteres. Solo letras, números y guión bajo"></div>
+          <div class="form-row"><label>Correo</label><input name="correo" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Máximo 50 caracteres. Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com"></div>
           <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required max="{{ fecha_maxima }}" title="Debe tener al menos 18 años"></div>
           <div class="form-row"><label>Sexo</label>
             <select name="sexo">
@@ -39,7 +39,7 @@
           </div>
           <div class="form-row"><label>Teléfono</label><input name="telefono" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 44512345"></div>
           <div class="form-row"><label>Celular</label><input name="celular" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567"></div>
-          <div class="form-row"><label>Dirección</label><input name="direccion" minlength="3" maxlength="255" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres alfanuméricos"></div>
+          <div class="form-row"><label>Dirección</label><input name="direccion" minlength="3" maxlength="50" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres, máximo 50. Alfanuméricos y símbolos permitidos"></div>
           <div class="form-row"><label>Contrato</label>
             <select name="contrato">
               <option value="">Sin contrato</option>
@@ -76,8 +76,8 @@
               {% endfor %}
             </select>
           </div>
-          <div class="form-row"><label>N° Matrícula</label><input type="text" name="matricula"></div>
-          <div class="form-row"><label>Consultorio</label><input name="consultorio_medico"></div>
+          <div class="form-row"><label>N° Matrícula</label><input type="text" name="matricula" minlength="4" maxlength="15" pattern="[0-9]{4,15}" title="Mínimo 4 dígitos, máximo 15. Solo números"></div>
+          <div class="form-row"><label>Consultorio</label><input name="consultorio_medico" maxlength="2" pattern="[0-9]{1,2}" title="Máximo 2 dígitos. Solo números"></div>
         </div>
         <h4>Turnos</h4>
         {% for turno in turnos %}
@@ -99,7 +99,7 @@
       <div id="edit-campos-admision" class="section campos-condicionales" style="display:none;">
         <h4>Datos de Admisión</h4>
         <div class="form-grid">
-          <div class="form-row"><label>Ventanilla</label><input name="ventanilla"></div>
+          <div class="form-row"><label>Ventanilla</label><input name="ventanilla" maxlength="2" pattern="[0-9]{1,2}" title="Máximo 2 dígitos. Solo números"></div>
         </div>
         <h4>Turnos</h4>
         {% for turno in turnos %}
@@ -127,8 +127,8 @@
       <div id="edit-campos-ecografo" class="section campos-condicionales" style="display:none;">
         <h4>Datos de Ecógrafo</h4>
         <div class="form-grid">
-          <div class="form-row"><label>N° Matrícula</label><input type="text" name="nro_matricula"></div>
-          <div class="form-row"><label>Consultorio</label><input name="consultorio"></div>
+          <div class="form-row"><label>N° Matrícula</label><input type="text" name="nro_matricula" minlength="4" maxlength="15" pattern="[0-9]{4,15}" title="Mínimo 4 dígitos, máximo 15. Solo números"></div>
+          <div class="form-row"><label>Consultorio</label><input name="consultorio" maxlength="2" pattern="[0-9]{1,2}" title="Máximo 2 dígitos. Solo números"></div>
         </div>
         <h4>Ecografías que realiza</h4>
         {% for eco in ecografias %}
