@@ -82,6 +82,124 @@
   .btn-limpiar-paciente:hover {
     background-color: #616161;
   }
+
+  /* Modal de éxito */
+  .modal-success {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-success.active {
+    display: flex;
+  }
+
+  .modal-success-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .modal-success-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 40px;
+    color: white;
+    animation: scaleIn 0.4s ease 0.2s both;
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .modal-success-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #16a34a;
+    margin-bottom: 12px;
+  }
+
+  .modal-success-message {
+    font-size: 16px;
+    color: #4b5563;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .modal-success-details {
+    background: #f0fdf4;
+    border: 2px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .modal-success-details p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #374151;
+  }
+
+  .modal-success-details strong {
+    color: #16a34a;
+    font-weight: 600;
+  }
+
+  .modal-success-button {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .modal-success-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+  }
+
+  .modal-success-button:active {
+    transform: translateY(0);
+  }
 </style>
 {% endblock %}
 
@@ -146,6 +264,19 @@
         <button class="btn-modal-ok" id="btn-conf-ok">Confirmar cita</button>
       </div>
       <p id="conf-error" style="color:#b91c1c; display:none"></p>
+    </div>
+  </div>
+
+  <!-- Modal de éxito -->
+  <div class="modal-success" id="modal-success">
+    <div class="modal-success-content">
+      <div class="modal-success-icon">✓</div>
+      <h3 class="modal-success-title">¡Cita Agendada Exitosamente!</h3>
+      <p class="modal-success-message" id="success-message"></p>
+      <div class="modal-success-details" id="success-details">
+        <!-- Se llenará dinámicamente -->
+      </div>
+      <button class="modal-success-button" id="btn-success-ok">Aceptar</button>
     </div>
   </div>
 
@@ -354,13 +485,30 @@ document.addEventListener('DOMContentLoaded', function() {
       const data = await response.json();
       
       if (data.ok) {
-        alert(`✓ ${data.mensaje}\nCódigo de cita: ${data.codigo}`);
+        // Cerrar modal de confirmación
+        modalConfirm.setAttribute('aria-hidden', 'true');
+        
+        // Mostrar modal de éxito
+        const modalSuccess = document.getElementById('modal-success');
+        const successMessage = document.getElementById('success-message');
+        const successDetails = document.getElementById('success-details');
+        
+        successMessage.textContent = data.mensaje;
+        successDetails.innerHTML = `
+          <p><strong>Código de cita:</strong> ${data.codigo}</p>
+          <p><strong>Paciente:</strong> ${pacienteSeleccionado.nombres} ${pacienteSeleccionado.apellido}</p>
+          <p><strong>Médico:</strong> ${slotSeleccionado.nombreMedico}</p>
+          <p><strong>Fecha:</strong> ${slotSeleccionado.fecha}</p>
+          <p><strong>Hora:</strong> ${slotSeleccionado.hora}</p>
+        `;
+        
+        modalSuccess.classList.add('active');
+        
+        // Limpiar datos
         pacienteSeleccionado = null;
         slotSeleccionado = null;
         inputBuscar.value = '';
         pacienteDiv.classList.remove('active');
-        modalConfirm.setAttribute('aria-hidden', 'true');
-        location.reload();
       } else {
         confError.textContent = data.error || 'Error desconocido';
         confError.style.display = 'block';
@@ -371,6 +519,17 @@ document.addEventListener('DOMContentLoaded', function() {
       confError.style.display = 'block';
     }
   });
+  
+  // ===== CERRAR MODAL DE ÉXITO =====
+  const btnSuccessOk = document.getElementById('btn-success-ok');
+  const modalSuccess = document.getElementById('modal-success');
+  
+  if (btnSuccessOk) {
+    btnSuccessOk.addEventListener('click', function() {
+      modalSuccess.classList.remove('active');
+      location.reload();
+    });
+  }
 });
 </script>
 {% endblock %}
