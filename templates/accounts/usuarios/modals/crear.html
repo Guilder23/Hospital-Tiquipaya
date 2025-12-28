@@ -52,7 +52,7 @@
 
                     <div class="form-row">
                         <label>CI</label>
-                        <input name="ci" type="text" pattern="[0-9]{7,8}" maxlength="8" title="7 u 8 dígitos numéricos" placeholder="Ej: 1234567">
+                        <input name="ci" type="text" required pattern="[0-9]{7,8}" maxlength="8" title="7 u 8 dígitos numéricos" placeholder="Ej: 1234567">
                     </div>
 
                     <div class="form-row">
@@ -62,7 +62,7 @@
 
                     <div class="form-row">
                         <label>Expedido</label>
-                        <select name="expedido">
+                        <select name="expedido" required>
                             <option value="BN">BE</option>
                             <option value="CB" selected>CB</option>
                             <option value="CH">CH</option>
@@ -82,7 +82,7 @@
 
                     <div class="form-row">
                         <label>Sexo</label>
-                        <select name="sexo">
+                        <select name="sexo" required>
                             <option value="M">Masculino</option>
                             <option value="F" selected>Femenino</option>
                             <option value="O">Otro</option>
@@ -96,24 +96,24 @@
 
                     <div class="form-row">
                         <label>Celular</label>
-                        <input name="celular" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567">
+                        <input name="celular" type="tel" required pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567">
                     </div>
 
                     <div class="form-row">
                         <label>Dirección</label>
-                        <input name="direccion" minlength="3" maxlength="50" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres, máximo 50. Alfanuméricos y símbolos permitidos">
+                        <input name="direccion" required minlength="3" maxlength="50" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres, máximo 50. Alfanuméricos y símbolos permitidos">
                     </div>
 
                     <div class="form-row">
                         <label>Correo Electronico</label>
-                        <input name="correo" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Máximo 50 caracteres. Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com">
+                        <input name="correo" type="email" required maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Máximo 50 caracteres. Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com">
                     </div>
                 </div>
             </div>
 
             <div class="section">
                 <h4>Contrato</h4>
-                <select name="contrato">
+                <select name="contrato" required>
                     <option value="">Sin contrato</option>
                     {% for c in contratos %}
                         <option value="{{ c.id }}">{{ c.nombre }} ({{ c.fecha_inicio|date:'d/m/Y' }} - {{ c.fecha_fin|date:'d/m/Y' }})</option>

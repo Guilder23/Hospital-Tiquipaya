@@ -13,19 +13,19 @@
           <div class="form-row"><label>Apellido paterno</label><input name="apellido_paterno" required minlength="3" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Mínimo 3 letras. Máximo 30 caracteres. Solo caracteres alfabéticos"></div>
           <div class="form-row"><label>Apellido materno</label><input name="apellido_materno" maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]*" title="Máximo 30 caracteres. Solo caracteres alfabéticos"></div>
           <div class="form-row"><label>Usuario</label><input name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_]+" title="Máximo 30 caracteres. Solo letras, números y guión bajo"></div>
-          <div class="form-row"><label>Correo</label><input name="correo" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Máximo 50 caracteres. Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com"></div>
+          <div class="form-row"><label>Correo</label><input name="correo" type="email" required maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Máximo 50 caracteres. Formato de correo válido (ejemplo@dominio.com)" placeholder="ejemplo@gmail.com"></div>
           <div class="form-row"><label>Fecha nacimiento</label><input type="date" name="fecha_nacimiento" required max="{{ fecha_maxima }}" title="Mayor a 18 años y menor a 86 años"></div>
           <div class="form-row"><label>Sexo</label>
-            <select name="sexo">
+            <select name="sexo" required>
               <option value="M">Masculino</option>
               <option value="F">Femenino</option>
               <option value="O">Otro</option>
             </select>
           </div>
-          <div class="form-row"><label>CI</label><input name="ci" type="text" pattern="[0-9]{7,8}" maxlength="8" title="7 u 8 dígitos numéricos" placeholder="Ej: 1234567"></div>
+          <div class="form-row"><label>CI</label><input name="ci" type="text" required pattern="[0-9]{7,8}" maxlength="8" title="7 u 8 dígitos numéricos" placeholder="Ej: 1234567"></div>
           <div class="form-row"><label>Complemento</label><input name="complemento_ci" minlength="2" maxlength="4" pattern="[A-Za-z0-9]{2,4}" title="2 a 4 caracteres alfanuméricos" placeholder="Ej: 1A"></div>
           <div class="form-row"><label>Expedido</label>
-            <select name="expedido">
+            <select name="expedido" required>
               <option value="BN">BN</option>
               <option value="CB">CB</option>
               <option value="CH">CH</option>
@@ -38,10 +38,10 @@
             </select>
           </div>
           <div class="form-row"><label>Teléfono</label><input name="telefono" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 44512345"></div>
-          <div class="form-row"><label>Celular</label><input name="celular" type="tel" pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567"></div>
-          <div class="form-row"><label>Dirección</label><input name="direccion" minlength="3" maxlength="50" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres, máximo 50. Alfanuméricos y símbolos permitidos"></div>
+          <div class="form-row"><label>Celular</label><input name="celular" type="tel" required pattern="[0-9]{8}" maxlength="8" title="8 dígitos numéricos" placeholder="Ej: 71234567"></div>
+          <div class="form-row"><label>Dirección</label><input name="direccion" required minlength="3" maxlength="50" pattern="[A-Za-z0-9áéíóúÁÉÍÓÚñÑ\s#.,°-]+" title="Mínimo 3 caracteres, máximo 50. Alfanuméricos y símbolos permitidos"></div>
           <div class="form-row"><label>Contrato</label>
-            <select name="contrato">
+            <select name="contrato" required>
               <option value="">Sin contrato</option>
               {% for c in contratos %}
                 <option value="{{ c.id }}">{{ c.nombre }} ({{ c.fecha_inicio|date:'d/m/Y' }} - {{ c.fecha_fin|date:'d/m/Y' }})</option>
@@ -49,7 +49,7 @@
             </select>
           </div>
           <div class="form-row"><label>Rol</label>
-            <select name="tipo" id="edit-select-rol">
+            <select name="tipo" id="edit-select-rol" required>
               <option value="">Sin rol</option>
               {% for t in tipos %}
                 <option value="{{ t.nombre|lower }}">{{ t.nombre }}</option>
@@ -57,7 +57,7 @@
             </select>
           </div>
           <div class="form-row"><label>Estado</label>
-            <select name="is_active">
+            <select name="is_active" required>
               <option value="true">Activo</option>
               <option value="false">Inactivo</option>
             </select>
