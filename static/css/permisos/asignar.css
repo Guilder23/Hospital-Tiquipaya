@@ -317,36 +317,13 @@
     font-size: 0.85rem;
   }
 
-  .permisos-table thead {
-    display: none;
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .permisos-table tbody tr {
-    display: block;
-    margin-bottom: 14px;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 6px 18px var(--color-sombra);
-  }
-
-  .permisos-table tbody td {
-    display: block;
-    text-align: right;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--color-tabla-border);
-  }
-
-  .permisos-table tbody td:last-child {
-    border-bottom: none;
-  }
-
-  .permisos-table tbody td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: 700;
-    color: var(--color-texto-secundario);
-    text-transform: uppercase;
-    font-size: 0.7rem;
+  .permisos-table {
+    min-width: 720px;
   }
 
   .btn.btn-success.btn-lg.btn-guardar {
