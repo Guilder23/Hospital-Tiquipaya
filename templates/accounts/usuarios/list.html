@@ -37,6 +37,11 @@
         <option value="activo">Activos</option>
         <option value="inactivo">Inactivos</option>
       </select>
+      <select id="filtro-fecha">
+        <option value="">Orden por fecha</option>
+        <option value="desc">Más recientes</option>
+        <option value="asc">Más antiguos</option>
+      </select>
     </div>
   </div>
 
@@ -69,6 +74,7 @@
             data-complemento="{{ p.complemento_ci|default:'' }}"
             data-expedido="{{ p.expedido|default:'' }}"
             data-nacimiento="{{ p.fecha_nacimiento|default:'' }}"
+            data-fecha-registro="{{ u.date_joined|date:'Y-m-d H:i:s' }}"
             data-sexo="{{ p.sexo|default:'' }}"
             data-telefono="{{ p.telefono|default:'' }}"
             data-celular="{{ p.celular|default:'' }}"

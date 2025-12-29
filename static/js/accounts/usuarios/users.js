@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const inputBuscar = document.getElementById('buscar-usuario');
     const filtroTipo = document.getElementById('filtro-tipo');
     const filtroEstado = document.getElementById('filtro-estado');
+    const filtroFecha = document.getElementById('filtro-fecha');
     const tablaBody = document.querySelector('.table tbody');
     const todasLasFilas = Array.from(tablaBody.querySelectorAll('tr'));
 
@@ -22,8 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const textoBusqueda = normalize(inputBuscar.value);
         const tipoSeleccionado = normalize(filtroTipo.value);
         const estadoSeleccionado = filtroEstado.value.toLowerCase();
+        const ordenFecha = filtroFecha ? filtroFecha.value : '';
 
-        let filasVisibles = 0;
+        let filasVisibles = [];
 
         todasLasFilas.forEach(fila => {
             // Obtener datos de la fila
@@ -56,15 +58,34 @@ document.addEventListener('DOMContentLoaded', function () {
             // Mostrar u ocultar fila
             if (coincideBusqueda && coincideTipo && coincideEstado) {
                 fila.style.display = '';
-                filasVisibles++;
+                filasVisibles.push(fila);
             } else {
                 fila.style.display = 'none';
             }
         });
 
+        // Ordenar por fecha si se seleccionó
+        if (ordenFecha && filasVisibles.length > 0) {
+            filasVisibles.sort((a, b) => {
+                const fechaA = new Date(a.getAttribute('data-fecha-registro') || '1900-01-01');
+                const fechaB = new Date(b.getAttribute('data-fecha-registro') || '1900-01-01');
+                
+                if (ordenFecha === 'desc') {
+                    return fechaB - fechaA; // Más recientes primero
+                } else {
+                    return fechaA - fechaB; // Más antiguos primero
+                }
+            });
+
+            // Reordenar filas en el DOM
+            filasVisibles.forEach(fila => {
+                tablaBody.appendChild(fila);
+            });
+        }
+
         // Mostrar mensaje si no hay resultados
         const filaVacia = tablaBody.querySelector('.fila-sin-resultados');
-        if (filasVisibles === 0 && todasLasFilas.length > 0) {
+        if (filasVisibles.length === 0 && todasLasFilas.length > 0) {
             if (!filaVacia) {
                 const tr = document.createElement('tr');
                 tr.className = 'fila-sin-resultados';
@@ -87,6 +108,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (filtroEstado) {
         filtroEstado.addEventListener('change', filtrarTabla);
+    }
+
+    if (filtroFecha) {
+        filtroFecha.addEventListener('change', filtrarTabla);
     }
 
     // === FIN BUSCADOR ===
