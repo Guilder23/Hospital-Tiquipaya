@@ -97,7 +97,7 @@
                 <td class="actions">
                     <button class="btn btn-view" data-id="{{ cita.id }}">Ver</button>
                     {% if user.is_superuser or permiso_actual.puede_editar %}
-                        {% if cita.estado != 'CANCELADA' %}
+                        {% if cita.estado != 'CANCELADA' and cita.estado != 'REALIZADA' %}
                         <button class="btn btn-edit" data-id="{{ cita.id }}"
                             data-paciente="{{ cita.paciente.id }}"
                             data-medico="{{ cita.medico.id }}"
