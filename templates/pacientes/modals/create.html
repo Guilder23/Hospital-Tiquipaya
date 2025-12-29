@@ -24,7 +24,7 @@
               <option value="PA">Pando</option>
             </select>
           </div>
-          <div class="form-row"><label>Fecha de nacimiento</label><input name="fecha_nacimiento" type="date" required max="{{ fecha_hoy }}" title="No se permiten fechas futuras"></div>
+          <div class="form-row"><label>Fecha de nacimiento</label><input name="fecha_nacimiento" type="date" required max="{{ fecha_hoy }}" min="{{ fecha_minima_95 }}" title="No se permiten fechas futuras ni menores a 95 años"></div>
           <div class="form-row"><label>Sexo</label>
             <select name="genero" required><option value="">-</option><option value="M">Masculino</option><option value="F">Femenino</option><option value="O">Otro</option></select>
           </div>

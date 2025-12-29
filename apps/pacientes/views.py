@@ -10,7 +10,7 @@ from apps.accounts.models import Perfil, TipoUsuario
 from apps.citas.models import Cita
 from apps.permisos.utils import es_admin_o_staff
 from .models import Paciente
-from datetime import datetime
+from datetime import datetime, date
 
 def _es_admin(user):
     """Función auxiliar para verificar si es admin o staff"""
@@ -89,6 +89,8 @@ class PacienteListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['permiso_actual'] = getattr(self.request, 'permiso_actual', None)
+        ctx['fecha_hoy'] = date.today().strftime('%Y-%m-%d')
+        ctx['fecha_minima_95'] = date(date.today().year - 95, date.today().month, date.today().day).strftime('%Y-%m-%d')
         return ctx
 
 class PacienteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -111,6 +113,11 @@ class PacienteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'success': True, 'message': msg, 'redirect': str(self.get_success_url())})
         return HttpResponseRedirect(self.get_success_url())
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['fecha_hoy'] = date.today().strftime('%Y-%m-%d')
+        ctx['fecha_minima_95'] = date(date.today().year - 95, date.today().month, date.today().day).strftime('%Y-%m-%d')
+        return ctx
     def form_invalid(self, form):
         return JsonResponse(form.errors, status=400)
 
@@ -132,6 +139,11 @@ class PacienteUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'success': True, 'message': msg, 'redirect': str(self.get_success_url())})
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['fecha_hoy'] = date.today().strftime('%Y-%m-%d')
+        ctx['fecha_minima_95'] = date(date.today().year - 95, date.today().month, date.today().day).strftime('%Y-%m-%d')
+        return ctx
     def form_invalid(self, form):
         return JsonResponse(form.errors, status=400)
 
