@@ -100,8 +100,8 @@
         <div class="form-grid">
           <div class="form-row"><label>Número de Boleta del SUS (original)</label><input name="numero_boleta_sus" required minlength="3" maxlength="11" pattern="[0-9]+" title="Debe contener solo dígitos"></div>
           <div class="form-row"><label>Número del Carnet de Historial Clínico (Boleta Azul)</label><input name="numero_carnet_historial" required minlength="5" maxlength="5" pattern="[0-9]+" title="Debe contener solo dígitos"></div>
-          <div class="form-row"><label>Número de Boleta de Referencia (original)</label><input name="numero_boleta_referencia" required minlength="3" maxlength="11" pattern="[A-Za-z0-9]+" title="Puede contener letras y números"></div>
-          <div class="form-row"><label>Número de copias</label><input type="number" name="numero_copias" required min="0" max="99" pattern="[0-9]{1,2}" title="Máximo 2 dígitos"></div>
+          <div class="form-row"><label>Número de Boleta de Referencia (original)</label><input name="numero_boleta_referencia" minlength="3" maxlength="11" pattern="[A-Za-z0-9]+" title="Puede contener letras y números"></div>
+          <div class="form-row"><label>Número de copias</label><input type="number" name="numero_copias" min="0" max="99" pattern="[0-9]{1,2}" title="Máximo 2 dígitos"></div>
           <div class="form-row"><label>Estado</label>
             <select name="activo" required>
               <option value="True">Activo</option>
