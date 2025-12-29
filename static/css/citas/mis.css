@@ -303,8 +303,15 @@
   border-color: var(--estado-cancelado-border);
 }
 
+.badge-activo {
+    background: var(--estado-activo-bg);
+    color: var(--estado-activo-text);
+    border-color: var(--estado-activo-border);
+}
+
 .badge-muted {
   background: var(--badge-muted-bg);
   color: var(--badge-muted-text);
   border-color: var(--badge-muted-border);
 }
+

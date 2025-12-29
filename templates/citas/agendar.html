@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_css %}
-<link rel="stylesheet" href="/static/css/specialties/modals/modals_base.css">
-<link rel="stylesheet" href="/static/css/citas/agendar.css">
-<link rel="stylesheet" href="/static/css/citas/modals/validar.css">
+<link rel="stylesheet" href="{% static 'css/specialties/modals/modals_base.css' %}">
+<link rel="stylesheet" href="{% static 'css/citas/agendar.css' %}?v=2">
+<link rel="stylesheet" href="{% static 'css/citas/modals/validar.css' %}">
 {% endblock %}
 {% block content %}
 <section class="card">
@@ -63,6 +63,9 @@
       <p id="conf-error" style="color:#b91c1c; display:none"></p>
     </div>
   </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
 
 </section>
 {% endblock %}

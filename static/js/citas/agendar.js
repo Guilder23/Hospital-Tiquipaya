@@ -133,13 +133,56 @@ document.addEventListener('DOMContentLoaded',function(){
               } 
             }); 
           }
-          window.location.href='/citas/orden/'+data.cita_id+'/';
+          // Mostrar toast de éxito
+          showSuccessToast({
+            title: '¡Cita agendada exitosamente!',
+            message: 'Tu cita ha sido confirmada correctamente',
+            details: {
+              codigo: data.codigo
+            }
+          });
+          // Redirigir después de 3 segundos
+          setTimeout(function(){ window.location.href='/citas/mis/'; }, 3000);
         })
         .catch(function(){ 
           confError.textContent='Error de conexión'; 
           confError.style.display='block'; 
         });
     }); 
+  }
+  
+  // Función para mostrar toast de éxito
+  function showSuccessToast(options) {
+    var container = document.getElementById('toast-container');
+    if(!container) return;
+    
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    
+    var detailsHTML = '';
+    if(options.details && options.details.codigo) {
+      detailsHTML = '<div class="toast-details"><p><strong>Código de cita:</strong> ' + options.details.codigo + '</p></div>';
+    }
+    
+    toast.innerHTML = 
+      '<div class="toast-icon">✓</div>' +
+      '<div class="toast-content">' +
+        '<div class="toast-title">' + options.title + '</div>' +
+        '<div class="toast-message">' + options.message + '</div>' +
+        detailsHTML +
+      '</div>' +
+      '<button class="toast-close" onclick="this.parentElement.classList.add(\'hide\')">×</button>';
+    
+    container.appendChild(toast);
+    
+    // Mostrar con animación
+    setTimeout(function(){ toast.classList.add('show'); }, 100);
+    
+    // Auto-ocultar después de 3 segundos
+    setTimeout(function(){
+      toast.classList.add('hide');
+      setTimeout(function(){ toast.remove(); }, 400);
+    }, 3000);
   }
 });
 

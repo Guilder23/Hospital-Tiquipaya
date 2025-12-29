@@ -318,6 +318,117 @@
   to { transform: scale(1); opacity: 1; }
 }
 
+/* === TOAST NOTIFICATION === */
+.toast-container {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  pointer-events: none !important;
+}
+
+.toast {
+  background: white !important;
+  border-radius: 8px !important;
+  padding: 16px 20px !important;
+  min-width: 350px !important;
+  max-width: 450px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  transform: translateX(500px) !important;
+  opacity: 0 !important;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+  pointer-events: all !important;
+  border-left: 4px solid #22c55e !important;
+}
+
+.toast.show {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+}
+
+.toast.hide {
+  transform: translateX(500px) !important;
+  opacity: 0 !important;
+}
+
+.toast-icon {
+  width: 40px !important;
+  height: 40px !important;
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 24px !important;
+  color: white !important;
+  flex-shrink: 0 !important;
+}
+
+.toast-content {
+  flex: 1 !important;
+  padding-top: 2px !important;
+}
+
+.toast-title {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #16a34a !important;
+  margin-bottom: 6px !important;
+}
+
+.toast-message {
+  font-size: 14px !important;
+  color: #6b7280 !important;
+  margin-bottom: 8px !important;
+  line-height: 1.4 !important;
+}
+
+.toast-details {
+  background: #f0fdf4 !important;
+  border-radius: 6px !important;
+  padding: 10px 12px !important;
+  margin-top: 8px !important;
+  font-size: 13px !important;
+}
+
+.toast-details p {
+  margin: 4px 0 !important;
+  color: #374151 !important;
+}
+
+.toast-details strong {
+  color: #16a34a !important;
+  font-weight: 600 !important;
+}
+
+.toast-close {
+  background: none !important;
+  border: none !important;
+  color: #9ca3af !important;
+  font-size: 20px !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+  transition: all 0.2s !important;
+  flex-shrink: 0 !important;
+}
+
+.toast-close:hover {
+  background: #f3f4f6 !important;
+  color: #4b5563 !important;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .card h2 {
@@ -341,5 +452,10 @@
   .modal-box {
     width: 95%;
     max-width: 420px;
+  }
+  
+  .toast {
+    min-width: 300px;
+    max-width: 90%;
   }
 }
