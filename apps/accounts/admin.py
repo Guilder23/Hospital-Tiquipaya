@@ -18,7 +18,7 @@ class PerfilAdmin(admin.ModelAdmin):
 class PerfilInline(admin.StackedInline):
     model = Perfil
     can_delete = False
-    fields = ('tipo', 'nombres', 'apellidos', 'genero', 'fecha_nacimiento', 'fotografia')
+    fields = ('tipo', 'nombres', 'apellido_paterno', 'apellido_materno', 'sexo', 'fecha_nacimiento', 'ci', 'direccion', 'telefono', 'celular', 'correo')
 
 class CustomUserAdmin(BaseUserAdmin):
     inlines = (PerfilInline,)

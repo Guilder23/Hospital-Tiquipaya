@@ -49,7 +49,7 @@
             </select>
           </div>
           <div class="form-row"><label>Rol</label>
-            <select name="tipo" id="edit-select-rol" required>
+            <select name="tipo" id="edit-select-rol" required disabled>
               <option value="">Sin rol</option>
               {% for t in tipos %}
                 <option value="{{ t.nombre|lower }}">{{ t.nombre }}</option>
