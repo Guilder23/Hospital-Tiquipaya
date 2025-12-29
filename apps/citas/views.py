@@ -146,10 +146,32 @@ def agendar_inicio(request):
     turnos_data = []
     for turno in turnos_activos:
         # Filtrar médicos que trabajan en este turno
-        medicos_turno = Medico.objects.filter(turnos=turno)
+        medicos_turno = Medico.objects.filter(turnos=turno).select_related('user__perfil__contrato')
         
-        # Filtrar médicos que trabajan en el día siguiente
-        medicos_disponibles = [m for m in medicos_turno if _medico_trabaja_en_dia(m, manana)]
+        # Filtrar médicos que cumplen todos los requisitos:
+        # 1. Usuario activo
+        # 2. Contrato vigente (fecha actual entre fecha_inicio y fecha_fin)
+        # 3. Trabaja en el día siguiente
+        medicos_disponibles = []
+        for m in medicos_turno:
+            # Verificar que el usuario está activo
+            if not m.user.is_active:
+                continue
+            
+            # Verificar que tiene contrato vigente
+            if hasattr(m.user, 'perfil') and m.user.perfil.contrato:
+                contrato = m.user.perfil.contrato
+                if not (contrato.fecha_inicio <= manana <= contrato.fecha_fin and contrato.estado):
+                    continue
+            else:
+                # Si no tiene contrato asignado, no mostrar
+                continue
+            
+            # Verificar que trabaja en el día siguiente
+            if not _medico_trabaja_en_dia(m, manana):
+                continue
+            
+            medicos_disponibles.append(m)
         
         turnos_data.append({
             'turno': turno,
