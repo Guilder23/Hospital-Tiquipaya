@@ -206,7 +206,7 @@ function seleccionarEcografia(ecografia, index) {
 
 function cargarMedicosEspecialidad() {
     const selectDoctor = document.getElementById('select-doctor');
-    selectDoctor.innerHTML = '<option value="">Seleccione un médico</option>';
+    selectDoctor.innerHTML = '<option value="">Seleccione un ecografo</option>';
     if (citaEcografiaData.medicos_disponibles && citaEcografiaData.medicos_disponibles.length > 0) {
         citaEcografiaData.medicos_disponibles.forEach(medico => {
             const option = document.createElement('option');

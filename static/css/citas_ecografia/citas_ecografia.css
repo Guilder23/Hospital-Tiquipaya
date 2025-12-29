@@ -100,9 +100,17 @@
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
+/* === CONTENEDOR TABLA === */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 16px;
+}
+
 /* === TABLA === */
 .table.citas-ecografia {
   width: 100%;
+  min-width: 900px;
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid var(--color-tabla-border);
@@ -308,47 +316,9 @@
     width: 100%;
   }
 
-  .citas-ecografia thead {
-    display: none;
-  }
-
-  .citas-ecografia tbody tr {
-    display: block;
-    margin-bottom: 16px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px var(--color-sombra);
-  }
-
-  .citas-ecografia tbody td {
-    display: block;
-    text-align: right;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--color-tabla-border);
-  }
-
-  .citas-ecografia tbody td:last-child {
-    border-bottom: none;
-  }
-
-  .citas-ecografia tbody td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: 700;
-    color: var(--color-texto-secundario);
-    text-transform: uppercase;
-    font-size: 0.7rem;
-  }
-
-  .citas-ecografia .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .citas-ecografia .btn {
-    margin-right: 0;
+  /* Mantener tabla normal con scroll horizontal */
+  .table.citas-ecografia {
+    min-width: 900px;
   }
 }
 
