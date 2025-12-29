@@ -42,6 +42,7 @@ function cargarDatosEdicion(citaId, modalEdit) {
     }
 
     const paciente = row.getAttribute('data-paciente');
+    const ecografo = row.getAttribute('data-ecografo');
     const fecha = row.getAttribute('data-fecha');
     const hora = row.getAttribute('data-hora');
     const estado = row.getAttribute('data-estado');
@@ -50,6 +51,7 @@ function cargarDatosEdicion(citaId, modalEdit) {
 
     // Llenar formulario
     document.getElementById('edit-paciente').value = paciente;
+    document.getElementById('edit-medico').value = ecografo;
     document.getElementById('edit-fecha').value = fecha;
     document.getElementById('edit-hora').value = hora;
     document.getElementById('edit-estado').value = estado;

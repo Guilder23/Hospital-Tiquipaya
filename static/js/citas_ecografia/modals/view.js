@@ -16,7 +16,7 @@ function mostrarDetalles(row, modalView) {
     const paciente = row.getAttribute('data-paciente');
     const ci = row.getAttribute('data-ci');
     const especialidad = row.getAttribute('data-especialidad');
-    const medico = row.getAttribute('data-medico');
+    const ecografo = row.getAttribute('data-ecografo');
     const fecha = row.getAttribute('data-fecha');
     const hora = row.getAttribute('data-hora');
     const estado = row.getAttribute('data-estado');
@@ -33,7 +33,7 @@ function mostrarDetalles(row, modalView) {
     document.getElementById('view-paciente').textContent = paciente;
     document.getElementById('view-ci').textContent = ci;
     document.getElementById('view-especialidad').textContent = especialidad;
-    document.getElementById('view-medico').textContent = medico;
+    document.getElementById('view-medico').textContent = ecografo;
     document.getElementById('view-fecha').textContent = fechaFormato;
     document.getElementById('view-hora').textContent = hora;
     document.getElementById('view-estado').textContent = estadoTexto;
