@@ -22,11 +22,56 @@
 
     <!-- CARDS DE RESUMEN RÁPIDO -->
     <div class="quick-stats">
+        <div class="stat-card stat-gray">
+            <div class="stat-icon"><i class="fas fa-user-cog"></i></div>
+            <div class="stat-content">
+                <h3>Usuarios</h3>
+                <p class="stat-number" id="total-usuarios">-</p>
+                <span class="stat-label">Total del sistema</span>
+            </div>
+        </div>
+
         <div class="stat-card stat-blue">
             <div class="stat-icon"><i class="fas fa-users"></i></div>
             <div class="stat-content">
                 <h3>Pacientes</h3>
                 <p class="stat-number" id="total-pacientes">-</p>
+                <span class="stat-label">Total registrados</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-orange">
+            <div class="stat-icon"><i class="fas fa-hospital-user"></i></div>
+            <div class="stat-content">
+                <h3>Médicos</h3>
+                <p class="stat-number" id="total-medicos">-</p>
+                <span class="stat-label">Profesionales</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-info">
+            <div class="stat-icon"><i class="fas fa-user-nurse"></i></div>
+            <div class="stat-content">
+                <h3>Ecógrafos</h3>
+                <p class="stat-number" id="total-ecografos">-</p>
+                <span class="stat-label">Total registrados</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-pink">
+            <div class="stat-icon"><i class="fas fa-concierge-bell"></i></div>
+            <div class="stat-content">
+                <h3>Admisión</h3>
+                <p class="stat-number" id="total-admision">-</p>
+                <span class="stat-label">Recepción</span>
+            </div>
+        </div>
+
+        <div class="stat-card stat-red">
+            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+            <div class="stat-content">
+                <h3>Encarg. Admisión</h3>
+                <p class="stat-number" id="total-encargado-admision">-</p>
                 <span class="stat-label">Total registrados</span>
             </div>
         </div>
@@ -40,27 +85,18 @@
             </div>
         </div>
 
-        <div class="stat-card stat-orange">
-            <div class="stat-icon"><i class="fas fa-hospital-user"></i></div>
-            <div class="stat-content">
-                <h3>Médicos</h3>
-                <p class="stat-number" id="total-medicos">-</p>
-                <span class="stat-label">Profesionales</span>
-            </div>
-        </div>
-
         <div class="stat-card stat-purple">
             <div class="stat-icon"><i class="fas fa-stethoscope"></i></div>
             <div class="stat-content">
-                <h3>Ecografías</h3>
+                <h3>Citas Ecografía</h3>
                 <p class="stat-number" id="total-ecografias">-</p>
-                <span class="stat-label">Servicios</span>
+                <span class="stat-label">Total del sistema</span>
             </div>
         </div>
     </div>
 
     <!-- FILA 1: ESTADÍSTICAS PRINCIPALES -->
-    <div class="dashboard-grid grid-2">
+    <div class="dashboard-grid grid-2-fixed">
         <!-- CITAS HOY vs PROGRAMADAS -->
         <div class="card">
             <div class="card-header">
@@ -73,16 +109,43 @@
                         <span class="status-value" id="citas-hoy">-</span>
                     </div>
                     <div class="status-item">
-                        <span class="status-label">Programadas</span>
-                        <span class="status-value" id="citas-programadas">-</span>
+                        <span class="status-label">Atendidas</span>
+                        <span class="status-value" id="citas-hoy-atendidas">-</span>
                     </div>
                     <div class="status-item">
-                        <span class="status-label">Completadas</span>
-                        <span class="status-value" id="citas-completadas">-</span>
+                        <span class="status-label">En Atención</span>
+                        <span class="status-value" id="citas-hoy-en-atencion">-</span>
                     </div>
                     <div class="status-item">
-                        <span class="status-label">Canceladas</span>
-                        <span class="status-value" id="citas-canceladas">-</span>
+                        <span class="status-label">En Espera</span>
+                        <span class="status-value" id="citas-hoy-en-espera">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CITAS ECOGRAFÍA HOY -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-stethoscope"></i> Citas Ecografía Hoy</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Citas Hoy</span>
+                        <span class="status-value" id="eco-hoy">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Atendidas</span>
+                        <span class="status-value" id="eco-hoy-atendidas">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">En Atención</span>
+                        <span class="status-value" id="eco-hoy-en-atencion">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">En Espera</span>
+                        <span class="status-value" id="eco-hoy-en-espera">-</span>
                     </div>
                 </div>
             </div>
@@ -114,27 +177,50 @@
                 </div>
             </div>
         </div>
+
+        <!-- USUARIOS -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-user-cog"></i> Usuarios</h2>
+            </div>
+            <div class="card-body">
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Total</span>
+                        <span class="status-value" id="usr-total">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Activos</span>
+                        <span class="status-value" id="usr-activos">-</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Inactivos</span>
+                        <span class="status-value" id="usr-inactivos">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- FILA 2: GRÁFICOS -->
     <div class="dashboard-grid grid-2">
-        <!-- CITAS POR DÍA (ÚLTIMOS 7 DÍAS) -->
+        <!-- CITAS POR DÍA (ÚLTIMO MES) -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-chart-line"></i> Citas Últimos 7 Días</h2>
+                <h2><i class="fas fa-chart-line"></i> Citas Último Mes</h2>
             </div>
             <div class="card-body">
                 <canvas id="citasChart"></canvas>
             </div>
         </div>
 
-        <!-- CITAS POR TIPO -->
+        <!-- CITAS ECOGRAFÍA POR DÍA (ÚLTIMO MES) -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-hospital-user"></i> Citas por Tipo</h2>
+                <h2><i class="fas fa-stethoscope"></i> Citas Ecografía Último Mes</h2>
             </div>
             <div class="card-body">
-                <canvas id="tiposChart"></canvas>
+                <canvas id="ecoMesChart"></canvas>
             </div>
         </div>
     </div>
@@ -151,13 +237,34 @@
             </div>
         </div>
 
-        <!-- PACIENTES POR GÉNERO -->
+        <!-- CITAS ECOGRAFÍA POR ESTADO -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-stethoscope"></i> Citas Ecografía por Estado</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="ecoEstadoChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- PACIENTES POR GÉNERO -->
+    <div class="dashboard-grid grid-2">
         <div class="card">
             <div class="card-header">
                 <h2><i class="fas fa-users"></i> Pacientes por Género</h2>
             </div>
             <div class="card-body">
                 <canvas id="generoChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-user"></i> Usuarios por Género</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="userGeneroChart"></canvas>
             </div>
         </div>
     </div>

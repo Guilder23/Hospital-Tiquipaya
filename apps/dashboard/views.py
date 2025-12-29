@@ -10,7 +10,7 @@ import traceback
 from apps.pacientes.models import Paciente
 from apps.citas.models import Cita
 from apps.citas_ecografia.models import CitaEcografia
-from apps.accounts.models import Medico, Perfil
+from apps.accounts.models import Medico, Perfil, Ecografo, Admision, EncargadoAdmision
 from apps.especialidades.models import Especialidad
 from apps.contratos.models import Contrato
 
@@ -84,9 +84,14 @@ def get_dashboard_data(request):
             cita__estado='PROGRAMADA'
         ).distinct().count()
         
+        hoy = datetime.now().date()
+
         # CITAS (Consultas)
         total_citas = Cita.objects.count()
-        citas_hoy = Cita.objects.filter(fecha=datetime.now().date()).count()
+        citas_hoy = Cita.objects.filter(fecha=hoy).count()
+        citas_hoy_atendidas = Cita.objects.filter(fecha=hoy, estado_atencion='ATENDIDO').count()
+        citas_hoy_en_atencion = Cita.objects.filter(fecha=hoy, estado_atencion='EN_ATENCION').count()
+        citas_hoy_en_espera = Cita.objects.filter(fecha=hoy, estado_atencion='EN_ESPERA').count()
         citas_programadas = Cita.objects.filter(estado='PROGRAMADA').count()
         citas_canceladas = Cita.objects.filter(estado='CANCELADA').count()
         citas_completadas = Cita.objects.filter(estado_atencion='ATENDIDO').count()
@@ -103,12 +108,26 @@ def get_dashboard_data(request):
         
         # ECOGRAFÍAS (Citas de Ecografía)
         total_ecografias = CitaEcografia.objects.count()
+        ecografias_hoy = CitaEcografia.objects.filter(fecha=hoy).count()
+        ecografias_hoy_atendidas = CitaEcografia.objects.filter(fecha=hoy, estado_atencion='ATENDIDO').count()
+        ecografias_hoy_en_atencion = CitaEcografia.objects.filter(fecha=hoy, estado_atencion='EN_ATENCION').count()
+        ecografias_hoy_en_espera = CitaEcografia.objects.filter(fecha=hoy, estado_atencion='EN_ESPERA').count()
         ecografias_realizadas = CitaEcografia.objects.filter(estado_atencion='ATENDIDO').count()
         ecografias_pendientes = CitaEcografia.objects.filter(estado='PROGRAMADA').count()
+
+        # ECOGRAFÍAS POR ESTADO
+        ecografias_por_estado = dict(
+            CitaEcografia.objects.values('estado').annotate(count=Count('id')).values_list('estado', 'count')
+        )
         
         # MÉDICOS
         total_medicos = Medico.objects.count()
         medicos_con_turnos = Medico.objects.filter(turnos__isnull=False).distinct().count()
+
+        # PERSONAL
+        total_ecografos = Ecografo.objects.count()
+        total_admision = Admision.objects.count()
+        total_encargado_admision = EncargadoAdmision.objects.count()
         
         # ESPECIALIDADES
         total_especialidades = Especialidad.objects.count()
@@ -130,6 +149,12 @@ def get_dashboard_data(request):
         # PACIENTES POR GÉNERO
         pacientes_por_genero = dict(
             Paciente.objects.values('genero').annotate(count=Count('id')).values_list('genero', 'count')
+        )
+
+        # USUARIOS POR GÉNERO (desde Perfil)
+        usuarios_por_genero = dict(
+            Perfil.objects.exclude(sexo__isnull=True).exclude(sexo='')
+            .values('sexo').annotate(count=Count('id')).values_list('sexo', 'count')
         )
         
         # PACIENTES POR SEGURO
@@ -168,16 +193,24 @@ def get_dashboard_data(request):
         # USUARIOS
         from django.contrib.auth.models import User
         total_usuarios = User.objects.count()
+        usuarios_activos = User.objects.filter(is_active=True).count()
+        usuarios_inactivos = User.objects.filter(is_active=False).count()
         admins = User.objects.filter(is_staff=True).count()
         
-        # CITAS POR DÍA (Últimos 7 días)
+        # CITAS POR DÍA (Último mes - 30 días)
         citas_por_dia = []
-        for i in range(7, 0, -1):
+        ecografias_por_dia = []
+        for i in range(29, -1, -1):
             fecha = (datetime.now() - timedelta(days=i)).date()
-            count = Cita.objects.filter(fecha=fecha).count()
+            count_citas = Cita.objects.filter(fecha=fecha).count()
+            count_ecografias = CitaEcografia.objects.filter(fecha=fecha).count()
             citas_por_dia.append({
                 'fecha': fecha.strftime('%d/%m'),
-                'count': count
+                'count': count_citas
+            })
+            ecografias_por_dia.append({
+                'fecha': fecha.strftime('%d/%m'),
+                'count': count_ecografias
             })
         
         # Duración promedio de atención
@@ -198,6 +231,9 @@ def get_dashboard_data(request):
             'citas': {
                 'total': total_citas,
                 'hoy': citas_hoy,
+                'hoy_atendidas': citas_hoy_atendidas,
+                'hoy_en_atencion': citas_hoy_en_atencion,
+                'hoy_en_espera': citas_hoy_en_espera,
                 'programadas': citas_programadas,
                 'canceladas': citas_canceladas,
                 'completadas': citas_completadas,
@@ -212,12 +248,23 @@ def get_dashboard_data(request):
             },
             'ecografias': {
                 'total': total_ecografias,
+                'hoy': ecografias_hoy,
+                'hoy_atendidas': ecografias_hoy_atendidas,
+                'hoy_en_atencion': ecografias_hoy_en_atencion,
+                'hoy_en_espera': ecografias_hoy_en_espera,
                 'completadas': ecografias_realizadas,
                 'pendientes': ecografias_pendientes,
+                'por_estado': ecografias_por_estado,
+                'por_dia': ecografias_por_dia,
             },
             'medicos': {
                 'total': total_medicos,
                 'activos': medicos_con_turnos,
+            },
+            'personal': {
+                'ecografos': total_ecografos,
+                'admision': total_admision,
+                'encargado_admision': total_encargado_admision,
             },
             'especialidades': {
                 'total': total_especialidades,
@@ -228,7 +275,10 @@ def get_dashboard_data(request):
             },
             'usuarios': {
                 'total': total_usuarios,
+                'activos': usuarios_activos,
+                'inactivos': usuarios_inactivos,
                 'admins': admins,
+                'por_genero': usuarios_por_genero,
             }
         }
         

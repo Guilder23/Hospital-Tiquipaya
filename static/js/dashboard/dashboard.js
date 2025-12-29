@@ -97,9 +97,15 @@ function populateDashboard(data) {
         // CITAS
         document.getElementById('total-citas').textContent = getValue(data.citas?.total);
         document.getElementById('citas-hoy').textContent = getValue(data.citas?.hoy);
-        document.getElementById('citas-programadas').textContent = getValue(data.citas?.programadas);
-        document.getElementById('citas-completadas').textContent = getValue(data.citas?.completadas);
-        document.getElementById('citas-canceladas').textContent = getValue(data.citas?.canceladas);
+
+        const elCitasHoyAtendidas = document.getElementById('citas-hoy-atendidas');
+        if (elCitasHoyAtendidas) elCitasHoyAtendidas.textContent = getValue(data.citas?.hoy_atendidas);
+
+        const elCitasHoyEnAtencion = document.getElementById('citas-hoy-en-atencion');
+        if (elCitasHoyEnAtencion) elCitasHoyEnAtencion.textContent = getValue(data.citas?.hoy_en_atencion);
+
+        const elCitasHoyEnEspera = document.getElementById('citas-hoy-en-espera');
+        if (elCitasHoyEnEspera) elCitasHoyEnEspera.textContent = getValue(data.citas?.hoy_en_espera);
         
         // MÉDICOS
         document.getElementById('total-medicos').textContent = getValue(data.medicos?.total);
@@ -110,6 +116,28 @@ function populateDashboard(data) {
         document.getElementById('eco-total').textContent = getValue(data.ecografias?.total);
         document.getElementById('eco-completadas').textContent = getValue(data.ecografias?.completadas);
         document.getElementById('eco-pendientes').textContent = getValue(data.ecografias?.pendientes);
+
+        const elEcoHoy = document.getElementById('eco-hoy');
+        if (elEcoHoy) elEcoHoy.textContent = getValue(data.ecografias?.hoy);
+
+        const elEcoHoyAtendidas = document.getElementById('eco-hoy-atendidas');
+        if (elEcoHoyAtendidas) elEcoHoyAtendidas.textContent = getValue(data.ecografias?.hoy_atendidas);
+
+        const elEcoHoyEnAtencion = document.getElementById('eco-hoy-en-atencion');
+        if (elEcoHoyEnAtencion) elEcoHoyEnAtencion.textContent = getValue(data.ecografias?.hoy_en_atencion);
+
+        const elEcoHoyEnEspera = document.getElementById('eco-hoy-en-espera');
+        if (elEcoHoyEnEspera) elEcoHoyEnEspera.textContent = getValue(data.ecografias?.hoy_en_espera);
+
+        // PERSONAL
+        const elEcografos = document.getElementById('total-ecografos');
+        if (elEcografos) elEcografos.textContent = getValue(data.personal?.ecografos);
+
+        const elAdmision = document.getElementById('total-admision');
+        if (elAdmision) elAdmision.textContent = getValue(data.personal?.admision);
+
+        const elEncAdm = document.getElementById('total-encargado-admision');
+        if (elEncAdm) elEncAdm.textContent = getValue(data.personal?.encargado_admision);
         
         // CONTRATOS
         document.getElementById('con-total').textContent = getValue(data.contratos?.total);
@@ -121,6 +149,15 @@ function populateDashboard(data) {
         // USUARIOS
         document.getElementById('usr-total').textContent = getValue(data.usuarios?.total);
         document.getElementById('usr-admins').textContent = getValue(data.usuarios?.admins);
+
+        const elUsrActivos = document.getElementById('usr-activos');
+        if (elUsrActivos) elUsrActivos.textContent = getValue(data.usuarios?.activos);
+
+        const elUsrInactivos = document.getElementById('usr-inactivos');
+        if (elUsrInactivos) elUsrInactivos.textContent = getValue(data.usuarios?.inactivos);
+
+        const elTotalUsuarios = document.getElementById('total-usuarios');
+        if (elTotalUsuarios) elTotalUsuarios.textContent = getValue(data.usuarios?.total);
         
         console.log('Datos poblados exitosamente. Creando gráficos...');
         
@@ -134,6 +171,40 @@ function populateDashboard(data) {
 
 function createCharts(data) {
     console.log('Iniciando creación de gráficos...');
+
+    const commonLineOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: {
+                display: true,
+                labels: {
+                    padding: 15,
+                    font: { size: 12 }
+                }
+            },
+            tooltip: {
+                enabled: true,
+                padding: 10,
+                displayColors: true,
+            },
+            filler: {
+                propagate: true
+            }
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: { maxTicksLimit: 10 }
+            },
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(100, 116, 139, 0.15)' },
+                ticks: { stepSize: 1 }
+            }
+        }
+    };
     
     // 1. GRÁFICO DE CITAS POR DÍA (LÍNEA)
     const ctxCitas = document.getElementById('citasChart');
@@ -147,41 +218,18 @@ function createCharts(data) {
                         label: 'Citas',
                         data: data.citas.por_dia.map(d => d.count),
                         fill: true,
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        backgroundColor: 'rgba(37, 99, 235, 0.12)',
                         borderColor: colors.primary,
                         borderWidth: 3,
                         tension: 0.4,
                         pointBackgroundColor: colors.primary,
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: {
-                                padding: 15,
-                                font: { size: 12 }
-                            }
-                        },
-                        filler: {
-                            propagate: true
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
+                options: commonLineOptions
             });
             console.log('Gráfico de citas por día creado ✓');
         } catch (e) {
@@ -189,34 +237,34 @@ function createCharts(data) {
         }
     }
 
-    // 2. GRÁFICO DE CITAS POR TIPO (DONUT)
-    const ctxTipos = document.getElementById('tiposChart');
-    if (ctxTipos && data.citas?.por_tipo && Object.keys(data.citas.por_tipo).length > 0) {
+    // 1.b GRÁFICO DE CITAS ECOGRAFÍA POR DÍA (LÍNEA)
+    const ctxEcoMes = document.getElementById('ecoMesChart');
+    if (ctxEcoMes && data.ecografias?.por_dia && data.ecografias.por_dia.length > 0) {
         try {
-            charts.tiposChart = new Chart(ctxTipos, {
-                type: 'doughnut',
+            charts.ecoMesChart = new Chart(ctxEcoMes, {
+                type: 'line',
                 data: {
-                    labels: Object.keys(data.citas.por_tipo),
+                    labels: data.ecografias.por_dia.map(d => d.fecha),
                     datasets: [{
-                        data: Object.values(data.citas.por_tipo),
-                        backgroundColor: [colors.primary, colors.success, colors.warning],
-                        borderColor: '#fff',
-                        borderWidth: 2
+                        label: 'Ecografías',
+                        data: data.ecografias.por_dia.map(d => d.count),
+                        fill: true,
+                        backgroundColor: 'rgba(139, 92, 246, 0.12)',
+                        borderColor: colors.purple,
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointBackgroundColor: colors.purple,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
+                options: commonLineOptions
             });
-            console.log('Gráfico de tipos de cita creado ✓');
+            console.log('Gráfico de ecografías por día creado ✓');
         } catch (e) {
-            console.error('Error al crear gráfico de tipos:', e);
+            console.error('Error al crear gráfico de ecografías:', e);
         }
     }
 
@@ -224,14 +272,22 @@ function createCharts(data) {
     const ctxEstado = document.getElementById('estadoChart');
     if (ctxEstado && data.citas?.por_estado && Object.keys(data.citas.por_estado).length > 0) {
         try {
+            const estadoColors = {
+                'PROGRAMADA': colors.primary,
+                'REPROGRAMADA': colors.warning,
+                'CANCELADA': colors.danger,
+                'REALIZADA': colors.success,
+            };
+            const estadoLabels = Object.keys(data.citas.por_estado);
+            const estadoValues = Object.values(data.citas.por_estado);
             charts.estadoChart = new Chart(ctxEstado, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(data.citas.por_estado),
+                    labels: estadoLabels,
                     datasets: [{
                         label: 'Cantidad de Citas',
-                        data: Object.values(data.citas.por_estado),
-                        backgroundColor: [colors.success, colors.danger, colors.warning],
+                        data: estadoValues,
+                        backgroundColor: estadoLabels.map(l => estadoColors[l] || colors.secondary),
                         borderRadius: 8,
                         borderSkipped: false
                     }]
@@ -258,6 +314,55 @@ function createCharts(data) {
             console.log('Gráfico de estado de citas creado ✓');
         } catch (e) {
             console.error('Error al crear gráfico de estado:', e);
+        }
+    }
+
+    // 3.b GRÁFICO DE CITAS ECOGRAFÍA POR ESTADO (BARRA)
+    const ctxEcoEstado = document.getElementById('ecoEstadoChart');
+    if (ctxEcoEstado && data.ecografias?.por_estado && Object.keys(data.ecografias.por_estado).length > 0) {
+        try {
+            const ecoEstadoColors = {
+                'PROGRAMADA': colors.primary,
+                'REPROGRAMADA': colors.warning,
+                'CANCELADA': colors.danger,
+                'REALIZADA': colors.success,
+            };
+            const ecoEstadoLabels = Object.keys(data.ecografias.por_estado);
+            const ecoEstadoValues = Object.values(data.ecografias.por_estado);
+            charts.ecoEstadoChart = new Chart(ctxEcoEstado, {
+                type: 'bar',
+                data: {
+                    labels: ecoEstadoLabels,
+                    datasets: [{
+                        label: 'Cantidad de Citas Ecografía',
+                        data: ecoEstadoValues,
+                        backgroundColor: ecoEstadoLabels.map(l => ecoEstadoColors[l] || colors.secondary),
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+            console.log('Gráfico de estado de citas ecografía creado ✓');
+        } catch (e) {
+            console.error('Error al crear gráfico de estado ecografía:', e);
         }
     }
 
@@ -295,6 +400,43 @@ function createCharts(data) {
             console.log('Gráfico de género creado ✓');
         } catch (e) {
             console.error('Error al crear gráfico de género:', e);
+        }
+    }
+
+    // 4.b GRÁFICO DE USUARIOS POR GÉNERO (PIE)
+    const ctxUserGenero = document.getElementById('userGeneroChart');
+    if (ctxUserGenero && data.usuarios?.por_genero && Object.keys(data.usuarios.por_genero).length > 0) {
+        try {
+            const generoLabels = {
+                'M': 'Masculino',
+                'F': 'Femenino',
+                'O': 'Otro'
+            };
+
+            charts.userGeneroChart = new Chart(ctxUserGenero, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.usuarios.por_genero).map(k => generoLabels[k] || k),
+                    datasets: [{
+                        data: Object.values(data.usuarios.por_genero),
+                        backgroundColor: [colors.primary, colors.pink, colors.secondary],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            console.log('Gráfico de usuarios por género creado ✓');
+        } catch (e) {
+            console.error('Error al crear gráfico de usuarios por género:', e);
         }
     }
 
