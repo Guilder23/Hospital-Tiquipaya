@@ -72,9 +72,9 @@
 }
 
 .permisos-table thead th {
-  padding: 14px 16px;
+  padding: 16px 18px;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-align: center;
@@ -82,11 +82,15 @@
   border-bottom: 2px solid var(--color-tabla-border);
 }
 
+.permisos-table thead th:first-child {
+  text-align: left;
+}
+
 /* === CUERPO DE LA TABLA === */
 .permisos-table tbody td {
-  padding: 12px 16px;
+  padding: 14px 18px;
   vertical-align: middle;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   border-top: 1px solid var(--color-tabla-border);
   color: var(--color-texto);
   text-align: center;
@@ -97,7 +101,7 @@
 }
 
 .permisos-table tbody tr {
-  transition: background 0.18s ease;
+  transition: all 0.2s ease;
 }
 
 .permisos-table tbody tr:nth-child(odd) {
@@ -106,13 +110,17 @@
 
 .permisos-table tbody tr:hover {
   background: var(--color-tabla-row-hover-bg);
+  box-shadow: 0 2px 8px var(--sombra-neutral-06);
 }
 
 /* === NOMBRE DEL MÓDULO === */
 .modulo-nombre {
   font-weight: 600;
   color: var(--color-texto);
-  text-align: left;
+}
+
+.permisos-table tbody td:first-child {
+  text-align: left !important;
 }
 
 /* === INPUTS (CHECKBOX / RADIO) === */
@@ -221,7 +229,7 @@
 
 /* === BOTÓN GUARDAR === */
 .btn.btn-success.btn-lg.btn-guardar {
-  background: var(--color-exito) !important;
+  background: var(--color-boton-principal) !important;
   color: #fff !important;
   border: none;
   padding: 14px 52px;
@@ -229,7 +237,7 @@
   font-size: 1rem;
   letter-spacing: 0.3px;
   border-radius: 999px;
-  box-shadow: 0 12px 30px var(--sombra-exito);
+  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.35);
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -237,17 +245,17 @@
 }
 
 .btn.btn-success.btn-lg.btn-guardar:hover {
-  background: var(--color-exito-hover) !important;
+  background: var(--color-boton-principal-hover) !important;
   color: #fff !important;
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px var(--sombra-exito);
+  box-shadow: 0 16px 36px rgba(14, 165, 233, 0.45);
 }
 
 .btn.btn-success.btn-lg.btn-guardar:active {
-  background: var(--color-exito-active) !important;
+  background: var(--color-boton-principal-active) !important;
   color: #fff !important;
   transform: translateY(0);
-  box-shadow: 0 8px 20px var(--sombra-exito-active);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
 }
 
 .btn.btn-success.btn-lg.btn-guardar i {
