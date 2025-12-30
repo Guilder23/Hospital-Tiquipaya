@@ -42,6 +42,7 @@
             <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
             <div>{{ m.especialidad.nombre }} · {{ turno_info.turno.nombre }}</div>
           </div>
+          <div class="slot-counters" id="counters-{{ m.id }}"></div>
           <div class="doctor-actions">
             {% if sistema_abierto %}
               <button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button>

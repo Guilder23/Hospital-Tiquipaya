@@ -62,6 +62,17 @@ document.addEventListener('DOMContentLoaded',function(){
         var cont=document.getElementById('slots-'+id); 
         if(!cont) return; 
         cont.innerHTML=''; 
+        // Contar horarios disponibles y ocupados
+        var totalFree=0, totalBusy=0;
+        Object.keys(data.turnos).forEach(function(turnoNombre){
+          var lista=data.turnos[turnoNombre]||[];
+          lista.forEach(function(s){ if(s.ocupado) totalBusy++; else totalFree++; });
+        });
+        var countersEl=document.getElementById('counters-'+id);
+        if(countersEl){
+          countersEl.innerHTML='<span class="count-free"><strong>Disponibles:</strong> '+totalFree+'</span>'
+            +'<span class="count-busy"><strong>Ocupadas:</strong> '+totalBusy+'</span>';
+        }
         // Iterar sobre los turnos dinámicos retornados
         Object.keys(data.turnos).forEach(function(turnoNombre){ 
           var lista=data.turnos[turnoNombre]||[]; 

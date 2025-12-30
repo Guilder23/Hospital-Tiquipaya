@@ -164,6 +164,22 @@
   box-shadow: 0 4px 12px var(--sombra-boton-principal-active);
 }
 
+/* === CONTADORES DE HORARIOS === */
+.slot-counters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  font-weight: 600;
+  margin: 6px 0 0;
+}
+.slot-counters .count-free { color: #16a34a; }
+.slot-counters .count-busy { color: #ef4444; }
+
 /* === MODALES === */
 .modal {
   position: fixed;
