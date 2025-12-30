@@ -2,13 +2,16 @@
 
 from django.urls import path
 # Importar la nueva vista API y las vistas de plantilla
-from .views import TurnoListView, TurnoAPIView 
+from .views import TurnoListView, TurnoAPIView, HorarioSistemaView
 
 app_name = 'turnos'
 
 urlpatterns = [
     # Ruta principal para la plantilla de la lista
     path('', TurnoListView.as_view(), name='lista'),
+
+    # Nueva ruta para gestionar horario global del sistema de citas
+    path('gestionar-horario/', HorarioSistemaView.as_view(), name='gestionar'),
 
     # Rutas API para manejar POST, PATCH, DELETE desde los modales JS
     path('api/', TurnoAPIView.as_view(), name='api-list-create'), # GET, POST

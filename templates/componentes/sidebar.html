@@ -30,6 +30,7 @@
       <div class="sidebar-divider"></div>
             <a class="sidebar-link" href="{% url 'permisos:listar_tipos' %}"> <i class="fas fa-lock"></i> Gestionar de permisos</a>
       <a class="sidebar-link" href="{% url 'citas:agendar_usuario' %}"><i class="fas fa-calendar-plus"></i> Agendar Cita (Usuario)</a>
+      <a class="sidebar-link" href="{% url 'turnos:gestionar' %}"><i class="fas fa-clock"></i> Gestionar horarios para citas</a>
     {% else %}
       {% if modulos_sidebar %}
         {% for item in modulos_sidebar %}

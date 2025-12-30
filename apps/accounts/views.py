@@ -44,7 +44,7 @@ class CustomLoginView(LoginView):
 from django.contrib import messages 
 from django.contrib.auth.models import User 
 from apps.accounts.models import ( Perfil, TipoUsuario, Medico, Admision, EncargadoAdmision, Ecografo ) 
-from apps.horarios.models import DiasAtencion, HorariosAtencion, Turnos
+from apps.horarios.models import DiasAtencion, Turnos
 from apps.contratos.models import Contrato
 from apps.especialidades.models import Especialidad
 from apps.ecografias.models import Ecografia

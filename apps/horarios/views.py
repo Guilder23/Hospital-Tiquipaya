@@ -9,11 +9,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin # Agregamos LoginRequiredMixin
 from django.contrib import messages
 import json
+from django.shortcuts import render, redirect
+from .models import HorarioSistema
+from django import forms
 
 # Asegúrate de que este import sea correcto
 from apps.accounts.models import Perfil 
 from apps.permisos.utils import es_admin_o_staff
 from .models import Turnos
+from apps.permisos.models import Modulo, Permiso
+from apps.accounts.models import TipoUsuario
 
 # --- FUNCIÓN DE PERMISOS ---
 def _es_admin(user):
@@ -121,3 +126,54 @@ class TurnoAPIView(View):
             return JsonResponse({'error': 'Turno no encontrado'}, status=404)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
+# --- FORMULARIO Y VISTA PARA GESTIONAR HORARIO GLOBAL ---
+class HorarioSistemaForm(forms.ModelForm):
+    class Meta:
+        model = HorarioSistema
+        fields = ['hora_inicio', 'hora_fin']
+        widgets = {
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+            'hora_fin': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
+        }
+
+class HorarioSistemaView(LoginRequiredMixin, View):
+    template_name = 'horarios/gestionar_horario.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verificar si el usuario es admin o staff
+        if request.user.is_superuser or request.user.is_staff:
+            return super().dispatch(request, *args, **kwargs)
+        
+        # Verificar permiso de edición para el módulo de horarios
+        tipo_usuario = None
+        if hasattr(request.user, 'perfil') and request.user.perfil:
+            tipo_usuario = request.user.perfil.tipo
+        
+        if tipo_usuario:
+            try:
+                modulo = Modulo.objects.get(nombre__icontains='Gestionar horarios para citas')
+                permiso = Permiso.objects.filter(tipo_usuario=tipo_usuario, modulo=modulo).first()
+                if permiso and permiso.tipo_permiso == 'editor':
+                    return super().dispatch(request, *args, **kwargs)
+            except Modulo.DoesNotExist:
+                pass
+        
+        messages.error(request, 'No tienes permiso para acceder a esta sección.')
+        return redirect('dashboard:dashboard')
+
+    def get(self, request):
+        horario = HorarioSistema.objects.first()
+        form = HorarioSistemaForm(instance=horario)
+        return render(request, self.template_name, {'form': form, 'horario': horario})
+
+    def post(self, request):
+        horario = HorarioSistema.objects.first()
+        form = HorarioSistemaForm(request.POST, instance=horario)
+        if form.is_valid():
+            horario = form.save(commit=False)
+            horario.actualizado_por = request.user
+            horario.save()
+            messages.success(request, 'Horario actualizado correctamente.')
+            return redirect('turnos:gestionar')
+        return render(request, self.template_name, {'form': form, 'horario': horario})

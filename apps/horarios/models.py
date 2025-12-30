@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class DiasAtencion(models.Model):
     lunes = models.BooleanField(default=False)
@@ -22,21 +23,20 @@ class DiasAtencion(models.Model):
 
         return ", ".join(dias) if dias else "Sin días asignados"
     
-class HorariosAtencion(models.Model):
-    madrugue = models.BooleanField(default=False)
-    mannana = models.BooleanField(default=False)
-    tarde = models.BooleanField(default=False)
-    noche = models.BooleanField(default=False)
+
+# Modelo global para horario del sistema de citas
+class HorarioSistema(models.Model):
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    actualizado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        horas = []
+        return f"Horario: {self.hora_inicio} - {self.hora_fin}"
 
-        if self.madrugue: horas.append("madrugue")
-        if self.mannana: horas.append("mañana")
-        if self.tarde: horas.append("tarde")
-        if self.noche: horas.append("noche")
-
-        return ", ".join(horas) if horas else "Sin días asignados"
+    class Meta:
+        verbose_name = "Horario del sistema de citas"
+        verbose_name_plural = "Horarios del sistema de citas"
     
 class Turnos(models.Model):
     nombre = models.CharField(max_length=100, unique=True)

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestión de Horarios{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/horarios/gestionar_horario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="horarios-container">
+    <div class="horarios-header">
+        <h1><i class="fas fa-clock"></i> Gestión de Horarios del Sistema</h1>
+        <p class="text-muted">Configurar horario global para agendamiento de citas</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'success' in message.tags %}
+                <div class="horarios-alert-success">{{ message }}</div>
+            {% elif 'error' in message.tags or 'danger' in message.tags %}
+                <div class="horarios-alert-error">{{ message }}</div>
+            {% else %}
+                <div class="horarios-alert">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if horario %}
+        <div class="horarios-card">
+            <div class="horarios-card-header"><i class="fas fa-info-circle"></i> Horario Actual del Sistema</div>
+            <div>
+                <div style="display:flex; gap:32px; flex-wrap:wrap;">
+                    <div>
+                        <p><strong>Hora de apertura:</strong> {{ horario.hora_inicio|time:"H:i" }}</p>
+                        <p><strong>Hora de cierre:</strong> {{ horario.hora_fin|time:"H:i" }}</p>
+                    </div>
+                    <div>
+                        <p class="horarios-small"><em>Los pacientes solo podrán agendar citas dentro de este horario.</em></p>
+                        {% if horario.actualizado_por %}
+                            <span class="horarios-small">
+                                Última actualización por {{ horario.actualizado_por.username }} el {{ horario.actualizado_en|date:"d/m/Y H:i" }}
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="horarios-alert">
+            <i class="fas fa-exclamation-triangle"></i> No hay horario configurado. Configure uno para habilitar el control de acceso al sistema de citas.
+        </div>
+    {% endif %}
+
+    <div class="horarios-card">
+        <div class="horarios-card-header"><i class="fas fa-cog"></i> Configurar Horario</div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="horarios-form-row">
+                <div class="horarios-form-group">
+                    <label for="id_hora_inicio"><i class="fas fa-sunrise"></i> Hora de inicio</label>
+                    {{ form.hora_inicio }}
+                    <span class="horarios-small">Hora en que se abre el sistema para agendar citas</span>
+                </div>
+                <div class="horarios-form-group">
+                    <label for="id_hora_fin"><i class="fas fa-sunset"></i> Hora de fin</label>
+                    {{ form.hora_fin }}
+                    <span class="horarios-small">Hora en que se cierra el sistema para agendar citas</span>
+                </div>
+            </div>
+            <div class="horarios-btns">
+                <button type="submit" class="horarios-btn-primary">
+                    <i class="fas fa-save"></i> Guardar horario
+                </button>
+                <a href="{% url 'dashboard:dashboard' %}" class="horarios-btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="horarios-card">
+        <div class="horarios-card-header"><i class="fas fa-lightbulb"></i> Información Importante</div>
+        <ul class="horarios-info-list">
+            <li>El horario configurado aplica a todos los pacientes que deseen agendar citas.</li>
+            <li>Si no hay horario configurado, el sistema permitirá agendar citas en cualquier momento.</li>
+            <li>Los cambios tienen efecto inmediato.</li>
+            <li>Los usuarios con permiso de "Editor" en este módulo pueden modificar el horario.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -60,3 +60,8 @@ class Permiso(models.Model):
     def es_solo_vista(self):
         """Verifica si solo puede ver"""
         return self.visible and self.tipo_permiso == 'solo_vista'
+
+
+# Agregar módulo para gestión de horarios si no existe
+# Esto normalmente se haría en una migración o en el admin, pero aquí lo dejamos como referencia:
+# Modulo.objects.get_or_create(nombre='Gestionar horarios para citas', url='/horarios/gestionar-horario/', icono='fas fa-clock', asignable=True)

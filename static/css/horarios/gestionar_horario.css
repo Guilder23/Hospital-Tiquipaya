@@ -1,0 +1,146 @@
+/* Estilos personalizados para la gestión de horarios */
+.horarios-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 0;
+}
+.horarios-header {
+    margin-bottom: 18px;
+}
+.horarios-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a355e;
+    margin-bottom: 0.2em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.horarios-header .text-muted {
+    color: #6c757d;
+    font-size: 1rem;
+}
+.horarios-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-bottom: 24px;
+    padding: 24px 32px;
+}
+.horarios-card-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a355e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.horarios-alert {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Success (verde) */
+.horarios-alert-success {
+    background: #ecfdf5;
+    border: 1px solid #bbf7d0;
+    color: #065f46;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    font-size: 1rem;
+}
+
+/* Error / Danger */
+.horarios-alert-error {
+    background: #fff1f2;
+    border: 1px solid #fecaca;
+    color: #7f1d1d;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    font-size: 1rem;
+}
+.horarios-form-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 18px;
+}
+.horarios-form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.horarios-form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1a355e;
+}
+.horarios-form-group input[type="time"] {
+    padding: 10px 12px;
+    font-size: 1.1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    outline: none;
+    background: #f8fafc;
+    color: #1a355e;
+    transition: border 0.2s;
+}
+.horarios-form-group input[type="time"]:focus {
+    border: 1.5px solid #1a355e;
+}
+.horarios-btns {
+    margin-top: 18px;
+    display: flex;
+    gap: 12px;
+}
+.horarios-btn-primary {
+    background: #1a355e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.horarios-btn-primary:hover {
+    background: #274a7a;
+}
+.horarios-btn-secondary {
+    background: #e0e0e0;
+    color: #1a355e;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.horarios-btn-secondary:hover {
+    background: #cfd8dc;
+}
+.horarios-info-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #444;
+    font-size: 1rem;
+}
+.horarios-info-list li {
+    margin-bottom: 6px;
+}
+.horarios-small {
+    font-size: 0.95rem;
+    color: #888;
+}

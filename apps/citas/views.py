@@ -13,7 +13,7 @@ from apps.pacientes.models import Paciente
 from apps.accounts.models import Medico
 from apps.citas.models import Cita
 from apps.ecografias.models import Ecografia
-from apps.horarios.models import Turnos
+from apps.horarios.models import Turnos, HorarioSistema
 from apps.especialidades.models import Especialidad
 from django.db import IntegrityError
 from reportlab.lib.pagesizes import letter
@@ -138,50 +138,57 @@ def _medico_trabaja_en_dia(medico, fecha):
 def agendar_inicio(request):
     pid = request.session.get('paciente_id')
     manana = _manana()
-    
-    # Obtener todos los turnos activos
+
+    # Validar horario global del sistema
+    horario_sistema = HorarioSistema.objects.first()
+    hora_actual = datetime.now().time()
+    sistema_abierto = True
+    mensaje_horario = None
+    if horario_sistema:
+        if not (horario_sistema.hora_inicio <= hora_actual <= horario_sistema.hora_fin):
+            sistema_abierto = False
+            mensaje_horario = f"El sistema está cerrado. Se abre a las {horario_sistema.hora_inicio.strftime('%H:%M')} y cierra a las {horario_sistema.hora_fin.strftime('%H:%M')}."
+
+    # Obtener todos los turnos activos - siempre mostrar la interfaz
     turnos_activos = Turnos.objects.filter(estado=True).order_by('hora_ini')
-    
-    # Para cada turno, obtener los médicos que trabajan en ese turno Y en el día siguiente
     turnos_data = []
-    for turno in turnos_activos:
-        # Filtrar médicos que trabajan en este turno
-        medicos_turno = Medico.objects.filter(turnos=turno).select_related('user__perfil__contrato')
-        
-        # Filtrar médicos que cumplen todos los requisitos:
-        # 1. Usuario activo
-        # 2. Contrato vigente (fecha actual entre fecha_inicio y fecha_fin)
-        # 3. Trabaja en el día siguiente
-        medicos_disponibles = []
-        for m in medicos_turno:
-            # Verificar que el usuario está activo
-            if not m.user.is_active:
-                continue
-            
-            # Verificar que tiene contrato vigente
-            if hasattr(m.user, 'perfil') and m.user.perfil.contrato:
-                contrato = m.user.perfil.contrato
-                if not (contrato.fecha_inicio <= manana <= contrato.fecha_fin and contrato.estado):
+    
+    # Si el sistema está abierto, mostrar médicos normalmente
+    # Si está cerrado, aún mostrar la estructura pero sin médicos disponibles
+    if sistema_abierto:
+        for turno in turnos_activos:
+            medicos_turno = Medico.objects.filter(turnos=turno).select_related('user__perfil__contrato')
+            medicos_disponibles = []
+            for m in medicos_turno:
+                if not m.user.is_active:
                     continue
-            else:
-                # Si no tiene contrato asignado, no mostrar
-                continue
-            
-            # Verificar que trabaja en el día siguiente
-            if not _medico_trabaja_en_dia(m, manana):
-                continue
-            
-            medicos_disponibles.append(m)
-        
-        turnos_data.append({
-            'turno': turno,
-            'medicos': medicos_disponibles
-        })
+                if hasattr(m.user, 'perfil') and m.user.perfil.contrato:
+                    contrato = m.user.perfil.contrato
+                    if not (contrato.fecha_inicio <= manana <= contrato.fecha_fin and contrato.estado):
+                        continue
+                else:
+                    continue
+                if not _medico_trabaja_en_dia(m, manana):
+                    continue
+                medicos_disponibles.append(m)
+            turnos_data.append({
+                'turno': turno,
+                'medicos': medicos_disponibles
+            })
+    else:
+        # Sistema cerrado - mostrar turnos pero sin médicos
+        for turno in turnos_activos:
+            turnos_data.append({
+                'turno': turno,
+                'medicos': []
+            })
     
     ctx = {
         'paciente_validado': bool(pid),
         'fecha_objetivo': manana,
         'turnos_data': turnos_data,
+        'sistema_abierto': sistema_abierto,
+        'mensaje_horario': mensaje_horario,
     }
     return render(request, 'citas/agendar.html', ctx)
 
@@ -211,6 +218,17 @@ def confirmar_cita(request):
     pid = request.session.get('paciente_id')
     if not pid:
         return JsonResponse({'ok': False, 'error': 'Paciente no validado'}, status=403)
+    
+    # Validar horario global del sistema
+    horario_sistema = HorarioSistema.objects.first()
+    if horario_sistema:
+        hora_actual = datetime.now().time()
+        if not (horario_sistema.hora_inicio <= hora_actual <= horario_sistema.hora_fin):
+            return JsonResponse({
+                'ok': False, 
+                'error': f'El sistema está cerrado. Se abre a las {horario_sistema.hora_inicio.strftime("%H:%M")} y cierra a las {horario_sistema.hora_fin.strftime("%H:%M")}.'
+            }, status=403)
+    
     medico_id = request.POST.get('medico_id')
     hora_str = request.POST.get('hora')
     m = get_object_or_404(Medico, id=medico_id)
@@ -632,6 +650,16 @@ def confirmar_cita_usuario(request):
     
     if not all([paciente_id, medico_id, hora_str]):
         return JsonResponse({'ok': False, 'error': 'Datos incompletos'}, status=400)
+    
+    # Validar horario global del sistema
+    horario_sistema = HorarioSistema.objects.first()
+    if horario_sistema:
+        hora_actual = datetime.now().time()
+        if not (horario_sistema.hora_inicio <= hora_actual <= horario_sistema.hora_fin):
+            return JsonResponse({
+                'ok': False, 
+                'error': f'El sistema está cerrado. Se abre a las {horario_sistema.hora_inicio.strftime("%H:%M")} y cierra a las {horario_sistema.hora_fin.strftime("%H:%M")}.'
+            }, status=403)
     
     try:
         paciente = Paciente.objects.get(id=paciente_id, activo=True)
