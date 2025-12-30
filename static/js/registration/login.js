@@ -1,11 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
   var overlay = document.getElementById('loginModalOverlay');
+  var loginPassword = document.getElementById('loginPassword');
+  var toggleLoginPassword = document.getElementById('toggleLoginPassword');
   function open() { if (!overlay) return; overlay.classList.add('active'); overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
   function close() { if (!overlay) return; overlay.classList.remove('active'); overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }
   window.toggleLoginModal = function() { if (!overlay) return; if (overlay.classList.contains('active')) { close(); } else { open(); } };
   window.switchToRegisterModal = function() { close(); setTimeout(function(){ var ro = document.getElementById('registerModalOverlay'); if (ro) { ro.classList.add('active'); ro.style.display = 'flex'; document.body.style.overflow = 'hidden'; } }, 300); };
   if (overlay) { overlay.addEventListener('click', function(e){ if (e.target === overlay) { close(); } }); }
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { if (overlay && overlay.classList.contains('active')) { close(); } } });
+
+  if (toggleLoginPassword && loginPassword) {
+    toggleLoginPassword.addEventListener('click', function() {
+      var isPassword = loginPassword.getAttribute('type') === 'password';
+      loginPassword.setAttribute('type', isPassword ? 'text' : 'password');
+      toggleLoginPassword.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+      toggleLoginPassword.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+
+      var icon = toggleLoginPassword.querySelector('i');
+      if (icon) {
+        icon.classList.toggle('fa-eye', !isPassword);
+        icon.classList.toggle('fa-eye-slash', isPassword);
+      }
+    });
+  }
+
   var buttons = document.querySelectorAll('.btn');
   buttons.forEach(function(btn){ btn.addEventListener('mouseenter', function(){ this.style.transform = 'translateY(-2px)'; }); btn.addEventListener('mouseleave', function(){ this.style.transform = 'translateY(0)'; }); });
   var form = overlay ? overlay.querySelector('form.auth-form') : null;

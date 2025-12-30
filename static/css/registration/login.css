@@ -96,6 +96,43 @@
   box-shadow: 0 0 0 3px rgba(27,143,130,0.25);
 }
 
+/* ======= PASSWORD TOGGLE ======= */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--color-texto-secundario);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: var(--color-texto);
+  background: rgba(0,0,0,0.04);
+}
+
+.password-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(27,143,130,0.25);
+}
+
 /* ======= BOTÓN SUBMIT ======= */
 .btn-submit {
   width: 100%;
