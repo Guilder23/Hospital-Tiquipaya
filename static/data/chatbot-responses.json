@@ -4,8 +4,7 @@
       "keywords": ["agendar", "cita", "agendar cita", "como agendo", "quiero agendar", "agendar consulta"],
       "response": "¡Claro! Puedes agendar una cita de dos formas:\n\n👤 **Si eres paciente:** Haz clic en 'Agendar Cita' desde el inicio\n\n👨‍⚕️ **Si eres personal del hospital:** Usa 'Agendar Cita (Usuario)' para agendar para un paciente\n\n¿Necesitas que te guíe directamente?",
       "buttons": [
-        { "text": "Ir a Agendar Cita", "link": "/citas/agendar/" },
-        { "text": "Agendar para Paciente", "link": "/citas/agendar-usuario/" }
+        { "text": "Ir a Agendar Cita", "link": "/citas/agendar/" }
       ]
     },
     {
