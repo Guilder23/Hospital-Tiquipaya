@@ -134,7 +134,7 @@
         {% for eco in ecografias %}
           <label>
             <input type="checkbox" name="ecografias" value="{{ eco.id }}" id="edit-eco-{{ eco.id }}">
-            {{ eco.codigo }} - {{ eco.nombre }}
+            {{ eco.codigo }} - {{ eco.nombre }} · <strong>{{ eco.especialidad.nombre }}</strong>
           </label><br>
         {% endfor %}
         <h4>Turnos</h4>
