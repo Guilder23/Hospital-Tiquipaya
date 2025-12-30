@@ -193,6 +193,22 @@
     background: #f3f4f6;
     color: #4b5563;
   }
+  
+  /* Contadores de horarios */
+  .slot-counters {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    font-weight: 600;
+    margin: 10px 0 12px;
+  }
+  .slot-counters .count-free { color: #16a34a; }
+  .slot-counters .count-busy { color: #ef4444; }
 </style>
 {% endblock %}
 
@@ -230,6 +246,7 @@
             <div><strong>{{ m.user.perfil.nombres }} {{ m.user.perfil.apellido_paterno }}</strong></div>
             <div>{{ m.especialidad.nombre }} · {{ turno_info.turno.nombre }}</div>
           </div>
+          <div class="slot-counters" id="counters-{{ m.id }}"></div>
           <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
         </div>
         <div class="slots" id="slots-{{ m.id }}"></div>
@@ -380,6 +397,21 @@ document.addEventListener('DOMContentLoaded', function() {
           // Guardar fecha
           const fecha = data.fecha;
           document.getElementById('conf-fecha').textContent = fecha;
+          
+          // Contar horarios disponibles y ocupados
+          let totalFree = 0, totalBusy = 0;
+          Object.keys(data.turnos).forEach(turnoNombre => {
+            const lista = data.turnos[turnoNombre] || [];
+            lista.forEach(s => { if (s.ocupado) totalBusy++; else totalFree++; });
+          });
+          
+          const countersEl = document.getElementById(`counters-${medicoId}`);
+          if (countersEl) {
+            countersEl.innerHTML = `
+              <span class="count-free"><strong>Disponibles:</strong> ${totalFree}</span>
+              <span class="count-busy"><strong>Ocupadas:</strong> ${totalBusy}</span>
+            `;
+          }
           
           // Crear slots
           Object.keys(data.turnos).forEach(turnoNombre => {
