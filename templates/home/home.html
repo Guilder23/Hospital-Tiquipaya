@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/css/home/home.css">
-<link rel="stylesheet" href="/static/css/componentes/home_navbar.css">
-<link rel="stylesheet" href="/static/css/componentes/home_footer.css">
-<link rel="stylesheet" href="/static/css/chatbot.css">
+<link rel="stylesheet" href="{% static 'css/home/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/componentes/home_navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/componentes/home_footer.css' %}">
+<link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
 {% endblock %}
 {% block content %}
 
@@ -50,7 +51,7 @@
     </div>
     
     <div class="hero-image-container">
-      <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="hero-image" alt="Hospital Tiquipaya">
+      <img src="{% static 'img/home/PrincipalTiquipaya.jpeg' %}" class="hero-image" alt="Hospital Tiquipaya">
       
       <div class="float-card float-card-1">
         <div class="float-card-icon green">
