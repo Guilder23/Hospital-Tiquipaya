@@ -216,6 +216,13 @@
 <section class="card">
   <h2>Agendar Cita - Por Personal del Hospital (día siguiente: {{ fecha_objetivo|date:'d/m/Y' }})</h2>
   
+  {% if not sistema_abierto and mensaje_horario %}
+    <div class="alert alert-warning" style="margin-bottom:20px; padding:15px; background-color:#fff3cd; border:1px solid #ffc107; border-radius:5px; color:#856404;">
+      <strong>⚠️ Sistema cerrado</strong><br>
+      {{ mensaje_horario }}
+    </div>
+  {% endif %}
+  
   <div class="paciente-search">
     <label for="buscar-paciente"><strong>Buscar Paciente por CI o Nombre:</strong></label>
     <input 
@@ -247,11 +254,23 @@
             <div>{{ m.especialidad.nombre }} · {{ turno_info.turno.nombre }}</div>
           </div>
           <div class="slot-counters" id="counters-{{ m.id }}"></div>
-          <div class="doctor-actions"><button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button></div>
+          <div class="doctor-actions">
+            {% if sistema_abierto %}
+              <button class="btn btn-primary btn-horarios" data-id="{{ m.id }}">Ver horarios</button>
+            {% else %}
+              <button class="btn btn-secondary" disabled>No disponible - Sistema cerrado</button>
+            {% endif %}
+          </div>
         </div>
         <div class="slots" id="slots-{{ m.id }}"></div>
       {% empty %}
-        <p>No hay médicos disponibles en este turno.</p>
+        {% if not sistema_abierto %}
+          <p style="color: #856404; font-style: italic;">
+            <i class="fas fa-clock"></i> No hay médicos disponibles porque el sistema está cerrado.
+          </p>
+        {% else %}
+          <p>No hay médicos disponibles en este turno.</p>
+        {% endif %}
       {% endfor %}
       {% if not forloop.last %}<div style="margin-top:20px"></div>{% endif %}
     {% empty %}

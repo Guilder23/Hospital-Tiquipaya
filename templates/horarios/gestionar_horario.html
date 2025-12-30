@@ -12,6 +12,7 @@
     <div class="horarios-header">
         <h1><i class="fas fa-clock"></i> Gestión de Horarios del Sistema</h1>
         <p class="text-muted">Configurar horario global para agendamiento de citas</p>
+        <p class="text-muted">Hora actual (Bolivia/La Paz): {% if hora_actual_lp %}{{ hora_actual_lp|date:"H:i" }}{% endif %}</p>
     </div>
 
     {% if messages %}
@@ -37,6 +38,9 @@
                     </div>
                     <div>
                         <p class="horarios-small"><em>Los pacientes solo podrán agendar citas dentro de este horario.</em></p>
+                        {% if hora_actual_lp %}
+                            <span class="horarios-small">Hora actual (Bolivia/La Paz): {{ hora_actual_lp|date:"H:i" }}</span><br>
+                        {% endif %}
                         {% if horario.actualizado_por %}
                             <span class="horarios-small">
                                 Última actualización por {{ horario.actualizado_por.username }} el {{ horario.actualizado_en|date:"d/m/Y H:i" }}
@@ -56,15 +60,34 @@
         <div class="horarios-card-header"><i class="fas fa-cog"></i> Configurar Horario</div>
         <form method="post">
             {% csrf_token %}
+            {% if form.errors %}
+                <div class="horarios-alert-error">
+                    {% if form.non_field_errors %}
+                        {{ form.non_field_errors }}
+                    {% endif %}
+                    {% if form.hora_inicio.errors %}{{ form.hora_inicio.errors }}{% endif %}
+                    {% if form.hora_fin.errors %}{{ form.hora_fin.errors }}{% endif %}
+                </div>
+            {% endif %}
             <div class="horarios-form-row">
                 <div class="horarios-form-group">
                     <label for="id_hora_inicio"><i class="fas fa-sunrise"></i> Hora de inicio</label>
                     {{ form.hora_inicio }}
+                    {% if form.hora_inicio.errors %}
+                        <div class="horarios-alert-error" style="margin-top:10px; padding:10px 12px; font-size:0.95rem;">
+                            {{ form.hora_inicio.errors }}
+                        </div>
+                    {% endif %}
                     <span class="horarios-small">Hora en que se abre el sistema para agendar citas</span>
                 </div>
                 <div class="horarios-form-group">
                     <label for="id_hora_fin"><i class="fas fa-sunset"></i> Hora de fin</label>
                     {{ form.hora_fin }}
+                    {% if form.hora_fin.errors %}
+                        <div class="horarios-alert-error" style="margin-top:10px; padding:10px 12px; font-size:0.95rem;">
+                            {{ form.hora_fin.errors }}
+                        </div>
+                    {% endif %}
                     <span class="horarios-small">Hora en que se cierra el sistema para agendar citas</span>
                 </div>
             </div>

@@ -12,6 +12,8 @@ import json
 from django.shortcuts import render, redirect
 from .models import HorarioSistema
 from django import forms
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # Asegúrate de que este import sea correcto
 from apps.accounts.models import Perfil 
@@ -129,6 +131,16 @@ class TurnoAPIView(View):
 
 # --- FORMULARIO Y VISTA PARA GESTIONAR HORARIO GLOBAL ---
 class HorarioSistemaForm(forms.ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+        hora_inicio = cleaned_data.get('hora_inicio')
+        hora_fin = cleaned_data.get('hora_fin')
+
+        if hora_inicio and hora_fin and hora_fin <= hora_inicio:
+            self.add_error('hora_fin', 'La hora de fin debe ser mayor a la hora de inicio.')
+
+        return cleaned_data
+
     class Meta:
         model = HorarioSistema
         fields = ['hora_inicio', 'hora_fin']
@@ -165,7 +177,8 @@ class HorarioSistemaView(LoginRequiredMixin, View):
     def get(self, request):
         horario = HorarioSistema.objects.first()
         form = HorarioSistemaForm(instance=horario)
-        return render(request, self.template_name, {'form': form, 'horario': horario})
+        hora_actual_lp = datetime.now(ZoneInfo('America/La_Paz'))
+        return render(request, self.template_name, {'form': form, 'horario': horario, 'hora_actual_lp': hora_actual_lp})
 
     def post(self, request):
         horario = HorarioSistema.objects.first()
@@ -176,4 +189,5 @@ class HorarioSistemaView(LoginRequiredMixin, View):
             horario.save()
             messages.success(request, 'Horario actualizado correctamente.')
             return redirect('turnos:gestionar')
-        return render(request, self.template_name, {'form': form, 'horario': horario})
+        hora_actual_lp = datetime.now(ZoneInfo('America/La_Paz'))
+        return render(request, self.template_name, {'form': form, 'horario': horario, 'hora_actual_lp': hora_actual_lp})
