@@ -88,15 +88,22 @@ function populateDashboard(data) {
     
     try {
         // PACIENTES
-        document.getElementById('total-pacientes').textContent = getValue(data.pacientes?.total);
-        document.getElementById('pac-total').textContent = getValue(data.pacientes?.total);
-        document.getElementById('pac-activos').textContent = getValue(data.pacientes?.activos);
-        document.getElementById('pac-con-seguro').textContent = getValue(data.pacientes?.con_seguro);
-        document.getElementById('pac-sin-seguro').textContent = getValue(data.pacientes?.sin_seguro);
-        
+        const elTotalPacientes = document.getElementById('total-pacientes');
+        if (elTotalPacientes) elTotalPacientes.textContent = getValue(data.pacientes?.total);
+        const elPacTotal = document.getElementById('pac-total');
+        if (elPacTotal) elPacTotal.textContent = getValue(data.pacientes?.total);
+        const elPacActivos = document.getElementById('pac-activos');
+        if (elPacActivos) elPacActivos.textContent = getValue(data.pacientes?.activos);
+        const elPacConSeguro = document.getElementById('pac-con-seguro');
+        if (elPacConSeguro) elPacConSeguro.textContent = getValue(data.pacientes?.con_seguro);
+        const elPacSinSeguro = document.getElementById('pac-sin-seguro');
+        if (elPacSinSeguro) elPacSinSeguro.textContent = getValue(data.pacientes?.sin_seguro);
+
         // CITAS
-        document.getElementById('total-citas').textContent = getValue(data.citas?.total);
-        document.getElementById('citas-hoy').textContent = getValue(data.citas?.hoy);
+        const elTotalCitas = document.getElementById('total-citas');
+        if (elTotalCitas) elTotalCitas.textContent = getValue(data.citas?.total);
+        const elCitasHoy = document.getElementById('citas-hoy');
+        if (elCitasHoy) elCitasHoy.textContent = getValue(data.citas?.hoy);
 
         const elCitasHoyAtendidas = document.getElementById('citas-hoy-atendidas');
         if (elCitasHoyAtendidas) elCitasHoyAtendidas.textContent = getValue(data.citas?.hoy_atendidas);
@@ -106,16 +113,17 @@ function populateDashboard(data) {
 
         const elCitasHoyEnEspera = document.getElementById('citas-hoy-en-espera');
         if (elCitasHoyEnEspera) elCitasHoyEnEspera.textContent = getValue(data.citas?.hoy_en_espera);
-        
+
         // MÉDICOS
-        document.getElementById('total-medicos').textContent = getValue(data.medicos?.total);
-        document.getElementById('med-activos').textContent = getValue(data.medicos?.activos);
-        
+        const elTotalMedicos = document.getElementById('total-medicos');
+        if (elTotalMedicos) elTotalMedicos.textContent = getValue(data.medicos?.total);
+        const elMedActivos = document.getElementById('med-activos');
+        if (elMedActivos) elMedActivos.textContent = getValue(data.medicos?.activos);
+
         // ECOGRAFÍAS
-        document.getElementById('total-ecografias').textContent = getValue(data.ecografias?.total);
-        document.getElementById('eco-total').textContent = getValue(data.ecografias?.total);
-        document.getElementById('eco-completadas').textContent = getValue(data.ecografias?.completadas);
-        document.getElementById('eco-pendientes').textContent = getValue(data.ecografias?.pendientes);
+        const elTotalEcografias = document.getElementById('total-ecografias');
+        if (elTotalEcografias) elTotalEcografias.textContent = getValue(data.ecografias?.total);
+        // Elementos eliminados: eco-total, eco-completadas, eco-pendientes
 
         const elEcoHoy = document.getElementById('eco-hoy');
         if (elEcoHoy) elEcoHoy.textContent = getValue(data.ecografias?.hoy);
@@ -138,17 +146,11 @@ function populateDashboard(data) {
 
         const elEncAdm = document.getElementById('total-encargado-admision');
         if (elEncAdm) elEncAdm.textContent = getValue(data.personal?.encargado_admision);
-        
-        // CONTRATOS
-        document.getElementById('con-total').textContent = getValue(data.contratos?.total);
-        document.getElementById('con-vigentes').textContent = getValue(data.contratos?.vigentes);
-        
-        // ESPECIALIDADES
-        document.getElementById('esp-total').textContent = getValue(data.especialidades?.total);
-        
+
         // USUARIOS
-        document.getElementById('usr-total').textContent = getValue(data.usuarios?.total);
-        document.getElementById('usr-admins').textContent = getValue(data.usuarios?.admins);
+
+        const elUsrTotal = document.getElementById('usr-total');
+        if (elUsrTotal) elUsrTotal.textContent = getValue(data.usuarios?.total);
 
         const elUsrActivos = document.getElementById('usr-activos');
         if (elUsrActivos) elUsrActivos.textContent = getValue(data.usuarios?.activos);
@@ -158,9 +160,9 @@ function populateDashboard(data) {
 
         const elTotalUsuarios = document.getElementById('total-usuarios');
         if (elTotalUsuarios) elTotalUsuarios.textContent = getValue(data.usuarios?.total);
-        
+
         console.log('Datos poblados exitosamente. Creando gráficos...');
-        
+
         // Crear gráficos
         createCharts(data);
     } catch (error) {
@@ -440,126 +442,11 @@ function createCharts(data) {
         }
     }
 
-    // 5. GRÁFICO DE TOP 5 ESPECIALIDADES (BARRA HORIZONTAL)
-    const ctxEspecialidades = document.getElementById('especialidadesChart');
-    if (ctxEspecialidades && data.citas?.por_especialidad && data.citas.por_especialidad.length > 0) {
-        try {
-            charts.especialidadesChart = new Chart(ctxEspecialidades, {
-                type: 'bar',
-                data: {
-                    labels: data.citas.por_especialidad.map(e => e.especialidad__nombre),
-                    datasets: [{
-                        label: 'Citas',
-                        data: data.citas.por_especialidad.map(e => e.count),
-                        backgroundColor: colors.success,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
-            console.log('Gráfico de especialidades creado ✓');
-        } catch (e) {
-            console.error('Error al crear gráfico de especialidades:', e);
-        }
-    }
+    // 5. GRÁFICO DE TOP 5 ESPECIALIDADES - ELIMINADO
 
-    // 6. GRÁFICO DE TOP 5 MÉDICOS (BARRA HORIZONTAL)
-    const ctxMedicos = document.getElementById('medicosChart');
-    if (ctxMedicos && data.citas?.por_medico && data.citas.por_medico.length > 0) {
-        try {
-            charts.medicosChart = new Chart(ctxMedicos, {
-                type: 'bar',
-                data: {
-                    labels: data.citas.por_medico.map(m => 
-                        `${m.medico__user__first_name} ${m.medico__user__last_name}`.trim()
-                    ),
-                    datasets: [{
-                        label: 'Citas',
-                        data: data.citas.por_medico.map(m => m.count),
-                        backgroundColor: colors.purple,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
-            console.log('Gráfico de médicos creado ✓');
-        } catch (e) {
-            console.error('Error al crear gráfico de médicos:', e);
-        }
-    }
+    // 6. GRÁFICO DE TOP 5 MÉDICOS - ELIMINADO
 
-    // 7. GRÁFICO DE COMPARATIVA MENSUAL (COLUMNAS)
-    const ctxComparativa = document.getElementById('comparativaChart');
-    if (ctxComparativa) {
-        try {
-            charts.comparativaChart = new Chart(ctxComparativa, {
-                type: 'bar',
-                data: {
-                    labels: ['Mes Pasado', 'Este Mes'],
-                    datasets: [{
-                        label: 'Citas',
-                        data: [data.citas?.mes_pasado || 0, data.citas?.este_mes || 0],
-                        backgroundColor: [colors.warning, colors.success],
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
-            console.log('Gráfico de comparativa creado ✓');
-        } catch (e) {
-            console.error('Error al crear gráfico de comparativa:', e);
-        }
-    }
+    // 7. GRÁFICO DE COMPARATIVA MENSUAL - ELIMINADO
 
     // 8. GRÁFICO DE COBERTURA DE SEGUROS (DONUT)
     const ctxSeguro = document.getElementById('seguroChart');
