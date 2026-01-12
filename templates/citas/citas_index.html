@@ -32,27 +32,21 @@
                     <th>Especialidad</th>
                     <th>Médico</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for cita in citas %}
                 <tr>
                     <td><span class="codigo">{{ cita.codigo }}</span></td>
-                    <td>{{ cita.paciente.nombre_completo }}</td>
+                    <td>{{ cita.paciente }}</td>
                     <td>{{ cita.fecha|date:"d/m/Y" }}</td>
                     <td>{{ cita.hora|time:"H:i" }}</td>
                     <td>{{ cita.especialidad.nombre|default:"-" }}</td>
-                    <td>{{ cita.medico.user.first_name }} {{ cita.medico.user.last_name }}</td>
+                    <td>{{ cita.medico }}</td>
                     <td>
                         <span class="estado estado-{{ cita.estado|lower }}">
                             {{ cita.get_estado_display }}
                         </span>
-                    </td>
-                    <td class="acciones">
-                        <a href="{% url 'citas:editar' cita.id %}" class="btn-icon" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </a>
                     </td>
                 </tr>
                 {% endfor %}
